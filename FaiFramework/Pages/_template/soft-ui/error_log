@@ -1,0 +1,2 @@
+[27-Jun-2024 18:41:01 Asia/Jakarta] PHP Notice:  Undefined variable: detail in /home/hexghtba/public_html/FaiFramework/Pages/_template/soft-ui/_CardMenuScreenA.template.php on line 3
+[27-Jun-2024 18:41:01 Asia/Jakarta] PHP Notice:  Trying to access array offset on value of type null in /home/hexghtba/public_html/FaiFramework/Pages/_template/soft-ui/_CardMenuScreenA.template.php on line 3

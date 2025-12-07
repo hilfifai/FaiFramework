@@ -1,0 +1,1018 @@
+{
+    "version": "1.0",
+    "template": [],
+    "created_at": "2025-11-15 14:21:15",
+    "data-versions": {
+        "router": {
+            "1": [
+                4
+            ]
+        },
+        "ecommerce": {
+            "1": [
+                1
+            ]
+        },
+        "utama": {
+            "1": [
+                4
+            ]
+        }
+    },
+    "versions": {
+        "router": {
+            "versions": {
+                "1.0.0": {
+                    "v2.moesneeds.id": {
+                        "form_id": "saerch_form",
+                        "get_params": [
+                            "search_kategori",
+                            "keyword"
+                        ],
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "1.0.1": {
+                    "v2.moesneeds.id": {
+                        "form_id": "saerch_form",
+                        "get_params": [
+                            "search_kategori",
+                            "keyword"
+                        ],
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "moesneeds.id": {
+                        "form_id": "saerch_form",
+                        "get_params": [
+                            "search_kategori",
+                            "keyword"
+                        ],
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "1.0.2": {
+                    "v2.moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": [
+                            "search_kategori",
+                            "keyword"
+                        ],
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": [
+                            "search_kategori",
+                            "keyword"
+                        ],
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "1.0.3": {
+                    "v2.moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": {
+                            "search_kategori": {
+                                "type": "select"
+                            },
+                            "keyword": {
+                                "type": "input",
+                                "min_input": 3
+                            }
+                        },
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": {
+                            "search_kategori": {
+                                "type": "select"
+                            },
+                            "keyword": {
+                                "type": "input",
+                                "min_input": 3
+                            }
+                        },
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "codepen",
+                                    "job-search-platform-ui-produk"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "1.0.4": {
+                    "v2.moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": {
+                            "search_kategori": {
+                                "type": "select"
+                            },
+                            "keyword": {
+                                "type": "input",
+                                "min_input": 3
+                            }
+                        },
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "hibe3",
+                                    "ecommerce-search"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    "moesneeds.id": {
+                        "form_id": "search-form",
+                        "get_params": {
+                            "search_kategori": {
+                                "type": "select"
+                            },
+                            "keyword": {
+                                "type": "input",
+                                "min_input": 3
+                            }
+                        },
+                        "content": [
+                            {
+                                "Judul": "Produk",
+                                "database": "all_produk",
+                                "get_params": [
+                                    "search_kategori",
+                                    "keyword"
+                                ],
+                                "where_data": [
+                                    [
+                                        "nama_barang",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_varian",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian1",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian2",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "nama_list_tipe_varian_varian3",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode",
+                                        "=",
+                                        ":keyword"
+                                    ],
+                                    [
+                                        "barcode_varian",
+                                        "=",
+                                        ":keyword"
+                                    ]
+                                ],
+                                "view": [
+                                    "hibe3",
+                                    "ecommerce-search"
+                                ],
+                                "array": {
+                                    "ID": [
+                                        "data",
+                                        "id"
+                                    ],
+                                    "NAMA-PRODUK": [
+                                        "data",
+                                        "nama_barang"
+                                    ],
+                                    "ID-ASSET": [
+                                        "data",
+                                        "id_asset"
+                                    ],
+                                    "ID-PRODUK": [
+                                        "data",
+                                        "id_produk"
+                                    ],
+                                    "HARGA-FULL": [
+                                        "data",
+                                        "harga_full"
+                                    ],
+                                    "DESC": [
+                                        "data",
+                                        "deskripsi_barang"
+                                    ],
+                                    "TUMB": [
+                                        "data",
+                                        "foto_aset"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "last_version": "1.0.4",
+            "last_generate_date": "2025-11-15"
+        },
+        "ecommerce": {
+            "versions": {
+                "1.0.0": {
+                    "Judul": "Produk",
+                    "database": "all_produk",
+                    "get_params": [
+                        "search_kategori",
+                        "keyword"
+                    ],
+                    "where_data": [
+                        [
+                            "nama_barang",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_varian",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian1",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian2",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian3",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "barcode",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "barcode_varian",
+                            "=",
+                            ":keyword"
+                        ]
+                    ],
+                    "view": [
+                        "codepen",
+                        "job-search-platform-ui-produk"
+                    ],
+                    "array": {
+                        "ID": [
+                            "data",
+                            "id"
+                        ],
+                        "NAMA-PRODUK": [
+                            "data",
+                            "nama_barang"
+                        ],
+                        "ID-ASSET": [
+                            "data",
+                            "id_asset"
+                        ],
+                        "ID-PRODUK": [
+                            "data",
+                            "id_produk"
+                        ],
+                        "HARGA-FULL": [
+                            "data",
+                            "harga_full"
+                        ],
+                        "DESC": [
+                            "data",
+                            "deskripsi_barang"
+                        ],
+                        "TUMB": [
+                            "data",
+                            "foto_aset"
+                        ]
+                    }
+                },
+                "1.0.1": {
+                    "Judul": "Produk",
+                    "database": "all_produk",
+                    "get_params": [
+                        "search_kategori",
+                        "keyword"
+                    ],
+                    "where_data": [
+                        [
+                            "nama_barang",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_varian",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian1",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian2",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "nama_list_tipe_varian_varian3",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "barcode",
+                            "=",
+                            ":keyword"
+                        ],
+                        [
+                            "barcode_varian",
+                            "=",
+                            ":keyword"
+                        ]
+                    ],
+                    "view": [
+                        "hibe3",
+                        "ecommerce-search"
+                    ],
+                    "array": {
+                        "ID": [
+                            "data",
+                            "id"
+                        ],
+                        "NAMA-PRODUK": [
+                            "data",
+                            "nama_barang"
+                        ],
+                        "ID-ASSET": [
+                            "data",
+                            "id_asset"
+                        ],
+                        "ID-PRODUK": [
+                            "data",
+                            "id_produk"
+                        ],
+                        "HARGA-FULL": [
+                            "data",
+                            "harga_full"
+                        ],
+                        "DESC": [
+                            "data",
+                            "deskripsi_barang"
+                        ],
+                        "TUMB": [
+                            "data",
+                            "foto_aset"
+                        ]
+                    }
+                }
+            },
+            "last_version": "1.0.1",
+            "last_generate_date": "2025-11-15"
+        }
+    },
+    "alast_version": "1.0.4",
+    "alast_generate_date": "2025-11-15"
+}

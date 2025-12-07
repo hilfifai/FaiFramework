@@ -1,0 +1,55 @@
+{
+  "name": "@tkrotoff/bootstrap-floating-label",
+  "version": "0.11.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkrotoff/bootstrap-floating-label.git"
+  },
+  "description": "Bootstrap 5 Floating Label",
+  "license": "MIT",
+  "keywords": [
+    "bootstrap5",
+    "bootstrap",
+    "floating",
+    "float",
+    "label"
+  ],
+  "files": [
+    "src/"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rm -rf dist .cache",
+    "clean:all": "npm run clean && rm -rf node_modules package-lock.json",
+    "start": "npm run clean && parcel example/index.html --open",
+    "build": "npm run clean && parcel build example/index.html --public-url ./",
+    "build:dev": "npm run clean && NODE_ENV=development parcel build example/index.html --no-minify --public-url ./",
+    "tsc": "tsc",
+    "format": "prettier --write '**/*'",
+    "lint": "stylelint '**/*.scss' && npm run tsc",
+    "prepare": "husky install",
+    "precommit": "npm run format && npm run tsc && npm run lint && npm run build",
+    "prepush": "npm run precommit",
+    "prepublishOnly": "npm run build",
+    "npm:update": "npm run clean:all && npx npm-check-updates --upgrade && npm install",
+    "publish:beta": "npm version 0.7.0-beta.1 && npm publish --tag next --dry-run",
+    "count-loc:build:css": "find dist -name '*.css' | xargs wc -l"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "bootstrap": ">=5"
+  },
+  "devDependencies": {
+    "bootstrap": "^5.1.3",
+    "husky": "^7.0.4",
+    "parcel-bundler": "^1.12.5",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.5.0",
+    "sass": "^1.43.5",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-twbs-bootstrap": "^2.2.4",
+    "stylelint-prettier": "^1.2.0",
+    "typescript": "^4.5.2"
+  }
+}

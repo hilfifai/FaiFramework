@@ -1,0 +1,4377 @@
+<!DOCTYPE html>
+<html lang="en" data-layout="horizontal">
+
+<!-- Mirrored from dashui.codescandy.com/dashuipro/horizontal/starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Sep 2023 09:32:15 GMT -->
+<head>
+  <!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Codescandy">
+
+ <!-- Google tag (gtag.js) -->
+    
+
+<!-- Favicon icon-->
+<link rel="shortcut icon" type="image/x-icon" href="../assets/images/favicon/favicon.ico">
+
+
+<!-- Libs CSS -->
+<link href="../assets/libs/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link href="../assets/libs/%40mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+<link href="../assets/libs/simplebar/dist/simplebar.min.css" rel="stylesheet">
+
+
+	<link rel="stylesheet" href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css'>
+	<script src="https://code.iconify.design/2/2.0.4/iconify.min.js"></script>
+<link rel="stylesheet" href="../assets/css/theme.min.css">
+      <link href="../assets/libs/dropzone/dist/dropzone.css" rel="stylesheet" >
+  <link href="../assets/libs/%40yaireo/tagify/dist/tagify.css" rel="stylesheet">
+    <title>Starter Page | Dash UI - Bootstrap 5 Admin Dashboard Template</title>
+ 
+
+<style>
+:root {
+  --c-text-primary: #282a32;
+  --c-text-secondary: #686b87;
+  --c-text-action: #404089;
+  --c-accent-primary: #434ce8;
+  --c-border-primary: #eff1f6;
+  --c-background-primary: #ffffff;
+  --c-background-secondary: #fdfcff;
+  --c-background-tertiary: #ecf3fe;
+  --c-background-quaternary: #e9ecf4;
+}
+
+body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: var(--dashui-body-bg);
+    color: var(--dashui-body-color);
+    font-family: "Inter","sans-serif";
+    font-size: var(--dashui-body-font-size);
+    font-weight: var(--dashui-body-font-weight);
+    line-height: var(--dashui-body-line-height);
+    margin: 0;
+    text-align: var(--dashui-body-text-align);
+}
+
+body {
+  line-height: 1.5;
+  min-height: 100vh;
+  background-color: var(--c-background-secondary);
+  color: var(--c-text-primary);
+}
+.responsive-wrapper {
+  width: 90%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  border-bottom: 1px solid var(--c-border-primary);
+  background-color: var(--c-background-primary);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+.header-content > a {
+  display: none;
+}
+@media (max-width: 1200px) {
+  .header-content {
+    justify-content: space-between;
+  }
+  .header-content > a {
+    display: inline-flex;
+  }
+}
+
+.header-logo {
+  margin-right: 2.5rem;
+}
+.header-logo a {
+  display: flex;
+  align-items: center;
+}
+.header-logo a div {
+  flex-shrink: 0;
+  position: relative;
+}
+.header-logo a div:after {
+  display: block;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  height: 50%;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.2);
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+}
+
+.header-navigation {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+}
+@media (max-width: 1200px) {
+  .header-navigation {
+    display: none;
+  }
+}
+
+.header-navigation-links {
+  display: flex;
+  align-items: center;
+}
+.header-navigation-links a {
+  text-decoration: none;
+  color: var(--c-text-action);
+  font-weight: 500;
+  transition: 0.15s ease;
+}
+.header-navigation-links a + * {
+  margin-left: 1.5rem;
+}
+.header-navigation-links a:hover, .header-navigation-links a:focus {
+  color: var(--c-accent-primary);
+}
+
+.header-navigation-actions {
+  display: flex;
+  align-items: center;
+}
+.header-navigation-actions > .avatar {
+  margin-left: 0.75rem;
+}
+.header-navigation-actions > .icon-button + .icon-button {
+  margin-left: 0.25rem;
+}
+.header-navigation-actions > .button + .icon-button {
+  margin-left: 1rem;
+}
+
+.button {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+  height: 40px;
+  border-radius: 8px;
+  line-height: 1;
+  border: 2px solid var(--c-border-primary);
+  color: var(--c-text-action);
+  font-size: 0.875rem;
+  transition: 0.15s ease;
+  background-color: var(--c-background-primary);
+}
+.button i {
+  margin-right: 0.5rem;
+  font-size: 1.25em;
+}
+.button span {
+  font-weight: 500;
+}
+.button:hover, .button:focus {
+  border-color: var(--c-accent-primary);
+  color: var(--c-accent-primary);
+}
+
+.icon-button {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: var(--c-text-action);
+  transition: 0.15s ease;
+}
+.icon-button i {
+  font-size: 1.25em;
+}
+.icon-button:focus, .icon-button:hover {
+  background-color: var(--c-background-tertiary);
+  color: var(--c-accent-primary);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.main {
+  padding-top: 3rem;
+}
+
+.main-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.main-header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+@media (max-width: 550px) {
+  .main-header h1 {
+    margin-bottom: 1rem;
+  }
+}
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+}
+.search input {
+  font: inherit;
+  color: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em 0 36px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid var(--c-border-primary);
+  color: var(--c-text-action);
+  font-size: 0.875rem;
+  transition: 0.15s ease;
+  width: 100%;
+  line-height: 1;
+}
+.search input::-moz-placeholder {
+  color: var(--c-text-action);
+}
+.search input:-ms-input-placeholder {
+  color: var(--c-text-action);
+}
+.search input::placeholder {
+  color: var(--c-text-action);
+}
+.search input:focus, .search input:hover {
+  border-color: var(--c-accent-primary);
+}
+.search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25em;
+  color: var(--c-text-action);
+  padding: 0;
+  height: 40px;
+}
+
+.horizontal-tabs {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+}
+@media (max-width: 1000px) {
+  .horizontal-tabs {
+    scrollbar-width: none;
+    position: relative;
+  }
+  .horizontal-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+.horizontal-tabs a {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 48px;
+  padding: 0 0.25rem;
+  font-weight: 500;
+  color: inherit;
+  border-bottom: 3px solid transparent;
+  text-decoration: none;
+  transition: 0.15s ease;
+}
+.horizontal-tabs a:hover, .horizontal-tabs a:focus, .horizontal-tabs a.active {
+  color: var(--c-accent-primary);
+  border-bottom-color: var(--c-accent-primary);
+}
+.horizontal-tabs a + * {
+  margin-left: 1rem;
+}
+
+.content-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 3rem;
+  margin-top: -1px;
+  border-top: 1px solid var(--c-border-primary);
+}
+
+.content-header-intro h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.content-header-intro p {
+  color: var(--c-text-secondary);
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 800px) {
+  .content-header-actions a:first-child {
+    display: none;
+  }
+}
+
+.content {
+  border-top: 1px solid var(--c-border-primary);
+  margin-top: 2rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.content-panel {
+  display: none;
+  max-width: 280px;
+  width: 25%;
+  padding: 2rem 1rem 2rem 0;
+  margin-right: 3rem;
+}
+@media (min-width: 800px) {
+  .content-panel {
+    display: block;
+  }
+}
+
+.vertical-tabs {
+  display: flex;
+  flex-direction: column;
+}
+.vertical-tabs a {
+  display: flex;
+  align-items: center;
+  padding: 0.75em 1em;
+  background-color: transparent;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--c-text-action);
+  transition: 0.15s ease;
+}
+.vertical-tabs a:hover, .vertical-tabs a:focus, .vertical-tabs a.active {
+  background-color: var(--c-background-tertiary);
+  color: var(--c-accent-primary);
+}
+.vertical-tabs a + * {
+  margin-top: 0.25rem;
+}
+
+.content-main {
+  padding-top: 2rem;
+  padding-bottom: 6rem;
+  flex-grow: 1;
+}
+
+.carddashboardui-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  -moz-column-gap: 1.5rem;
+       column-gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+@media (min-width: 600px) {
+  .carddashboardui-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .carddashboardui-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.carddashboardui {
+  background-color: var(--c-background-primary);
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05), 0 5px 15px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.carddashboardui-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 1.25rem 1rem 1.25rem;
+}
+.carddashboardui-header div {
+  display: flex;
+  align-items: center;
+}
+.carddashboardui-header div span {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.carddashboardui-header div span img {
+  max-height: 100%;
+}
+.carddashboardui-header div h3 {
+  margin-left: 0.75rem;
+  font-weight: 500;
+}
+
+.toggle span {
+  display: block;
+  width: 40px;
+  height: 24px;
+  border-radius: 99em;
+  background-color: var(--c-background-quaternary);
+  box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: 0.15s ease;
+}
+.toggle span:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  height: 18px;
+  width: 18px;
+  background-color: var(--c-background-primary);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  transition: 0.15s ease;
+}
+.toggle input {
+  clip: rect(0 0 0 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.toggle input:checked + span {
+  background-color: var(--c-accent-primary);
+}
+.toggle input:checked + span:before {
+  transform: translateX(calc(100% - 2px));
+}
+.toggle input:focus + span {
+  box-shadow: 0 0 0 4px var(--c-background-tertiary);
+}
+
+.carddashboardui-body {
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+}
+
+.carddashboardui-footer {
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid var(--c-border-primary);
+}
+.carddashboardui-footer a {
+  color: var(--c-text-action);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+html::-webkit-scrollbar {
+  width: 12px;
+}
+html::-webkit-scrollbar-thumb {
+  background-color: var(--c-text-primary);
+  border: 4px solid var(--c-background-primary);
+  border-radius: 99em;
+}
+</style>
+<style>
+/*
+.navbar-stisla {
+	 height: 70px;
+	 left: 250px;
+	 right: 5px;
+	 position: absolute;
+	 z-index: 890;
+	 background-color: transparent;
+}
+*/
+ .navbar-stisla.active {
+	 background-color: color(--c-background-primary);
+}
+ .navbar-stisla-bg {
+	 content: ' ';
+	 position: absolute;
+	 top: 0;
+	 left: 0;
+	 width: 100%;
+	 height: 115px;
+	 background-color: color(--c-background-primary);
+	 z-index: -1;
+}
+ .navbar-stisla {
+	 align-items: center;
+}
+ .navbar-stisla .navbar-stisla-brand {
+	 color: #fff;
+	 text-transform: uppercase;
+	 letter-spacing: 3px;
+	 font-weight: 700;
+}
+ .navbar-stisla .form-inline .form-control {
+	 background-color: #fff;
+	 border-color: transparent;
+	 padding-left: 20px;
+	 padding-right: 0;
+	 margin-right: -6px;
+	 min-height: 46px;
+	 font-weight: 500;
+	 border-radius: 3px 0 0 3px;
+	 transition: all 1s;
+}
+ .navbar-stisla .form-inline .form-control:focus, .navbar-stisla .form-inline .form-control:focus + .btn {
+	 position: relative;
+	 z-index: 9001;
+}
+ .navbar-stisla .form-inline .form-control:focus + .btn + .search-backdrop {
+	 opacity: 0.6;
+	 visibility: visible;
+}
+ .navbar-stisla .form-inline .form-control:focus + .btn + .search-backdrop + .search-result {
+	 opacity: 1;
+	 visibility: visible;
+	 top: 80px;
+}
+ .navbar-stisla .form-inline .btn {
+	 border-radius: 0 3px 3px 0;
+	 background-color: #fff;
+	 padding: 9px 15px 9px 15px;
+	 border-color: transparent;
+}
+ .navbar-stisla .form-inline .search-backdrop {
+	 position: fixed;
+	 top: 0;
+	 left: 0;
+	 width: 100%;
+	 height: 100%;
+	 z-index: 9000;
+	 background-color: #000;
+	 opacity: 0;
+	 visibility: hidden;
+	 transition: all 0.5s;
+}
+ .navbar-stisla .form-inline .search-result {
+	 position: absolute;
+	 z-index: 9002;
+	 top: 100px;
+	 background-color: #fff;
+	 border-radius: 3px;
+	 width: 450px;
+	 opacity: 0;
+	 visibility: hidden;
+	 transition: all 0.5s;
+}
+ .navbar-stisla .form-inline .search-result:before {
+	 position: absolute;
+	 top: -26px;
+	 left: 34px;
+	 content: '\f0d8';
+	 font-weight: 600;
+	 color: #fff;
+	 font-size: 30px;
+}
+ .navbar-stisla .form-inline .search-result .search-header {
+	 padding: 13px 18px 2px 18px;
+	 text-transform: uppercase;
+	 letter-spacing: 1.3px;
+	 font-weight: 600;
+	 font-size: 10px;
+	 color: color_lighten(font, 30%);
+}
+ .navbar-stisla .form-inline .search-result .search-item {
+	 display: flex;
+}
+ .navbar-stisla .form-inline .search-result .search-item a {
+	 display: block;
+	 padding: 13px 18px;
+	 text-decoration: none;
+	 color: color(fontdark);
+	 font-weight: 600;
+	 display: flex;
+	 align-items: center;
+}
+ .navbar-stisla .form-inline .search-result .search-item a:hover {
+	 background-color: color_lighten(primary, 32%);
+}
+ .navbar-stisla .form-inline .search-result .search-item a:not(.search-close) {
+	 width: 100%;
+}
+ .navbar-stisla .form-inline .search-result .search-item a i {
+	 margin-left: 0 !important;
+}
+ .navbar-stisla .form-inline .search-result .search-item .search-icon {
+	 width: 35px;
+	 height: 35px;
+	 line-height: 35px;
+	 text-align: center;
+	 border-radius: 50%;
+}
+ .navbar-stisla .active .nav-link {
+	 color: #fff;
+	 font-weight: 700;
+}
+ .navbar-stisla .navbar-stisla-text {
+	 color: #fff;
+}
+ .navbar-stisla .nav-link {
+	 color: #f2f2f2;
+	 padding-left: 15px !important;
+	 padding-right: 15px !important;
+	 padding-top: 0 !important;
+	 padding-bottom: 0 !important;
+	 height: 100%;
+}
+ .navbar-stisla .nav-link.nav-link-lg div {
+	 margin-top: 3px;
+}
+ .navbar-stisla .nav-link.nav-link-lg i {
+	 margin-left: 0 !important;
+	 font-size: 18px;
+	 line-height: 32px;
+}
+ .navbar-stisla .nav-link.nav-link-user {
+	 color: #fff;
+	 padding-top: 4px;
+	 padding-bottom: 4px;
+	 font-weight: 600;
+}
+ .navbar-stisla .nav-link.nav-link-user img {
+	 width: 30px;
+}
+ .navbar-stisla .nav-link.nav-link-img {
+	 padding-top: 4px;
+	 padding-bottom: 4px;
+	 border-radius: 50%;
+	 overflow: hidden;
+}
+ .navbar-stisla .nav-link.nav-link-img .flag-icon {
+	 border-radius: 50%;
+	 line-height: 18px;
+	 height: 22px;
+	 width: 22px;
+	 background-size: cover;
+}
+ .remove-caret:after {
+	 display: none;
+}
+ .navbar-stisla .nav-link:hover {
+	 color: #fff;
+}
+ .navbar-stisla .nav-link.disabled {
+	 color: #fff;
+	 opacity: 0.6;
+}
+ .nav-collapse {
+	 display: flex;
+}
+ @media only screen and (max-width: 600px) ) {
+	 body.search-show .navbar-stisla .form-inline .search-element {
+		 display: block;
+	}
+	 .navbar-stisla .form-inline .search-element {
+		 position: absolute;
+		 top: 10px;
+		 left: 10px;
+		 right: 10px;
+		 z-index: 892;
+		 display: none;
+	}
+	 .navbar-stisla .form-inline .search-element .form-control {
+		 float: left;
+		 border-radius: 3px 0 0 3px;
+		 width: calc(100% - 43px) !important;
+	}
+	 .navbar-stisla .form-inline .search-element .btn {
+		 margin-top: 1px;
+		 border-radius: 0 3px 3px 0;
+	}
+	 .navbar-stisla .form-inline .search-result {
+		 width: 100%;
+	}
+	 .navbar-stisla .form-inline .search-backdrop {
+		 display: none;
+	}
+	 .navbar-stisla .nav-link.nav-link-lg div {
+		 display: none;
+	}
+}
+ @media only screen and (min-width: 600px) {
+	 .navbar-stisla .form-inline .search-element {
+		 display: block;
+	}
+}
+ @media only screen and (min-width: 768px) {
+	 .collapse {
+		 position: relative;
+	}
+	 .collapse .navbar-stisla-nav {
+		 position: absolute;
+	}
+}
+ @media (max-width: 1024px) {
+	 .nav-collapse {
+		 position: relative;
+	}
+	 .nav-collapse .navbar-stisla-nav {
+		 position: absolute;
+		 top: 40px;
+		 left: 0;
+		 width: 200px;
+		 display: none;
+	}
+	 .nav-collapse .navbar-stisla-nav.show {
+		 display: block;
+	}
+	 .nav-collapse .navbar-stisla-nav .nav-item:first-child {
+		 border-radius: 3px 3px 0 0;
+	}
+	 .nav-collapse .navbar-stisla-nav .nav-item:last-child {
+		 border-radius: 0 0 3px 3px;
+	}
+	 .nav-collapse .navbar-stisla-nav .nav-item .nav-link {
+		 background-color: #fff;
+		 color: color(font);
+	}
+	 .nav-collapse .navbar-stisla-nav .nav-item .nav-link:hover {
+		 background-color: color_lighten(light, 7.6%);
+		 color: color(primary);
+	}
+	 .nav-collapse .navbar-stisla-nav .nav-item:focus > a, .nav-collapse .navbar-stisla-nav .nav-item.active > a {
+		 background-color: color(primary);
+		 color: #fff;
+	}
+	
+	 .navbar-stisla .dropdown-menu {
+		 position: absolute;
+	}
+	 .navbar-stisla .navbar-stisla-nav {
+		 flex-direction: row;
+	}
+	 .navbar-stisla-expand-lg .navbar-stisla-nav .dropdown-menu-right {
+		 right: 0;
+		 left: auto;
+	}
+}
+ 
+</style>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+ </head>
+
+  <body>
+  <style>
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+.navbar {
+  align-items: stretch;
+  min-height: 0.5rem;
+  background: transparent;
+  color: rgba(35, 46, 60, 0.7);
+}
+.navbar {
+  align-items: stretch;
+  min-height: 0.5rem;
+  background: transparent;
+  color: rgba(35, 46, 60, 0.7); }
+  .navbar-collapse .navbar {
+    flex-grow: 1; }
+  .navbar.collapsing {
+    min-height: 0; }
+  .navbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    -webkit-transition: .3s background;
+    transition: .3s background; }
+  .navbar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #a0a6ae; }
+  .navbar::-webkit-scrollbar-track {
+    background: #e7eaef; }
+  .navbar::-webkit-scrollbar-corner {
+    background: transparent; }
+  .navbar:hover::-webkit-scrollbar-thumb {
+    background: #a0a6ae; }
+  .navbar .text-muted {
+    color: rgba(35, 46, 60, 0.7) !important; }
+  .navbar .navbar-brand {
+    color: #232e3c; }
+    .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+      color: #232e3c;
+      opacity: .8; }
+  .navbar .navbar-nav .nav-link {
+    color: rgba(35, 46, 60, 0.7); }
+    .navbar .navbar-nav .nav-link:hover, .navbar .navbar-nav .nav-link:focus {
+      color: #232e3c; }
+    .navbar .navbar-nav .nav-link.disabled {
+      color: rgba(35, 46, 60, 0.3); }
+  .navbar .navbar-nav .show > .nav-link,
+  .navbar .navbar-nav .active > .nav-link,
+  .navbar .navbar-nav .nav-link.show,
+  .navbar .navbar-nav .nav-link.active {
+    color: #232e3c; }
+  .navbar .navbar-toggler {
+    color: #232e3c;
+    border-color: transparent; }
+  .navbar .navbar-text {
+    color: rgba(35, 46, 60, 0.7); }
+    .navbar .navbar-text a,
+    .navbar .navbar-text a:hover,
+    .navbar .navbar-text a:focus {
+      color: rgba(35, 46, 60, 0.7); }
+  @media not print {
+    .theme-dark .navbar {
+      background: #232e3c;
+      color: rgba(255, 255, 255, 0.7); }
+      .theme-dark .navbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        -webkit-transition: .3s background;
+        transition: .3s background; }
+      .theme-dark .navbar::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #a0a6ae; }
+      .theme-dark .navbar::-webkit-scrollbar-track {
+        background: #e7eaef; }
+      .theme-dark .navbar::-webkit-scrollbar-corner {
+        background: transparent; }
+      .theme-dark .navbar:hover::-webkit-scrollbar-thumb {
+        background: #a0a6ae; }
+      .theme-dark .navbar .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important; }
+      .theme-dark .navbar .navbar-brand {
+        color: #ffffff; }
+        .theme-dark .navbar .navbar-brand:hover, .theme-dark .navbar .navbar-brand:focus {
+          color: #ffffff;
+          opacity: .8; }
+      .theme-dark .navbar .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.7); }
+        .theme-dark .navbar .navbar-nav .nav-link:hover, .theme-dark .navbar .navbar-nav .nav-link:focus {
+          color: #ffffff; }
+        .theme-dark .navbar .navbar-nav .nav-link.disabled {
+          color: rgba(255, 255, 255, 0.3); }
+      .theme-dark .navbar .navbar-nav .show > .nav-link,
+      .theme-dark .navbar .navbar-nav .active > .nav-link,
+      .theme-dark .navbar .navbar-nav .nav-link.show,
+      .theme-dark .navbar .navbar-nav .nav-link.active {
+        color: #ffffff; }
+      .theme-dark .navbar .navbar-toggler {
+        color: #ffffff;
+        border-color: transparent; }
+      .theme-dark .navbar .navbar-text {
+        color: rgba(255, 255, 255, 0.7); }
+        .theme-dark .navbar .navbar-text a,
+        .theme-dark .navbar .navbar-text a:hover,
+        .theme-dark .navbar .navbar-text a:focus {
+          color: rgba(255, 255, 255, 0.7); }
+      .theme-dark .navbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        -webkit-transition: .3s background;
+        transition: .3s background; }
+      .theme-dark .navbar::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: transparent; }
+      .theme-dark .navbar::-webkit-scrollbar-track {
+        background: transparent; }
+      .theme-dark .navbar::-webkit-scrollbar-corner {
+        background: transparent; }
+      .theme-dark .navbar:hover::-webkit-scrollbar-thumb {
+        background: #4f5863; }
+      .theme-dark .navbar .input-icon-addon {
+        color: rgba(244, 246, 250, 0.64); }
+      .theme-dark .navbar .form-control {
+        border-color: transparent;
+        background-color: rgba(0, 0, 0, 0.1); }
+        .theme-dark .navbar .form-control::-webkit-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark .navbar .form-control::-moz-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark .navbar .form-control:-ms-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark .navbar .form-control::-ms-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark .navbar .form-control::placeholder {
+          color: rgba(244, 246, 250, 0.64); } }
+  @media not print and (prefers-color-scheme: dark) {
+    .theme-dark-auto .navbar {
+      background: #232e3c;
+      color: rgba(255, 255, 255, 0.7); }
+      .theme-dark-auto .navbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        -webkit-transition: .3s background;
+        transition: .3s background; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #a0a6ae; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-track {
+        background: #e7eaef; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-corner {
+        background: transparent; }
+      .theme-dark-auto .navbar:hover::-webkit-scrollbar-thumb {
+        background: #a0a6ae; }
+      .theme-dark-auto .navbar .text-muted {
+        color: rgba(255, 255, 255, 0.7) !important; }
+      .theme-dark-auto .navbar .navbar-brand {
+        color: #ffffff; }
+        .theme-dark-auto .navbar .navbar-brand:hover, .theme-dark-auto .navbar .navbar-brand:focus {
+          color: #ffffff;
+          opacity: .8; }
+      .theme-dark-auto .navbar .navbar-nav .nav-link {
+        color: rgba(255, 255, 255, 0.7); }
+        .theme-dark-auto .navbar .navbar-nav .nav-link:hover, .theme-dark-auto .navbar .navbar-nav .nav-link:focus {
+          color: #ffffff; }
+        .theme-dark-auto .navbar .navbar-nav .nav-link.disabled {
+          color: rgba(255, 255, 255, 0.3); }
+      .theme-dark-auto .navbar .navbar-nav .show > .nav-link,
+      .theme-dark-auto .navbar .navbar-nav .active > .nav-link,
+      .theme-dark-auto .navbar .navbar-nav .nav-link.show,
+      .theme-dark-auto .navbar .navbar-nav .nav-link.active {
+        color: #ffffff; }
+      .theme-dark-auto .navbar .navbar-toggler {
+        color: #ffffff;
+        border-color: transparent; }
+      .theme-dark-auto .navbar .navbar-text {
+        color: rgba(255, 255, 255, 0.7); }
+        .theme-dark-auto .navbar .navbar-text a,
+        .theme-dark-auto .navbar .navbar-text a:hover,
+        .theme-dark-auto .navbar .navbar-text a:focus {
+          color: rgba(255, 255, 255, 0.7); }
+      .theme-dark-auto .navbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        -webkit-transition: .3s background;
+        transition: .3s background; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: transparent; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-track {
+        background: transparent; }
+      .theme-dark-auto .navbar::-webkit-scrollbar-corner {
+        background: transparent; }
+      .theme-dark-auto .navbar:hover::-webkit-scrollbar-thumb {
+        background: #4f5863; }
+      .theme-dark-auto .navbar .input-icon-addon {
+        color: rgba(244, 246, 250, 0.64); }
+      .theme-dark-auto .navbar .form-control {
+        border-color: transparent;
+        background-color: rgba(0, 0, 0, 0.1); }
+        .theme-dark-auto .navbar .form-control::-webkit-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark-auto .navbar .form-control::-moz-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark-auto .navbar .form-control:-ms-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark-auto .navbar .form-control::-ms-input-placeholder {
+          color: rgba(244, 246, 250, 0.64); }
+        .theme-dark-auto .navbar .form-control::placeholder {
+          color: rgba(244, 246, 250, 0.64); } }
+  .navbar .dropdown-menu {
+    position: absolute;
+    z-index: 1030; }
+  .navbar .navbar-nav {
+    min-height: 3rem; }
+    .navbar .navbar-nav .nav-link {
+      position: relative;
+      min-width: 2rem;
+      min-height: 2rem;
+      justify-content: center;
+      border-radius: 4px; }
+      .navbar .navbar-nav .nav-link .badge {
+        position: absolute;
+        top: .375rem;
+        right: .375rem;
+        transform: translate(50%, -50%); }
+
+.navbar-nav {
+  margin: 0;
+  padding: 0; }
+
+@media (max-width: 575.98px) {
+  .navbar-expand-sm .navbar-collapse {
+    flex-direction: column; }
+    .navbar-expand-sm .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-expand-sm .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-expand-sm .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-expand-sm .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-expand-sm .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-expand-sm .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-expand-sm .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; } }
+
+@media (min-width: 576px) {
+  .navbar-expand-sm .navbar-collapse {
+    width: auto;
+    flex: 1 1 auto; }
+  .navbar-expand-sm.navbar-dark .nav-item.active .nav-link,
+  .navbar-expand-sm .navbar-dark .nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .navbar-expand-sm.navbar-light .nav-item.active,
+  .navbar-expand-sm .navbar-light .nav-item.active {
+    position: relative; }
+    .navbar-expand-sm.navbar-light .nav-item.active:after,
+    .navbar-expand-sm .navbar-light .nav-item.active:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.25rem;
+      border: 0 solid #009688;
+      border-bottom-width: 2px; }
+  .navbar-expand-sm.navbar-light.navbar-vertical,
+  .navbar-expand-sm .navbar-light.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+    .navbar-expand-sm.navbar-light.navbar-vertical.navbar-right,
+    .navbar-expand-sm .navbar-light.navbar-vertical.navbar-right {
+      box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand-sm.navbar-vertical ~ .navbar,
+  .navbar-expand-sm.navbar-vertical ~ .content {
+    -webkit-margin-start: 15rem;
+            margin-inline-start: 15rem; } }
+
+@media (max-width: 767.98px) {
+  .navbar-expand-md .navbar-collapse {
+    flex-direction: column; }
+    .navbar-expand-md .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-expand-md .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-expand-md .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-expand-md .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-expand-md .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-expand-md .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-expand-md .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; } }
+
+@media (min-width: 768px) {
+  .navbar-expand-md .navbar-collapse {
+    width: auto;
+    flex: 1 1 auto; }
+  .navbar-expand-md.navbar-dark .nav-item.active .nav-link,
+  .navbar-expand-md .navbar-dark .nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .navbar-expand-md.navbar-light .nav-item.active,
+  .navbar-expand-md .navbar-light .nav-item.active {
+    position: relative; }
+    .navbar-expand-md.navbar-light .nav-item.active:after,
+    .navbar-expand-md .navbar-light .nav-item.active:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.25rem;
+      border: 0 solid #009688;
+      border-bottom-width: 2px; }
+  .navbar-expand-md.navbar-light.navbar-vertical,
+  .navbar-expand-md .navbar-light.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+    .navbar-expand-md.navbar-light.navbar-vertical.navbar-right,
+    .navbar-expand-md .navbar-light.navbar-vertical.navbar-right {
+      box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand-md.navbar-vertical ~ .navbar,
+  .navbar-expand-md.navbar-vertical ~ .content {
+    -webkit-margin-start: 15rem;
+            margin-inline-start: 15rem; } }
+
+@media (max-width: 991.98px) {
+  .navbar-expand-lg .navbar-collapse {
+    flex-direction: column; }
+    .navbar-expand-lg .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-expand-lg .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-expand-lg .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-expand-lg .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-expand-lg .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-expand-lg .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-expand-lg .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; } }
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-collapse {
+    width: auto;
+    flex: 1 1 auto; }
+  .navbar-expand-lg.navbar-dark .nav-item.active .nav-link,
+  .navbar-expand-lg .navbar-dark .nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .navbar-expand-lg.navbar-light .nav-item.active,
+  .navbar-expand-lg .navbar-light .nav-item.active {
+    position: relative; }
+    .navbar-expand-lg.navbar-light .nav-item.active:after,
+    .navbar-expand-lg .navbar-light .nav-item.active:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.25rem;
+      border: 0 solid #009688;
+      border-bottom-width: 2px; }
+  .navbar-expand-lg.navbar-light.navbar-vertical,
+  .navbar-expand-lg .navbar-light.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+    .navbar-expand-lg.navbar-light.navbar-vertical.navbar-right,
+    .navbar-expand-lg .navbar-light.navbar-vertical.navbar-right {
+      box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand-lg.navbar-vertical ~ .navbar,
+  .navbar-expand-lg.navbar-vertical ~ .content {
+    -webkit-margin-start: 15rem;
+            margin-inline-start: 15rem; } }
+
+@media (max-width: 1199.98px) {
+  .navbar-expand-xl .navbar-collapse {
+    flex-direction: column; }
+    .navbar-expand-xl .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-expand-xl .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-expand-xl .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-expand-xl .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-expand-xl .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-expand-xl .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-expand-xl .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; } }
+
+@media (min-width: 1200px) {
+  .navbar-expand-xl .navbar-collapse {
+    width: auto;
+    flex: 1 1 auto; }
+  .navbar-expand-xl.navbar-dark .nav-item.active .nav-link,
+  .navbar-expand-xl .navbar-dark .nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .navbar-expand-xl.navbar-light .nav-item.active,
+  .navbar-expand-xl .navbar-light .nav-item.active {
+    position: relative; }
+    .navbar-expand-xl.navbar-light .nav-item.active:after,
+    .navbar-expand-xl .navbar-light .nav-item.active:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.25rem;
+      border: 0 solid #009688;
+      border-bottom-width: 2px; }
+  .navbar-expand-xl.navbar-light.navbar-vertical,
+  .navbar-expand-xl .navbar-light.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+    .navbar-expand-xl.navbar-light.navbar-vertical.navbar-right,
+    .navbar-expand-xl .navbar-light.navbar-vertical.navbar-right {
+      box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand-xl.navbar-vertical ~ .navbar,
+  .navbar-expand-xl.navbar-vertical ~ .content {
+    -webkit-margin-start: 15rem;
+            margin-inline-start: 15rem; } }
+
+@media (max-width: 1399.98px) {
+  .navbar-expand-xxl .navbar-collapse {
+    flex-direction: column; }
+    .navbar-expand-xxl .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-expand-xxl .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-expand-xxl .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-expand-xxl .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-expand-xxl .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-expand-xxl .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-expand-xxl .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; } }
+
+@media (min-width: 1400px) {
+  .navbar-expand-xxl .navbar-collapse {
+    width: auto;
+    flex: 1 1 auto; }
+  .navbar-expand-xxl.navbar-dark .nav-item.active .nav-link,
+  .navbar-expand-xxl .navbar-dark .nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1); }
+  .navbar-expand-xxl.navbar-light .nav-item.active,
+  .navbar-expand-xxl .navbar-light .nav-item.active {
+    position: relative; }
+    .navbar-expand-xxl.navbar-light .nav-item.active:after,
+    .navbar-expand-xxl .navbar-light .nav-item.active:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -.25rem;
+      border: 0 solid #009688;
+      border-bottom-width: 2px; }
+  .navbar-expand-xxl.navbar-light.navbar-vertical,
+  .navbar-expand-xxl .navbar-light.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+    .navbar-expand-xxl.navbar-light.navbar-vertical.navbar-right,
+    .navbar-expand-xxl .navbar-light.navbar-vertical.navbar-right {
+      box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand-xxl.navbar-vertical ~ .navbar,
+  .navbar-expand-xxl.navbar-vertical ~ .content {
+    -webkit-margin-start: 15rem;
+            margin-inline-start: 15rem; } }
+
+.navbar-expand .navbar-collapse {
+  flex-direction: column; }
+  .navbar-expand .navbar-collapse [class^="container"] {
+    flex-direction: column;
+    align-items: stretch; }
+  .navbar-expand .navbar-collapse .navbar-nav {
+    margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+    margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+    .navbar-expand .navbar-collapse .navbar-nav .nav-link {
+      padding: 0.5rem 1.5rem;
+      justify-content: flex-start; }
+  .navbar-expand .navbar-collapse .dropdown-menu-columns {
+    flex-direction: column; }
+  .navbar-expand .navbar-collapse .dropdown-menu {
+    padding: 0;
+    background: transparent;
+    position: static;
+    color: inherit;
+    box-shadow: none;
+    border: none;
+    min-width: 0;
+    margin: 0; }
+    .navbar-expand .navbar-collapse .dropdown-menu .dropdown-item {
+      min-width: 0;
+      display: flex;
+      width: auto;
+      padding-left: 3.25rem; }
+    .navbar-expand .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+      padding-left: 4.75rem; }
+    .navbar-expand .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+      padding-left: 6.25rem; }
+  .navbar-expand .navbar-collapse .dropdown-toggle:after {
+    -webkit-margin-start: auto;
+            margin-inline-start: auto; }
+  .navbar-expand .navbar-collapse .nav-item.active:after {
+    border-bottom-width: 0;
+    border-left-width: 2px;
+    right: auto;
+    top: 0;
+    bottom: 0; }
+
+.navbar-expand .navbar-collapse {
+  width: auto;
+  flex: 1 1 auto; }
+
+.navbar-expand.navbar-dark .nav-item.active .nav-link,
+.navbar-expand .navbar-dark .nav-item.active .nav-link {
+  background-color: rgba(0, 0, 0, 0.1); }
+
+.navbar-expand.navbar-light .nav-item.active,
+.navbar-expand .navbar-light .nav-item.active {
+  position: relative; }
+  .navbar-expand.navbar-light .nav-item.active:after,
+  .navbar-expand .navbar-light .nav-item.active:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -.25rem;
+    border: 0 solid #009688;
+    border-bottom-width: 2px; }
+
+.navbar-expand.navbar-light.navbar-vertical,
+.navbar-expand .navbar-light.navbar-vertical {
+  box-shadow: inset -1px 0 0 0 rgba(101, 109, 119, 0.16); }
+  .navbar-expand.navbar-light.navbar-vertical.navbar-right,
+  .navbar-expand .navbar-light.navbar-vertical.navbar-right {
+    box-shadow: inset 1px 0 0 0 rgba(101, 109, 119, 0.16); }
+
+.navbar-expand.navbar-vertical ~ .navbar,
+.navbar-expand.navbar-vertical ~ .content {
+  -webkit-margin-start: 15rem;
+          margin-inline-start: 15rem; }
+
+/**
+Navbar brand
+ */
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  margin: 0; }
+
+.navbar-brand-image {
+  display: block;
+  height: 2rem;
+  width: auto; }
+
+/**
+Navbar toggler
+ */
+.navbar-toggler {
+  border: 0;
+  width: 2rem;
+  height: 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.navbar-toggler-icon {
+  height: 2px;
+  width: 1.25em;
+  background: currentColor;
+  border-radius: 10px;
+  transition: 0.2s 0.2s top, 0.2s 0.2s bottom, 0.2s transform, 0s 0.2s opacity;
+  position: relative; }
+  .navbar-toggler-icon:before, .navbar-toggler-icon:after {
+    content: '';
+    display: block;
+    height: inherit;
+    width: inherit;
+    border-radius: inherit;
+    background: inherit;
+    position: absolute;
+    left: 0;
+    transition: inherit; }
+  .navbar-toggler-icon:before {
+    top: -.45em; }
+  .navbar-toggler-icon:after {
+    bottom: -.45em; }
+  .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    transform: rotate(45deg);
+    transition: .3s top, .3s bottom, .3s .3s transform, 0s .3s opacity; }
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:before {
+      top: 0;
+      transform: rotate(-90deg); }
+    .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:after {
+      bottom: 0;
+      opacity: 0; }
+
+/**
+Navbar light
+ */
+.navbar-light {
+  box-shadow: inset 0 -1px 0 0 rgba(101, 109, 119, 0.16);
+  background-color: #ffffff; }
+
+/**
+Navbar dark
+ */
+.navbar-dark {
+  background: #232e3c;
+  color: rgba(255, 255, 255, 0.7); }
+  .navbar-dark::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    -webkit-transition: .3s background;
+    transition: .3s background; }
+  .navbar-dark::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: #a0a6ae; }
+  .navbar-dark::-webkit-scrollbar-track {
+    background: #e7eaef; }
+  .navbar-dark::-webkit-scrollbar-corner {
+    background: transparent; }
+  .navbar-dark:hover::-webkit-scrollbar-thumb {
+    background: #a0a6ae; }
+  .navbar-dark .text-muted {
+    color: rgba(255, 255, 255, 0.7) !important; }
+  .navbar-dark .navbar-brand {
+    color: #ffffff; }
+    .navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
+      color: #ffffff;
+      opacity: .8; }
+  .navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.7); }
+    .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+      color: #ffffff; }
+    .navbar-dark .navbar-nav .nav-link.disabled {
+      color: rgba(255, 255, 255, 0.3); }
+  .navbar-dark .navbar-nav .show > .nav-link,
+  .navbar-dark .navbar-nav .active > .nav-link,
+  .navbar-dark .navbar-nav .nav-link.show,
+  .navbar-dark .navbar-nav .nav-link.active {
+    color: #ffffff; }
+  .navbar-dark .navbar-toggler {
+    color: #ffffff;
+    border-color: transparent; }
+  .navbar-dark .navbar-text {
+    color: rgba(255, 255, 255, 0.7); }
+    .navbar-dark .navbar-text a,
+    .navbar-dark .navbar-text a:hover,
+    .navbar-dark .navbar-text a:focus {
+      color: rgba(255, 255, 255, 0.7); }
+  .navbar-dark::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    -webkit-transition: .3s background;
+    transition: .3s background; }
+  .navbar-dark::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: transparent; }
+  .navbar-dark::-webkit-scrollbar-track {
+    background: transparent; }
+  .navbar-dark::-webkit-scrollbar-corner {
+    background: transparent; }
+  .navbar-dark:hover::-webkit-scrollbar-thumb {
+    background: #4f5863; }
+  .navbar-dark .input-icon-addon {
+    color: rgba(244, 246, 250, 0.64); }
+  .navbar-dark .form-control {
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, 0.1); }
+    .navbar-dark .form-control::-webkit-input-placeholder {
+      color: rgba(244, 246, 250, 0.64); }
+    .navbar-dark .form-control::-moz-placeholder {
+      color: rgba(244, 246, 250, 0.64); }
+    .navbar-dark .form-control:-ms-input-placeholder {
+      color: rgba(244, 246, 250, 0.64); }
+    .navbar-dark .form-control::-ms-input-placeholder {
+      color: rgba(244, 246, 250, 0.64); }
+    .navbar-dark .form-control::placeholder {
+      color: rgba(244, 246, 250, 0.64); }
+
+/**
+Navbar nav
+ */
+.navbar-nav {
+  align-items: stretch; }
+  .navbar-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; }
+
+/**
+Navbar side
+ */
+.navbar-side {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around; }
+
+/**
+Navbar vertical
+ */
+@media (min-width: 576px) {
+  .navbar-vertical.navbar-expand-sm {
+    width: 15rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1030;
+    align-items: flex-start;
+    transition: .3s transform;
+    overflow-x: auto; }
+    .navbar-vertical.navbar-expand-sm.navbar-right {
+      left: auto;
+      right: 0; }
+    .navbar-vertical.navbar-expand-sm .navbar-brand {
+      padding: 0.75rem 0;
+      justify-content: center; }
+    .navbar-vertical.navbar-expand-sm .navbar-collapse {
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand-sm .navbar-nav {
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: auto; }
+      .navbar-vertical.navbar-expand-sm .navbar-nav .nav-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem; }
+    .navbar-vertical.navbar-expand-sm > [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 100%;
+      justify-content: flex-start; }
+    .navbar-vertical.navbar-expand-sm ~ .page {
+      padding-left: 15rem; }
+      .navbar-vertical.navbar-expand-sm ~ .page [class^="container"] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem; }
+    .navbar-vertical.navbar-expand-sm.navbar-right ~ .page {
+      padding-left: 0;
+      padding-right: 15rem; }
+    .navbar-vertical.navbar-expand-sm .navbar-collapse {
+      flex-direction: column; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse [class^="container"] {
+        flex-direction: column;
+        align-items: stretch; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse .navbar-nav {
+        margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+        margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+        .navbar-vertical.navbar-expand-sm .navbar-collapse .navbar-nav .nav-link {
+          padding: 0.5rem 1.5rem;
+          justify-content: flex-start; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-menu-columns {
+        flex-direction: column; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-menu {
+        padding: 0;
+        background: transparent;
+        position: static;
+        color: inherit;
+        box-shadow: none;
+        border: none;
+        min-width: 0;
+        margin: 0; }
+        .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-item {
+          min-width: 0;
+          display: flex;
+          width: auto;
+          padding-left: 3.25rem; }
+        .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 4.75rem; }
+        .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 6.25rem; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse .dropdown-toggle:after {
+        -webkit-margin-start: auto;
+                margin-inline-start: auto; }
+      .navbar-vertical.navbar-expand-sm .navbar-collapse .nav-item.active:after {
+        border-bottom-width: 0;
+        border-left-width: 2px;
+        right: auto;
+        top: 0;
+        bottom: 0; } }
+
+@media (min-width: 768px) {
+  .navbar-vertical.navbar-expand-md {
+    width: 15rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1030;
+    align-items: flex-start;
+    transition: .3s transform;
+    overflow-x: auto; }
+    .navbar-vertical.navbar-expand-md.navbar-right {
+      left: auto;
+      right: 0; }
+    .navbar-vertical.navbar-expand-md .navbar-brand {
+      padding: 0.75rem 0;
+      justify-content: center; }
+    .navbar-vertical.navbar-expand-md .navbar-collapse {
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand-md .navbar-nav {
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: auto; }
+      .navbar-vertical.navbar-expand-md .navbar-nav .nav-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem; }
+    .navbar-vertical.navbar-expand-md > [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 100%;
+      justify-content: flex-start; }
+    .navbar-vertical.navbar-expand-md ~ .page {
+      padding-left: 15rem; }
+      .navbar-vertical.navbar-expand-md ~ .page [class^="container"] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem; }
+    .navbar-vertical.navbar-expand-md.navbar-right ~ .page {
+      padding-left: 0;
+      padding-right: 15rem; }
+    .navbar-vertical.navbar-expand-md .navbar-collapse {
+      flex-direction: column; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse [class^="container"] {
+        flex-direction: column;
+        align-items: stretch; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse .navbar-nav {
+        margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+        margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+        .navbar-vertical.navbar-expand-md .navbar-collapse .navbar-nav .nav-link {
+          padding: 0.5rem 1.5rem;
+          justify-content: flex-start; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-menu-columns {
+        flex-direction: column; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-menu {
+        padding: 0;
+        background: transparent;
+        position: static;
+        color: inherit;
+        box-shadow: none;
+        border: none;
+        min-width: 0;
+        margin: 0; }
+        .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-item {
+          min-width: 0;
+          display: flex;
+          width: auto;
+          padding-left: 3.25rem; }
+        .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 4.75rem; }
+        .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 6.25rem; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse .dropdown-toggle:after {
+        -webkit-margin-start: auto;
+                margin-inline-start: auto; }
+      .navbar-vertical.navbar-expand-md .navbar-collapse .nav-item.active:after {
+        border-bottom-width: 0;
+        border-left-width: 2px;
+        right: auto;
+        top: 0;
+        bottom: 0; } }
+
+@media (min-width: 992px) {
+  .navbar-vertical.navbar-expand-lg {
+    width: 15rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1030;
+    align-items: flex-start;
+    transition: .3s transform;
+    overflow-x: auto; }
+    .navbar-vertical.navbar-expand-lg.navbar-right {
+      left: auto;
+      right: 0; }
+    .navbar-vertical.navbar-expand-lg .navbar-brand {
+      padding: 0.75rem 0;
+      justify-content: center; }
+    .navbar-vertical.navbar-expand-lg .navbar-collapse {
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand-lg .navbar-nav {
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: auto; }
+      .navbar-vertical.navbar-expand-lg .navbar-nav .nav-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem; }
+    .navbar-vertical.navbar-expand-lg > [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 100%;
+      justify-content: flex-start; }
+    .navbar-vertical.navbar-expand-lg ~ .page {
+      padding-left: 15rem; }
+      .navbar-vertical.navbar-expand-lg ~ .page [class^="container"] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem; }
+    .navbar-vertical.navbar-expand-lg.navbar-right ~ .page {
+      padding-left: 0;
+      padding-right: 15rem; }
+    .navbar-vertical.navbar-expand-lg .navbar-collapse {
+      flex-direction: column; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse [class^="container"] {
+        flex-direction: column;
+        align-items: stretch; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse .navbar-nav {
+        margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+        margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+        .navbar-vertical.navbar-expand-lg .navbar-collapse .navbar-nav .nav-link {
+          padding: 0.5rem 1.5rem;
+          justify-content: flex-start; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu-columns {
+        flex-direction: column; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu {
+        padding: 0;
+        background: transparent;
+        position: static;
+        color: inherit;
+        box-shadow: none;
+        border: none;
+        min-width: 0;
+        margin: 0; }
+        .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-item {
+          min-width: 0;
+          display: flex;
+          width: auto;
+          padding-left: 3.25rem; }
+        .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 4.75rem; }
+        .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 6.25rem; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse .dropdown-toggle:after {
+        -webkit-margin-start: auto;
+                margin-inline-start: auto; }
+      .navbar-vertical.navbar-expand-lg .navbar-collapse .nav-item.active:after {
+        border-bottom-width: 0;
+        border-left-width: 2px;
+        right: auto;
+        top: 0;
+        bottom: 0; } }
+
+@media (min-width: 1200px) {
+  .navbar-vertical.navbar-expand-xl {
+    width: 15rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1030;
+    align-items: flex-start;
+    transition: .3s transform;
+    overflow-x: auto; }
+    .navbar-vertical.navbar-expand-xl.navbar-right {
+      left: auto;
+      right: 0; }
+    .navbar-vertical.navbar-expand-xl .navbar-brand {
+      padding: 0.75rem 0;
+      justify-content: center; }
+    .navbar-vertical.navbar-expand-xl .navbar-collapse {
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand-xl .navbar-nav {
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: auto; }
+      .navbar-vertical.navbar-expand-xl .navbar-nav .nav-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem; }
+    .navbar-vertical.navbar-expand-xl > [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 100%;
+      justify-content: flex-start; }
+    .navbar-vertical.navbar-expand-xl ~ .page {
+      padding-left: 15rem; }
+      .navbar-vertical.navbar-expand-xl ~ .page [class^="container"] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem; }
+    .navbar-vertical.navbar-expand-xl.navbar-right ~ .page {
+      padding-left: 0;
+      padding-right: 15rem; }
+    .navbar-vertical.navbar-expand-xl .navbar-collapse {
+      flex-direction: column; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse [class^="container"] {
+        flex-direction: column;
+        align-items: stretch; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse .navbar-nav {
+        margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+        margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+        .navbar-vertical.navbar-expand-xl .navbar-collapse .navbar-nav .nav-link {
+          padding: 0.5rem 1.5rem;
+          justify-content: flex-start; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-menu-columns {
+        flex-direction: column; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-menu {
+        padding: 0;
+        background: transparent;
+        position: static;
+        color: inherit;
+        box-shadow: none;
+        border: none;
+        min-width: 0;
+        margin: 0; }
+        .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-item {
+          min-width: 0;
+          display: flex;
+          width: auto;
+          padding-left: 3.25rem; }
+        .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 4.75rem; }
+        .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 6.25rem; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse .dropdown-toggle:after {
+        -webkit-margin-start: auto;
+                margin-inline-start: auto; }
+      .navbar-vertical.navbar-expand-xl .navbar-collapse .nav-item.active:after {
+        border-bottom-width: 0;
+        border-left-width: 2px;
+        right: auto;
+        top: 0;
+        bottom: 0; } }
+
+@media (min-width: 1400px) {
+  .navbar-vertical.navbar-expand-xxl {
+    width: 15rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1030;
+    align-items: flex-start;
+    transition: .3s transform;
+    overflow-x: auto; }
+    .navbar-vertical.navbar-expand-xxl.navbar-right {
+      left: auto;
+      right: 0; }
+    .navbar-vertical.navbar-expand-xxl .navbar-brand {
+      padding: 0.75rem 0;
+      justify-content: center; }
+    .navbar-vertical.navbar-expand-xxl .navbar-collapse {
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand-xxl .navbar-nav {
+      flex-direction: column;
+      flex-grow: 1;
+      min-height: auto; }
+      .navbar-vertical.navbar-expand-xxl .navbar-nav .nav-link {
+        padding-top: .5rem;
+        padding-bottom: .5rem; }
+    .navbar-vertical.navbar-expand-xxl > [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+      min-height: 100%;
+      justify-content: flex-start; }
+    .navbar-vertical.navbar-expand-xxl ~ .page {
+      padding-left: 15rem; }
+      .navbar-vertical.navbar-expand-xxl ~ .page [class^="container"] {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem; }
+    .navbar-vertical.navbar-expand-xxl.navbar-right ~ .page {
+      padding-left: 0;
+      padding-right: 15rem; }
+    .navbar-vertical.navbar-expand-xxl .navbar-collapse {
+      flex-direction: column; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse [class^="container"] {
+        flex-direction: column;
+        align-items: stretch; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse .navbar-nav {
+        margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+        margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+        .navbar-vertical.navbar-expand-xxl .navbar-collapse .navbar-nav .nav-link {
+          padding: 0.5rem 1.5rem;
+          justify-content: flex-start; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-menu-columns {
+        flex-direction: column; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-menu {
+        padding: 0;
+        background: transparent;
+        position: static;
+        color: inherit;
+        box-shadow: none;
+        border: none;
+        min-width: 0;
+        margin: 0; }
+        .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-item {
+          min-width: 0;
+          display: flex;
+          width: auto;
+          padding-left: 3.25rem; }
+        .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 4.75rem; }
+        .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+          padding-left: 6.25rem; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse .dropdown-toggle:after {
+        -webkit-margin-start: auto;
+                margin-inline-start: auto; }
+      .navbar-vertical.navbar-expand-xxl .navbar-collapse .nav-item.active:after {
+        border-bottom-width: 0;
+        border-left-width: 2px;
+        right: auto;
+        top: 0;
+        bottom: 0; } }
+
+.navbar-vertical.navbar-expand {
+  width: 15rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1030;
+  align-items: flex-start;
+  transition: .3s transform;
+  overflow-x: auto; }
+  .navbar-vertical.navbar-expand.navbar-right {
+    left: auto;
+    right: 0; }
+  .navbar-vertical.navbar-expand .navbar-brand {
+    padding: 0.75rem 0;
+    justify-content: center; }
+  .navbar-vertical.navbar-expand .navbar-collapse {
+    align-items: stretch; }
+  .navbar-vertical.navbar-expand .navbar-nav {
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: auto; }
+    .navbar-vertical.navbar-expand .navbar-nav .nav-link {
+      padding-top: .5rem;
+      padding-bottom: .5rem; }
+  .navbar-vertical.navbar-expand > [class^="container"] {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: 100%;
+    justify-content: flex-start; }
+  .navbar-vertical.navbar-expand ~ .page {
+    padding-left: 15rem; }
+    .navbar-vertical.navbar-expand ~ .page [class^="container"] {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem; }
+  .navbar-vertical.navbar-expand.navbar-right ~ .page {
+    padding-left: 0;
+    padding-right: 15rem; }
+  .navbar-vertical.navbar-expand .navbar-collapse {
+    flex-direction: column; }
+    .navbar-vertical.navbar-expand .navbar-collapse [class^="container"] {
+      flex-direction: column;
+      align-items: stretch; }
+    .navbar-vertical.navbar-expand .navbar-collapse .navbar-nav {
+      margin-left: calc( -1 * var(--tblr-gutter-x, 1.5rem));
+      margin-right: calc( -1 * var(--tblr-gutter-x, 1.5rem)); }
+      .navbar-vertical.navbar-expand .navbar-collapse .navbar-nav .nav-link {
+        padding: 0.5rem 1.5rem;
+        justify-content: flex-start; }
+    .navbar-vertical.navbar-expand .navbar-collapse .dropdown-menu-columns {
+      flex-direction: column; }
+    .navbar-vertical.navbar-expand .navbar-collapse .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0; }
+      .navbar-vertical.navbar-expand .navbar-collapse .dropdown-menu .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: 3.25rem; }
+      .navbar-vertical.navbar-expand .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 4.75rem; }
+      .navbar-vertical.navbar-expand .navbar-collapse .dropdown-menu .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: 6.25rem; }
+    .navbar-vertical.navbar-expand .navbar-collapse .dropdown-toggle:after {
+      -webkit-margin-start: auto;
+              margin-inline-start: auto; }
+    .navbar-vertical.navbar-expand .navbar-collapse .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0; }
+
+.navbar-overlap:after {
+  content: '';
+  height: 9rem;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: inherit;
+  z-index: -1;
+  box-shadow: inherit; }
+
+.sidebar{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 78px;
+  background: #fff;
+  padding: 6px 14px;
+  z-index: 88;
+  transition: all 0.5s ease;
+  box-shadow: 10px -1px 8px -7px rgba(171,171,171,0.75);
+-webkit-box-shadow: 10px -1px 8px -7px rgba(171,171,171,0.75);
+-moz-box-shadow: 10px -1px 8px -7px rgba(171,171,171,0.75);
+}
+.sidebar.open{
+  width: 250px;
+  left: 0 !important;
+}
+.sidebar .logo-details{
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.sidebar .logo-details .icon{
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+.sidebar .logo-details .logo_name{
+  color: #232e3c;
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.5s ease;
+}
+.sidebar.open .logo-details .icon,
+.sidebar.open .logo-details .logo_name{
+  opacity: 1;
+}
+.sidebar .logo-details #btn{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 22px;
+  transition: all 0.4s ease;
+  font-size: 23px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.sidebar.open .logo-details #btn{
+  text-align: right;
+}
+.sidebar i{
+  color: #232e3c;
+  height: 60px;
+  min-width: 50px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 60px;
+}
+.sidebar i.bx.bx-menu-alt-right{
+ display: content;
+}.sidebar i.bx.bx-menu{
+ display: none;
+}
+.sidebar .nav-list{
+  margin-top: 20px;
+  height: 100%;
+}
+.sidebar li{
+  position: relative;
+  margin: 8px 0;
+  list-style: none;
+}
+.sidebar li .tooltip{
+  position: absolute;
+  top: -20px;
+  left: calc(100% + 15px);
+  z-index: 3;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: 0s;
+}
+.sidebar li:hover .tooltip{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.sidebar.open li .tooltip{
+  display: none;
+}
+.sidebar input{
+  font-size: 15px;
+  color: #FFF;
+  font-weight: 400;
+  outline: none;
+  height: 50px;
+  width: 100%;
+  width: 50px;
+  border: none;
+  border-radius: 12px;
+  transition: all 0.5s ease;
+  background: #1d1b31;
+}
+.sidebar.open input{
+  padding: 0 20px 0 50px;
+  width: 100%;
+}
+.sidebar .bx-search{
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 22px;
+  background: #1d1b31;
+  color: #FFF;
+}
+.sidebar.open .bx-search:hover{
+  background: #1d1b31;
+  color: #FFF;
+}
+.sidebar .bx-search:hover{
+  background: #a23c3c;
+  color: #284366;
+}
+.sidebar li a{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  background: #ffffff;
+}
+.sidebar li a:hover{
+  background: #009688;
+}
+.sidebar li a .links_name{
+  color: #232e3c;
+  font-size: 15px;
+  font-weight: 400;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+}
+.sidebar.open li a .links_name{
+  opacity: 1;
+  pointer-events: auto;
+}
+.sidebar li a:hover .links_name,
+.sidebar li a:hover i{
+  transition: all 0.5s ease;
+  color: #ffffff;
+}
+.sidebar li i{
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  border-radius: 12px;}
+.sidebar li.profile{
+
+  position: fixed;
+  height: 60px;
+  width: 78px;
+  left: -0;
+  bottom: -8px;
+  padding: 10px 14px;
+  background: #009688;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+.sidebar.open li.profile{
+  width: 250px;
+  left: 0px;
+}
+.sidebar li .profile-details{
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.sidebar li img{
+  height: 45px;
+  width: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 10px;
+}
+.sidebar li.profile .name,
+.sidebar li.profile .job{
+  font-size: 15px;
+  font-weight: 400;
+  color: #fff;
+  white-space: nowrap;
+}
+.sidebar li.profile .job{
+  font-size: 12px;
+}
+.sidebar .profile #log_out{
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: #fff;
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 0px;
+  transition: all 0.5s ease;
+}
+.sidebar.open .profile #log_out{
+  width: 50px;
+  background: none;
+}
+.home-section{
+  position: relative;
+  background: #E4E9F7;
+  min-height: 100vh;
+  top: 0;
+  left: 78px;
+  width: calc(100% - 78px);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+.sidebar.open ~ .home-section{
+  left: 250px;
+  width: calc(100% - 250px);
+}
+.home-section .text{
+  display: inline-block;
+  color: #11101d;
+  font-size: 25px;
+  font-weight: 500;
+  margin: 18px
+}
+@media (max-width: 1220px) {
+  .sidebar li .tooltip{
+    display: none;
+  }
+.sidebar li.profile{
+	left: -78px;
+}
+  
+.sidebar {
+	left: -78px !important;
+}
+  
+}
+</style>
+<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css'>
+<style>
+:root {
+  --swiper-image-ratio: 33.3%; /* ratio 16:9 = 56.25% */
+
+  --swiper-width: 50%;
+  --swiper-inactive-scale: .85; /* makes the other slide smaller */
+  
+  /* responsive settings */
+  --swiper-mobile-width: 90%;
+  --swiper-mobile-inactive-scale: .95;
+}
+
+.swiper {
+    position: relative;
+    width: 100%;
+    height: calc(var(--swiper-width) * var(--swiper-image-ratio) / 100%);
+    overflow: hidden;
+}
+
+.swiper-slide {
+  position: relative;
+  width: var(--swiper-width);
+  opacity: .5;
+  transform: scale(.84);
+  transition: all .3s ease-in-out;
+  overflow: hidden;
+  border-radius: 0.4285rem;
+}
+
+.swiper-backface-hidden .swiper-slide {
+  transform: scale(.84) translateZ(0);
+}
+        
+.swiper-slide.swiper-slide-active {  
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+.swiper-backface-hidden .swiper-slide.swiper-slide-active {
+  transform: scale(1) translateZ(0) !important;
+}
+
+.swiper-image {
+  position: relative;
+  width: 100%;
+  padding-top: var(--swiper-image-ratio);
+}
+    
+.swiper-image .image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #929ec9;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  padding: 8px;
+  width: 12px;
+  height: 12px;
+  margin-top: 0;
+  background-color: rgba(0, 0, 0, .4);
+  border-radius: 50%;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: #fff;
+  font-size: 12px;
+}
+
+.swiper-button-next {
+  transform: translate(50%, -50%);
+  right: calc((100% - var(--swiper-width)) / 2);
+}
+
+.swiper-button-prev {
+  transform: translate(-50%, -50%);
+  left: calc((100% - var(--swiper-width)) / 2);
+}
+
+@media only screen and (max-width: 768px) {
+  .swiper {
+    height: calc(var(--swiper-mobile-width) * var(--swiper-image-ratio) / 100%);
+  }
+
+  .swiper-slide {
+    width: var(--swiper-mobile-width);
+    transform: scale(var(--swiper-mobile-inactive-scale));
+  }
+  
+  .swiper-backface-hidden .swiper-slide.swiper-slide {
+    transform: scale(var(--swiper-mobile-inactive-scale)) translateZ(0);
+  }
+
+  .swiper-button-next {
+    right: calc((100% - var(--swiper-mobile-width)) / 2);
+  }
+
+  .swiper-button-prev {
+    left: calc((100% - var(--swiper-mobile-width)) / 2);
+  }
+}
+</style>
+<style>
+.bg-primary {
+    background: linear-gradient(310deg, #17ad37 0%, #98ec2d 100%);
+    color: rgba(255, 255, 255, 0.7);
+}
+</style>
+<div class="sticky-top">
+	<header class="navbar navbar-expand-md navbar-dark bg-primary d-print-none sidebarEffectHeader" id="sidebarEffect" style="
+    z-index: 999999999999999999999;
+">
+		<div class="container-xl " style="
+    margin-left: 50px;
+"> 
+			<button class="navbar-toggler" type="button" id="btnSidebarWAI" style="display: block;font-size: 25px;width: 100px;text-align: left;height: 100%;padding-left:15px;">
+				<span class="bx bx-menu"></span>
+			
+			</button> 
+			<a class=" col-2 navbar-brand d-block " href="../index.html">
+      <img src="../assets/images/brand/logo/logo-2.svg" alt="Image">
+  </a>
+			
+		<div class="col mr-auto ml-auto text-center" style="font-weight: 600;font-size: 16px;color: #fff;margin-left: -60px;">
+				<nav class="navbar-stisla ">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-stisla-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          </ul>
+          <div class="search-element" style="
+    display: flex;
+">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" data-width="250">
+            <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            <div class="search-backdrop"></div>
+            <div class="search-result">
+              <div class="search-header">
+                Histories
+              </div>
+              <div class="search-item">
+                <a href="#">How to hack NASA using CSS</a>
+                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
+              </div>
+              <div class="search-item">
+                <a href="#">Kodinger.com</a>
+                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
+              </div>
+              <div class="search-item">
+                <a href="#">#Stisla</a>
+                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
+              </div>
+              <div class="search-header">
+                Result
+              </div>
+              <div class="search-item">
+                <a href="#">
+                  <img class="mr-3 rounded" width="30" src="assets/img/products/product-3-50.png" alt="product">
+                  oPhone S9 Limited Edition
+                </a>
+              </div>
+              <div class="search-item">
+                <a href="#">
+                  <img class="mr-3 rounded" width="30" src="assets/img/products/product-2-50.png" alt="product">
+                  Drone X2 New Gen-7
+                </a>
+              </div>
+              <div class="search-item">
+                <a href="#">
+                  <img class="mr-3 rounded" width="30" src="assets/img/products/product-1-50.png" alt="product">
+                  Headphone Blitz
+                </a>
+              </div>
+              <div class="search-header">
+                Projects
+              </div>
+              <div class="search-item">
+                <a href="#">
+                  <div class="search-icon bg-danger text-white mr-3">
+                    <i class="fas fa-code"></i>
+                  </div>
+                  Stisla Admin Template
+                </a>
+              </div>
+              <div class="search-item">
+                <a href="#">
+                  <div class="search-icon bg-primary text-white mr-3">
+                    <i class="fas fa-laptop"></i>
+                  </div>
+                  Create a new Homepage Design
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+</nav>								
+			</div>
+			
+			<ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
+      <a href="#" class="form-check form-switch theme-switch btn btn-ghost btn-icon rounded-circle mb-0 ">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+
+			   </a>
+        </li>
+
+      <li class="dropdown stopevent ms-2">
+        <a class="btn btn-ghost btn-icon rounded-circle" href="#!" role="button"
+          id="dropdownNotification" data-bs-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          <i class="icon-xs" data-feather="bell"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end"
+          aria-labelledby="dropdownNotification">
+          <div>
+            <div class="border-bottom px-3 pt-2 pb-3 d-flex
+              justify-content-between align-items-center">
+              <p class="mb-0 text-dark fw-medium fs-4">Notifications</p>
+              <a href="#!" class="text-muted">
+                <span>
+                  <i class="me-1 icon-xs" data-feather="settings"></i>
+                </span>
+              </a>
+            </div>
+            <div  data-simplebar style="height: 250px;">
+            <!-- List group -->
+            <ul class="list-group list-group-flush notification-list-scroll">
+              <!-- List group item -->
+              <li class="list-group-item bg-light">
+
+
+                <a href="#!" class="text-muted">
+                    <h5 class=" mb-1">Rishi Chopra</h5>
+                    <p class="mb-0">
+                      Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.
+                    </p>
+                </a>
+
+
+
+          </li>
+             <!-- List group item -->
+             <li class="list-group-item">
+
+
+              <a href="#!" class="text-muted">
+                  <h5 class=" mb-1">Neha Kannned</h5>
+                  <p class="mb-0">
+                    Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.
+                  </p>
+              </a>
+
+
+
+        </li>
+              <!-- List group item -->
+              <li class="list-group-item">
+
+
+                <a href="#!" class="text-muted">
+                    <h5 class=" mb-1">Nirmala Chauhan</h5>
+                    <p class="mb-0">
+                      Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.
+                    </p>
+                </a>
+
+
+
+          </li>
+              <!-- List group item -->
+              <li class="list-group-item">
+
+
+                    <a href="#!" class="text-muted">
+                        <h5 class=" mb-1">Sina Ray</h5>
+                        <p class="mb-0">
+                          Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.
+                        </p>
+                    </a>
+
+
+
+              </li>
+            </ul>
+            </div>
+            <div class="border-top px-3 py-2 text-center">
+              <a href="#!" class="text-inherit ">
+                View all Notifications
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <!-- List -->
+      <li class="dropdown ms-2">
+        <a class="rounded-circle" href="#!" role="button" id="dropdownUser"
+          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="avatar avatar-md avatar-indicators avatar-online">
+            <img alt="avatar" src="../assets/images/avatar/avatar-11.jpg" class="rounded-circle">
+          </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="dropdownUser">
+          <div class="px-4 pb-0 pt-2">
+
+
+            <div class="lh-1 ">
+              <h5 class="mb-1"> John E. Grainger</h5>
+              <a href="#!" class="text-inherit fs-6">View my profile</a>
+            </div>
+            <div class=" dropdown-divider mt-3 mb-2"></div>
+          </div>
+
+          <ul class="list-unstyled">
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#!">
+                <i class="me-2 icon-xxs dropdown-item-icon" data-feather="user"></i>Edit
+                Profile
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item"
+                href="#!">
+                <i class="me-2 icon-xxs dropdown-item-icon"
+                  data-feather="activity"></i>Activity Log
+              </a>
+
+
+            </li>
+
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#!">
+
+                  <i class="me-2 icon-xxs dropdown-item-icon"
+                  data-feather="settings"></i>Settings
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="../index.html">
+                <i class="me-2 icon-xxs dropdown-item-icon"
+                  data-feather="power"></i>Sign Out
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </li>
+    </ul>
+			<div class="navbar-nav flex-row order-md-last">
+			<div class="nav-item dropdown">
+ 
+					
+
+						<a href="https://localhost/beegrit.com/d/6LU636VvUMNTQWBjNHMvKGYvIrKNpCH3JOdxX8nMYTg1pMtvwNN1Q8ZOgdPkScbsHNXjgwbvDhIpbMKItBMPBq8qPf4fwrZyOnry3vdItRkzDrmN2D2CJqzWjwK1qGALwYyOTRCdmfKUWr4YKwkwI1pKX1mdb3LyfHp1v8py0WwysjFa2FaH3Q8Q8YvZyKN2DX1DhVvFaDrb3DrBjKGX8DrKGX8QW/4ptd2bXYk9BH9rKwA4tt7G5dMmIf8N52dskhrw5U23wjnWqwRd31hTSDSc7OKNfVLy5Vv8AyxBYhxVf3pGRkSJ9w44OgsKv2zMqCHy41ddJB2r2SVnE5DI1GNWzSMZZ1r8x67QQbQ1AU7g3UU3QI1jKdgy6tTICQfUK3AJSX0YJqvhFa2FaJqLy9wfVqCFa2rTI2rKw7Grw2r7Grw9r" class="nav-link  lh-1 text-reset p-0" aria-label="Open user menu"><i class="bx bx-chat" style="font-size: 18px;color: #fff;"></i>
+						</a>
+						
+						
+					</div><div class="nav-item dropdown">
+ 
+					
+<a href="https://localhost/beegrit.com/d/30ID4ykX2R5PUCyLyscEJdh0prBT0H8SqYTEnQq8mrhI6528Q4RJbNmRsPcYQwXN8EZmJzJIRYLcEDMrHLfXxCDWxNvgJ8tUAnYzL8gE1G0TPpdbLq0148MGg3V9Pmvss9QK1BTVGRAq6phCTUVzNbgkpzWWHf2Yr7JSEpQyJmbIhrFa2Fa30RYLq6ptU6pAnRYmRFaPpHfPpyLJdnQPpJdnQUC/PNb7nKhLtDdKKVMzrUbp0VdMcHyMT0CCY0NIB00EPZUECKIKwJ9tyOKLgXvVOZ5NhptrV2m09kL5dUm3UIN0wA68n6MP1ApG4U8bpkMHEnv8PMxTbLrzdkyLEA5kDHyftdLpTmfr0qrDqKXRT3vSEg9PrNpbLM4NX3NTsCAhmMdnpOFa2FadnsCyO5NKLrNFaPMLMPMMz0VB0PM0VB0KV" class="nav-link  lh-1 text-reset p-0" aria-label="Open user menu"><i class="bx bx-grid-alt" style="font-size: 18px;color: #fff;"></i>
+						</a>
+						
+						
+					</div><div class="nav-item dropdown mr-2">
+ 
+					
+<a href="#" class="nav-link  lh-1 text-reset p-0" aria-label="Open user menu"><i style="font-size: 18px;color: #fff;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(255, 255, 255, 255);transform: ;msFilter:;"><path d="M12 11.222 14.667 13l-.89-3.111L16 8l-2.667-.333L12 5l-1.333 2.667L8 8l2.223 1.889L9.333 13z"></path><path d="M19 21.723V4a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v17.723l7-4.571 7 4.571zM8 8l2.667-.333L12 5l1.333 2.667L16 8l-2.223 1.889.89 3.111L12 11.222 9.333 13l.89-3.111L8 8z"></path></svg></i>
+						</a>
+						
+						
+					</div>
+				<div class="nav-item dropdown">
+ 
+					
+
+						<a href="#" class="nav-link  lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu"><span class="avatar avatar-sm" style="">HM</span>
+						
+						</a>	<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="width: 250px;">
+		<div class="user-box">
+			<span class="avatar mt-1">
+				<span class="avatar avatar-sm" style="">HM</span>			</span>
+			<div class="u-text" onclick="">
+				<h4 style="font-size: 12px;font-weight: 550;color: #555;">
+					Hilfi Muhamad Aryawan				</h4>
+				<div class="text-muted" style="color:rgba(35, 46, 60, 0.7) !important">
+					Be3 ID:aaaaa				</div>
+			</div>
+		</div>
+
+		<div class="row m-0 p-2">
+
+			<div class="col-6">
+				<h6 class="m-0  fz-12" style="font-weight: 500;color: #555;">
+					Saldo Donasi
+				</h6>
+				<h6 class="m-0">
+					Rp 0(0)
+				</h6>
+			</div>
+			<div class="col-6">
+				<h6 class="m-0 fz-12" style="font-weight: 500;color: #555;">
+					Saldo WAIPay
+				</h6>
+				<h6 class="m-0">
+
+					0
+					<a href="#" class="tooltipA">
+						<span class="tooltiptext">
+							Refund
+						</span>
+						<svg xmlns="http://www.w3.org/2000/svg" class="icon" style="width: 1rem;height: 1rem;font-size: 1.25rem;vertical-align: top;" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+							<path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M11 7h-5a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-5"></path><line x1="10" y1="14" x2="20" y2="4"></line><polyline points="15 4 20 4 20 9"></polyline>
+						</svg>
+					</a>
+				</h6>
+			</div>
+		</div>
+						<a href="https://localhost/beegrit.com/Admin/Dashboard" class="dropdown-item">
+					Panel Admin
+				</a>
+				<div class="dropdown-divider">
+				</div>
+				
+		<a href="#" class="dropdown-item">
+			Tentang Kami
+		</a>
+		<a href="#" class="dropdown-item">
+			Rencana Pengembangan
+		</a>
+		<a href="#" class="dropdown-item">
+			Donasi
+		</a>
+		<div class="dropdown-divider">
+		</div>
+		<a href="https://localhost/beegrit.com/d/4WntJgNvWZNng5Y9A3A65SqgWvjtsV2Qm3jNHEvfAdPz2srkLpRpCRQgAI6IyTnUO1pG6rGyQ7EvE0m7kYIW4TXVnNMI7zB743YXwwnpsbSfAAUcTwjh8E1pdp5NtJvm9L3ngEDX9nDdcXMH1AERH1gG0zNHVb2Jv8XK7Ecjjw4NOdFa2FaIWjtEvQ74NO1jtQgO1ntQ7B7nNQgCREvjtntB7AAVbAAHEVbY9HEGyHENnHEg5Y9NnY9g5cjA3GyFaAAVbAAY95SHEAA5SHEg5/WzXB1pTpVO65DXsQ1Lx7RqTSy8LsR2jq8cEdrP8E91GPr7cY1SUwLU0qPJ7cfbExAv0Ev99Lybv0GjK9VMRTXdQsjBESKhEyCR7AAY78DWPQ4HDTK7Kf2fBwkxSERG41XVbJtsCJ8MLd0wr9CQW4LDrI4VkcDIAhhwUqtXQ7bS5NTPFa2FaFa4HDI4HsQRqrP4HRqrPDX" class="dropdown-item">
+			Profil &amp; Akun
+		</a>
+
+		<a href="#" class="dropdown-item">
+			Pengaturan
+		</a>
+		<a href="https://localhost/beegrit.com/auth/logout" class="dropdown-item">
+			Keluar
+		</a>
+	</div>
+					</div>
+			</div>
+		</div>	
+	</header>
+			</div>
+			<div class="sidebar sidebarWai">
+    <i class='btnClassClosSideBar'  style=""></i>
+    <ul class="nav-list "style="
+    margin-top: 66px;
+">
+    
+      <li>
+        <a href="https://localhost/beegrit.com/"> 
+          <i class="bx bx-grid-alt"></i>
+          <span class="links_name">Dashboard</span>
+        </a>
+         <span class="tooltip">Dashboard</span>
+      </li>
+      
+     <li>
+       <a href="https://localhost/beegrit.com/d/xx0CIAKAUKTqb5Eh6pBx32tptr9j9Q9dLEOpBOz8cPHNONRBLTVAvtqzKb9cR4GOMrSD10O38pVnDWKVXLAStI9TthKxyHbgxLNsU6hHYdrOsnmWUJrs2UYjGbZfx2yv9Dkmn5tRAKr92gIM3AOtR14OJ6yN4XJVfIEkBKX00xIEPxFa2Fa9dvtvttpbg9jUJJ68pKAFasn4XsnEh32BOsn32BOb5/PLNjc0PKCyjJAB846BESIRY3k8g7pZAbCHmU7WKdUnPp0sfnqwHNtYnLEYj7gGn43JvHVbhDC0A24VDTOcX255DWrJGKWAxJRbzNJnhEbPIVfA2H2txtBg2YW3AHJCM3ITvhSz5Q6GGNRM0fvGzAnTZPjbs8yZ7my1cshML5P4ZB0nFa2FaZB3JDWn4zNFafAyZfA84IR7WfAIR7WAB">
+         <i class="bx bx-chat"></i>
+         <span class="links_name">Messages</span>
+       </a>
+       <span class="tooltip">Messages</span>
+     </li>
+     <li>
+       <a href="https://localhost/beegrit.com/d/n0j4KtzTKE371b0zPdWwVAxTgqfSGsLchAtUsYQ0QwAwQLwCPXDMO6tLOvH5JXNBxSH1t8UbLZMgb7EURM89VO5MVYRG9rCkq7p8hpBLsOVpYjN2Nt6BgKyPEMLI998JJCUG8UnbWK4MNCgjQCZKvqhJX3KUjxgfWRHSEw4ApvRcYDFa2Fa89fSq7p8RcCkfSNtX3LZzTFaYjjxYj0zVAsYYjVAsY1b/N3nEnVmkwTLALR5kmvWRf4PDYb0t11yBp4WyDILNwEtQywx600n1L7BYhstH1Rb5IfGMdZr2zB9dCwhjhM9jt4AVzsGTB4pYIUVz9VS9v7SWxvrNPMnw5jVIEfDTrREx8CYfck86VnXB5bxZXZ79NcYUsC6KCyDk0SUmxM45L3IKNBFa2FaIKzsBYL7CwBYb5PDFaxvCyxv5kf4DIxvf4DILR">
+         <i class="bx bx-pie-chart-alt-2"></i>
+         <span class="links_name">Program</span>
+       </a>
+       <span class="tooltip">Program</span>
+     </li>
+     <li>
+       <a href="https://localhost/beegrit.com/d/8czgEKbJ6Bw1R5sdsq7y7GUqM4Lq46pPkYvyZpbtNr4hjysTQs2nqk2jw8nvK8tXtrObB0qNxQSrnA5CZrcMUU0WAdLE9g1VGAJnn8VjKWWEPU3DnB5UT8vNrf0OdVgx4rq3jZQI1OEHTZPwCXt2w6qCdXKGTNxYVHD0RPdEcCPypGFa2Fat2tXRPLqJnGA1VLqnBdXxQbJFaPUTNPUsd7GZpPU7GZpR5/SjIp1ZCL29Vr7rs51O3HZsjZwJ6gLJwdvyW6jdH3wNZXKNAVtfDp11HsqBgPMQLQkxDzT7EyyIhz9m3h0GBKBhTWmcd4Nkj3dM9GCTWdB1IZ6G1YO6p7YG7ItHGdLdnc8qkOZbcZcUx2J91Hghdm9tM1ZQLBfzXWVz3v39A9pzQJcjFa2FaQJIp6ghzyI9G6gjZyIQJpz11HsLBFa6Gfz6Gs5Zsjd6GZsjd7r"> 
+         <i><span class="iconify" data-icon="healthicons:i-schedule-school-date-time-outline"></span></i>
+         <span class="links_name">Life Time Works</span>
+       </a>
+       <span class="tooltip">Life Time Works</span>
+     </li>
+     
+          <li>
+       <a href="https://localhost/beegrit.com/d/X9fvTCtQpUxNSGJG7LMPfY9MEIOKjxSRyqL4kJBdQvgJDZkvgQZmLrfDs9dk5dEORkRTUbAqPgp2ns0P2MLxy4vMW0DtUhTxUZPz8R4qj37zPq2nSfQ9qHTpHGpDWHRc4PqngntZTZqCt7p0fgWZGRIIw9pwc2jwVY6n66O0VfN1JKFa2Fa2nLrUZPzTxOKSfw9PgtQFaPqc2PqJGfYkJPqfYkJSG/Isjh8EDWwyNcMPUKmqjZtMMt1NjmP3VxLYHRvxUYdH46O7vM4ZnTH68g2ZdP6KK9YQ0V5Bh8N1cQv072K2CYIhNw1PxsV6Y6Xs8LBZkXTMgYW8RPnMJEgTBrUMOxOjEr6tTBP2VXYB9NO4DxCqhHESs4IOYDgZDqw3NhmMdcm0pAB9Fa2FapAO41PIOK98LN1FaW8gZW8UKtMvxW8tMvxMP">
+       <i><span class="iconify" data-icon="dashicons:update"></span></i>
+         <span class="links_name">Update Post</span>
+       </a>
+       <span class="tooltip">Update Post</span>
+     </li> 
+       <li>
+       <a href="https://localhost/beegrit.com/d/TWLmLsMjGMnME9UDgjPnv6LdG6gS0UXAAJEpQs1T5CUVybSO74xY0npOAD7B8TfUymRDYcJjpbjXOB3V7c1K1LpdP2Y8gwmwMBE8zbzvrNgX3sf8yzEXbH7jjfbgAbyxG9g5J5jms2TrknbcwPwUNMN7BwnIStD5RKDnHGpTssNjIUFa2FaxYpd0nP2mwgSyzBwpbMjFa3sSt3sUDv6Qs3sv6QsE9/XRqfLcyXrfAZArVVkr47bJYKPRBT8EmUMKhAxkHM2ELAMhORZ3PgnwPxc97Nfn1OEz6w8hT7ttSqgQVEpVXHWZsh6krLVby6V9fPQh6vnrKWsOBrC6bQvRqh7VK4nhncAvB5X6QQcWJ98M39S5IvXTCrbUsjqrjBUjypHO8fEAchwrFa2FachV9fPnwPxttFasOqrsOVVbJxksObJxkAr">
+         <i><span class="iconify" data-icon="emojione-monotone:department-store"></span></i>
+         <span class="links_name">Store</span>
+       </a>
+       <span class="tooltip">Store</span>
+     </li> 
+      <li>
+       <a href="https://localhost/beegrit.com/d/kRM4cBmPTfMKyJvRUDDykChmThWLOfYvGKkPp754NSTdK0nZ0ykh4KhERbTOKIsIWERDNRw9m2dPXQxyLUPLJJ2kWHLdPOm7TxpJ96AASgY7KhsrptmUyDdbs0KHGT5fv7DAEd8VSvYpX3YsVA9xgswOdZnRIQBmndCRkNR2VKPE9KFa2FaYv4K4Khmm7WLptdZm2mPFaKhIQKhvRkCp7KhkCp7yJ/5fX7QxgQS3ypV0GMRbREKgTrJ9JTS1GtKX4E3EZSdvmqJU35MUd8CXw9UcRYpOY7fskUWzf95jzfLnG1YNScwNp2IVZr4vSKMJtyOqjLWk3wtbSHH4NMv2CUBUWPhfXB4y6OLM1XwUpsZTJ7tzIt6RWOqrE8JYDN2HyOyKbLYWP7PTFa2FaP7fsp2Y7tyFatbJYtbGMKg3EtbKg3EV0">
+         <i><span class="iconify" data-icon="ic:baseline-event"></span></i>
+         <span class="links_name">Kegiatan</span>
+       </a> 
+       <span class="tooltip">Kegiatan</span>
+     </li> <li>
+       <a href="https://localhost/beegrit.com/d/2t4hWdD9y8gnMCKzsttcfH01K5O6KTcc9T7J8A1ERZRXTqh9VhBdOYc4nxt1XHMYBMyrwjf1KKxAWKhqEOZQ8CDR2cvdDYbmsgJNknRMzgdnrTjDd714M3Hp0WfLBthYE9VvAHBTZU9r04Xw4EJqG6QQysdIxECzHhwmAmrQpts017Fa2FaccOYOY01bmO6d7ysKKD9FarTxErTKzfH8ArTfH8AMC/hsT9ydykQKmOmtNI2Trb4Qm6nsCzTsGYYzQtS48qzr93mMfyzcEGGyI6EYtscjk0UkDhUz7CTL10MYzUWt6ETQ4CbmL1yprZdhA0nDfcIxvrCsvpdkNzdKX4c6t60Txr64D0YxTZjDpvrEJmgYg3Ax4x9LIbs1QA9JVA47fSn70NghFa2Fa0NUk4Ck0A0FaCss1CsNI4QS4Cs4QS4mt">
+         <i class="bx bx-chat"></i>
+         <span class="links_name">Crowd Funding</span>
+       </a>
+       <span class="tooltip">Crowd Funding</span>
+     </li>
+          <li class="profile">
+         <div class="profile-details">
+         <!--  <img src="" alt="profileImg">--> 
+           <div class="name_job">
+             <div class="name">Hilfi Muhamad Aryawan</div>
+             <div class="job">User</div>
+           </div>
+         </div>
+         <i class="bx bx-log-out" id="log_out"></i>
+     </li>
+    </ul>
+  </div>
+    <main id="main-wrapper" class="main-wrapper">
+      <div class="swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper">
+      <!-- Slide 1 -->
+      <div class="swiper-slide">  
+        <div class="swiper-image">
+          <div class="image"></div>
+        </div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="swiper-slide">
+        <div class="swiper-image">
+          <div class="image"></div>
+        </div>
+      </div>
+      <!-- Slide 3 -->
+      <div class="swiper-slide">
+        <div class="swiper-image">
+          <div class="image"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- If we need navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+  </div>
+
+	  
+	 
+    <!-- navbar horizontal -->
+    <!-- navbar -->
+<div class="navbar-horizontal nav-dashboard">
+  <div class="container-fluid ">
+
+    <nav class="navbar navbar-expand-lg navbar-default navbar-dropdown p-0 py-lg-2">
+      <div class="d-flex d-lg-block justify-content-between align-items-center w-100 w-lg-0 py-2  px-4 px-md-2 px-lg-0">
+        <span class="d-lg-none">Menu</span>
+        <!-- Button -->
+        <button class="navbar-toggler collapsed ms-2" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="icon-bar top-bar mt-0"></span>
+          <span class="icon-bar middle-bar"></span>
+          <span class="icon-bar bottom-bar"></span>
+        </button>
+      </div>
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse  px-6 px-lg-0" id="navbar-default">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDashboard" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" data-bs-display="static">
+              Dashboard
+            </a>
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarDashboard">
+              <li>
+                <a class="dropdown-item" href="index.html">
+                  Project
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="dashboard-analytics.html">
+                  Analytics</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="dashboard-ecommerce.html">
+                  Ecommerce</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="dashboard-crm.html">
+                  CRM</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="dashboard-finance.html">
+                  Finance</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="dashboard-blog.html">
+                  Blog</a>
+              </li>
+
+
+            </ul>
+          </li>
+
+
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarApps" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              Apps
+            </a>
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarApps">
+
+              <li>
+                <a class="dropdown-item" href="calendar.html">
+                  Calendar
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="apps-file-manager.html">
+                  File Manager
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="chat-app.html">
+                  Chat
+                </a>
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Kanban
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="task-kanban-grid.html" class="dropdown-item">
+                      Board
+                    </a>
+                  </li>
+                  <li>
+                    <a href="task-kanban-list.html" class="dropdown-item">
+                      List
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Email
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="mail.html" class="dropdown-item">
+                      Inbox
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mail-details.html" class="dropdown-item">
+                      Details
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mail-draft.html" class="dropdown-item">
+                      Draft
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Ecommerce
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="ecommerce-products.html" class="dropdown-item">
+                      Products
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-products-details.html" class="dropdown-item">
+                      Prouduct Details
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-product-edit.html" class="dropdown-item">
+                      Add Product
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="ecommerce-order-list.html" class="dropdown-item">
+                      Orders
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-order-detail.html" class="dropdown-item">
+                      Order Details
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-cart.html" class="dropdown-item">
+                      Shopping Cart
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-checkout.html" class="dropdown-item">
+                      Checkout
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-customer.html" class="dropdown-item">
+                      Customers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="ecommerce-seller.html" class="dropdown-item">
+                      Seller
+                    </a>
+                  </li>
+
+
+
+
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Project
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li class="nav-item">
+                    <a class="dropdown-item " href="project-grid.html">
+                      Grid
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="dropdown-item" href="project-list.html">
+                      List
+                    </a>
+                  </li>
+
+                  <li class="dropdown-submenu dropend">
+                    <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                      Single
+                    </a>
+                    <ul class="dropdown-menu">
+
+                      <li class="nav-item">
+                        <a class="dropdown-item " href="project-overview.html">
+                          Overview
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item " href="project-task.html">
+                          Task
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item " href="project-budget.html">
+                          Budget
+                        </a>
+                      </li>
+
+                      <li class="nav-item">
+                        <a class="dropdown-item " href="project-files.html">
+                          File
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item " href="project-team.html">
+                          Team
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  CRM
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="crm-company.html" class="dropdown-item">
+                      Company
+                    </a>
+                  </li>
+                  <li>
+                    <a href="crm-contacts.html" class="dropdown-item">
+                      Contacts
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Invoice
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="invoice-list.html" class="dropdown-item">
+                      List
+                    </a>
+                  </li>
+                  <li>
+                    <a href="invoice-detail.html" class="dropdown-item">
+                      Details
+                    </a>
+                  </li>
+                  <li>
+                    <a href="create-invoice.html" class="dropdown-item">
+                      Create Invoice
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Profile
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a href="profile-overview.html" class="dropdown-item">
+                      Overview
+                    </a>
+                  </li>
+                  <li>
+                    <a href="profile-project.html" class="dropdown-item">
+                      Project
+                    </a>
+                  </li>
+                  <li>
+                    <a href="profile-file.html" class="dropdown-item">
+                      Files
+                    </a>
+                  </li>
+                  <li>
+                    <a href="profile-team.html" class="dropdown-item">
+                      Team
+                    </a>
+                  </li>
+                  <li>
+                    <a href="profile-followers.html" class="dropdown-item">
+                      Followers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="profile-activity.html" class="dropdown-item">
+                      Activity
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="profile-settings.html">
+                      Settings
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+              <li class="dropdown-submenu dropend">
+                <a class="dropdown-item dropdown-list-group-item dropdown-toggle" href="#">
+                  Blog
+                </a>
+                <ul class="dropdown-menu">
+
+                  <li>
+                    <a class="dropdown-item" href="blog-author.html">
+
+                      Author
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="blog-author-detail.html">
+
+                      Detail
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="create-blog-post.html">
+
+                      Create Post
+                    </a>
+                  </li>
+
+
+                </ul>
+
+              </li>
+
+
+
+
+
+
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarAuthentication" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Authentication
+            </a>
+            <ul class="dropdown-menu dropdown-menu-arrow" aria-labelledby="navbarAuthentication">
+
+
+              <li>
+                <a class="dropdown-item" href="sign-in.html">
+                  Sign In
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="sign-up.html">
+                  Sign Up
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="forget-password.html">
+                  Forgot Password
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="maintenance.html">
+                  maintenance
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="404-error.html">
+                  404 Error
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle" href="#" id="layoutsDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Layouts
+            </a>
+            <ul class="dropdown-menu dropdown-menu-start" aria-labelledby="layoutsDropdown">
+              <li><span class="dropdown-header"> Layouts</span></li>
+              <li class="nav-item">
+                <a class="dropdown-item" href="../index.html">
+                  Default
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="dropdown-item" href="index.html">Horizontal</a>
+              </li>
+
+
+
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarPages" data-bs-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              Pages
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarPages">
+
+              <li>
+                <a class="dropdown-item" href="pricing.html">
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="starter.html">
+                  Starter
+                </a>
+              </li>
+
+              <li>
+                <a class="dropdown-item" href="maintenance.html">
+                  Maintenance
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="404-error.html">
+                  404 Error
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="404-error.html">
+                  Coming Soon
+                </a>
+              </li>
+
+
+
+
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarBaseUI" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Components
+            </a>
+            <div class="dropdown-menu dropdown-menu-xl" aria-labelledby="navbarBaseUI">
+              <div class="row">
+                <div class="col-lg-4">
+                  <ul class="list-unstyled">
+                    <li class="nav-item">
+                      <a href="components/accordions.html" class="dropdown-item">
+                        Accordions
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="dropdown-item" href="components/alerts.html"> Alert</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="components/badge.html" class="dropdown-item">
+                        Badge
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="components/breadcrumb.html" class="dropdown-item">
+                        Breadcrumb
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/buttons.html" class="dropdown-item">
+                        Buttons
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/button-group.html" class="dropdown-item">
+                        Button group
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/card.html" class="dropdown-item">
+                        Card
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/carousel.html" class="dropdown-item">
+                        Carousel
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/close-button.html" class="dropdown-item">
+                        Close Button
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
+                <div class="col-lg-4">
+                  <ul class="list-unstyled">
+
+                    <li class="nav-item">
+                      <a href="components/collapse.html" class="dropdown-item">
+                        Collapse
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/dropdowns.html" class="dropdown-item">
+                        Dropdowns
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/forms.html" class="dropdown-item">
+                        Forms
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="components/list-group.html" class="dropdown-item">
+                        List group
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/modal.html" class="dropdown-item">
+                        Modal
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/navs-tabs.html" class="dropdown-item">
+                        Navs and tabs
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/navbar.html" class="dropdown-item">
+                        Navbar
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/offcanvas.html" class="dropdown-item">
+                        Offcanvas
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/pagination.html" class="dropdown-item">
+                        Pagination
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-4">
+                  <ul class="list-unstyled">
+
+
+                    <li class="nav-item">
+                      <a href="components/placeholders.html" class="dropdown-item">
+                        Placeholders
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/popovers.html" class="dropdown-item">
+                        Popovers
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/progress.html" class="dropdown-item">
+                        Progress
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/scrollspy.html" class="dropdown-item">
+                        Scrollspy
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/spinners.html" class="dropdown-item">
+                        Spinners
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/tables.html" class="dropdown-item">
+                        Tables
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/toasts.html" class="dropdown-item">
+                        Toasts
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="components/tooltips.html" class="dropdown-item">
+                        Tooltips
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+
+
+
+
+
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i data-feather="more-horizontal" class="icon-xxs"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-md" aria-labelledby="navbarDropdown">
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action border-0" href="../docs/index.html">
+                  <div class="d-flex align-items-center">
+                    <i data-feather="file-text" class=" icon-sm text-primary"></i>
+
+                    <div class="ms-3">
+                      <h5 class="mb-0">Documentations</h5>
+                      <p class="mb-0 fs-6">
+                        Browse the all documentation
+                      </p>
+                    </div>
+                  </div>
+                </a>
+                <a class="list-group-item list-group-item-action border-0" href="../docs/changelog.html">
+                  <div class="d-flex align-items-center">
+                    <i data-feather="layers" class=" icon-sm text-primary"></i>
+                    <div class="ms-3">
+                      <h5 class="mb-0">
+                        Changelog <span class="text-primary ms-1">v1.0.0</span>
+                      </h5>
+                      <p class="mb-0 fs-6">See what's new</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+
+  </div>
+</div>
+
+      <!-- page content -->
+      <div id="app-content">
+
+        <div class="app-content-area">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-12">
+                <!-- Page header -->
+                <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <!-- Bg -->
+                <div class="pt-20 rounded-top" style="
+                    background: url(../assets/images/background/profile-cover.jpg)
+                      no-repeat;
+                    background-size: cover;
+                  "></div>
+                <div class="card rounded-bottom rounded-0 smooth-shadow-sm mb-5">
+                  <div class="d-flex align-items-center justify-content-between pt-4 pb-6 px-4">
+                    <div class="d-flex align-items-center">
+                      <!-- avatar -->
+                      <div class="avatar-xxl avatar-indicators avatar-online me-2 position-relative d-flex justify-content-end align-items-end mt-n10">
+                      <img src="../assets/images/avatar/avatar-11.jpg" class="avatar-xxl
+                      rounded-circle border border-2 " alt="Image">
+                    <a href="#!" class="position-absolute top-0 right-0 me-2">
+                      <img src="../assets/images/svg/checked-mark.svg" alt="Image" class="icon-sm">
+                    </a>
+                      </div>
+                      <!-- text -->
+                      <div class="lh-1">
+                        <h2 class="mb-0">
+                          Jitu Chauhan
+                          <a href="#!" class="text-decoration-none">
+                          </a>
+                        </h2>
+                        <p class="mb-0 d-block">@imjituchauhan</p>
+                      </div>
+                    </div>
+                    <div>
+                      <a href="#!" class="btn btn-outline-primary d-none d-md-block">Edit Profile</a>
+                    </div>
+                  </div>
+                  <!-- nav -->
+                  <ul class="nav nav-lt-tab px-4" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="profile-overview.html">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="profile-project.html">Project</a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="profile-files.html">Files</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="profile-team.html">Team</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="profile-followers.html"> Followers </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="profile-activity.html">Activity</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+			  <div>
+			  <main>
+		            <div id="contentFaiFramework">
+
+<section class="section">
+    <div class="mb-5">
+            <h3 class="mb-0 "> Kategori Produk</h3>
+        </div>
+
+    
+    <div class="row">
+        
+        
+            <div class="col-md-2">
+                <a class="btn btn-primary" onclick="reachpage('kategori_produk','tambah',-1)"> add Kategori Produk</a>
+            </div>
+        <form method="POST" id="formimexport_fai_framework" enctype="multipart/form-data" "="">
+      
+       
+        <div class=" text-right right">
+        <button onclick="list_imexport('pdf')" type="button" value="pdf" name="Cari" class="btn btn-primary ">PDF </button>
+                    <button onclick="list_imexport('excel')" type="button" value="excel" name="Cari" class="btn btn-primary ">Excel </button>
+        
+                                     </div>
+        
+        <div id="import_content" style="display:none;width: 64%;float: right;"> 
+                    
+                    <input type="file" class="form-control" name="excel">
+                    <button onclick="list_imexport('excel')" type="button" value="import_excel" name="Cari" style="float: right;" class="btn btn-primary ">Submit</button>
+                 </div>
+        
+        </form>
+        
+       
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="pb-3">
+                        <form id="formlist_fai_framework" method="get" enctype="multipart/form-data">
+                            <div class="row"></div>
+                            
+                    </form></div>
+
+
+                    
+					<div class="row">			<div class="col-6 d-flex " style="align-content: center;align-items: center;">Show <select class="form-control " id="show_entry" style="width: 100px">				<option value="10">10</option>				<option value="25">25</option>				<option value="50">50</option>				<option value="100">100</option>				<option value="250">250</option>				<option value="500">500</option>				</select> Entries
+					</div><div class="col-6 d-flex " style="align-content: center;align-items: center;justify-content: end;">
+						Search <input class="form-control" id="search" style="width: 50%">
+					</div>			<div class="col-12 mt-3 mb-3">
+<table class="table table-bordered table-striped" id="example1" style="width: 100%">
+	<thead class="">
+		<tr>
+			<th>No</th>
+			<th>Kode Kategori</th><th>Nama Kategori</th><th>Action</th>
+		</tr>
+		<tr>
+			<td>Nomor</td>
+		</tr>
+		
+	</thead>
+	<tbody>
+			</tbody>
+</table>
+           
+                    </div>
+                	<div class="col-6 d-flex " style="align-content: center;align-items: center;">
+						Showing 1 to 10 of 16 entries
+					</div><div class="col-6 d-flex " style="align-content: center;align-items: center;justify-content: end;">
+						<ul class="pagination m-0 ms-auto" style="align-items: center;"><li class="first page-item"><button type="button" class="page-link" onclick="gantipage(1),load_data_menu()" title="First"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg> </button></li><li class="page-item "><button type="button" class="page-link" onclick="gantipage(-1),load_data_menu()" title="Previous"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path> </svg></button></li><li class="page-item "> <button type="button" class="page-link" onclick="gantipage(1),load_data_menu()">1</button></li><li class="page-item active"><button type="button" class="page-link" onclick="gantipage(2),load_data_menu()">2</button></li><li class="page-item"><button type="button" class="page-link" onclick="gantipage(3),load_data_menu()">3</button></li><li class="page-item"><button type="button" class="page-link" onclick="gantipage(4),load_data_menu()">4</button></li><li class="page-item"><button type="button" class="page-link" onclick="gantipage(5),load_data_menu()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"></path> </svg></button></li><li class="last page-item"><button type="button" class="page-link" onclick="gantipage(22),load_data_menu()" title="Last"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-right"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> </button></li></ul>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div></section>
+
+<script>
+    function show_import(){
+        $('#import_content').show();
+    }
+    function list_from(Cari) {
+        	if(Cari=='pdf'){
+        		
+        		window.location.href="http://localhost/FrameworkServer/FaiServer/ApotekPage/all_page?apps=Apotek&page_view=penjualan__tagihan&type=pdf&id=-1";
+        	}else if(Cari=='excel'){
+        		window.location.href="http://localhost/FrameworkServer/FaiServer/ApotekPage/all_page?apps=Apotek&page_view=penjualan__tagihan&type=excel&id=-1";
+        	}else{
+        		
+        	
+            $.ajax({
+                type: 'get',
+                data: $('#formlist_fai_framework').serialize() 
+                	+ '&Cari='+Cari+ '&id='+'-1'
+                	+ '&apps='+$('#load_apps').val()
+                	+ '&page_view='+$('#load_page_view').val()
+                	+ '&type='+Cari
+                	+ '&link_route='+$('#load_link_route').val(),
+                url: $('#load_link_route').val() ,
+                dataType: 'html',
+                success: function(data) {
+                    $('#contentFaiFramework').html(data);
+                },
+                error: function(error) {
+                    console.log('error; ' + eval(error));
+                    //alert(2);
+                }
+            });
+			}
+        
+    }
+    function list_imexport(Cari) {
+        	if(Cari=='pdf'){
+        		
+        		window.location.href="http://localhost/FrameworkServer/FaiServer/ApotekPage/all_page?apps=Apotek&page_view=penjualan__tagihan&type=pdf&id=-1";
+        	}else if(Cari=='excel'){
+        		window.location.href="http://localhost/FrameworkServer/FaiServer/ApotekPage/all_page?apps=Apotek&page_view=penjualan__tagihan&type=excel&id=-1";
+        	}else{
+        		
+        	
+            $.ajax({
+                type: 'get',
+                data: $('#formlist_fai_framework').serialize() 
+                	+ '&Cari='+Cari+ '&id='+'-1'
+                	+ '&apps='+$('#load_apps').val()
+                	+ '&page_view='+$('#load_page_view').val()
+                	+ '&type='+Cari
+                	+ '&link_route='+$('#load_link_route').val(),
+                url: $('#load_link_route').val() ,
+                dataType: 'html',
+                success: function(data) {
+                    $('#contentFaiFramework').html(data);
+                },
+                error: function(error) {
+                    console.log('error; ' + eval(error));
+                    //alert(2);
+                }
+            });
+			}
+        
+    }
+</script></div>
+		        </main>	
+                        <!-- row -->
+
+                        <div class="row">
+                            <div class="col-lg-8 col-12">
+                                <!-- card -->
+                              <div class="card mb-4">
+                                  <!-- card body -->
+                                <div class="card-body">
+                                  <div>
+                                      <!-- input -->
+                                    <div class="mb-3">
+                                      <label class="form-label">Product Title</label>
+                                      <input type="text" class="form-control" placeholder="Enter Product Title" required="">
+                                    </div>
+                                      <!-- input -->
+                                    <div>
+                                      <label class="form-label">Product Description</label>
+                                      <div class="ql-toolbar ql-snow"><span class="ql-formats"><span class="ql-header ql-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-0"><svg viewBox="0 0 18 18"> <polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon> <polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-0"><span tabindex="0" role="button" class="ql-picker-item" data-value="1"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="2"></span><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span></span></span><select class="ql-header" style="display: none;"><option value="1"></option><option value="2"></option><option selected="selected"></option></select></span><span class="ql-formats"><span class="ql-font ql-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-1"><svg viewBox="0 0 18 18"> <polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon> <polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-1"><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="serif"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="monospace"></span></span></span><select class="ql-font" style="display: none;"><option selected="selected"></option><option value="serif"></option><option value="monospace"></option></select></span><span class="ql-formats"><button type="button" class="ql-bold"><svg viewBox="0 0 18 18"> <path class="ql-stroke" d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"></path> <path class="ql-stroke" d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"></path> </svg></button><button type="button" class="ql-italic"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="7" x2="13" y1="4" y2="4"></line> <line class="ql-stroke" x1="5" x2="11" y1="14" y2="14"></line> <line class="ql-stroke" x1="8" x2="10" y1="14" y2="4"></line> </svg></button><button type="button" class="ql-underline"><svg viewBox="0 0 18 18"> <path class="ql-stroke" d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"></path> <rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="12" x="3" y="15"></rect> </svg></button><button type="button" class="ql-strike"><svg viewBox="0 0 18 18"> <line class="ql-stroke ql-thin" x1="15.5" x2="2.5" y1="8.5" y2="9.5"></line> <path class="ql-fill" d="M9.007,8C6.542,7.791,6,7.519,6,6.5,6,5.792,7.283,5,9,5c1.571,0,2.765.679,2.969,1.309a1,1,0,0,0,1.9-.617C13.356,4.106,11.354,3,9,3,6.2,3,4,4.538,4,6.5a3.2,3.2,0,0,0,.5,1.843Z"></path> <path class="ql-fill" d="M8.984,10C11.457,10.208,12,10.479,12,11.5c0,0.708-1.283,1.5-3,1.5-1.571,0-2.765-.679-2.969-1.309a1,1,0,1,0-1.9.617C4.644,13.894,6.646,15,9,15c2.8,0,5-1.538,5-3.5a3.2,3.2,0,0,0-.5-1.843Z"></path> </svg></button></span><span class="ql-formats"><span class="ql-size ql-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-2"><svg viewBox="0 0 18 18"> <polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon> <polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-2"><span tabindex="0" role="button" class="ql-picker-item" data-value="small"></span><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="large"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="huge"></span></span></span><select class="ql-size" style="display: none;"><option value="small"></option><option selected="selected"></option><option value="large"></option><option value="huge"></option></select></span><span class="ql-formats"><button type="button" class="ql-list" value="ordered"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line> <line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line> <line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line> <line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line> <path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path> <path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path> <path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path> </svg></button><button type="button" class="ql-list" value="bullet"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line> <line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line> <line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line> <line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line> <line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line> <line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line> </svg></button></span><span class="ql-formats"><span class="ql-color ql-picker ql-color-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-3"><svg viewBox="0 0 18 18"> <line class="ql-color-label ql-stroke ql-transparent" x1="3" x2="15" y1="15" y2="15"></line> <polyline class="ql-stroke" points="5.5 11 9 3 12.5 11"></polyline> <line class="ql-stroke" x1="11.63" x2="6.38" y1="9" y2="9"></line> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-3"><span tabindex="0" role="button" class="ql-picker-item ql-selected ql-primary"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#e60000" style="background-color: rgb(230, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ff9900" style="background-color: rgb(255, 153, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ffff00" style="background-color: rgb(255, 255, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#008a00" style="background-color: rgb(0, 138, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#0066cc" style="background-color: rgb(0, 102, 204);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#9933ff" style="background-color: rgb(153, 51, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffff" style="background-color: rgb(255, 255, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#facccc" style="background-color: rgb(250, 204, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffebcc" style="background-color: rgb(255, 235, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffcc" style="background-color: rgb(255, 255, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce8cc" style="background-color: rgb(204, 232, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce0f5" style="background-color: rgb(204, 224, 245);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ebd6ff" style="background-color: rgb(235, 214, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#bbbbbb" style="background-color: rgb(187, 187, 187);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#f06666" style="background-color: rgb(240, 102, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffc266" style="background-color: rgb(255, 194, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffff66" style="background-color: rgb(255, 255, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66b966" style="background-color: rgb(102, 185, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66a3e0" style="background-color: rgb(102, 163, 224);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#c285ff" style="background-color: rgb(194, 133, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#888888" style="background-color: rgb(136, 136, 136);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#a10000" style="background-color: rgb(161, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b26b00" style="background-color: rgb(178, 107, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b2b200" style="background-color: rgb(178, 178, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#006100" style="background-color: rgb(0, 97, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#0047b2" style="background-color: rgb(0, 71, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#6b24b2" style="background-color: rgb(107, 36, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#444444" style="background-color: rgb(68, 68, 68);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#5c0000" style="background-color: rgb(92, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#663d00" style="background-color: rgb(102, 61, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#666600" style="background-color: rgb(102, 102, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#003700" style="background-color: rgb(0, 55, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#002966" style="background-color: rgb(0, 41, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#3d1466" style="background-color: rgb(61, 20, 102);"></span></span></span><select class="ql-color" style="display: none;"><option selected="selected"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option value="#ffffff"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option></select><span class="ql-background ql-picker ql-color-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-4"><svg viewBox="0 0 18 18"> <g class="ql-fill ql-color-label"> <polygon points="6 6.868 6 6 5 6 5 7 5.942 7 6 6.868"></polygon> <rect height="1" width="1" x="4" y="4"></rect> <polygon points="6.817 5 6 5 6 6 6.38 6 6.817 5"></polygon> <rect height="1" width="1" x="2" y="6"></rect> <rect height="1" width="1" x="3" y="5"></rect> <rect height="1" width="1" x="4" y="7"></rect> <polygon points="4 11.439 4 11 3 11 3 12 3.755 12 4 11.439"></polygon> <rect height="1" width="1" x="2" y="12"></rect> <rect height="1" width="1" x="2" y="9"></rect> <rect height="1" width="1" x="2" y="15"></rect> <polygon points="4.63 10 4 10 4 11 4.192 11 4.63 10"></polygon> <rect height="1" width="1" x="3" y="8"></rect> <path d="M10.832,4.2L11,4.582V4H10.708A1.948,1.948,0,0,1,10.832,4.2Z"></path> <path d="M7,4.582L7.168,4.2A1.929,1.929,0,0,1,7.292,4H7V4.582Z"></path> <path d="M8,13H7.683l-0.351.8a1.933,1.933,0,0,1-.124.2H8V13Z"></path> <rect height="1" width="1" x="12" y="2"></rect> <rect height="1" width="1" x="11" y="3"></rect> <path d="M9,3H8V3.282A1.985,1.985,0,0,1,9,3Z"></path> <rect height="1" width="1" x="2" y="3"></rect> <rect height="1" width="1" x="6" y="2"></rect> <rect height="1" width="1" x="3" y="2"></rect> <rect height="1" width="1" x="5" y="3"></rect> <rect height="1" width="1" x="9" y="2"></rect> <rect height="1" width="1" x="15" y="14"></rect> <polygon points="13.447 10.174 13.469 10.225 13.472 10.232 13.808 11 14 11 14 10 13.37 10 13.447 10.174"></polygon> <rect height="1" width="1" x="13" y="7"></rect> <rect height="1" width="1" x="15" y="5"></rect> <rect height="1" width="1" x="14" y="6"></rect> <rect height="1" width="1" x="15" y="8"></rect> <rect height="1" width="1" x="14" y="9"></rect> <path d="M3.775,14H3v1H4V14.314A1.97,1.97,0,0,1,3.775,14Z"></path> <rect height="1" width="1" x="14" y="3"></rect> <polygon points="12 6.868 12 6 11.62 6 12 6.868"></polygon> <rect height="1" width="1" x="15" y="2"></rect> <rect height="1" width="1" x="12" y="5"></rect> <rect height="1" width="1" x="13" y="4"></rect> <polygon points="12.933 9 13 9 13 8 12.495 8 12.933 9"></polygon> <rect height="1" width="1" x="9" y="14"></rect> <rect height="1" width="1" x="8" y="15"></rect> <path d="M6,14.926V15H7V14.316A1.993,1.993,0,0,1,6,14.926Z"></path> <rect height="1" width="1" x="5" y="15"></rect> <path d="M10.668,13.8L10.317,13H10v1h0.792A1.947,1.947,0,0,1,10.668,13.8Z"></path> <rect height="1" width="1" x="11" y="15"></rect> <path d="M14.332,12.2a1.99,1.99,0,0,1,.166.8H15V12H14.245Z"></path> <rect height="1" width="1" x="14" y="15"></rect> <rect height="1" width="1" x="15" y="11"></rect> </g> <polyline class="ql-stroke" points="5.5 13 9 5 12.5 13"></polyline> <line class="ql-stroke" x1="11.63" x2="6.38" y1="11" y2="11"></line> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-4"><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#000000" style="background-color: rgb(0, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#e60000" style="background-color: rgb(230, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ff9900" style="background-color: rgb(255, 153, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#ffff00" style="background-color: rgb(255, 255, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#008a00" style="background-color: rgb(0, 138, 0);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#0066cc" style="background-color: rgb(0, 102, 204);"></span><span tabindex="0" role="button" class="ql-picker-item ql-primary" data-value="#9933ff" style="background-color: rgb(153, 51, 255);"></span><span tabindex="0" role="button" class="ql-picker-item ql-selected"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#facccc" style="background-color: rgb(250, 204, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffebcc" style="background-color: rgb(255, 235, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffffcc" style="background-color: rgb(255, 255, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce8cc" style="background-color: rgb(204, 232, 204);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#cce0f5" style="background-color: rgb(204, 224, 245);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ebd6ff" style="background-color: rgb(235, 214, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#bbbbbb" style="background-color: rgb(187, 187, 187);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#f06666" style="background-color: rgb(240, 102, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffc266" style="background-color: rgb(255, 194, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#ffff66" style="background-color: rgb(255, 255, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66b966" style="background-color: rgb(102, 185, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#66a3e0" style="background-color: rgb(102, 163, 224);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#c285ff" style="background-color: rgb(194, 133, 255);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#888888" style="background-color: rgb(136, 136, 136);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#a10000" style="background-color: rgb(161, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b26b00" style="background-color: rgb(178, 107, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#b2b200" style="background-color: rgb(178, 178, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#006100" style="background-color: rgb(0, 97, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#0047b2" style="background-color: rgb(0, 71, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#6b24b2" style="background-color: rgb(107, 36, 178);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#444444" style="background-color: rgb(68, 68, 68);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#5c0000" style="background-color: rgb(92, 0, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#663d00" style="background-color: rgb(102, 61, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#666600" style="background-color: rgb(102, 102, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#003700" style="background-color: rgb(0, 55, 0);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#002966" style="background-color: rgb(0, 41, 102);"></span><span tabindex="0" role="button" class="ql-picker-item" data-value="#3d1466" style="background-color: rgb(61, 20, 102);"></span></span></span><select class="ql-background" style="display: none;"><option value="#000000"></option><option value="#e60000"></option><option value="#ff9900"></option><option value="#ffff00"></option><option value="#008a00"></option><option value="#0066cc"></option><option value="#9933ff"></option><option selected="selected"></option><option value="#facccc"></option><option value="#ffebcc"></option><option value="#ffffcc"></option><option value="#cce8cc"></option><option value="#cce0f5"></option><option value="#ebd6ff"></option><option value="#bbbbbb"></option><option value="#f06666"></option><option value="#ffc266"></option><option value="#ffff66"></option><option value="#66b966"></option><option value="#66a3e0"></option><option value="#c285ff"></option><option value="#888888"></option><option value="#a10000"></option><option value="#b26b00"></option><option value="#b2b200"></option><option value="#006100"></option><option value="#0047b2"></option><option value="#6b24b2"></option><option value="#444444"></option><option value="#5c0000"></option><option value="#663d00"></option><option value="#666600"></option><option value="#003700"></option><option value="#002966"></option><option value="#3d1466"></option></select><span class="ql-align ql-picker ql-icon-picker"><span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-5"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="3" x2="15" y1="9" y2="9"></line> <line class="ql-stroke" x1="3" x2="13" y1="14" y2="14"></line> <line class="ql-stroke" x1="3" x2="9" y1="4" y2="4"></line> </svg></span><span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-5"><span tabindex="0" role="button" class="ql-picker-item ql-selected"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="3" x2="15" y1="9" y2="9"></line> <line class="ql-stroke" x1="3" x2="13" y1="14" y2="14"></line> <line class="ql-stroke" x1="3" x2="9" y1="4" y2="4"></line> </svg></span><span tabindex="0" role="button" class="ql-picker-item" data-value="center"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line> <line class="ql-stroke" x1="14" x2="4" y1="14" y2="14"></line> <line class="ql-stroke" x1="12" x2="6" y1="4" y2="4"></line> </svg></span><span tabindex="0" role="button" class="ql-picker-item" data-value="right"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line> <line class="ql-stroke" x1="15" x2="5" y1="14" y2="14"></line> <line class="ql-stroke" x1="15" x2="9" y1="4" y2="4"></line> </svg></span><span tabindex="0" role="button" class="ql-picker-item" data-value="justify"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line> <line class="ql-stroke" x1="15" x2="3" y1="14" y2="14"></line> <line class="ql-stroke" x1="15" x2="3" y1="4" y2="4"></line> </svg></span></span></span><select class="ql-align" style="display: none;"><option selected="selected"></option><option value="center"></option><option value="right"></option><option value="justify"></option></select></span><span class="ql-formats"><button type="button" class="ql-link"><svg viewBox="0 0 18 18"> <line class="ql-stroke" x1="7" x2="11" y1="7" y2="11"></line> <path class="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"></path> <path class="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"></path> </svg></button><button type="button" class="ql-image"><svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="10" width="12" x="3" y="4"></rect> <circle class="ql-fill" cx="6" cy="7" r="1"></circle> <polyline class="ql-even ql-fill" points="5 12 5 11 7 9 8 10 11 7 13 9 13 12 5 12"></polyline> </svg></button><button type="button" class="ql-code-block"><svg viewBox="0 0 18 18"> <polyline class="ql-even ql-stroke" points="5 7 3 9 5 11"></polyline> <polyline class="ql-even ql-stroke" points="13 7 15 9 13 11"></polyline> <line class="ql-stroke" x1="10" x2="8" y1="5" y2="13"></line> </svg></button><button type="button" class="ql-video"><svg viewBox="0 0 18 18"> <rect class="ql-stroke" height="12" width="12" x="3" y="3"></rect> <rect class="ql-fill" height="12" width="1" x="5" y="3"></rect> <rect class="ql-fill" height="12" width="1" x="12" y="3"></rect> <rect class="ql-fill" height="2" width="8" x="5" y="8"></rect> <rect class="ql-fill" height="1" width="3" x="3" y="5"></rect> <rect class="ql-fill" height="1" width="3" x="3" y="7"></rect> <rect class="ql-fill" height="1" width="3" x="3" y="10"></rect> <rect class="ql-fill" height="1" width="3" x="3" y="12"></rect> <rect class="ql-fill" height="1" width="3" x="12" y="5"></rect> <rect class="ql-fill" height="1" width="3" x="12" y="7"></rect> <rect class="ql-fill" height="1" width="3" x="12" y="10"></rect> <rect class="ql-fill" height="1" width="3" x="12" y="12"></rect> </svg></button></span></div><div class="pb-8 ql-container ql-snow" id="editor"><div class="ql-editor ql-blank" data-gramm="false" contenteditable="true"><p><br></p></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" rel="noopener noreferrer" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                                <!-- card -->
+                              <div class="card mb-4">
+                                  <!-- card body -->
+                                <div class="card-body">
+                                  <div>
+                                    <div class="mb-4">
+                                        <!-- heading -->
+                                      <h4 class="mb-4">Product Gallery</h4>
+                                      <h5 class="mb-1">Product Image</h5>
+                                      <p>Add Product main Image.</p>
+                                        <!-- input -->
+                                      <input type="file" class="form-control">
+                                    </div>
+                                    <div>
+                                        <!-- heading -->
+                                      <h5 class="mb-1">Product Gallery</h5>
+                                      <p>Add Product Gallery Images.</p>
+                                      <!-- input -->
+                                      <form action="#" class="d-block dropzone border-dashed rounded-2 dz-clickable">
+                                        
+                                      <div class="dz-default dz-message"><button class="dz-button" type="button">Drop files here to upload</button></div></form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-4 col-12">
+                                <!-- card -->
+                              <div class="card mb-4">
+                                  <!-- card body -->
+                                <div class="card-body">
+                                    <!-- input -->
+                                  <div class="form-check form-switch mb-4">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchStock" checked="">
+                                    <label class="form-check-label" for="flexSwitchStock">In Stock</label>
+                                  </div>
+                                    <!-- input -->
+                                  <div>
+                                    <div class="mb-3">
+                                      <label class="form-label">Product Code</label>
+                                      <input type="text" class="form-control" placeholder="Enter Product Title">
+                                    </div>
+                                      <!-- input -->
+                                    <div class="mb-3">
+                                      <label class="form-label">Product SKU</label>
+                                      <input type="text" class="form-control" placeholder="Enter Product Title">
+                                    </div>
+                                      <!-- input -->
+                                    <div class="mb-3">
+                                      <label class="form-label" id="productSKU">Gender</label><br>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                                      </div>
+                                        <!-- input -->
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                                      </div>
+                                        <!-- input -->
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option2">
+                                        <label class="form-check-label" for="inlineRadio3">Kids</label>
+                                      </div>
+                                    </div>
+                                      <!-- input -->
+                                    <div class="mb-3">
+                                      <div class="d-flex justify-content-between">
+                                        <label class="form-label">Category</label>
+                                        <a href="#!" class="btn-link fw-semi-bold">Add New</a>
+                                      </div>
+                                        <!-- select menu -->
+                                      <select class="form-select" aria-label="Default select example">
+                                        <option selected="">Shoe</option>
+                                        <option value="1">Sunglasses</option>
+                                        <option value="2">Handbag</option>
+                                        <option value="3">Slingbag</option>
+                                      </select>
+                                    </div>
+                                      <!-- tag -->
+                                    <div class="mb-3">
+                                      <label class="form-label">Tags
+                                      </label>
+                                      <tags class="tagify form-control w-100 tagify--noTags tagify--empty" tabindex="-1">
+            <span contenteditable="" tabindex="0" data-placeholder="&ZeroWidthSpace;" aria-placeholder="" class="tagify__input" role="textbox" aria-autocomplete="both" aria-multiline="false"></span>
+                &ZeroWidthSpace;
+        </tags><input name="tags" value="" class="form-control w-100" tabindex="-1">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                                <!-- card -->
+                              <div class="card mb-4">
+                                  <!-- card body -->
+                                <div class="card-body">
+                                    <!-- select -->
+                                  <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" aria-label="Default select example">
+                                      <option selected="">Published</option>
+                                      <option value="1">Unpublished</option>
+                                      <option value="2">Draft</option>
+                                    </select>
+                                  </div>
+                                    <!-- date -->
+                                  <div class="mb-3">
+                                    <label class="form-label">Schedule</label>
+                                    <div class="input-group me-3 flatpickr rounded flatpickr-input" readonly="readonly">
+                                        <input class="form-control " type="text" placeholder="Select Date" aria-describedby="basic-addon2">
+
+                                        <span class="input-group-text text-muted" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar icon-xs"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                                <!-- card -->
+                              <div class="card mb-4">
+                                  <!-- card body -->
+                                <div class="card-body">
+                                    <!-- input -->
+                                  <div class="mb-3">
+                                    <label class="form-label">Regular Price</label>
+                                    <input type="text" class="form-control" placeholder="$ 49.00">
+                                  </div>
+                                    <!-- input -->
+                                  <div class="mb-3">
+                                    <label class="form-label">Sale Price</label>
+                                    <input type="text" class="form-control" placeholder="$ 49.00">
+                                  </div>
+                                    <!-- input -->
+                                  <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="priceIncluded" checked="">
+                                    <label class="form-check-label" for="priceIncluded">
+                                      Price includes taxes</label>
+                                  </div>
+                                </div>
+                              </div>
+                                <!-- button -->
+                              <div class="d-grid">
+                                <a href="#!" class="btn btn-primary">
+                                  Create Product
+                                </a>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+<main class="main">
+	<div class="responsive-wrapper">
+		<div class="main-header">
+			<h1>Settings</h1>
+			<div class="search">
+				<input type="text" placeholder="Search" />
+				<button type="submit">
+					<i class="ph-magnifying-glass-bold"></i>
+				</button>
+			</div>
+		</div>
+		<div class="horizontal-tabs">
+			<a href="#">My details</a>
+			<a href="#">Profile</a>
+			<a href="#">Password</a>
+			<a href="#">Team</a>
+			<a href="#">Plan</a>
+			<a href="#">Billing</a>
+			<a href="#">Email</a>
+			<a href="#">Notifications</a>
+			<a href="#" class="active">Integrations</a>
+			<a href="#">API</a>
+		</div>
+		<div class="content-header">
+			<div class="content-header-intro">
+				<h2>Intergrations and connected apps</h2>
+				<p>Supercharge your workflow and connect the tool you use every day.</p>
+			</div>
+			<div class="content-header-actions">
+				<a href="#" class="button">
+					<i class="ph-faders-bold"></i>
+					<span>Filters</span>
+				</a>
+				<a href="#" class="button">
+					<i class="ph-plus-bold"></i>
+					<span>Request integration</span>
+				</a>
+			</div>
+		</div>
+		<div class="content">
+			<div class="content-panel">
+				<div class="vertical-tabs">
+					<a href="#" class="active">View all</a>
+					<a href="#">Developer tools</a>
+					<a href="#">Communication</a>
+					<a href="#">Productivity</a>
+					<a href="#">Browser tools</a>
+					<a href="#">Marketplace</a>
+				</div>
+			</div>
+			<div class="content-main">
+				<div class="carddashboardui-grid">
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/zeplin.svg" /></span>
+								<h3>Zeplin</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Collaboration between designers and developers.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/github.svg" /></span>
+								<h3>GitHub</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Link pull requests and automate workflows.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/figma.svg" /></span>
+								<h3>Figma</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Embed file previews in projects.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/zapier.svg" /></span>
+								<h3>Zapier</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox">
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Build custom automations and integrations with apps.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/notion.svg" /></span>
+								<h3>Notion</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Embed notion pages and notes in projects.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/slack.svg" /></span>
+								<h3>Slack</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Send notifications to channels and create projects.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/zendesk.svg" /></span>
+								<h3>Zendesk</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Link and automate Zendesk tickets.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/jira.svg" /></span>
+								<h3>Atlassian JIRA</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox">
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Plan, track, and release great software.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/dropbox.svg" /></span>
+								<h3>Dropbox</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Everything you need for work, all in one place.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/google-chrome.svg" /></span>
+								<h3>Google Chrome</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Link your Google account to share bookmarks across your entire team.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/discord.svg" /></span>
+								<h3>Discord</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox" checked>
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Keep in touch with your customers without leaving the app.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+					<article class="carddashboardui">
+						<div class="carddashboardui-header">
+							<div>
+								<span><img src="https://assets.codepen.io/285131/google-drive.svg" /></span>
+								<h3>Google Drive</h3>
+							</div>
+							<label class="toggle">
+								<input type="checkbox">
+								<span></span>
+							</label>
+						</div>
+						<div class="carddashboardui-body">
+							<p>Link your Google account to share files across your entire team.</p>
+						</div>
+						<div class="carddashboardui-footer">
+							<a href="#">View integration</a>
+						</div>
+					</article>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+
+    <!-- Libs JS -->
+<script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/libs/feather-icons/dist/feather.min.js"></script>
+<script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+
+
+
+<!-- Theme JS -->
+<script src="../assets/js/theme.min.js"></script>
+
+
+  </body>
+<script>
+let sidebar = document.querySelector(".sidebarWai");
+let openBtn = document.querySelector("#btnSidebarWAI");
+let closeBtn = document.querySelector(".btnClassClosSideBar");
+
+
+closeBtn.addEventListener("click", ()=>{
+	//alert();
+  sidebar.classList.toggle("open");
+  menuBtnChange();//calling the function(optional)
+});openBtn.addEventListener("click", ()=>{
+//	alert();
+  sidebar.classList.toggle("open");
+  menuBtnChange();//calling the function(optional)
+});
+
+
+
+// following are the code to change sidebar button(optional)
+function menuBtnChange() {
+ if(sidebar.classList.contains("open")){
+   closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+   //document.body.style = "background-color:rgba(0,0,0,0.3)";
+   document.getElementsByClassName("sidebarEffectHeader").style = "background-color:#00968854 !important";//#00968854 !important//#009688 !important
+   document.getElementsByClassName("sidebarEffectSub").style = "background-color:rgb(0,0,0,0) !important";//#00968854 !important//#009688 !important
+ }else {
+   closeBtn.classList.replace("bx-menu-alt-right","bx-menu");//replacing the iocns class
+  // document.body.style = "background-color:white";
+   document.getElementsByClassName("sidebarEffectHeader").style = "";
+   document.getElementsByClassName("sidebarEffectSub").style = "";
+    
+ }
+}
+
+</script>
+<script src=""></script>
+<script>
+import Swiper from "./swiper-bundle.esm.browser.min.js";
+
+const swiper = new Swiper('.swiper', {
+  loop: true,
+  slidesPerView: 'auto',
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: true
+  },
+  centeredSlides: true,
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  }
+});
+</script>
+
+<!-- Mirrored from dashui.codescandy.com/dashuipro/horizontal/starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 19 Sep 2023 09:32:15 GMT -->
+</html>

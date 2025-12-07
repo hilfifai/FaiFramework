@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>bootstrap-floating-label</title>
+<style>
+.form-control {
+  font: inherit;
+  letter-spacing: inherit;
+  color: currentcolor;
+  border: 0px none;
+  box-sizing: content-box;
+  background: none;
+  height: 1.4375em;
+  margin: 0px;
+  display: block;
+  min-width: 0px;
+  width: 100%;
+  animation-name: mui-auto-fill-cancel;
+  animation-duration: 10ms;
+  padding: 16.5px 14px;
+}.form-control:focus {
+  box-shadow:0px 0px!important;
+	border: 1px solid #ced4da;
+}
+
+.floating-label > input[placeholder]:not(:placeholder-shown) + label, .floating-label > textarea[placeholder]:not(:placeholder-shown) + label { {
+  text-align: left;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  top: -5px;
+  left: 0;
+  margin: 0;
+  padding: 0 8px;
+  pointer-events: none;
+  border-radius: inherit;
+  border-style: solid;
+  border-width: 1px;
+  overflow: hidden;
+  min-width: 0%;
+  border-color: rgba(0, 0, 0, 0.23);
+}
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="bootstrap.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+    <div class="container-fluid">
+      <h1>bootstrap-floating-label</h1>
+
+      <h2>input</h2>
+
+      <div class="mb-3 floating-label">
+        <input id="text" class="form-control" placeholder=" " />
+        <label for="text">input text</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="text-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+        <label for="text-placeholder">input text placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="text-value"
+          class="form-control"
+          placeholder=" "
+          value="Lorem ipsum dolor sit amet"
+        />
+        <label for="text-value">input text value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input type="email" id="email" class="form-control" placeholder=" " />
+        <label for="email">input email</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          type="email"
+          id="email-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+        <label for="email-placeholder">input email placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          type="email"
+          id="email-value"
+          class="form-control"
+          placeholder=" "
+          value="Lorem ipsum dolor sit amet"
+        />
+        <label for="email-value">input email value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input type="number" id="number" class="form-control" placeholder=" " />
+        <label for="number">input number</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          type="number"
+          id="number-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+        <label for="number-placeholder">input number placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input type="number" id="number-value" class="form-control" placeholder=" " value="10" />
+        <label for="number-value">input number value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input type="date" id="date" class="form-control" placeholder=" " />
+        <label for="date">input date</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          type="date"
+          id="date-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+        <label for="date-placeholder">input date placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          type="date"
+          id="date-value"
+          class="form-control"
+          placeholder=" "
+          value="2021-04-14"
+        />
+        <label for="date-value">input date value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-disabled" class="form-control" placeholder=" " disabled />
+        <label for="input-disabled">input disabled</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-disabled-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+          disabled
+        />
+        <label for="input-disabled-placeholder">input disabled placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-disabled-value"
+          class="form-control"
+          placeholder=" "
+          disabled
+          value="2021-04-14"
+        />
+        <label for="input-disabled-value">input disabled value</label>
+      </div>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <input id="fieldset-disabled-input" class="form-control" placeholder=" " />
+          <label for="fieldset-disabled-input">fieldset disabled input</label>
+        </div>
+      </fieldset>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <input
+            id="fieldset-disabled-input-placeholder"
+            class="form-control"
+            placeholder="Lorem ipsum dolor sit amet"
+          />
+          <label for="fieldset-disabled-input-placeholder">
+            fieldset disabled input placeholder
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <input
+            id="fieldset-disabled-input-value"
+            class="form-control"
+            placeholder=" "
+            value="Lorem ipsum dolor sit amet"
+          />
+          <label for="fieldset-disabled-input-value">fieldset disabled input value</label>
+        </div>
+      </fieldset>
+
+      <div class="mb-3 floating-label">
+        <input id="input-readonly" class="form-control" placeholder=" " readonly />
+        <label for="input-readonly">input readonly</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-readonly-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+          readonly
+        />
+        <label for="input-readonly-placeholder">input readonly placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-readonly-value"
+          class="form-control"
+          placeholder=" "
+          readonly
+          value="Lorem ipsum dolor sit amet"
+        />
+        <label for="input-readonly-value">input readonly value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-plaintext" class="form-control-plaintext" placeholder=" " />
+        <label for="input-plaintext">input plaintext</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-plaintext-placeholder"
+          class="form-control-plaintext"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+        <label for="input-plaintext-placeholder">input plaintext placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-plaintext-value"
+          class="form-control-plaintext"
+          placeholder=" "
+          value="Lorem ipsum dolor sit amet"
+        />
+        <label for="input-plaintext-value">input plaintext value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-plaintext-disabled"
+          class="form-control-plaintext"
+          placeholder=" "
+          disabled
+        />
+        <label for="input-plaintext-disabled">input plaintext disabled</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-plaintext-disabled-placeholder"
+          class="form-control-plaintext"
+          placeholder="Lorem ipsum dolor sit amet"
+          disabled
+        />
+        <label for="input-plaintext-disabled-placeholder">
+          input plaintext disabled placeholder
+        </label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="input-plaintext-disabled-value"
+          class="form-control-plaintext"
+          placeholder=" "
+          value="Lorem ipsum dolor sit amet"
+          disabled
+        />
+        <label for="input-plaintext-disabled-value">input plaintext disabled value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-no-placeholder-no-value" class="form-control" />
+        <label for="input-no-placeholder-no-value">input no placeholder no value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-disabled-no-placeholder-no-value" class="form-control" disabled />
+        <label for="input-disabled-no-placeholder-no-value">
+          input disabled no placeholder no value
+        </label>
+      </div>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <input id="fieldset-disabled-input-no-placeholder-no-value" class="form-control" />
+          <label for="fieldset-disabled-input-no-placeholder-no-value">
+            fieldset disabled input no placeholder no value
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="mb-3 floating-label">
+        <input id="input-readonly-no-placeholder-no-value" class="form-control" readonly />
+        <label for="input-readonly-no-placeholder-no-value">
+          input readonly no placeholder no value
+        </label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-no-placeholder-value" class="form-control" value="input" />
+        <label for="input-no-placeholder-value">input no placeholder value</label>
+      </div>
+
+      <h2>label transition background-color</h2>
+
+      <div class="mb-3 floating-label">
+        <input id="label-transition-background-color-no-placeholder" class="form-control" />
+        <label for="label-transition-background-color-no-placeholder">input text</label>
+      </div>
+      <script>
+        const inputNoPlaceholder = document.getElementById(
+          'label-transition-background-color-no-placeholder'
+        );
+        setInterval(() => (inputNoPlaceholder.disabled = !inputNoPlaceholder.disabled), 5000);
+      </script>
+
+      <div class="mb-3 floating-label">
+        <input
+          id="label-transition-background-color-value"
+          class="form-control"
+          placeholder=" "
+          value="Lorem ipsum dolor sit amet"
+        />
+        <label for="label-transition-background-color-value">input text</label>
+      </div>
+      <script>
+        const inputValue = document.getElementById('label-transition-background-color-value');
+        setInterval(() => (inputValue.disabled = !inputValue.disabled), 5000);
+      </script>
+
+      <h2>textarea</h2>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea" class="form-control" placeholder=" "></textarea>
+        <label for="textarea">textarea</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea
+          id="textarea-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        ></textarea>
+        <label for="textarea-placeholder">textarea placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea-value" class="form-control" placeholder=" ">
+Lorem ipsum dolor sit amet</textarea
+        >
+        <label for="textarea-value">textarea value</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea-disabled" class="form-control" placeholder=" " disabled></textarea>
+        <label for="textarea-disabled">textarea disabled</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea
+          id="textarea-disabled-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+          disabled
+        ></textarea>
+        <label for="textarea-disabled-placeholder">textarea disabled placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea-disabled-value" class="form-control" placeholder=" " disabled>
+Lorem ipsum dolor sit amet</textarea
+        >
+        <label for="textarea-disabled-value">textarea disabled value</label>
+      </div>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <textarea id="fieldset-disabled-textarea" class="form-control" placeholder=" "></textarea>
+          <label for="fieldset-disabled-textarea">fieldset disabled textarea</label>
+        </div>
+      </fieldset>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <textarea
+            id="fieldset-disabled-textarea-placeholder"
+            class="form-control"
+            placeholder="Lorem ipsum dolor sit amet"
+          ></textarea>
+          <label for="fieldset-disabled-textarea-placeholder">
+            fieldset disabled textarea placeholder
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <textarea id="fieldset-disabled-textarea-value" class="form-control" placeholder=" ">
+Lorem ipsum dolor sit amet</textarea
+          >
+          <label for="fieldset-disabled-textarea-value">fieldset disabled textarea value</label>
+        </div>
+      </fieldset>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea-readonly" class="form-control" placeholder=" " readonly></textarea>
+        <label for="textarea-readonly">textarea readonly</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea
+          id="textarea-readonly-placeholder"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+          readonly
+        ></textarea>
+        <label for="textarea-readonly-placeholder">textarea readonly placeholder</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <textarea id="textarea-readonly-value" class="form-control" placeholder=" " readonly>
+Lorem ipsum dolor sit amet</textarea
+        >
+        <label for="textarea-readonly-value">textarea readonly</label>
+      </div>
+
+      <h2>select</h2>
+
+      <div class="mb-3 floating-label">
+        <select class="form-control" id="select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select">select</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select class="form-control" id="select-no-option"></select>
+        <label for="select-no-option">select no option</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select class="form-control" id="select-disabled" disabled>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select-disabled">select disabled</label>
+      </div>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <select id="fieldset-disabled-select" class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <label for="fieldset-disabled-select">fieldset disabled select</label>
+        </div>
+      </fieldset>
+
+      <!-- [<select> cannot be readonly](https://stackoverflow.com/a/54955886) -->
+
+      <div class="mb-3 floating-label">
+        <select multiple class="form-control" id="select-multiple">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select-multiple">select multiple</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select class="form-select" id="form-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="form-select">form-select</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select class="form-select" id="form-select-disabled" disabled>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="form-select-disabled">form-select disabled</label>
+      </div>
+
+      <fieldset disabled>
+        <div class="mb-3 floating-label">
+          <select class="form-select" id="fieldset-disabled-form-select">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <label for="fieldset-disabled-form-select">fieldset disabled form-select</label>
+        </div>
+      </fieldset>
+
+      <h2>
+        <a href="https://getbootstrap.com/docs/5.0/forms/form-control/#sizing">Sizing</a>
+      </h2>
+
+      <div class="mb-3 floating-label">
+        <input id="input-form-control-lg" class="form-control form-control-lg" placeholder=" " />
+        <label for="input-form-control-lg">input form-control-lg</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-form-control-sm" class="form-control form-control-sm" placeholder=" " />
+        <label for="input-form-control-sm">input form-control-sm</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select id="form-select-lg" class="form-select form-select-lg">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="form-select-lg">form-select-lg</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select id="form-select-sm" class="form-select form-select-sm">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="form-select-sm">form-select-sm</label>
+      </div>
+
+      <h2>Label sizing</h2>
+
+      <div class="mb-3 floating-label">
+        <input id="input-label-lg" class="form-control form-control-lg" placeholder=" " />
+        <label for="input-label-lg" class="label-lg">label-lg</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-label-md" class="form-control" placeholder=" " />
+        <label for="input-label-md" class="label-md">label-md</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <input id="input-label-sm" class="form-control form-control-sm" placeholder=" " />
+        <label for="input-label-sm">label-sm</label>
+      </div>
+
+      <br />
+
+      <div class="mb-3 floating-label">
+        <select id="select-label-lg" class="form-select form-select-lg">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select-label-lg" class="label-lg">label-lg</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select id="select-label-md" class="form-select">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select-label-md" class="label-md">label-md</label>
+      </div>
+
+      <div class="mb-3 floating-label">
+        <select id="select-label-sm" class="form-select form-select-sm">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+        <label for="select-label-sm">label-sm</label>
+      </div>
+
+      <h2>input-group</h2>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label">
+            <input id="input-group-prepend" class="form-control" placeholder=" " />
+            <label for="input-group-prepend">input-group prepend</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group floating-label">
+          <input id="input-group-append" class="form-control" placeholder=" " />
+          <label for="input-group-append">input-group append</label>
+          <span class="input-group-text">append</span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label">
+            <input id="input-group-prepend-append" class="form-control" placeholder=" " />
+            <label for="input-group-prepend-append">input-group prepend append</label>
+          </div>
+          <span class="input-group-text">append</span>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <div class="floating-label">
+            <input id="input-group-start" class="form-control" placeholder=" " />
+            <label for="input-group-start">input-group start</label>
+          </div>
+          <span class="input-group-text">middle</span>
+          <div class="floating-label">
+            <input id="input-group-end" class="form-control" placeholder=" " />
+            <label for="input-group-end">input-group end</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend1</span>
+          <span class="input-group-text">prepend2</span>
+          <div class="floating-label">
+            <input id="input-group-prepend2-append2-1" class="form-control" placeholder=" " />
+            <label for="input-group-prepend2-append2-1">input-group prepend * 2 append * 2</label>
+          </div>
+          <div class="floating-label">
+            <input id="input-group-prepend2-append2-2" class="form-control" placeholder=" " />
+            <label for="input-group-prepend2-append2-2">input-group prepend * 2 append * 2</label>
+          </div>
+          <span class="input-group-text">append1</span>
+          <span class="input-group-text">append2</span>
+        </div>
+      </div>
+
+      <h2>validation</h2>
+
+      <div class="mb-3 floating-label">
+        <input id="text-is-valid" class="form-control is-valid" placeholder=" " />
+        <label for="text-is-valid">input text</label>
+        <div class="valid-feedback">valid-feedback</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label is-valid">
+            <input
+              id="input-group-prepend-is-valid"
+              class="form-control is-valid"
+              placeholder=" "
+            />
+            <label for="input-group-prepend-is-valid">input-group prepend</label>
+          </div>
+          <div class="valid-feedback">valid-feedback</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group floating-label is-valid">
+          <input id="input-group-append-is-valid" class="form-control is-valid" placeholder=" " />
+          <label for="input-group-append-is-valid">input-group append</label>
+          <span class="input-group-text">append</span>
+        </div>
+        <div class="valid-feedback">valid-feedback</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label is-valid">
+            <input
+              id="input-group-prepend-append-is-valid"
+              class="form-control is-valid"
+              placeholder=" "
+            />
+            <label for="input-group-prepend-append-is-valid">input-group prepend append</label>
+          </div>
+          <span class="input-group-text">append</span>
+          <div class="valid-feedback">valid-feedback</div>
+        </div>
+      </div>
+
+      <!--  -->
+
+      <div class="mb-3 floating-label">
+        <input id="text-is-invalid" class="form-control is-invalid" placeholder=" " />
+        <label for="text-is-invalid">input text</label>
+        <div class="invalid-feedback">invalid-feedback</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label is-invalid">
+            <input
+              id="input-group-prepend-is-invalid"
+              class="form-control is-invalid"
+              placeholder=" "
+            />
+            <label for="input-group-prepend-is-invalid">input-group prepend</label>
+          </div>
+          <div class="invalid-feedback">invalid-feedback</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group floating-label is-invalid">
+          <input
+            id="input-group-append-is-invalid"
+            class="form-control is-invalid"
+            placeholder=" "
+          />
+          <label for="input-group-append-is-invalid">input-group append</label>
+          <span class="input-group-text">append</span>
+        </div>
+        <div class="invalid-feedback">invalid-feedback</div>
+      </div>
+
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text">prepend</span>
+          <div class="floating-label is-invalid">
+            <input
+              id="input-group-prepend-append-is-invalid"
+              class="form-control is-invalid"
+              placeholder=" "
+            />
+            <label for="input-group-prepend-append-is-invalid">input-group prepend append</label>
+          </div>
+          <span class="input-group-text">append</span>
+          <div class="invalid-feedback">invalid-feedback</div>
+        </div>
+      </div>
+
+      <h2>RTL</h2>
+
+      <div dir="rtl">
+        <div class="mb-3 floating-label">
+          <input id="input-rtl" class="form-control" placeholder=" " />
+          <label for="input-rtl">input RTL</label>
+        </div>
+
+        <div class="mb-3 floating-label">
+          <select class="form-select" id="select-rtl">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <label for="select-rtl">select RTL</label>
+        </div>
+      </div>
+
+      <h2>datalist</h2>
+
+      <div class="mb-3 floating-label">
+        <input id="input-datalist" list="datalistOptions" class="form-control" placeholder=" " />
+        <label for="input-datalist">input datalist</label>
+        <datalist id="datalistOptions">
+          <option value="San Francisco" />
+          <option value="New York" />
+          <option value="Seattle" />
+          <option value="Los Angeles" />
+          <option value="Chicago" />
+        </datalist>
+      </div>
+
+      <h2>Label before input</h2>
+
+      <div class="mb-3">
+        <label for="input">input text + placeholder</label>
+        <input id="input" class="form-control" placeholder="Lorem ipsum dolor sit amet" />
+      </div>
+
+      <div class="mb-3 floating-label">
+        <label for="input-floating-label">input text + placeholder + floating-label</label>
+        <input
+          id="input-floating-label"
+          class="form-control"
+          placeholder="Lorem ipsum dolor sit amet"
+        />
+      </div>
+    </div>
+
+    <script type="module" src="./index.ts"></script>
+  </body>
+</html>

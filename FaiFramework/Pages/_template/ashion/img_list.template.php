@@ -1,0 +1,1 @@
+<img data-hash="product-<ID-PRODUK></ID-PRODUK>" class="product__big__img" src="<SRC></SRC>" alt="">

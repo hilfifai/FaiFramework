@@ -1,0 +1,1 @@
+ <img class="swiper-slide" src="<BASE-URL></BASE-URL><IMG></IMG>" alt="Swiper" style="border-radius: 20px;">

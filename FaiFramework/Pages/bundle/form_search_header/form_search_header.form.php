@@ -1,0 +1,1 @@
+<form id="search-form" class="text-center" action="http://localhost/frameworkServer/search" method="get">

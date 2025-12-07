@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Floating Label - Pure CSS</title>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/inter-ui@3.11.0/inter.min.css'><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+<div class="did-floating-label-content">
+  <input class="did-floating-input" type="text" placeholder=" ">
+  <label class="did-floating-label">Sale Price</label>
+</div>
+  <div class="did-floating-label-content input-group">
+    <span class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </span>
+  <input class="did-floating-input" type="text" placeholder=" ">
+  <label class="did-floating-label">Sale Price with $ symbol</label>
+</div>
+<div class="did-floating-label-content">
+  <select class="did-floating-select" onclick="this.setAttribute('value', this.value);" onchange="this.setAttribute('value', this.value);" value="">
+    <option value=""></option>
+    <option value="1">Alabama</option>
+    <option value="2">Boston</option>
+    <option value="3">Ohaio</option>
+    <option value="4">New York</option>
+    <option value="5">Washington</option>
+  </select>
+  <label class="did-floating-label">Select</label>
+</div>
+  <div class="did-floating-label-content did-error-input">
+  <input class="did-floating-input" type="text" placeholder=" ">
+  <label class="did-floating-label">Sale Price</label>
+</div>
+  <div class="did-floating-label-content did-error-input">
+  <select class="did-floating-select" onclick="this.setAttribute('value', this.value);" value="">
+    <option value=""></option>
+    <option value="1">Alabama</option>
+    <option value="2">Boston</option>
+    <option value="3">Ohaio</option>
+    <option value="4">New York</option>
+    <option value="5">Washington</option>
+  </select>
+  <label class="did-floating-label">Select</label>
+</div>
+</div>
+<!-- partial -->
+  
+</body>
+</html>

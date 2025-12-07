@@ -1,0 +1,2 @@
+<link rel="stylesheet" href="<BE3-LINK-TEMPLATE></BE3-LINK-TEMPLATE>finapp/base/view/assets/css/style.css">
+<link rel="stylesheet" href="<BE3-LINK-TEMPLATE></BE3-LINK-TEMPLATE>finapp/base/ionicons@4.5.10-0/dist/css/ionicons.min.css">

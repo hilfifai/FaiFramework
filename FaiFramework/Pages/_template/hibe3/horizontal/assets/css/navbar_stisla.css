@@ -1,0 +1,339 @@
+/*
+    .navbar-stisla {
+      height: 70px;
+      left: 250px;
+      right: 5px;
+      position: absolute;
+      z-index: 890;
+      background-color: transparent;
+    }
+    */
+    .navbar-stisla.active {
+      background-color: color(--c-background-primary);
+    }
+
+    .navbar-stisla-bg {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 115px;
+      background-color: color(--c-background-primary);
+      z-index: -1;
+    }
+
+    .navbar-stisla {
+      align-items: center;
+    }
+
+    .navbar-stisla .navbar-stisla-brand {
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+
+    .navbar-stisla .form-inline .form-control {
+      background-color: #fff;
+      border-color: transparent;
+      padding-left: 20px;
+      padding-right: 0;
+      margin-right: -6px;
+      min-height: 46px;
+      font-weight: 500;
+      border-radius: 3px 0 0 3px;
+      transition: all 1s;
+    }
+
+    .navbar-stisla .form-inline .form-control:focus,
+    .navbar-stisla .form-inline .form-control:focus+.btn {
+      position: relative;
+      z-index: 9001;
+    }
+
+    .navbar-stisla .form-inline .form-control:focus+.btn+.search-backdrop {
+      opacity: 0.6;
+      visibility: visible;
+    }
+
+    .navbar-stisla .form-inline .form-control:focus+.btn+.search-backdrop+.search-result {
+      opacity: 1;
+      visibility: visible;
+      top: 80px;
+    }
+
+    .navbar-stisla .form-inline .btn {
+      border-radius: 0 3px 3px 0;
+      background-color: #fff;
+      padding: 9px 15px 9px 15px;
+      border-color: transparent;
+    }
+
+    .navbar-stisla .form-inline .search-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9000;
+      background-color: #000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s;
+    }
+
+    .navbar-stisla .form-inline .search-result {
+      position: absolute;
+      z-index: 9002;
+      top: 100px;
+      background-color: #fff;
+      border-radius: 3px;
+      width: 450px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s;
+    }
+
+    .navbar-stisla .form-inline .search-result:before {
+      position: absolute;
+      top: -26px;
+      left: 34px;
+      content: '\f0d8';
+      font-weight: 600;
+      color: #fff;
+      font-size: 30px;
+    }
+
+    .navbar-stisla .form-inline .search-result .search-header {
+      padding: 13px 18px 2px 18px;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-weight: 600;
+      font-size: 10px;
+      color: color_lighten(font, 30%);
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item {
+      display: flex;
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item a {
+      display: block;
+      padding: 13px 18px;
+      text-decoration: none;
+      color: color(fontdark);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item a:hover {
+      background-color: color_lighten(primary, 32%);
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item a:not(.search-close) {
+      width: 100%;
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item a i {
+      margin-left: 0 !important;
+    }
+
+    .navbar-stisla .form-inline .search-result .search-item .search-icon {
+      width: 35px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      border-radius: 50%;
+    }
+
+    .navbar-stisla .active .nav-link {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .navbar-stisla .navbar-stisla-text {
+      color: #fff;
+    }
+
+    .navbar-stisla .nav-link {
+      color: #f2f2f2;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      height: 100%;
+    }
+
+    .navbar-stisla .nav-link.nav-link-lg div {
+      margin-top: 3px;
+    }
+
+    .navbar-stisla .nav-link.nav-link-lg i {
+      margin-left: 0 !important;
+      font-size: 18px;
+      line-height: 32px;
+    }
+
+    .navbar-stisla .nav-link.nav-link-user {
+      color: #fff;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .navbar-stisla .nav-link.nav-link-user img {
+      width: 30px;
+    }
+
+    .navbar-stisla .nav-link.nav-link-img {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    .navbar-stisla .nav-link.nav-link-img .flag-icon {
+      border-radius: 50%;
+      line-height: 18px;
+      height: 22px;
+      width: 22px;
+      background-size: cover;
+    }
+
+    .remove-caret:after {
+      display: none;
+    }
+
+    .navbar-stisla .nav-link:hover {
+      color: #fff;
+    }
+
+    .navbar-stisla .nav-link.disabled {
+      color: #fff;
+      opacity: 0.6;
+    }
+
+    .nav-collapse {
+      display: flex;
+    }
+
+    @media only screen and (max-width: 600px)) {
+      body.search-show .navbar-stisla .form-inline .search-element {
+        display: inline-flex;
+      }
+
+      .navbar-stisla .form-inline .search-element {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        z-index: 892;
+        display: none;
+      }
+
+      .navbar-stisla .form-inline .search-element .form-control {
+        float: left;
+        border-radius: 3px 0 0 3px;
+        width: calc(100% - 43px) !important;
+      }
+
+      .navbar-stisla .form-inline .search-element .btn {
+        margin-top: 1px;
+        border-radius: 0 3px 3px 0;
+      }
+
+      .navbar-stisla .form-inline .search-result {
+        width: 100%;
+      }
+
+      .navbar-stisla .form-inline .search-backdrop {
+        display: none;
+      }
+
+      .navbar-stisla .nav-link.nav-link-lg div {
+        display: none;
+      }
+    }
+
+    @media only screen and (min-width: 600px) {
+      .navbar-stisla .form-inline .search-element {
+        display: flex;
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      .collapse {
+        position: relative;
+      }
+
+      .collapse .navbar-stisla-nav {
+        position: absolute;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .nav-collapse {
+        position: relative;
+      }
+
+      .nav-collapse .navbar-stisla-nav {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 200px;
+        display: none;
+      }
+
+      .nav-collapse .navbar-stisla-nav.show {
+        display: block;
+      }
+
+      .nav-collapse .navbar-stisla-nav .nav-item:first-child {
+        border-radius: 3px 3px 0 0;
+      }
+
+      .nav-collapse .navbar-stisla-nav .nav-item:last-child {
+        border-radius: 0 0 3px 3px;
+      }
+
+      .nav-collapse .navbar-stisla-nav .nav-item .nav-link {
+        background-color: #fff;
+        color: color(font);
+      }
+
+      .nav-collapse .navbar-stisla-nav .nav-item .nav-link:hover {
+        background-color: color_lighten(light, 7.6%);
+        color: color(primary);
+      }
+
+      .nav-collapse .navbar-stisla-nav .nav-item:focus>a,
+      .nav-collapse .navbar-stisla-nav .nav-item.active>a {
+        background-color: color(primary);
+        color: #fff;
+      }
+
+      .navbar-stisla .dropdown-menu {
+        position: absolute;
+      }
+
+      .navbar-stisla .navbar-stisla-nav {
+        flex-direction: row;
+      }
+
+      .navbar-stisla-expand-lg .navbar-stisla-nav .dropdown-menu-right {
+        right: 0;
+        left: auto;
+      }
+    }
+
+    .search-show .navbar-stisla .form-inline {
+      display: block !important;
+      display: block !important;
+      position: absolute;
+      top: 0;
+    }
+	.search-show .navbar-stisla .container-fluid {
+		margin-left: -12px;
+    }

@@ -1,0 +1,172 @@
+<li class="nav-item">
+          <a class="nav-link has-arrow" href="#!" data-bs-toggle="collapse" data-bs-target="#navMenuLevel" aria-expanded="true" aria-controls="navMenuLevel">
+            <div class="icon-box bg-primary">
+              <ion-icon name="pie-chart-outline"></ion-icon>
+            </div> Menu Level
+          </a>
+          <div id="navMenuLevel" class="collapse " data-bs-parent="#sideNavbar">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link has-arrow " href="#!" data-bs-toggle="collapse" data-bs-target="#navMenuLevelSecond" aria-expanded="false" aria-controls="navMenuLevelSecond">
+                  Two Level
+                </a>
+                <div id="navMenuLevelSecond" class="collapse" data-bs-parent="#navMenuLevel">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link " href="#!">
+                        NavItem 1</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#!">
+                        NavItem 2</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link has-arrow  collapsed  " href="#!" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThree" aria-expanded="false" aria-controls="navMenuLevelThree">
+                  Three Level
+                </a>
+                <div id="navMenuLevelThree" class="collapse " data-bs-parent="#navMenuLevel">
+                  <ul class="nav flex-column">
+                    <li class="nav-item">
+                      <a class="nav-link  collapsed " href="#!" data-bs-toggle="collapse" data-bs-target="#navMenuLevelThreeOne" aria-expanded="false" aria-controls="navMenuLevelThreeOne">
+                        NavItem 1
+                      </a>
+                      <div id="navMenuLevelThreeOne" class="collapse collapse " data-bs-parent="#navMenuLevelThree">
+                        <ul class="nav flex-column">
+                          <li class="nav-item">
+                            <a class="nav-link " href="#!">
+                              NavChild Item 1
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="#!">
+                        Nav Item 2</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <ul class="listview flush transparent no-line image-listview   ">
+
+          <!-- Nav item -->
+          <li class="nav-item">
+            <div class="navbar-heading">Documentation</div>
+          </li>
+          <li>
+            <a href="app-index.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="pie-chart-outline"></ion-icon>
+              </div>
+              <div class="in">
+                Overview
+                <span class="badge badge-primary">10</span>
+              </div>
+            </a>
+            <ul>
+              <li>
+                <a href="app-pages.html" class="item">
+                  <div class="icon-box bg-primary">
+                    <ion-icon name="document-text-outline"></ion-icon>
+                  </div>
+                  <div class="in">
+                    Pages
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="app-components.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="apps-outline"></ion-icon>
+              </div>
+              <div class="in">
+                Components
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="app-cards.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="card-outline"></ion-icon>
+              </div>
+              <div class="in">
+                My Cards
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- * menu -->
+
+        <!-- others -->
+        <div class="listview-title mt-1">Others</div>
+        <ul class="listview flush transparent no-line image-listview">
+          <li>
+            <a href="app-settings.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="settings-outline"></ion-icon>
+              </div>
+              <div class="in">
+                Settings
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="component-messages.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="chatbubble-outline"></ion-icon>
+              </div>
+              <div class="in">
+                Support
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="app-login.html" class="item">
+              <div class="icon-box bg-primary">
+                <ion-icon name="log-out-outline"></ion-icon>
+              </div>
+              <div class="in">
+                Log out
+              </div>
+            </a>
+          </li>
+        </ul>
+        <!-- * others -->
+
+        <!-- send money -->
+        <div class="listview-title mt-1">Send Money</div>
+        <ul class="listview image-listview flush transparent no-line">
+          <li>
+            <a href="#" class="item">
+              <img src="assets/img/sample/avatar/avatar2.jpg" alt="image" class="image">
+              <div class="in">
+                <div>Artem Sazonov</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item">
+              <img src="assets/img/sample/avatar/avatar4.jpg" alt="image" class="image">
+              <div class="in">
+                <div>Sophie Asveld</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item">
+              <img src="assets/img/sample/avatar/avatar3.jpg" alt="image" class="image">
+              <div class="in">
+                <div>Kobus van de Vegte</div>
+              </div>
+            </a>
+          </li>
+        </ul>

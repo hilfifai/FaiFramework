@@ -1,0 +1,1286 @@
+{
+    "version": "1.0",
+    "template": [],
+    "created_at": "2025-06-28 11:51:21",
+    "data-versions": {
+        "router": {
+            "1": [
+                0
+            ]
+        },
+        "menu_ecommerce_frontend": {
+            "1": [
+                6
+            ]
+        },
+        "utama": {
+            "1": [
+                6
+            ]
+        }
+    },
+    "versions": {
+        "router": {
+            "versions": {
+                "1.0.0": [
+                    "menu_ecommerce_frontend"
+                ]
+            },
+            "last_version": "1.0.0",
+            "last_generate_date": "2025-06-28"
+        },
+        "menu_ecommerce_frontend": {
+            "versions": {
+                "1.0.0": null,
+                "1.0.1": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                [
+                                    "Home",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Belanja",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Pendaftaran Mitra",
+                                    "Mitra",
+                                    "landing_page_pendaftaran_mitra",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ],
+                                [
+                                    "Pesanan Saya",
+                                    "Ecommerce",
+                                    "pesanan_saya",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ],
+                                [
+                                    "Kontak Kami",
+                                    "Mitra",
+                                    "landing_page_pendaftaran_mitra",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ]
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                [
+                                    "Home",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Belanja",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Pendaftaran Mitra",
+                                    "Mitra",
+                                    "landing_page_pendaftaran_mitra",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ],
+                                [
+                                    "Pesanan Saya",
+                                    "Ecommerce",
+                                    "pesanan_saya",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ],
+                                [
+                                    "Kontak Kami",
+                                    "Mitra",
+                                    "landing_page_pendaftaran_mitra",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ]
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                [
+                                    "Home",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Belanja",
+                                    "Workspace",
+                                    "home_ecommerce",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    false
+                                ],
+                                [
+                                    "Pesanan Saya",
+                                    "Ecommerce",
+                                    "pesanan_saya",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ],
+                                [
+                                    "Kontak Kami",
+                                    "Mitra",
+                                    "landing_page_pendaftaran_mitra",
+                                    "view_layout",
+                                    "-1",
+                                    "-1",
+                                    "-1",
+                                    true
+                                ]
+                            ]
+                        }
+                    }
+                },
+                "1.0.2": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing_page_pendaftaran_mitra",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan_saya",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing_page_pendaftaran_mitra",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing_page_pendaftaran_mitra",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan_saya",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing_page_pendaftaran_mitra",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home_ecommerce",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan_saya",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing_page_pendaftaran_mitra",
+                                    "2": "view_layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                "1.0.3": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                "1.0.4": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                "1.0.5": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    },
+                    "v2.moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    }
+                },
+                "1.0.6": {
+                    "moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "belanja-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    },
+                    "v2.moesneeds.id": {
+                        "public": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "belanja-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "user": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pendaftaran Mitra",
+                                    "0": "Mitra",
+                                    "1": "landing-page-pendaftaran-mitra",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        },
+                        "mitra": {
+                            "list": [
+                                {
+                                    "nama": "Home",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Belanja",
+                                    "0": "Workspace",
+                                    "1": "home-ecommerce",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": false
+                                },
+                                {
+                                    "nama": "Pesanan Saya",
+                                    "0": "Ecommerce",
+                                    "1": "pesanan-saya",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                },
+                                {
+                                    "nama": "Kontak Kami",
+                                    "0": "Workspace",
+                                    "1": "kontak-kami",
+                                    "2": "view-layout",
+                                    "3": "-1",
+                                    "4": "-1",
+                                    "5": "-1",
+                                    "6": true
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "last_version": "1.0.6",
+            "last_generate_date": "2025-07-20"
+        }
+    },
+    "alast_version": "1.0.6",
+    "alast_generate_date": "2025-07-20"
+}

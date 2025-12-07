@@ -1,0 +1,1086 @@
+{
+  "tags": [],
+  "lastNodeId": 1005,
+  "nodes": [
+    {
+      "kind": "Text",
+      "id": 1,
+      "name": "[PO]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 2,
+          "name": "TAMBAH",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 3,
+              "name": "PAGE PENERIMAAN",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 4,
+              "name": "Tambah informasi sudah bayar atau belum di save",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 5,
+              "name": "Barang sudah diterima atau belum di save",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 6,
+          "name": "PENERIMAAN",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 7,
+              "name": "Bisa edit & hapus yang sudah ada",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 8,
+                  "name": "Edit button clear",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 9,
+                  "name": "Simpan edit clear",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 10,
+                  "name": "Kembali dari edit clear",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 11,
+                  "name": "Hapus clear",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 12,
+              "name": "Bisa tambah rack",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 13,
+              "name": "Bisa multiple penerimaan",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 14,
+              "name": "After Save",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 15,
+                  "name": "Nomor receive",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 16,
+                  "name": "Tanggal receive",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 17,
+          "name": "DETAIL",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 18,
+              "name": "Bisa tambah item",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 19,
+                  "name": "Scanner page",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 20,
+                  "name": "Konfirm",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 21,
+                  "name": "Harga",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 22,
+                  "name": "Return back content & setup",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 23,
+              "name": "Edit item",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 24,
+              "name": "Hapus item",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 25,
+              "name": "Re-render setelah save",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 26,
+          "name": "PEMBAYARAN",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 27,
+              "name": "Ambil list dari database",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 28,
+              "name": "Bisa tambah inisiasi payment",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 29,
+              "name": "Data metode & brand sesuai database",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 30,
+              "name": "Bisa nambah split bill",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 31,
+              "name": "Bisa tambah konfirmasi pembayaran",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 32,
+              "name": "Update sudah bayar",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 33,
+              "name": "Bisa tambah pembayaran kalau kurang",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 34,
+              "name": "Bisa tambah lagi setelah split bill terkirim",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 35,
+          "name": "EDIT",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 36,
+              "name": "Save edit PO",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 37,
+          "name": "LIST",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 38,
+              "name": "Tambah informasi per stage",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 39,
+                  "name": "Penerimaan: Proses 20/100",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 40,
+                  "name": "Pembayaran",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [
+                    {
+                      "kind": "Checkbox",
+                      "id": 41,
+                      "name": "Coa belum terpilih",
+                      "tags": [],
+                      "description": "",
+                      "nodes": [],
+                      "collapsed": false,
+                      "checked": true
+                    },
+                    {
+                      "kind": "Checkbox",
+                      "id": 42,
+                      "name": "Pembayaran sedang diverifikasi",
+                      "tags": [],
+                      "description": "",
+                      "nodes": [],
+                      "collapsed": false,
+                      "checked": true
+                    }
+                  ],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 43,
+              "name": "Ubah status",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 44,
+                  "name": "DRAFT = bisa edit tapi tidak bisa nambah penerimaan & payment",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 45,
+                  "name": "PROSES = tidak edit item",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 46,
+                  "name": "SELESAI = tidak bisa edit",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 47,
+          "name": "RETUR (PO)",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 48,
+              "name": "Tampilan tambah retur dari penerimaan",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": false
+            }
+          ],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": true
+    },
+    {
+      "kind": "Text",
+      "id": 49,
+      "name": "[PO PRODUCT]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 50,
+          "name": "ADD PRODUK",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 51,
+              "name": "Add nama preorder",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 52,
+              "name": "Optimasi load produk",
+              "tags": [],
+              "description": "",
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 53,
+                  "name": "View storage",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 54,
+                  "name": "View produk list",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                },
+                {
+                  "kind": "Checkbox",
+                  "id": 55,
+                  "name": "Perubahan pengambilan produk",
+                  "tags": [],
+                  "description": "",
+                  "nodes": [],
+                  "collapsed": false,
+                  "checked": true
+                }
+              ],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 56,
+              "name": "Tambah ke produk",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 57,
+              "name": "Tambah ke user",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 58,
+          "name": "STOK",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 59,
+              "name": "function get stok",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 60,
+              "name": "Search produk",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": false
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 61,
+          "name": "Cart API Preorder",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 62,
+          "name": "Pesan API Preorder",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": true
+    },
+    {
+      "kind": "Text",
+      "id": 63,
+      "name": "[USER]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 64,
+          "name": "Header Search",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 65,
+              "name": "Loading",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 66,
+              "name": "Data sesuai",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 67,
+              "name": "Onclick",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": true,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 68,
+          "name": "Login redirect setelah login",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 69,
+          "name": "Ubah text setelah get stok",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 70,
+          "name": "Cart Page",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 71,
+              "name": "Load page",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 72,
+          "name": "Product Page",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 73,
+              "name": "Total terjual",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": true
+        },
+        {
+          "kind": "Checkbox",
+          "id": 74,
+          "name": "Checkout Page",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 1005,
+              "name": "Provinsi kota harus wajib dari API",
+              "tags": [],
+              "description": null,
+              "nodes": [],
+              "collapsed": true,
+              "checked": false
+            },
+            {
+              "kind": "Checkbox",
+              "id": 1000,
+              "name": "LIST PENERIMA",
+              "tags": [],
+              "description": null,
+              "nodes": [],
+              "collapsed": true,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 1001,
+              "name": "PILIH DROPSHIP TIDAK ADA",
+              "tags": [],
+              "description": null,
+              "nodes": [],
+              "collapsed": true,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 75,
+              "name": "Load page",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 1003,
+              "name": "Pilih SAlah satu ongkir",
+              "tags": [],
+              "description": null,
+              "nodes": [
+                {
+                  "kind": "Checkbox",
+                  "id": 1004,
+                  "name": "Pilih salah satu penerima",
+                  "tags": [],
+                  "description": null,
+                  "nodes": [],
+                  "collapsed": true,
+                  "checked": false
+                }
+              ],
+              "collapsed": true,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 1002,
+              "name": "GAMBAR PRODUK",
+              "tags": [],
+              "description": null,
+              "nodes": [],
+              "collapsed": true,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 76,
+              "name": "Tidak ada pembeda setelah ongkir",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 77,
+              "name": "Tambah alamat",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 78,
+              "name": "Konfirmasi hanya require file pembayaran",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 79,
+          "name": "Bayar Page",
+          "tags": [],
+          "description": "",
+          "nodes": [
+            {
+              "kind": "Checkbox",
+              "id": 80,
+              "name": "Logo QRIS",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 81,
+              "name": "Nominal terisi",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            },
+            {
+              "kind": "Checkbox",
+              "id": 82,
+              "name": "Tanggal bayar",
+              "tags": [],
+              "description": "",
+              "nodes": [],
+              "collapsed": false,
+              "checked": true
+            }
+          ],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 83,
+          "name": "Page konfirmasi pembayaran dari user",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": true
+        }
+      ],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 84,
+      "name": "[SO]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 85,
+          "name": "Tambah",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 86,
+          "name": "Detail",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 87,
+          "name": "List",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": true
+    },
+    {
+      "kind": "Text",
+      "id": 88,
+      "name": "[WA API PAYMENT]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 89,
+          "name": "Init WA API",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        },
+        {
+          "kind": "Checkbox",
+          "id": 90,
+          "name": "Save to database",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": true
+    },
+    {
+      "kind": "Text",
+      "id": 91,
+      "name": "[DO]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 92,
+          "name": "Update ke database scan resi",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 93,
+      "name": "[PAYMENT]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 94,
+          "name": "Perbaiki tampilan",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 95,
+      "name": "[REKAP STOK]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 96,
+          "name": "Perbaiki query",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 97,
+      "name": "[EXCEL]",
+      "tags": [],
+      "description": "",
+      "nodes": [],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 98,
+      "name": "[DESTY]",
+      "tags": [],
+      "description": "",
+      "nodes": [],
+      "collapsed": false
+    },
+    {
+      "kind": "Text",
+      "id": 99,
+      "name": "[API]",
+      "tags": [],
+      "description": "",
+      "nodes": [
+        {
+          "kind": "Checkbox",
+          "id": 100,
+          "name": "Perubahan ke OUTGOING",
+          "tags": [],
+          "description": "",
+          "nodes": [],
+          "collapsed": false,
+          "checked": false
+        }
+      ],
+      "collapsed": false
+    }
+  ]
+}

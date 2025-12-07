@@ -1,0 +1,33 @@
+<script src="lib/db/idbDB.js"></script>
+<script src="lib/js/auth.js"></script>
+<script>
+  const auth = new AuthModule();
+  auth.init({ baseUrl: 'https://api.example.com/' });
+  
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await auth.login(email.value, password.value);
+      window.location.href = '/dashboard';
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+</script>
+<script src="lib/db/idbDB.js"></script>
+<script src="lib/js/database.js"></script>
+<script>
+  const db = new Database();
+  db.databaseConverter(content, page)
+    .then(data => console.log(data));
+</script>
+<script src="lib/db/idbDB.js"></script>
+<script src="lib/js/product.js"></script>
+<script>
+  const product = new ProductModule();
+  product.init({ baseUrl: 'https://api.example.com/' });
+  
+  document.querySelector('.add-to-cart').addEventListener('click', function() {
+    product.addToCart();
+  });
+</script>

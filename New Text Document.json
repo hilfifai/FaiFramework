@@ -1,0 +1,1745 @@
+{
+    "po_id": 518,
+    "receiving_number": "REC-362949",
+    "receiving_date": "2025-10-23",
+    "total_items": 2,
+    "total_quantity": 2,
+    "total_value": 433860,
+    "entries": [
+        {
+            "po_id": 518,
+            "po_item_id": "102523",
+            "product_barcode": "101250140011899005",
+            "product_name": "AYUMI 535 SPACE BLUE XL",
+            "quantity_received": 1,
+            "rack_id": 2,
+            "rack_name": "-",
+            "unit_price": 216930,
+            "total_value": 216930,
+            "receiving_date": "2025-10-23",
+            "received_by": "admin",
+            "notes": "",
+            "detail": {
+                "productId": "102523",
+                "name": "AYUMI 535 SPACE BLUE XL",
+                "barcode": "101250140011899005",
+                "base_price": 309900,
+                "quantity": 2,
+                "purchase_discount": "30",
+                "discounted_price": 216930,
+                "selling_price": 371880,
+                "rack_id": null,
+                "image": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                "variant_detail": {
+                    "nama_varian": "AYUMI 535 SPACE BLUE XL",
+                    "harga_pokok_varian": "309900",
+                    "sku_index_varian": null,
+                    "terjual_varian": "0",
+                    "barcode_varian": "101250140011899005",
+                    "berat_varian": "600",
+                    "id_tipe_varian_1": "187",
+                    "id_tipe_varian_2": null,
+                    "id_tipe_varian_3": null,
+                    "id_varian_1": "129630",
+                    "id_varian_2": null,
+                    "id_varian_3": null,
+                    "nama_list_tipe_varian_1": "XL",
+                    "nama_list_tipe_varian_2": "",
+                    "nama_list_tipe_varian_3": "",
+                    "id_barang_varian": "102523",
+                    "gambar_produk_varian": "",
+                    "stok": "0"
+                },
+                "produk_detail": {
+                    "id": "195",
+                    "nama_barang": "AYUMI 535 SPACE BLUE",
+                    "deskripsi_barang": " ",
+                    "foto_aset": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                    "barcode": null,
+                    "berat": null,
+                    "id_asset": "26402",
+                    "id_kategori": "2544",
+                    "id_brand": "70",
+                    "total_jual": "11",
+                    "varian_barang": "1",
+                    "id_toko": "4",
+                    "nama_toko": "Moesneeds",
+                    "create_date": "2025-02-04 02:30:30",
+                    "update_date": null,
+                    "on_web_apps": "3",
+                    "on_domain": "moesneeds.id",
+                    "on_panel": "46",
+                    "on_board": "42",
+                    "on_role": "106",
+                    "privilege": "Private Website",
+                    "nama_varian": "AYUMI 535 SPACE BLUE XL AYUMI 535 SPACE BLUE 4XL AYUMI 535 SPACE BLUE 5XL AYUMI 535 SPACE BLUE 6XL AYUMI 535 SPACE BLUE XS AYUMI 535 SPACE BLUE S AYUMI 535 SPACE BLUE M AYUMI 535 SPACE BLUE L AYUMI 535 SPACE BLUE XXL AYUMI 535 SPACE BLUE 3XL",
+                    "harga_awal": "289900",
+                    "harga_akhir": "349900",
+                    "harga_full": "Rp 289.900 s/d Rp 349.900",
+                    "varian": {
+                        "94641": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XL",
+                            "harga_pokok_varian": "309900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899005",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129630",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102523",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94642": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 4XL",
+                            "harga_pokok_varian": "339900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "1",
+                            "barcode_varian": "101250140011899030",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129617",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "4XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102524",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94643": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 5XL",
+                            "harga_pokok_varian": "349900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899039",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129618",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "5XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102525",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94644": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 6XL",
+                            "harga_pokok_varian": "349900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "3",
+                            "barcode_varian": "101250140011899038",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129619",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "6XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102526",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94645": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XS",
+                            "harga_pokok_varian": "289900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899009",
+                            "berat_varian": "450",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129626",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XS",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102527",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94646": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE S",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "5",
+                            "barcode_varian": "101250140011899002",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129627",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "S",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102528",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94647": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE M",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "2",
+                            "barcode_varian": "101250140011899001",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129628",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "M",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102529",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94648": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE L",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899004",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129629",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "L",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102530",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94649": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XXL",
+                            "harga_pokok_varian": "309900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899003",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129615",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XXL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102531",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94650": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 3XL",
+                            "harga_pokok_varian": "339900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899029",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129616",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "3XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102532",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        }
+                    },
+                    "list_varian": {
+                        "tipe_1": {
+                            "detail": [
+                                {
+                                    "nama_varian": "XL",
+                                    "id_varian": "129630",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "4XL",
+                                    "id_varian": "129617",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "5XL",
+                                    "id_varian": "129618",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "6XL",
+                                    "id_varian": "129619",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "XS",
+                                    "id_varian": "129626",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "S",
+                                    "id_varian": "129627",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "M",
+                                    "id_varian": "129628",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "L",
+                                    "id_varian": "129629",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "XXL",
+                                    "id_varian": "129615",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "3XL",
+                                    "id_varian": "129616",
+                                    "level": 1
+                                }
+                            ]
+                        },
+                        "tipe_2": {
+                            "detail": [
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                }
+                            ],
+                            "breakdown": {
+                                "2": {
+                                    "129615": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129616": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129617": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129618": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129619": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129626": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129627": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129628": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129629": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129630": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ]
+                                },
+                                "3": {
+                                    "129615": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129616": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129617": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129618": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129619": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129626": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129627": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129628": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129629": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129630": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "tipe_3": {
+                            "detail": [
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129630--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129617--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129618--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129619--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129626--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129627--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129628--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129629--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129615--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129616--",
+                                    "level": 3
+                                }
+                            ],
+                            "breakdown": {
+                                "3": {
+                                    "129630-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129617-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129618-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129619-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129626-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129627-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129628-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129629-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129615-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129616-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "list_varian_detail": {
+                        "all": {
+                            "129630--": "94641",
+                            "129617--": "94642",
+                            "129618--": "94643",
+                            "129619--": "94644",
+                            "129626--": "94645",
+                            "129627--": "94646",
+                            "129628--": "94647",
+                            "129629--": "94648",
+                            "129615--": "94649",
+                            "129616--": "94650"
+                        }
+                    },
+                    "nama_variasi": {
+                        "1": "Size",
+                        "2": null,
+                        "3": null
+                    },
+                    "max_variasi": 2,
+                    "stok": 0,
+                    "stok_detail": {
+                        "129615": "0",
+                        "129616": "0",
+                        "129617": "0",
+                        "129618": "0",
+                        "129619": "0",
+                        "129626": "0",
+                        "129627": "0",
+                        "129628": "0",
+                        "129629": "0",
+                        "129630": "0",
+                        "129630-": "0",
+                        "129617-": "0",
+                        "129618-": "0",
+                        "129619-": "0",
+                        "129626-": "0",
+                        "129627-": "0",
+                        "129628-": "0",
+                        "129629-": "0",
+                        "129615-": "0",
+                        "129616-": "0"
+                    },
+                    "harga_detail": {
+                        "129615": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129616": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129617": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129618": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129619": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129626": {
+                            "harga_awal": "289900",
+                            "harga_akhir": "289900",
+                            "harga_full": "Rp 289.900"
+                        },
+                        "129627": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129628": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129629": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129630": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129630-": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129617-": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129618-": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129619-": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129626-": {
+                            "harga_awal": "289900",
+                            "harga_akhir": "289900",
+                            "harga_full": "Rp 289.900"
+                        },
+                        "129627-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129628-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129629-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129615-": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129616-": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        }
+                    },
+                    "foto_detail": {
+                        "129615": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129616": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129617": "",
+                        "129618": "",
+                        "129619": "",
+                        "129626": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129627": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129628": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129629": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129630": "",
+                        "129630-": "",
+                        "129617-": "",
+                        "129618-": "",
+                        "129619-": "",
+                        "129626-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129627-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129628-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129629-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129615-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129616-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                    }
+                }
+            }
+        },
+        {
+            "po_id": 518,
+            "po_item_id": "102523",
+            "product_barcode": "101250140011899005",
+            "product_name": "AYUMI 535 SPACE BLUE XL",
+            "quantity_received": 1,
+            "rack_id": 8,
+            "rack_name": "-",
+            "unit_price": 216930,
+            "total_value": 216930,
+            "receiving_date": "2025-10-23",
+            "received_by": "admin",
+            "notes": "",
+            "detail": {
+                "productId": "102523",
+                "name": "AYUMI 535 SPACE BLUE XL",
+                "barcode": "101250140011899005",
+                "base_price": 309900,
+                "quantity": 2,
+                "purchase_discount": "30",
+                "discounted_price": 216930,
+                "selling_price": 371880,
+                "rack_id": null,
+                "image": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                "variant_detail": {
+                    "nama_varian": "AYUMI 535 SPACE BLUE XL",
+                    "harga_pokok_varian": "309900",
+                    "sku_index_varian": null,
+                    "terjual_varian": "0",
+                    "barcode_varian": "101250140011899005",
+                    "berat_varian": "600",
+                    "id_tipe_varian_1": "187",
+                    "id_tipe_varian_2": null,
+                    "id_tipe_varian_3": null,
+                    "id_varian_1": "129630",
+                    "id_varian_2": null,
+                    "id_varian_3": null,
+                    "nama_list_tipe_varian_1": "XL",
+                    "nama_list_tipe_varian_2": "",
+                    "nama_list_tipe_varian_3": "",
+                    "id_barang_varian": "102523",
+                    "gambar_produk_varian": "",
+                    "stok": "0"
+                },
+                "produk_detail": {
+                    "id": "195",
+                    "nama_barang": "AYUMI 535 SPACE BLUE",
+                    "deskripsi_barang": " ",
+                    "foto_aset": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                    "barcode": null,
+                    "berat": null,
+                    "id_asset": "26402",
+                    "id_kategori": "2544",
+                    "id_brand": "70",
+                    "total_jual": "11",
+                    "varian_barang": "1",
+                    "id_toko": "4",
+                    "nama_toko": "Moesneeds",
+                    "create_date": "2025-02-04 02:30:30",
+                    "update_date": null,
+                    "on_web_apps": "3",
+                    "on_domain": "moesneeds.id",
+                    "on_panel": "46",
+                    "on_board": "42",
+                    "on_role": "106",
+                    "privilege": "Private Website",
+                    "nama_varian": "AYUMI 535 SPACE BLUE XL AYUMI 535 SPACE BLUE 4XL AYUMI 535 SPACE BLUE 5XL AYUMI 535 SPACE BLUE 6XL AYUMI 535 SPACE BLUE XS AYUMI 535 SPACE BLUE S AYUMI 535 SPACE BLUE M AYUMI 535 SPACE BLUE L AYUMI 535 SPACE BLUE XXL AYUMI 535 SPACE BLUE 3XL",
+                    "harga_awal": "289900",
+                    "harga_akhir": "349900",
+                    "harga_full": "Rp 289.900 s/d Rp 349.900",
+                    "varian": {
+                        "94641": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XL",
+                            "harga_pokok_varian": "309900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899005",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129630",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102523",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94642": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 4XL",
+                            "harga_pokok_varian": "339900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "1",
+                            "barcode_varian": "101250140011899030",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129617",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "4XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102524",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94643": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 5XL",
+                            "harga_pokok_varian": "349900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899039",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129618",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "5XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102525",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94644": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 6XL",
+                            "harga_pokok_varian": "349900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "3",
+                            "barcode_varian": "101250140011899038",
+                            "berat_varian": "700",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129619",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "6XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102526",
+                            "gambar_produk_varian": "",
+                            "stok": "0"
+                        },
+                        "94645": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XS",
+                            "harga_pokok_varian": "289900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899009",
+                            "berat_varian": "450",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129626",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XS",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102527",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94646": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE S",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "5",
+                            "barcode_varian": "101250140011899002",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129627",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "S",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102528",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94647": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE M",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "2",
+                            "barcode_varian": "101250140011899001",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129628",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "M",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102529",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94648": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE L",
+                            "harga_pokok_varian": "299900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899004",
+                            "berat_varian": "500",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129629",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "L",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102530",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94649": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE XXL",
+                            "harga_pokok_varian": "309900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899003",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129615",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "XXL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102531",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        },
+                        "94650": {
+                            "nama_varian": "AYUMI 535 SPACE BLUE 3XL",
+                            "harga_pokok_varian": "339900",
+                            "sku_index_varian": null,
+                            "terjual_varian": "0",
+                            "barcode_varian": "101250140011899029",
+                            "berat_varian": "600",
+                            "id_tipe_varian_1": "187",
+                            "id_tipe_varian_2": null,
+                            "id_tipe_varian_3": null,
+                            "id_varian_1": "129616",
+                            "id_varian_2": null,
+                            "id_varian_3": null,
+                            "nama_list_tipe_varian_1": "3XL",
+                            "nama_list_tipe_varian_2": "",
+                            "nama_list_tipe_varian_3": "",
+                            "id_barang_varian": "102532",
+                            "gambar_produk_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                            "stok": "0"
+                        }
+                    },
+                    "list_varian": {
+                        "tipe_1": {
+                            "detail": [
+                                {
+                                    "nama_varian": "XL",
+                                    "id_varian": "129630",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "4XL",
+                                    "id_varian": "129617",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "5XL",
+                                    "id_varian": "129618",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "6XL",
+                                    "id_varian": "129619",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "XS",
+                                    "id_varian": "129626",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "S",
+                                    "id_varian": "129627",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "M",
+                                    "id_varian": "129628",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "L",
+                                    "id_varian": "129629",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "XXL",
+                                    "id_varian": "129615",
+                                    "level": 1
+                                },
+                                {
+                                    "nama_varian": "3XL",
+                                    "id_varian": "129616",
+                                    "level": 1
+                                }
+                            ]
+                        },
+                        "tipe_2": {
+                            "detail": [
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": null,
+                                    "level": 2
+                                }
+                            ],
+                            "breakdown": {
+                                "2": {
+                                    "129615": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129616": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129617": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129618": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129619": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129626": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129627": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129628": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129629": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ],
+                                    "129630": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630-",
+                                            "id_varian2": null,
+                                            "level": 2
+                                        }
+                                    ]
+                                },
+                                "3": {
+                                    "129615": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129616": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129617": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129618": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129619": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129626": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129627": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129628": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129629": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ],
+                                    "129630": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630--",
+                                            "id_varian2": null,
+                                            "id_varian3": null,
+                                            "level": 3
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "tipe_3": {
+                            "detail": [
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129630--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129617--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129618--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129619--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129626--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129627--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129628--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129629--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129615--",
+                                    "level": 3
+                                },
+                                {
+                                    "nama_varian": "",
+                                    "id_varian": "129616--",
+                                    "level": 3
+                                }
+                            ],
+                            "breakdown": {
+                                "3": {
+                                    "129630-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129630--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129617-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129617--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129618-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129618--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129619-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129619--",
+                                            "level": 3,
+                                            "foto_aset_varian": ""
+                                        }
+                                    ],
+                                    "129626-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129626--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129627-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129627--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129628-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129628--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129629-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129629--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129615-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129615--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ],
+                                    "129616-": [
+                                        {
+                                            "nama_varian": "",
+                                            "id_varian": "129616--",
+                                            "level": 3,
+                                            "foto_aset_varian": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "list_varian_detail": {
+                        "all": {
+                            "129630--": "94641",
+                            "129617--": "94642",
+                            "129618--": "94643",
+                            "129619--": "94644",
+                            "129626--": "94645",
+                            "129627--": "94646",
+                            "129628--": "94647",
+                            "129629--": "94648",
+                            "129615--": "94649",
+                            "129616--": "94650"
+                        }
+                    },
+                    "nama_variasi": {
+                        "1": "Size",
+                        "2": null,
+                        "3": null
+                    },
+                    "max_variasi": 2,
+                    "stok": 0,
+                    "stok_detail": {
+                        "129615": "0",
+                        "129616": "0",
+                        "129617": "0",
+                        "129618": "0",
+                        "129619": "0",
+                        "129626": "0",
+                        "129627": "0",
+                        "129628": "0",
+                        "129629": "0",
+                        "129630": "0",
+                        "129630-": "0",
+                        "129617-": "0",
+                        "129618-": "0",
+                        "129619-": "0",
+                        "129626-": "0",
+                        "129627-": "0",
+                        "129628-": "0",
+                        "129629-": "0",
+                        "129615-": "0",
+                        "129616-": "0"
+                    },
+                    "harga_detail": {
+                        "129615": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129616": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129617": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129618": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129619": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129626": {
+                            "harga_awal": "289900",
+                            "harga_akhir": "289900",
+                            "harga_full": "Rp 289.900"
+                        },
+                        "129627": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129628": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129629": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129630": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129630-": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129617-": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        },
+                        "129618-": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129619-": {
+                            "harga_awal": "349900",
+                            "harga_akhir": "349900",
+                            "harga_full": "Rp 349.900"
+                        },
+                        "129626-": {
+                            "harga_awal": "289900",
+                            "harga_akhir": "289900",
+                            "harga_full": "Rp 289.900"
+                        },
+                        "129627-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129628-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129629-": {
+                            "harga_awal": "299900",
+                            "harga_akhir": "299900",
+                            "harga_full": "Rp 299.900"
+                        },
+                        "129615-": {
+                            "harga_awal": "309900",
+                            "harga_akhir": "309900",
+                            "harga_full": "Rp 309.900"
+                        },
+                        "129616-": {
+                            "harga_awal": "339900",
+                            "harga_akhir": "339900",
+                            "harga_full": "Rp 339.900"
+                        }
+                    },
+                    "foto_detail": {
+                        "129615": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129616": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129617": "",
+                        "129618": "",
+                        "129619": "",
+                        "129626": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129627": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129628": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129629": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129630": "",
+                        "129630-": "",
+                        "129617-": "",
+                        "129618-": "",
+                        "129619-": "",
+                        "129626-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129627-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129628-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129629-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129615-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg",
+                        "129616-": "https://api.ethica.id//uploads/ETHICA/AYUMI/BESAR/AYUMI 535 SPACE BLUE.jpg"
+                    }
+                }
+            }
+        }
+    ],
+    "status": "completed",
+    "created_by": "admin",
+    "created_at": "2025-10-23T22:26:02.950Z"
+}

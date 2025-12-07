@@ -1,0 +1,1284 @@
+{
+    "data-versions": {
+        "finapp_menu": {
+            "1": [
+                0
+            ]
+        },
+        "hibe3_menu": {
+            "1": [
+                5
+            ]
+        },
+        "utama": {
+            "1": [
+                6
+            ]
+        },
+        "foodmart_menu": {
+            "1": [
+                0
+            ]
+        }
+    },
+    "versions": {
+        "finapp_menu": {
+            "versions": {
+                "1.0.0": {
+                    "header": {
+                        "content": {
+                            "html": "<div class=\"appHeader bg-primary text-light\">\r\n    <div class=\"left\">\r\n    <script>\r\n        \r\n    <\/script>\r\n        <a href=\"javascript:void(0)\" class=\"headerButton\" onclick=\"open_sidebar()\" data-toggle=\"modal\" data-target=\"#sidebarPanel\">\r\n            <ion-icon name=\"menu-outline\"><\/ion-icon>\r\n        <\/a>\r\n    <\/div>\r\n    \r\n    <div class=\"pageTitle\">\r\n        <img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" class=\"logo\">\r\n    <\/div>\r\n    <div class=\"right\">\r\n        <a href=\"<LINK-MESSAGE><\/LINK-MESSAGE>\" class=\"headerButton\">\r\n            <ion-icon class=\"icon\" name=\"notifications-outline\"><\/ion-icon>\r\n            <span class=\"badge badge-danger\">4<\/span>\r\n        <\/a>\r\n        <a href=\"<LINK-PROFIL><\/LINK-PROFIL>\" class=\"headerButton\">\r\n            <img src=\"<BE3-LINK-TEMPLATE><\/BE3-LINK-TEMPLATE>finapp\/base\/view\/assets\/img\/sample\/avatar\/avatar1.jpg\" alt=\"image\" class=\"imaged w32\">\r\n            <span class=\"badge badge-danger\">6<\/span>\r\n        <\/a>\r\n    <\/div>\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ]
+                        ]
+                    },
+                    "bottom": {
+                        "content": {
+                            "html": "<div class=\"appBottomMenu\">\r\n    <a href=\"app-index.html\" class=\"item active\">\r\n        <div class=\"col\">\r\n            <ion-icon name=\"pie-chart-outline\"><\/ion-icon>\r\n            <strong>Overview<\/strong>\r\n        <\/div>\r\n    <\/a>\r\n    <a href=\"app-pages.html\" class=\"item\">\r\n        <div class=\"col\">\r\n            <ion-icon name=\"document-text-outline\"><\/ion-icon>\r\n            <strong>Pages<\/strong>\r\n        <\/div>\r\n    <\/a>\r\n    <a href=\"app-components.html\" class=\"item\">\r\n        <div class=\"col\">\r\n            <ion-icon name=\"apps-outline\"><\/ion-icon>\r\n            <strong>Components<\/strong>\r\n        <\/div>\r\n    <\/a>\r\n    <a href=\"app-cards.html\" class=\"item\">\r\n        <div class=\"col\">\r\n            <ion-icon name=\"card-outline\"><\/ion-icon>\r\n            <strong>My Cards<\/strong>\r\n        <\/div>\r\n    <\/a>\r\n    <a href=\"javascript:;\" class=\"item\" data-toggle=\"modal\" data-target=\"#sidebarPanel\">\r\n        <div class=\"col\">\r\n            <ion-icon name=\"menu-outline\"><\/ion-icon>\r\n            <strong>Menu<\/strong>\r\n        <\/div>\r\n    <\/a>\r\n<\/div>"
+                        }
+                    },
+                    "sidebar": {
+                        "content": {
+                            "html": "<div class=\"modal fade panelbox panelbox-left\" id=\"sidebarPanel\" tabindex=\"-1\" role=\"dialog\">\r\n    <div class=\"modal-dialog\" role=\"document\">\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-body p-0\">\r\n                <!-- profile box -->\r\n                <div class=\"profileBox pt-2 pb-2\">\r\n                    <div class=\"image-wrapper\">\r\n                        <img src=\"<BE3-LINK-TEMPLATE><\/BE3-LINK-TEMPLATE>finapp\/\/base\/view\/assets\/\/img\/sample\/avatar\/avatar1.jpg\" alt=\"image\" class=\"imaged  w36\">\r\n                    <\/div>\r\n                    <div class=\"in\">\r\n                        <strong>Sebastian Doe<\/strong>\r\n                        <div class=\"text-muted\">4029209<\/div>\r\n                    <\/div>\r\n                    <a href=\"#\" class=\"btn btn-link btn-icon sidebar-close\" data-dismiss=\"modal\">\r\n                        <ion-icon name=\"close-outline\"><\/ion-icon>\r\n                    <\/a>\r\n                <\/div>\r\n                <!-- * profile box -->\r\n                <!-- balance -->\r\n                <div class=\"sidebar-balance\">\r\n                    <div class=\"listview-title\">Balance<\/div>\r\n                    <div class=\"in\">\r\n                        <h1 class=\"amount\">$ 2,562.50<\/h1>\r\n                    <\/div>\r\n                <\/div>\r\n                <!-- * balance -->\r\n\r\n                <!-- action group -->\r\n                <div class=\"action-group\">\r\n                    <a href=\"app-index.html\" class=\"action-button\">\r\n                        <div class=\"in\">\r\n                            <div class=\"iconbox\">\r\n                                <ion-icon name=\"add-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            Deposit\r\n                        <\/div>\r\n                    <\/a>\r\n                    <a href=\"app-index.html\" class=\"action-button\">\r\n                        <div class=\"in\">\r\n                            <div class=\"iconbox\">\r\n                                <ion-icon name=\"arrow-down-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            Withdraw\r\n                        <\/div>\r\n                    <\/a>\r\n                    <a href=\"app-index.html\" class=\"action-button\">\r\n                        <div class=\"in\">\r\n                            <div class=\"iconbox\">\r\n                                <ion-icon name=\"arrow-forward-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            Send\r\n                        <\/div>\r\n                    <\/a>\r\n                    <a href=\"app-cards.html\" class=\"action-button\">\r\n                        <div class=\"in\">\r\n                            <div class=\"iconbox\">\r\n                                <ion-icon name=\"card-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            My Cards\r\n                        <\/div>\r\n                    <\/a>\r\n                <\/div>\r\n                <!-- * action group -->\r\n\r\n                <!-- menu -->\r\n                <div class=\"listview-title mt-1\">Menu<\/div>\r\n                <ul class=\"listview flush transparent no-line image-listview\">\r\n                    <li>\r\n                        <a href=\"app-index.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"pie-chart-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Overview\r\n                                <span class=\"badge badge-primary\">10<\/span>\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"app-pages.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"document-text-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Pages\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"app-components.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"apps-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Components\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"app-cards.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"card-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                My Cards\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                <\/ul>\r\n                <!-- * menu -->\r\n\r\n                <!-- others -->\r\n                <div class=\"listview-title mt-1\">Others<\/div>\r\n                <ul class=\"listview flush transparent no-line image-listview\">\r\n                    <li>\r\n                        <a href=\"app-settings.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"settings-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Settings\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"component-messages.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"chatbubble-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Support\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"app-login.html\" class=\"item\">\r\n                            <div class=\"icon-box bg-primary\">\r\n                                <ion-icon name=\"log-out-outline\"><\/ion-icon>\r\n                            <\/div>\r\n                            <div class=\"in\">\r\n                                Log out\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                <\/ul>\r\n                <!-- * others -->\r\n\r\n                <!-- send money -->\r\n                <div class=\"listview-title mt-1\">Send Money<\/div>\r\n                <ul class=\"listview image-listview flush transparent no-line\">\r\n                    <li>\r\n                        <a href=\"#\" class=\"item\">\r\n                            <img src=\"<BE3-LINK-TEMPLATE><\/BE3-LINK-TEMPLATE>finapp\/\/base\/view\/assets\/\/img\/sample\/avatar\/avatar2.jpg\" alt=\"image\" class=\"image\">\r\n                            <div class=\"in\">\r\n                                <div>Artem Sazonov<\/div>\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"#\" class=\"item\">\r\n                            <img src=\"<BE3-LINK-TEMPLATE><\/BE3-LINK-TEMPLATE>finapp\/\/base\/view\/assets\/\/img\/sample\/avatar\/avatar4.jpg\" alt=\"image\" class=\"image\">\r\n                            <div class=\"in\">\r\n                                <div>Sophie Asveld<\/div>\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                    <li>\r\n                        <a href=\"#\" class=\"item\">\r\n                            <img src=\"<BE3-LINK-TEMPLATE><\/BE3-LINK-TEMPLATE>finapp\/\/base\/view\/assets\/\/img\/sample\/avatar\/avatar3.jpg\" alt=\"image\" class=\"image\">\r\n                            <div class=\"in\">\r\n                                <div>Kobus van de Vegte<\/div>\r\n                            <\/div>\r\n                        <\/a>\r\n                    <\/li>\r\n                <\/ul>\r\n                <!-- * send money -->\r\n\r\n            <\/div>\r\n        <\/div>\r\n    <\/div>\r\n<\/div>"
+                        }
+                    }
+                }
+            },
+            "last_version": "1.0.0",
+            "last_generate_date": "2025-04-11"
+        },
+        "hibe3_menu": {
+            "versions": {
+                "1.0.0": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n      <div class=\"container-fluid d-flex \">\r\n\r\n      <!-- Collapse -->\r\n      <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n      <\/a>\r\n      <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n      <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n      <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n      <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n      <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n      <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n      <style>\r\n      .icon {\r\n        width: 1.25rem;\r\n        height: 1.25rem;\r\n        font-size: 1.25rem;\r\n        vertical-align: bottom;\r\n        stroke-width: 1.5;\r\n      }\r\n      <\/style>\r\n      <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n      <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n          <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n      <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                  Accordions\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                  Badge\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                  Breadcrumb\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                  Buttons\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                  Button group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                  Card\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                  Carousel\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                  Close Button\r\n                <\/a>\r\n              <\/li>\r\n\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                  Collapse\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                  Dropdowns\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                  Forms\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                  List group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                  Modal\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                  Navs and tabs\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                  Navbar\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                  Offcanvas\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                  Pagination\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                  Placeholders\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                  Popovers\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                  Progress\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                  Scrollspy\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                  Spinners\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                  Tables\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                  Toasts\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                  Tooltips\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n        <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n      <\/div>\r\n      <\/li>\r\n      <li class=\"nav-item dropdown flex-end bg-white\">\r\n      <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n          <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n          <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n          <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n          <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n          <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n\r\n      <\/li>\r\n\r\n      <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n      <\/nav>\r\n      <\/div>\r\n\r\n\r\n\r\n      <\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "HEADER-UTAMA",
+                                "menu_content",
+                                "hibe3__menu",
+                                "header_list"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list_profil": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown ms-2\">\r\n<a class=\"rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownUser\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" onclick=\"show_profile()\">\r\n<div class=\"avatar avatar-md avatar-indicators avatar-online\">\r\n<img alt=\"avatar\" src=\"assets\/images\/avatar\/avatar-11.jpg\" class=\"rounded-circle\">\r\n<\/div>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-end card card-body\" aria-labelledby=\"dropdownUser\" id=\"dropdown-profile-menu\" style=\"display: none;\">\r\n<div class=\"user-box\">\r\n<span class=\"avatar mt-1\">\r\n    <span class=\"avatar avatar-sm\" style=\"\">HM<\/span> <\/span>\r\n<div class=\"u-text\" onclick=\"\">\r\n    <h4 style=\"font-size: 12px;font-weight: 550;color: #555;\">\r\n        <NAMA-LENGKAP><\/NAMA-LENGKAP> <\/h4>\r\n    <div class=\"text-muted\" style=\"color:rgba(35, 46, 60, 0.7) !important\">\r\n        Be3 ID:aaaaa <\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n\r\n<a href=\"<LINK-PROFIL-USER><\/LINK-PROFIL-USER>\" class=\"dropdown-item\">\r\nProfil User\r\n<\/a>\r\n<a href=\"<LINK-PEMESANAN><\/LINK-PEMESANAN>\" class=\"dropdown-item\">\r\nHistoris Pemesanan\r\n<\/a>\r\n<a href=\"<LINK-LOGOUT><\/LINK-LOGOUT>\" class=\"dropdown-item\">\r\nKeluar\r\n<\/a>\r\n\r\n\r\n<\/div>\r\n<\/li>"
+                        },
+                        "array": [
+                            [
+                                "LINK-LOGOUT",
+                                "link",
+                                [
+                                    "Auth",
+                                    "logout",
+                                    "-1",
+                                    -1
+                                ],
+                                "costum_link"
+                            ],
+                            [
+                                "LINK-PEMESANAN",
+                                "link",
+                                [
+                                    "User",
+                                    "pemesanan",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "LINK-PROFIL-USER",
+                                "link",
+                                [
+                                    "User",
+                                    "profil",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "NAMA-LENGKAP",
+                                "user_info",
+                                "nama_lengkap"
+                            ]
+                        ]
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                },
+                "1.0.1": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n      <div class=\"container-fluid d-flex \">\r\n\r\n      <!-- Collapse -->\r\n      <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n      <\/a>\r\n      <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n      <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n      <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n      <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n      <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n      <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n      <style>\r\n      .icon {\r\n        width: 1.25rem;\r\n        height: 1.25rem;\r\n        font-size: 1.25rem;\r\n        vertical-align: bottom;\r\n        stroke-width: 1.5;\r\n      }\r\n      <\/style>\r\n      <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n      <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n          <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n      <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                  Accordions\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                  Badge\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                  Breadcrumb\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                  Buttons\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                  Button group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                  Card\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                  Carousel\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                  Close Button\r\n                <\/a>\r\n              <\/li>\r\n\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                  Collapse\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                  Dropdowns\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                  Forms\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                  List group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                  Modal\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                  Navs and tabs\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                  Navbar\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                  Offcanvas\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                  Pagination\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                  Placeholders\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                  Popovers\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                  Progress\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                  Scrollspy\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                  Spinners\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                  Tables\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                  Toasts\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                  Tooltips\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n        <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n      <\/div>\r\n      <\/li>\r\n      <li class=\"nav-item dropdown flex-end bg-white\">\r\n      <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n          <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n          <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n          <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n          <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n          <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n\r\n      <\/li>\r\n\r\n      <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n      <\/nav>\r\n      <\/div>\r\n\r\n\r\n\r\n      <\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "HEADER-UTAMA",
+                                "menu_content",
+                                "hibe3__menu",
+                                "header_list"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list_profil": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown ms-2\">\r\n<a class=\"rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownUser\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" onclick=\"show_profile()\">\r\n<div class=\"avatar avatar-md avatar-indicators avatar-online\">\r\n<img alt=\"avatar\" src=\"assets\/images\/avatar\/avatar-11.jpg\" class=\"rounded-circle\">\r\n<\/div>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-end card card-body\" aria-labelledby=\"dropdownUser\" id=\"dropdown-profile-menu\" style=\"display: none;\">\r\n<div class=\"user-box\">\r\n<span class=\"avatar mt-1\">\r\n    <span class=\"avatar avatar-sm\" style=\"\">HM<\/span> <\/span>\r\n<div class=\"u-text\" onclick=\"\">\r\n    <h4 style=\"font-size: 12px;font-weight: 550;color: #555;\">\r\n        <NAMA-LENGKAP><\/NAMA-LENGKAP> <\/h4>\r\n    <div class=\"text-muted\" style=\"color:rgba(35, 46, 60, 0.7) !important\">\r\n        Be3 ID:aaaaa <\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n\r\n<a href=\"<LINK-PROFIL-USER><\/LINK-PROFIL-USER>\" class=\"dropdown-item\">\r\nProfil User\r\n<\/a>\r\n<a href=\"<LINK-PEMESANAN><\/LINK-PEMESANAN>\" class=\"dropdown-item\">\r\nHistoris Pemesanan\r\n<\/a>\r\n<a href=\"<LINK-LOGOUT><\/LINK-LOGOUT>\" class=\"dropdown-item\">\r\nKeluar\r\n<\/a>\r\n\r\n\r\n<\/div>\r\n<\/li>"
+                        },
+                        "array": [
+                            [
+                                "LINK-LOGOUT",
+                                "link",
+                                [
+                                    "Auth",
+                                    "logout",
+                                    "-1",
+                                    -1
+                                ],
+                                "costum_link"
+                            ],
+                            [
+                                "LINK-PEMESANAN",
+                                "link",
+                                [
+                                    "User",
+                                    "pemesanan",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "LINK-PROFIL-USER",
+                                "link",
+                                [
+                                    "User",
+                                    "profil",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ]
+                        ]
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                },
+                "1.0.2": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n      <div class=\"container-fluid d-flex \">\r\n\r\n      <!-- Collapse -->\r\n      <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n      <\/a>\r\n      <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n      <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n      <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n      <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n      <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n      <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n      <style>\r\n      .icon {\r\n        width: 1.25rem;\r\n        height: 1.25rem;\r\n        font-size: 1.25rem;\r\n        vertical-align: bottom;\r\n        stroke-width: 1.5;\r\n      }\r\n      <\/style>\r\n      <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n      <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n          <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n      <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                  Accordions\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                  Badge\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                  Breadcrumb\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                  Buttons\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                  Button group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                  Card\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                  Carousel\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                  Close Button\r\n                <\/a>\r\n              <\/li>\r\n\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                  Collapse\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                  Dropdowns\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                  Forms\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                  List group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                  Modal\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                  Navs and tabs\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                  Navbar\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                  Offcanvas\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                  Pagination\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                  Placeholders\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                  Popovers\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                  Progress\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                  Scrollspy\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                  Spinners\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                  Tables\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                  Toasts\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                  Tooltips\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n        <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n      <\/div>\r\n      <\/li>\r\n      <li class=\"nav-item dropdown flex-end bg-white\">\r\n      <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n          <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n          <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n          <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n          <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n          <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n\r\n      <\/li>\r\n\r\n      <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n      <\/nav>\r\n      <\/div>\r\n\r\n\r\n\r\n      <\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "HEADER-UTAMA",
+                                "menu_content",
+                                "hibe3__menu",
+                                "header_list"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "<style>\r\n    \/* ----------------- Dropdown Styles ----------------- *\/\r\n    .dropdown-container-be3 {\r\n        display: inline-block;\r\n        padding: 10px;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown {\r\n        position: relative;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown[open] .with-down-arrow::after {\r\n        content: \"\\e5c7\";\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown[open] summary {\r\n        background: #fff 10;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown summary {\r\n        list-style: none;\r\n        display: inline-block;\r\n        cursor: pointer;\r\n        border-radius: 6px;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown summary.avatar {\r\n        border-radius: 50px;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown summary.avatar img {\r\n        width: 40px;\r\n        height: 40px;\r\n        border-radius: 50px;\r\n        display: inline-block;\r\n        margin: 0;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown summary .with-down-arrow {\r\n        display: inline-flex;\r\n        padding: 5px;\r\n        align-items: center;\r\n        color: #fff;\r\n        line-height: 1;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown summary .with-down-arrow::after {\r\n        content: \"\\e5c5\";\r\n        font-family: \"Material Symbols Outlined\";\r\n        font-weight: normal;\r\n        font-style: normal;\r\n        font-size: 1.5rem;\r\n        line-height: 1;\r\n        letter-spacing: normal;\r\n        text-transform: none;\r\n        display: inline-block;\r\n        white-space: nowrap;\r\n        word-wrap: normal;\r\n        direction: ltr;\r\n        -webkit-font-smoothing: antialiased;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown.left ul {\r\n        left: 0;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown.right ul {\r\n        right: 0;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul {\r\n        padding: 0;\r\n        margin: 0;\r\n        box-shadow: 0 0 10px #000 30;\r\n        min-width: max-content;\r\n        position: absolute;\r\n        top: 100%;\r\n        border-radius: 10px;\r\n        background-color: #fff;\r\n        z-index: 2;\r\n        min-width: 200px;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li {\r\n        list-style-type: none;\r\n        display: block;\r\n        \/* If you use divider & borders, it's best to use top borders *\/\r\n        \/*border-top: 1px solid #ccc;\r\n\t*\/\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li:first-of-type {\r\n        border: none;\r\n        background-color: #f2f2f2;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li p {\r\n        padding: 10px 15px;\r\n        margin: 0;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li a {\r\n        display: flex;\r\n        align-items: center;\r\n        justify-content: flex-start;\r\n        padding: 10px 15px;\r\n        text-decoration: none;\r\n        line-height: 1;\r\n        color: #333;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li a:hover {\r\n        color: #ff34b2;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li:first-of-type {\r\n        border-radius: 10px 10px 0 0;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li:last-of-type {\r\n        border-radius: 0 0 10px 10px;\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li.divider {\r\n        border: none;\r\n        border-bottom: 1px solid #333;\r\n        \/* * removes border from Li after the divider element * best used in combination with top borders on other LIs *\/\r\n    }\r\n\r\n    .dropdown-container-be3 .dropdown ul li.divider~li {\r\n        border: none;\r\n    }\r\n<\/style>",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list_profil": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown ms-2\">\r\n<a class=\"rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownUser\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" onclick=\"show_profile()\">\r\n<div class=\"avatar avatar-md avatar-indicators avatar-online\">\r\n<img alt=\"avatar\" src=\"assets\/images\/avatar\/avatar-11.jpg\" class=\"rounded-circle\">\r\n<\/div>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-end card card-body\" aria-labelledby=\"dropdownUser\" id=\"dropdown-profile-menu\" style=\"display: none;\">\r\n<div class=\"user-box\">\r\n<span class=\"avatar mt-1\">\r\n    <span class=\"avatar avatar-sm\" style=\"\">HM<\/span> <\/span>\r\n<div class=\"u-text\" onclick=\"\">\r\n    <h4 style=\"font-size: 12px;font-weight: 550;color: #555;\">\r\n        <NAMA-LENGKAP><\/NAMA-LENGKAP> <\/h4>\r\n    <div class=\"text-muted\" style=\"color:rgba(35, 46, 60, 0.7) !important\">\r\n        Be3 ID:aaaaa <\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n\r\n<a href=\"<LINK-PROFIL-USER><\/LINK-PROFIL-USER>\" class=\"dropdown-item\">\r\nProfil User\r\n<\/a>\r\n<a href=\"<LINK-PEMESANAN><\/LINK-PEMESANAN>\" class=\"dropdown-item\">\r\nHistoris Pemesanan\r\n<\/a>\r\n<a href=\"<LINK-LOGOUT><\/LINK-LOGOUT>\" class=\"dropdown-item\">\r\nKeluar\r\n<\/a>\r\n\r\n\r\n<\/div>\r\n<\/li>"
+                        },
+                        "array": [
+                            [
+                                "LINK-LOGOUT",
+                                "link",
+                                [
+                                    "Auth",
+                                    "logout",
+                                    "-1",
+                                    -1
+                                ],
+                                "costum_link"
+                            ],
+                            [
+                                "LINK-PEMESANAN",
+                                "link",
+                                [
+                                    "User",
+                                    "pemesanan",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "LINK-PROFIL-USER",
+                                "link",
+                                [
+                                    "User",
+                                    "profil",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "NAMA-LENGKAP",
+                                "user_info",
+                                "nama_lengkap"
+                            ]
+                        ]
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                },
+                "1.0.3": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n      <div class=\"container-fluid d-flex \">\r\n\r\n      <!-- Collapse -->\r\n      <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n      <\/a>\r\n      <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n      <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n      <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n      <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n      <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n      <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n      <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n      <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n      <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n      <\/svg>\r\n      <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n      <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n      <style>\r\n      .icon {\r\n        width: 1.25rem;\r\n        height: 1.25rem;\r\n        font-size: 1.25rem;\r\n        vertical-align: bottom;\r\n        stroke-width: 1.5;\r\n      }\r\n      <\/style>\r\n      <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n      <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n          <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n      <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n        <div class=\"row\">\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                  Accordions\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                  Badge\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                  Breadcrumb\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                  Buttons\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                  Button group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                  Card\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                  Carousel\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                  Close Button\r\n                <\/a>\r\n              <\/li>\r\n\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                  Collapse\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                  Dropdowns\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                  Forms\r\n                <\/a>\r\n              <\/li>\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                  List group\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                  Modal\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                  Navs and tabs\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                  Navbar\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                  Offcanvas\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                  Pagination\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n          <div class=\"col-lg-4\">\r\n            <ul class=\"list-unstyled\">\r\n\r\n\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                  Placeholders\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                  Popovers\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                  Progress\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                  Scrollspy\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                  Spinners\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                  Tables\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                  Toasts\r\n                <\/a>\r\n              <\/li>\r\n              <li class=\"nav-item\">\r\n                <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                  Tooltips\r\n                <\/a>\r\n              <\/li>\r\n            <\/ul>\r\n          <\/div>\r\n        <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n      <\/div>\r\n      <\/li>\r\n      <li class=\"nav-item dropdown flex-end bg-white\">\r\n      <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n        <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n          <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n          <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n          <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n          <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n          <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n        <\/svg>\r\n\r\n      <\/a>\r\n\r\n      <\/li>\r\n\r\n      <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n      <\/nav>\r\n      <\/div>\r\n\r\n\r\n\r\n      <\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "HEADER-UTAMA",
+                                "menu_content",
+                                "hibe3__menu",
+                                "header_list"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                },
+                "1.0.4": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n  <div class=\"container-fluid d-flex \">\r\n\r\n    <!-- Collapse -->\r\n    <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n    <\/a>\r\n    <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n        <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n          <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n            <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n            <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n          <\/svg>\r\n        <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n        <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n          <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n          <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n        <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n        <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n          <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n            <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n            <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n          <\/svg>\r\n        <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n        <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n          <style>\r\n            .icon {\r\n              width: 1.25rem;\r\n              height: 1.25rem;\r\n              font-size: 1.25rem;\r\n              vertical-align: bottom;\r\n              stroke-width: 1.5;\r\n            }\r\n          <\/style>\r\n          <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n            <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n              <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n                <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n              <\/svg>\r\n\r\n            <\/a>\r\n            <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n              <div class=\"row\">\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                        Accordions\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                        Badge\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                        Breadcrumb\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                        Buttons\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                        Button group\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                        Card\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                        Carousel\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                        Close Button\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                  <\/ul>\r\n                <\/div>\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                        Collapse\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                        Dropdowns\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                        Forms\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                        List group\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                        Modal\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                        Navs and tabs\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                        Navbar\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                        Offcanvas\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                        Pagination\r\n                      <\/a>\r\n                    <\/li>\r\n                  <\/ul>\r\n                <\/div>\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                        Placeholders\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                        Popovers\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                        Progress\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                        Scrollspy\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                        Spinners\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                        Tables\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                        Toasts\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                        Tooltips\r\n                      <\/a>\r\n                    <\/li>\r\n                  <\/ul>\r\n                <\/div>\r\n              <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n            <\/div>\r\n          <\/li>\r\n          <li class=\"nav-item dropdown flex-end bg-white\">\r\n            <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n              <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n                <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n                <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n                <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n                <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n                <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n              <\/svg>\r\n\r\n            <\/a>\r\n\r\n          <\/li>\r\n\r\n        <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n    <\/nav>\r\n  <\/div>\r\n\r\n\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list_profil": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown ms-2\">\r\n<a class=\"rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownUser\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" onclick=\"show_profile()\">\r\n<div class=\"avatar avatar-md avatar-indicators avatar-online\">\r\n<img alt=\"avatar\" src=\"assets\/images\/avatar\/avatar-11.jpg\" class=\"rounded-circle\">\r\n<\/div>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-end card card-body\" aria-labelledby=\"dropdownUser\" id=\"dropdown-profile-menu\" style=\"display: none;\">\r\n<div class=\"user-box\">\r\n<span class=\"avatar mt-1\">\r\n    <span class=\"avatar avatar-sm\" style=\"\">HM<\/span> <\/span>\r\n<div class=\"u-text\" onclick=\"\">\r\n    <h4 style=\"font-size: 12px;font-weight: 550;color: #555;\">\r\n        <NAMA-LENGKAP><\/NAMA-LENGKAP> <\/h4>\r\n    <div class=\"text-muted\" style=\"color:rgba(35, 46, 60, 0.7) !important\">\r\n        Be3 ID:aaaaa <\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n\r\n<a href=\"<LINK-PROFIL-USER><\/LINK-PROFIL-USER>\" class=\"dropdown-item\">\r\nProfil User\r\n<\/a>\r\n<a href=\"<LINK-PEMESANAN><\/LINK-PEMESANAN>\" class=\"dropdown-item\">\r\nHistoris Pemesanan\r\n<\/a>\r\n<a href=\"<LINK-LOGOUT><\/LINK-LOGOUT>\" class=\"dropdown-item\">\r\nKeluar\r\n<\/a>\r\n\r\n\r\n<\/div>\r\n<\/li>"
+                        },
+                        "array": [
+                            [
+                                "LINK-LOGOUT",
+                                "link",
+                                [
+                                    "Auth",
+                                    "logout",
+                                    "-1",
+                                    -1
+                                ],
+                                "costum_link"
+                            ],
+                            [
+                                "LINK-PEMESANAN",
+                                "link",
+                                [
+                                    "User",
+                                    "pemesanan",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "LINK-PROFIL-USER",
+                                "link",
+                                [
+                                    "User",
+                                    "profil",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "NAMA-LENGKAP",
+                                "user_info",
+                                "nama_lengkap"
+                            ]
+                        ]
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                },
+                "1.0.5": {
+                    "header": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"navbar-horizontal nav-dashboard \" style=\"position:fixed; width:100%;z-index:999;top: 55px;margin-botton:70px\">\r\n  <div class=\"container-fluid d-flex \">\r\n\r\n    <!-- Collapse -->\r\n    <a href=\"javascript:void(0)\" onclick=\"toggleSidebar(this)\" class=\"nav-link d-flex  text-reset \" style=\"align-content: center;align-items: center;\" aria-label=\"Open user menu\">\r\n\r\n      <span class=\"bx bx-menu\"><\/span>\r\n    <\/a>\r\n    <nav class=\"pn-ProductNav_Wrapper d-flex\r\n      w-100\">\r\n      <div class=\"nav-item dropdown flex-start bg-white\" style=\"align-content: center;display: flex;\">\r\n\r\n      <\/div>\r\n      <div class=\"flex-start\" style=\"width: 30px;\">\r\n\r\n        <button id=\"pnAdvancerLeft\" class=\"pn-Advancer pn-Advancer_Left\" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n          <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n            <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n            <polyline points=\"15 6 9 12 15 18\"><\/polyline>\r\n          <\/svg>\r\n        <\/button>\r\n      <\/div>\r\n      <nav id=\"pnProductNav\" class=\"pn-ProductNav pn-ProductNav w-100 bg-white\">\r\n        <ul class=\"pn-ProductNav_Contents\" id=\"pnProductNavContents\" style=\"background: white; margin-bottom:0\">\r\n\r\n          <HEADER-UTAMA><\/HEADER-UTAMA>\r\n\r\n\r\n\r\n\r\n          <span id=\"pnIndicator\" class=\"pn-ProductNav_Indicator\"><\/span>\r\n\r\n\r\n        <\/ul>\r\n      <\/nav>\r\n      <div class=\"flex-end\" style=\"width: 30px;\">\r\n\r\n        <button id=\"pnAdvancerRight\" class=\"pn-Advancer pn-Advancer_Right \" type=\"button\" style=\"align-content: center;display: flow-root;width: heigh;height: 100%;background: #fff;width: 30px;\">\r\n          <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n            <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n            <polyline points=\"9 6 15 12 9 18\"><\/polyline>\r\n          <\/svg>\r\n        <\/button>\r\n      <\/div>\r\n      <div class=\"nav-item dropdown flex-end bg-white \" style=\"align-content: center;display: flex; margin-right:10px\">\r\n        <ul class=\"justify-content-center d-flex\" style=\"align-content: center;align-items: center;margin: 0;\">\r\n          <style>\r\n            .icon {\r\n              width: 1.25rem;\r\n              height: 1.25rem;\r\n              font-size: 1.25rem;\r\n              vertical-align: bottom;\r\n              stroke-width: 1.5;\r\n            }\r\n          <\/style>\r\n          <li class=\"nav-item dropdown flex-end bg-white d-none\">\r\n            <a class=\"nav-link \" href=\"#\" id=\"navbarBaseUI\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n              <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n                <path d=\"M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z\"><\/path>\r\n              <\/svg>\r\n\r\n            <\/a>\r\n            <div class=\"dropdown-menu dropdown-menu-xl\" aria-labelledby=\"navbarBaseUI\">\r\n              <div class=\"row\">\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/accordions.html\" class=\"dropdown-item\">\r\n                        Accordions\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a class=\"dropdown-item\" href=\"components\/alerts.html\"> Alert<\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/badge.html\" class=\"dropdown-item\">\r\n                        Badge\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/breadcrumb.html\" class=\"dropdown-item\">\r\n                        Breadcrumb\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/buttons.html\" class=\"dropdown-item\">\r\n                        Buttons\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/button-group.html\" class=\"dropdown-item\">\r\n                        Button group\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/card.html\" class=\"dropdown-item\">\r\n                        Card\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/carousel.html\" class=\"dropdown-item\">\r\n                        Carousel\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/close-button.html\" class=\"dropdown-item\">\r\n                        Close Button\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                  <\/ul>\r\n                <\/div>\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/collapse.html\" class=\"dropdown-item\">\r\n                        Collapse\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/dropdowns.html\" class=\"dropdown-item\">\r\n                        Dropdowns\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/forms.html\" class=\"dropdown-item\">\r\n                        Forms\r\n                      <\/a>\r\n                    <\/li>\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/list-group.html\" class=\"dropdown-item\">\r\n                        List group\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/modal.html\" class=\"dropdown-item\">\r\n                        Modal\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/navs-tabs.html\" class=\"dropdown-item\">\r\n                        Navs and tabs\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/navbar.html\" class=\"dropdown-item\">\r\n                        Navbar\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/offcanvas.html\" class=\"dropdown-item\">\r\n                        Offcanvas\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/pagination.html\" class=\"dropdown-item\">\r\n                        Pagination\r\n                      <\/a>\r\n                    <\/li>\r\n                  <\/ul>\r\n                <\/div>\r\n                <div class=\"col-lg-4\">\r\n                  <ul class=\"list-unstyled\">\r\n\r\n\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/placeholders.html\" class=\"dropdown-item\">\r\n                        Placeholders\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/popovers.html\" class=\"dropdown-item\">\r\n                        Popovers\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/progress.html\" class=\"dropdown-item\">\r\n                        Progress\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/scrollspy.html\" class=\"dropdown-item\">\r\n                        Scrollspy\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/spinners.html\" class=\"dropdown-item\">\r\n                        Spinners\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/tables.html\" class=\"dropdown-item\">\r\n                        Tables\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/toasts.html\" class=\"dropdown-item\">\r\n                        Toasts\r\n                      <\/a>\r\n                    <\/li>\r\n                    <li class=\"nav-item\">\r\n                      <a href=\"components\/tooltips.html\" class=\"dropdown-item\">\r\n                        Tooltips\r\n                      <\/a>\r\n                    <\/li>\r\n                  <\/ul>\r\n                <\/div>\r\n              <\/div>\r\n\r\n\r\n\r\n\r\n\r\n\r\n            <\/div>\r\n          <\/li>\r\n          <li class=\"nav-item dropdown flex-end bg-white\">\r\n            <a class=\"nav-link \" <LINK-CART><\/LINK-CART>>\r\n              <svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" class=\"\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" stroke-width=\"2\" stroke=\"currentColor\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\r\n                <path stroke=\"none\" d=\"M0 0h24v24H0z\" fill=\"none\"><\/path>\r\n                <circle cx=\"6\" cy=\"19\" r=\"2\"><\/circle>\r\n                <circle cx=\"17\" cy=\"19\" r=\"2\"><\/circle>\r\n                <path d=\"M17 17h-11v-14h-2\"><\/path>\r\n                <path d=\"M6 5l14 1l-1 7h-13\"><\/path>\r\n              <\/svg>\r\n\r\n            <\/a>\r\n\r\n          <\/li>\r\n\r\n        <\/ul>\r\n\r\n\r\n\r\n      <\/div>\r\n\r\n\r\n\r\n\r\n    <\/nav>\r\n  <\/div>\r\n\r\n\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "LINK-CART",
+                                "link",
+                                [
+                                    "Ecommerce",
+                                    "cart",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "HEADER-UTAMA",
+                                "menu_content",
+                                "hibe3__menu",
+                                "header_list"
+                            ]
+                        ]
+                    },
+                    "HeaderList": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a href=\"<LINK><\/LINK>\" class=\"pn-ProductNav_Link\"><ICON><\/ICON> <NAME><\/NAME><\/a>"
+                        },
+                        "database": {
+                            "utama": "tab_group",
+                            "primary_key": "id",
+                            "where": [
+                                [
+                                    "id_apps_user",
+                                    "=",
+                                    "{SESSION_UTAMA}"
+                                ]
+                            ]
+                        },
+                        "array": [
+                            [
+                                "TEXT",
+                                "database",
+                                "nama_kategori"
+                            ],
+                            [
+                                "VALUE",
+                                "database",
+                                "primary_key"
+                            ]
+                        ]
+                    },
+                    "navbar": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<div class=\"sticky-top\" >\r\n<div class=\"header\">\r\n<div class=\"navbar-custom navbar navbar-expand-lg bg-primary  navbar-stisla\" style=\"position:fixed;  height: 40px;\"> \r\n<div class=\"container-fluid px-0\">\r\n<NAVBAR-TOGGLE><\/NAVBAR-TOGGLE>\r\n<NAVBAR-LOGO><\/NAVBAR-LOGO>\r\n\r\n<NAVBAR-SEARCH><\/NAVBAR-SEARCH>\r\n\r\n<!--Navbar nav -->\r\n<ul class=\"navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0\">\r\n\r\n<NAVBAR-LIST><\/NAVBAR-LIST>\r\n\r\n<\/ul>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>"
+                        },
+                        "array": [
+                            [
+                                "NAVBAR-LIST",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list"
+                            ],
+                            [
+                                "NAVBAR-LOGO",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_logo"
+                            ],
+                            [
+                                "NAVBAR-SEARCH",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_search"
+                            ],
+                            [
+                                "NAVBAR-TOGGLE",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_toggle"
+                            ]
+                        ]
+                    },
+                    "navbar_toggle": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button class=\"navbar-toggler\" onclick=\"togle_sidebar_wai()\" type=\"button\" id=\"btnSidebarWAI\" style=\"display: block;font-size: 25px;width: 10%;text-align: left;padding-left:0px;border: 0px;color: white;\">\r\n\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M15 11h7v2h-7zm1 4h6v2h-6zm-2-8h8v2h-8zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2zm4-7c1.995 0 3.5-1.505 3.5-3.5S9.995 5 8 5 4.5 6.505 4.5 8.5 6.005 12 8 12z\"><\/path>\r\n<\/svg>\r\n\r\n<\/button>"
+                        }
+                    },
+                    "navbar_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<form class=\"form-inline mr-auto d-none d-md-none d-lg-block\" style=\"width: 100%;\">\r\n\r\n\r\n<div class=\"input-group \">\r\n<div class=\"search-element\" style=\"width: 100%;margin-top:12px\">\r\n<input class=\"form-control\" type=\"search\" placeholder=\"Search\" aria-label=\"Search\" data-width=\"250\" style=\"margin: 0 -15px;;  min-height: 30px;\">\r\n<button class=\"btn\" type=\"submit\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg><\/button>\r\n<div class=\"search-backdrop\"><\/div>\r\n<div class=\"search-result\">\r\n<div class=\"search-header w-100\">\r\n<h5>Result<\/h5>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n<\/div>\r\n<\/form>"
+                        }
+                    },
+                    "navbar_logo": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<a class=\"navbar-brand d-block d-md-none\" href=\"<BASE-URL><\/BASE-URL>\" style=\"margin-right: 50px;\">\r\n<img src=\"<IMAGE-LOGO><\/IMAGE-LOGO>\" width=\"75px\" alt=\"Image\">\r\n<\/a> "
+                        },
+                        "array": [
+                            [
+                                "IMAGE-LOGO",
+                                "bundle",
+                                "logo"
+                            ],
+                            [
+                                "BASE-URL",
+                                "base_url",
+                                ""
+                            ]
+                        ]
+                    },
+                    "navbar_notification": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown stopevent ms-2 d-none\">\r\n<a class=\"btn btn-ghost btn-icon rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownNotification\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">\r\n<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(0, 0, 0, 1);transform: ;msFilter:;\">\r\n<path d=\"M19 13.586V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zm-7 5a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z\"><\/path>\r\n<\/svg>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-lg dropdown-menu-end\" aria-labelledby=\"dropdownNotification\">\r\n<div>\r\n<div class=\"border-bottom px-3 pt-2 pb-3 d-flex\r\njustify-content-between align-items-center\">\r\n<p class=\"mb-0 text-dark fw-medium fs-4\">Notifications<\/p>\r\n<a href=\"#!\" class=\"text-muted\">\r\n<span>\r\n <i class=\"me-1 icon-xs\" data-feather=\"settings\"><\/i>\r\n<\/span>\r\n<\/a>\r\n<\/div>\r\n<div data-simplebar style=\"height: 250px;\">\r\n<!-- List group -->\r\n<ul class=\"list-group list-group-flush notification-list-scroll\">\r\n<!-- List group item -->\r\n<li class=\"list-group-item bg-light\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Rishi Chopra<\/h5>\r\n     <p class=\"mb-0\">\r\n         Mauris blandit erat id nunc blandit, ac eleifend dolor pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Neha Kannned<\/h5>\r\n     <p class=\"mb-0\">\r\n         Proin at elit vel est condimentum elementum id in ante. Maecenas et sapien metus.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Nirmala Chauhan<\/h5>\r\n     <p class=\"mb-0\">\r\n         Morbi maximus urna lobortis elit sollicitudin sollicitudieget elit vel pretium.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<!-- List group item -->\r\n<li class=\"list-group-item\">\r\n\r\n\r\n <a href=\"#!\" class=\"text-muted\">\r\n     <h5 class=\" mb-1\">Sina Ray<\/h5>\r\n     <p class=\"mb-0\">\r\n         Sed aliquam augue sit amet mauris volutpat hendrerit sed nunc eu diam.\r\n     <\/p>\r\n <\/a>\r\n\r\n\r\n\r\n<\/li>\r\n<\/ul>\r\n<\/div>\r\n<div class=\"border-top px-3 py-2 text-center\">\r\n<a href=\"#!\" class=\"text-inherit \">\r\nView all Notifications\r\n<\/a>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/li>"
+                        }
+                    },
+                    "navbar_button_search": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<button type=\"button\" data-toggle=\"search\" class=\"btn btn-md btn-icon rounded-circle nav-link nav-link-lg d-lg-none\" style=\"background: transparent;border: 0;fill: white;\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" style=\"fill: rgba(255,255,255);transform: ;msFilter:;\">\r\n<path d=\"M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z\"><\/path>\r\n<\/svg>\r\n<\/button>"
+                        }
+                    },
+                    "navbar_list_profil": {
+                        "content": {
+                            "css": "",
+                            "js": "",
+                            "html": "<li class=\"dropdown ms-2\">\r\n<a class=\"rounded-circle\" href=\"#!\" role=\"button\" id=\"dropdownUser\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\" onclick=\"show_profile()\">\r\n<div class=\"avatar avatar-md avatar-indicators avatar-online\">\r\n<img alt=\"avatar\" src=\"assets\/images\/avatar\/avatar-11.jpg\" class=\"rounded-circle\">\r\n<\/div>\r\n<\/a>\r\n<div class=\"dropdown-menu dropdown-menu-end card card-body\" aria-labelledby=\"dropdownUser\" id=\"dropdown-profile-menu\" style=\"display: none;\">\r\n<div class=\"user-box\">\r\n<span class=\"avatar mt-1\">\r\n    <span class=\"avatar avatar-sm\" style=\"\">HM<\/span> <\/span>\r\n<div class=\"u-text\" onclick=\"\">\r\n    <h4 style=\"font-size: 12px;font-weight: 550;color: #555;\">\r\n        <NAMA-LENGKAP><\/NAMA-LENGKAP> <\/h4>\r\n    <div class=\"text-muted\" style=\"color:rgba(35, 46, 60, 0.7) !important\">\r\n        Be3 ID:aaaaa <\/div>\r\n<\/div>\r\n<\/div>\r\n\r\n\r\n<a href=\"<LINK-PROFIL-USER><\/LINK-PROFIL-USER>\" class=\"dropdown-item\">\r\nProfil User\r\n<\/a>\r\n<a href=\"<LINK-PEMESANAN><\/LINK-PEMESANAN>\" class=\"dropdown-item\">\r\nHistoris Pemesanan\r\n<\/a>\r\n<a href=\"<LINK-LOGOUT><\/LINK-LOGOUT>\" class=\"dropdown-item\">\r\nKeluar\r\n<\/a>\r\n\r\n\r\n<\/div>\r\n<\/li>"
+                        },
+                        "array": [
+                            [
+                                "LINK-LOGOUT",
+                                "link",
+                                [
+                                    "Auth",
+                                    "logout",
+                                    "-1",
+                                    -1
+                                ],
+                                "costum_link"
+                            ],
+                            [
+                                "LINK-PEMESANAN",
+                                "link",
+                                [
+                                    "User",
+                                    "pemesanan",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "LINK-PROFIL-USER",
+                                "link",
+                                [
+                                    "User",
+                                    "profil",
+                                    "view_layout",
+                                    -1
+                                ],
+                                "just_link"
+                            ],
+                            [
+                                "NAMA-LENGKAP",
+                                "user_info",
+                                "nama_lengkap"
+                            ]
+                        ]
+                    },
+                    "navbar_list": {
+                        "content": {
+                            "html": "<NAVBARNOTIVICATION><\/NAVBARNOTIVICATION><NavbarListProfile><\/NavbarListProfile><NavbarButtonSearch><\/NavbarButtonSearch>"
+                        },
+                        "array": [
+                            [
+                                "NAVBARNOTIVICATION",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_notification"
+                            ],
+                            [
+                                "NavbarListProfile",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_list_profil"
+                            ],
+                            [
+                                "NavbarButtonSearch",
+                                "menu_content",
+                                "hibe3__menu",
+                                "navbar_button_search"
+                            ]
+                        ]
+                    }
+                }
+            },
+            "last_version": "1.0.5",
+            "last_generate_date": "2025-06-28"
+        },
+        "foodmart_menu": {
+            "versions": {
+                "1.0.0": null
+            },
+            "last_version": "1.0.0",
+            "last_generate_date": "2025-05-05"
+        }
+    },
+    "alast_version": "1.0.6",
+    "alast_generate_date": "2025-06-28"
+}

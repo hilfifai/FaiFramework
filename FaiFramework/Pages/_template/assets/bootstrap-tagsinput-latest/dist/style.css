@@ -1,0 +1,24 @@
+.bootstrap-tagsinput
+	{
+		padding: 10px;
+		border: 1px solid #dadcde;
+		box-shadow: none;
+	}
+	.bootstrap-tagsinput{
+		padding: 6px !important;
+		box-shadow: 0px;
+		color:#5555
+	}
+	.bootstrap-tagsinput .tag
+	{
+		margin-right: 2px;
+		color: #323232ff;
+		background: #f2faf9;
+		padding: 4px;
+		border-radius: 5px;
+		font-size: 14px;
+		border: 1px solid #2db4a3;
+
+	}.bootstrap-tagsinput .tag [data-role="remove"] {
+ 
+  color: #009688;}

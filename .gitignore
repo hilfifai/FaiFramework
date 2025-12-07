@@ -1,0 +1,23 @@
+# folder besar / vendor
+node_modules/
+vendor/
+assets/vendor/
+soft-ui-dashboard/
+
+# file besar
+*.zip
+*.rar
+*.iso
+*.mp4
+*.psd
+
+session_data/
+application/session_data/
+LAST/
+FaiFramework/versions/generated_versions/
+Fai-Version-Template.json
+FaiFramework/versions/generated_versions/1.0.0-alpha/main_app.json
+FaiFramework/Pages/json/all_produk/all_produk.json
+LAST/web/dump (17).sql
+Fai-Version-Template-App.json
+FaiFramework/versions/generated_versions/1.0.0-alpha.json

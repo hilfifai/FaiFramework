@@ -1,0 +1,1891 @@
+import FormBuilder from './FormBuilder.js';
+
+export default class CrudBuilder {
+    constructor() {
+        this.config = {};
+        this.container = "";
+        this.data = [];
+        this.table = null;
+        this.formBuilder = null;
+        this.currentView = 'table';
+        this.selectedRows = [];
+        this.sortable = null;
+    }
+
+    async CrudConfig(config) {
+        this.config = config;
+        this.container = document.getElementById(config.containerId);
+        this.data = [];
+        this.table = null;
+        this.formBuilder = null;
+    }
+
+    async init() {
+        if (!this.container) {
+            console.error(`Container with ID "${this.config.containerId}" not found.`);
+            return;
+        }
+		await this._refactorConfigArray();
+		console.log(this.config);
+        this._renderBaseLayout();
+        this.showLoading(true);
+        
+        try {
+            await this._fetchData();
+            await this._initDataTable();
+            this._bindGlobalEvents();
+            this._initViewModes();
+        } catch (error) {
+            console.error("Initialization failed:", error);
+            this.container.innerHTML = `<div class="alert alert-danger">Gagal memuat data tabel.</div>`;
+        } finally {
+            this.showLoading(false);
+        }
+    }
+	async _refactorConfigArray() {
+		// Simulasi objek fai (harus disesuaikan dengan implementasi sebenarnya)
+		const fai = {
+			input: (key) => {
+				// Implementasi untuk mendapatkan input value
+				// Ini contoh sederhana, sesuaikan dengan kebutuhan
+				const urlParams = new URLSearchParams(window.location.search);
+				return urlParams.get(key);
+			}
+		};
+
+		if (!this.config.page.crud || !this.config.page.crud.array) {
+			console.warn('No CRUD array configuration found');
+			return;
+		}
+
+		// Process each field in the array
+		for (let i = 0; i < this.config.page.crud.array.length; i++) {
+			const fieldConfig = this.config.page.crud.array[i];
+			
+			// Default values jika tidak ada
+			const field = fieldConfig[1] || '';
+			const type = fieldConfig[2] || 'text';
+			const extype = type; // extype sama dengan type awal
+			
+			try {
+				const result = await this.refactorCrudArrayConfig(
+					fai,
+					this.config.page,
+					{ array: this.config.page.crud.array },
+					i,
+					field,
+					type,
+					extype
+				);
+				
+				// Update config dengan hasil refactor
+				this.config.page = result.page;
+				this.config.page.crud.array = result.arrayConfig.array;
+			} catch (error) {
+				console.error(`Error processing field ${i} (${field}):`, error);
+			}
+		}
+
+		// Process sub_kategori jika ada
+		if (this.config.page.crud.sub_kategori && this.config.page.crud.array_sub_kategori) {
+			for (let subIndex = 0; subIndex < this.config.page.crud.sub_kategori.length; subIndex++) {
+				const subKategori = this.config.page.crud.sub_kategori[subIndex];
+				const subArray = this.config.page.crud.array_sub_kategori[subIndex];
+				
+				if (subArray && Array.isArray(subArray)) {
+					for (let i = 0; i < subArray.length; i++) {
+						const fieldConfig = subArray[i];
+						
+						const field = fieldConfig[1] || '';
+						const type = fieldConfig[2] || 'text';
+						const extype = type;
+						
+						try {
+							const result = await this.refactorCrudArrayConfig(
+								fai,
+								this.config.page,
+								{ array: subArray },
+								i,
+								field,
+								type,
+								extype
+							);
+							
+							// Update sub array dengan hasil refactor
+							//this.config.page.crud.array_sub_kategori[subIndex] = result.arrayConfig.array;
+							this.config.page = result.page;
+						} catch (error) {
+							console.error(`Error processing sub category field ${subIndex}-${i} (${field}):`, error);
+						}
+					}
+				}
+			}
+		}
+	}
+	async refactorCrudArrayConfig(fai, page, arrayConfig, i, field, type, extype) {
+		// Inisialisasi nilai default
+		if (arrayConfig.array && arrayConfig.array[i] && arrayConfig.array[i][1]) {
+			arrayConfig.array[i][1] = String(arrayConfig.array[i][1]).toLowerCase().trim().replace('.', '');
+		}
+		
+		field = arrayConfig.array[i][1] || '';
+		type = arrayConfig.array[i][2] || 'text';
+		let text = arrayConfig.array[i][0] || '';
+		const extypearray = type.split('-');
+		const type_temp = type;
+		let visible = true;
+		let required = false;
+		
+		// Jika text kosong, buat dari field
+		if (!text && field) {
+			arrayConfig.array[i][0] = field.replace(/_/g, ' ')
+				.split(' ')
+				.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+				.join(' ');
+			text = arrayConfig.array[i][0];
+		}
+		
+		// Jika field kosong, buat dari text
+		if (!field && text) {
+			arrayConfig.array[i][1] = text.toLowerCase().replace(/\s+/g, '_');
+			field = arrayConfig.array[i][1];
+		}
+		
+		// Set view default jika belum ada
+		if (!page.crud.view && page.load && page.load.type) {
+			page.crud.view = page.load.type;
+		} else if (!page.crud.view) {
+			page.crud.view = 'list'; // Default value
+		}
+		
+		// Proses tipe extended
+		if (extypearray.length > 1) {
+			if (extypearray.includes('relation')) {
+				type = type.replace('-relation', '');
+				visible = (page.crud.view === 'view' || fai.input('_view') === 'view');
+			} else if (extypearray.includes('hidden_input')) {
+				visible = !(page.crud.view === 'list' || fai.input('_view') === 'list');
+			} else if (extypearray.includes('table')) {
+				type = type.replace('-table', '');
+				visible = (page.crud.view === 'list' || fai.input('_view') === 'list');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('appr')) {
+				visible = (page.crud.view === 'list' || page.crud.view === 'appr' || 
+						  fai.input('_view') === 'list' || fai.input('_view') === 'appr');
+			} else if (extypearray.includes('editview')) {
+				type = type.replace('-editview', '');
+				visible = (page.crud.view === 'edit' || page.crud.view === 'view' || 
+						  fai.input('_view') === 'edit' || fai.input('_view') === 'view');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('crud')) {
+				type = type.replace('-crud', '');
+				visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+						  fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('list')) {
+				type = type.replace('-list', '');
+				visible = !(page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+						   fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('listeditview')) {
+				type = type.replace('-list', '');
+				visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'list' || 
+						  fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'list');
+				arrayConfig.array[i][2] = type;
+			} else if (type === 'editor-code') {
+				visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+						  fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+			} else if (extypearray.includes('edit')) {
+				type = type.replace('-edit', '');
+				visible = (page.crud.view === 'edit' || fai.input('_view') === 'edit');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('tambah')) {
+				type = type.replace('-tambah', '');
+				visible = (page.crud.view === 'tambah' || fai.input('_view') === 'tambah');
+				arrayConfig.array[i][2] = type;
+			} else if (extypearray.includes('password')) {
+				visible = (page.crud.view === 'tambah' || page.crud.view === 'edit' || 
+						  fai.input('_view') === 'tambah' || fai.input('_view') === 'edit');
+			} else if (extypearray.includes('hidden')) {
+				visible = (page.crud.view === 'tambah' || fai.input('_view') === 'tambah');
+			} else {
+				visible = true;
+			}
+			// Tetap pertahankan semua logika processing flags
+		}
+		
+		// Cek non_view settings
+		const currentView = page.crud.view;
+		if (page.non_view) {
+			if ((currentView === 'list' || fai.input('_view') === 'list') && page.non_view.list && page.non_view.list[field]) {
+				visible = false;
+			} else if ((currentView === 'tambah' || fai.input('_view') === 'tambah') && page.non_view.Tambah && page.non_view.Tambah[field]) {
+				visible = false;
+			} else if ((currentView === 'edit' || fai.input('_view') === 'edit') && page.non_view.Edit && page.non_view.Edit[field]) {
+				visible = false;
+			} else if ((currentView === 'hapus' || fai.input('_view') === 'hapus') && page.non_view.Hapus && page.non_view.Hapus[field]) {
+				visible = false;
+			}
+		}
+		if (type === 'select-manual-value') {
+			const arrray_manual = arrayConfig.array[i][3];
+			const array_set = {};
+			
+			for (const key_manual in arrray_manual) {
+				if (arrray_manual.hasOwnProperty(key_manual)) {
+					const value_manual = arrray_manual[key_manual];
+					array_set[value_manual] = ucwords(value_manual);
+				}
+			}
+			
+			arrayConfig.array[i][3] = array_set;
+			type = arrayConfig.array[i][2] = "select-manual";
+		}
+		
+		// Proses required flag
+		if (extypearray.includes('req')) {
+			if (page.crud.crud_inline && page.crud.crud_inline[arrayConfig.array[i][2]]) {
+				page.crud.crud_inline[arrayConfig.array[i][2]] += " required ";
+			} else {
+				if (!page.crud.crud_inline) page.crud.crud_inline = {};
+				page.crud.crud_inline[arrayConfig.array[i][2]] = " required ";
+			}
+			
+			type = arrayConfig.array[i][2] = type.replace("-req", "");
+			required = true;
+		}
+		
+		// Proses currency flag
+		if (extypearray.includes('cur')) {
+			if (!page.crud.input_group) page.crud.input_group = {};
+			if (!page.crud.input_group.prefix) page.crud.input_group.prefix = {};
+			page.crud.input_group.prefix[field] = "Rp. ";
+			type = arrayConfig.array[i][2] = type.replace("-cur", "");
+		}
+		
+		// Proses percentage flag
+		if (extypearray.includes('persen')) {
+			if (!page.crud.input_group) page.crud.input_group = {};
+			if (!page.crud.input_group.sufix) page.crud.input_group.sufix = {};
+			page.crud.input_group.sufix[field] = "%";
+			type = arrayConfig.array[i][2] = type.replace("-persen", "");
+		}
+		
+		// Proses disable flag
+		if (extypearray.includes('disable')) {
+			if (page.crud.crud_inline && page.crud.crud_inline[arrayConfig.array[i][2]]) {
+				page.crud.crud_inline[arrayConfig.array[i][2]] += " disabled ";
+			} else {
+				if (!page.crud.crud_inline) page.crud.crud_inline = {};
+				page.crud.crud_inline[arrayConfig.array[i][2]] = " disabled ";
+			}
+			
+			type = arrayConfig.array[i][2] = type.replace("-disable", "");
+		}
+		
+		// Proses kode flag (auto numbering)
+		if (extypearray.includes('kode')) {
+			if (!page.crud.insert_number_code) page.crud.insert_number_code = {};
+			page.crud.insert_number_code[field] = page.crud.insert_number_code[field] || {};
+			
+			const configOptions = arrayConfig.array[i][3] || {};
+			page.crud.insert_number_code[field].prefix = configOptions.prefix || '';
+			
+			if (configOptions.array === 'one') {
+				page.crud.insert_number_code[field].root = page.crud.insert_number_code[field].root || {};
+				page.crud.insert_number_code[field].root.type = [configOptions.tipe];
+				page.crud.insert_number_code[field].root.sprintf = [true];
+				page.crud.insert_number_code[field].root.sprintf_number = [configOptions.sprintf_number];
+				
+				if (configOptions['parent-separator']) {
+					page.crud.insert_number_code[field]['parent-separator'] = configOptions['parent-separator'];
+				}
+				
+				if (configOptions['data-parent']) {
+					page.crud.insert_number_code[field]['data-parent'] = configOptions['data-parent'];
+					
+					if (!page.crud.crud_inline) page.crud.crud_inline = {};
+					
+					const parentField = configOptions['data-parent'];
+					let inputInline = page.crud.crud_inline[parentField] || '';
+					
+					if (inputInline.includes('onchange=')) {
+						inputInline = inputInline.replace('onchange="', `onchange="insert_number_code_${field}('<NUMBERING></NUMBERING>');`);
+					} else {
+						inputInline += ` onchange="insert_number_code_${field}('<NUMBERING></NUMBERING>')"`;
+					}
+					
+					if (inputInline.includes('onclick=')) {
+						inputInline = inputInline.replace('onclick="', `onclick="insert_number_code_${field}('<NUMBERING></NUMBERING>');`);
+					} else {
+						inputInline += ` onclick="insert_number_code_${field}('<NUMBERING></NUMBERING>')"`;
+					}
+					
+					page.crud.crud_inline[parentField] = inputInline;
+				}
+			}
+			
+			page.crud.insert_number_code[field].suffix = configOptions.suffix || '';
+			type = arrayConfig.array[i][2] = type.replace("-disable", "");
+		}
+		
+		// Proses flags lainnya
+		if (extypearray.includes('en')) {
+			type = arrayConfig.array[i][2] = type.replace("-en", "");
+		}
+		
+		if (extypearray.includes('number')) {
+			type = type.replace("-number", "");
+		}
+		
+		if (extypearray.includes('right')) {
+			type = type.replace("-right", "");
+		}
+		
+		if (extypearray.includes('nonselect2')) {
+			// data['nonselect2'] = true;
+			type = type.replace("-nonselect2", "");
+		}
+		
+		// Simpan data konfigurasi
+		if (!page.crud.data) page.crud.data = {};
+		page.crud.data[field] = {
+			visible: visible,
+			type: type,
+			required: required,
+			type_form_asal: type_temp,
+			is_number: extypearray.includes('number'),
+			is_right: extypearray.includes('right'),
+			enskripsi: extypearray.includes('en')
+		};
+		
+		// Simpan data konfigurasi
+		if (!page.crud.data) page.crud.data = {};
+		page.crud.data[field] = {
+			visible: visible,
+			type: type,
+			required: required,
+			type_form_asal: type_temp,
+			is_number: extypearray.includes('number'),
+			is_right: extypearray.includes('right'),
+			enskripsi: extypearray.includes('en')
+		};
+		
+		return {
+			page: page,
+			arrayConfig: arrayConfig,
+			field: field,
+			type: type
+		};
+	}
+	 refactorCrudArrayConfig2(fai, page, arrayConfig, i, field, type, extype) {
+    // Inisialisasi nilai default
+    arrayConfig.array[i][1] = strtolower(trim(str_replace('.', '', arrayConfig.array[i][1]))) + '';
+    
+    field = arrayConfig.array[i][1];
+    type = arrayConfig.array[i][2];
+    let text = arrayConfig.array[i][0];
+    const extypearray = type.split('-');
+    const database_utama = page.crud.database_utama;
+    const type_temp = type;
+    let select = [];
+    let join = [];
+    let visible = true;
+    let get_select = true;
+    let required = false;
+    const is_master = page.database && page.database.is_array;
+    
+    // Jika text kosong, buat dari field
+    if (!text) {
+        arrayConfig.array[i][0] = ucwords(str.replace(/_/g, ' ', str.toLowerCase(field)));
+        text = arrayConfig.array[i][0];
+    }
+    
+    // Jika field kosong, buat dari text
+    if (!field) {
+        arrayConfig.array[i][1] = str.toLowerCase(str.replace(/ /g, '_', str.toLowerCase(text)));
+        field = arrayConfig.array[i][1];
+    }
+    
+    // Cek apakah perlu mendapatkan select
+    if (page.load && page.load.database && page.load.database.query && page.load.database.query.select && 
+        (type === 'select' || type === 'select-relation')) {
+        get_select = true;
+    }
+    
+    // Set view default
+    if (!page.crud.view) {
+        page.crud.view = page.load.type;
+    }
+    
+    // Proses tipe extended
+    if (extypearray.length > 1) {
+        if (extypearray.includes('relation')) {
+            type = type.replace('-relation', '');
+            visible = (page.crud.view === 'view' || fai.input('_view') === 'view');
+        } else if (extypearray.includes('hidden_input')) {
+            visible = !(page.crud.view === 'list' || fai.input('_view') === 'list');
+        } else if (extypearray.includes('table')) {
+            type = type.replace('-table', '');
+            visible = (page.crud.view === 'list' || fai.input('_view') === 'list');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('appr')) {
+            visible = (page.crud.view === 'list' || page.crud.view === 'appr' || 
+                      fai.input('_view') === 'list' || fai.input('_view') === 'appr');
+        } else if (extypearray.includes('editview')) {
+            type = type.replace('-editview', '');
+            visible = (page.crud.view === 'edit' || page.crud.view === 'view' || 
+                      fai.input('_view') === 'edit' || fai.input('_view') === 'view');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('crud')) {
+            type = type.replace('-crud', '');
+            visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+                      fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('list')) {
+            type = type.replace('-list', '');
+            visible = !(page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+                       fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('listeditview')) {
+            type = type.replace('-list', '');
+            visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'list' || 
+                      fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'list');
+            arrayConfig.array[i][2] = type;
+        } else if (type === 'editor-code') {
+            visible = (page.crud.view === 'edit' || page.crud.view === 'view' || page.crud.view === 'tambah' || 
+                      fai.input('_view') === 'edit' || fai.input('_view') === 'view' || fai.input('_view') === 'tambah');
+        } else if (extypearray.includes('edit')) {
+            type = type.replace('-edit', '');
+            visible = (page.crud.view === 'edit' || fai.input('_view') === 'edit');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('tambah')) {
+            type = type.replace('-tambah', '');
+            visible = (page.crud.view === 'tambah' || fai.input('_view') === 'tambah');
+            arrayConfig.array[i][2] = type;
+        } else if (extypearray.includes('password')) {
+            visible = (page.crud.view === 'tambah' || page.crud.view === 'edit' || 
+                      fai.input('_view') === 'tambah' || fai.input('_view') === 'edit');
+        } else if (extypearray.includes('hidden')) {
+            visible = (page.crud.view === 'tambah' || fai.input('_view') === 'tambah');
+        } else {
+            visible = true;
+        }
+    }
+    
+    // Cek non_view settings
+    if ((page.crud.view === 'list' || fai.input('_view') === 'list') && page.non_view && page.non_view.list && page.non_view.list[field]) {
+        visible = false;
+    } else if ((page.crud.view === 'tambah' || fai.input('_view') === 'tambah') && page.non_view && page.non_view.Tambah && page.non_view.Tambah[field]) {
+        visible = false;
+    } else if ((page.crud.view === 'edit' || fai.input('_view') === 'edit') && page.non_view && page.non_view.Edit && page.non_view.Edit[field]) {
+        visible = false;
+    } else if ((page.crud.view === 'hapus' || fai.input('_view') === 'hapus') && page.non_view && page.non_view.Hapus && page.non_view.Hapus[field]) {
+        visible = false;
+    }
+    
+    // Proses select-manual-value
+    if (type === 'select-manual-value') {
+        const arrray_manual = arrayConfig.array[i][3];
+        const array_set = {};
+        
+        for (const key_manual in arrray_manual) {
+            if (arrray_manual.hasOwnProperty(key_manual)) {
+                const value_manual = arrray_manual[key_manual];
+                array_set[value_manual] = ucwords(value_manual);
+            }
+        }
+        
+        arrayConfig.array[i][3] = array_set;
+        type = arrayConfig.array[i][2] = "select-manual";
+    }
+    
+    // Proses required flag
+    if (extypearray.includes('req')) {
+        if (page.crud.crud_inline && page.crud.crud_inline[arrayConfig.array[i][2]]) {
+            page.crud.crud_inline[arrayConfig.array[i][2]] += " required ";
+        } else {
+            if (!page.crud.crud_inline) page.crud.crud_inline = {};
+            page.crud.crud_inline[arrayConfig.array[i][2]] = " required ";
+        }
+        
+        type = arrayConfig.array[i][2] = type.replace("-req", "");
+        required = true;
+    }
+    
+    // Proses currency flag
+    if (extypearray.includes('cur')) {
+        if (!page.crud.input_group) page.crud.input_group = {};
+        if (!page.crud.input_group.prefix) page.crud.input_group.prefix = {};
+        page.crud.input_group.prefix[field] = "Rp. ";
+        type = arrayConfig.array[i][2] = type.replace("-cur", "");
+    }
+    
+    // Proses percentage flag
+    if (extypearray.includes('persen')) {
+        if (!page.crud.input_group) page.crud.input_group = {};
+        if (!page.crud.input_group.sufix) page.crud.input_group.sufix = {};
+        page.crud.input_group.sufix[field] = "%";
+        type = arrayConfig.array[i][2] = type.replace("-persen", "");
+    }
+    
+    // Proses disable flag
+    if (extypearray.includes('disable')) {
+        if (page.crud.crud_inline && page.crud.crud_inline[arrayConfig.array[i][2]]) {
+            page.crud.crud_inline[arrayConfig.array[i][2]] += " disabled ";
+        } else {
+            if (!page.crud.crud_inline) page.crud.crud_inline = {};
+            page.crud.crud_inline[arrayConfig.array[i][2]] = " disabled ";
+        }
+        
+        type = arrayConfig.array[i][2] = type.replace("-disable", "");
+    }
+    
+    // Proses kode flag (auto numbering)
+    if (extypearray.includes('kode')) {
+        if (!page.crud.insert_number_code) page.crud.insert_number_code = {};
+        page.crud.insert_number_code[field] = page.crud.insert_number_code[field] || {};
+        
+        const configOptions = arrayConfig.array[i][3] || {};
+        page.crud.insert_number_code[field].prefix = configOptions.prefix || '';
+        
+        if (configOptions.array === 'one') {
+            page.crud.insert_number_code[field].root = page.crud.insert_number_code[field].root || {};
+            page.crud.insert_number_code[field].root.type = [configOptions.tipe];
+            page.crud.insert_number_code[field].root.sprintf = [true];
+            page.crud.insert_number_code[field].root.sprintf_number = [configOptions.sprintf_number];
+            
+            if (configOptions['parent-separator']) {
+                page.crud.insert_number_code[field]['parent-separator'] = configOptions['parent-separator'];
+            }
+            
+            if (configOptions['data-parent']) {
+                page.crud.insert_number_code[field]['data-parent'] = configOptions['data-parent'];
+                
+                if (!page.crud.crud_inline) page.crud.crud_inline = {};
+                
+                const parentField = configOptions['data-parent'];
+                let inputInline = page.crud.crud_inline[parentField] || '';
+                
+                if (inputInline.includes('onchange=')) {
+                    inputInline = inputInline.replace('onchange="', `onchange="insert_number_code_${field}('<NUMBERING></NUMBERING>');`);
+                } else {
+                    inputInline += ` onchange="insert_number_code_${field}('<NUMBERING></NUMBERING>')"`;
+                }
+                
+                if (inputInline.includes('onclick=')) {
+                    inputInline = inputInline.replace('onclick="', `onclick="insert_number_code_${field}('<NUMBERING></NUMBERING>');`);
+                } else {
+                    inputInline += ` onclick="insert_number_code_${field}('<NUMBERING></NUMBERING>')"`;
+                }
+                
+                page.crud.crud_inline[parentField] = inputInline;
+            }
+        }
+        
+        page.crud.insert_number_code[field].suffix = configOptions.suffix || '';
+        type = arrayConfig.array[i][2] = type.replace("-disable", "");
+    }
+    
+    // Proses flags lainnya
+    if (extypearray.includes('en')) {
+        type = arrayConfig.array[i][2] = type.replace("-en", "");
+    }
+    
+    if (extypearray.includes('number')) {
+        type = type.replace("-number", "");
+    }
+    
+    if (extypearray.includes('right')) {
+        type = type.replace("-right", "");
+    }
+    
+    if (extypearray.includes('nonselect2')) {
+        // data['nonselect2'] = true;
+        type = type.replace("-nonselect2", "");
+    }
+    
+    // Simpan data konfigurasi
+    if (!page.crud.data) page.crud.data = {};
+    page.crud.data[field] = {
+        visible: visible,
+        type: type,
+        required: required,
+        type_form_asal: type_temp,
+        is_number: extypearray.includes('number'),
+        is_right: extypearray.includes('right'),
+        enskripsi: extypearray.includes('en')
+    };
+    
+    return {
+        page: page,
+        arrayConfig: arrayConfig,
+        field: field,
+        type: type
+    };
+}
+
+// Helper functions
+ ucwords(str) {
+    return str.replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+    });
+}
+
+ str_replace(search, replace, subject) {
+    return subject.split(search).join(replace);
+}
+
+ strtolower(str) {
+    return str.toLowerCase();
+}
+
+ trim(str) {
+    return str.trim();
+}
+    _renderBaseLayout() {
+        this.container.innerHTML = `
+            <div class="container-fluid mt-4">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="d-block m-3">
+                                <h4 class="mb-3">
+                                    <i class="fas fa-table me-2"></i>
+                                    ${this.config.page?.title || 'Advanced Data Table'}
+                                </h4>
+                                
+                                <!-- View Mode Toggle -->
+                                <div class="btn-group me-3" role="group" aria-label="View Mode">
+                                    <button type="button" class="btn btn-outline-primary active" id="tableViewBtn" data-view="table">
+                                        <i class="fas fa-table me-1"></i>
+                                        Table
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="horizontalViewBtn" data-view="horizontal">
+                                        <i class="fas fa-list me-1"></i>
+                                        Horizontal
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="verticalViewBtn" data-view="vertical">
+                                        <i class="fas fa-bars me-1"></i>
+                                        Vertical
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary" id="cardViewBtn" data-view="card">
+                                        <i class="fas fa-th-large me-1"></i>
+                                        Cards
+                                    </button>
+                                </div>
+                                
+                                <div class="btn-group">
+                                    ${!this.config.page?.crud?.no_add ? `
+                                    <button type="button" class="btn btn-primary" id="addNewBtn">
+                                        <i class="fas fa-plus me-1"></i>
+                                        Tambah Data
+                                    </button>
+                                    ` : ''}
+                                    <button type="button" class="btn btn-info" id="columnSettingsBtn">
+                                        <i class="fas fa-columns me-1"></i>
+                                        Column Settings
+                                    </button>
+                                    ${!this.config.page?.crud?.no_edit ? `
+                                    <button type="button" class="btn btn-warning" id="bulkEditBtn" disabled>
+                                        <i class="fas fa-edit me-1"></i>
+                                        Edit Massal
+                                    </button>
+                                    ` : ''}
+                                    <button type="button" class="btn btn-success" id="bulkApproveBtn" disabled>
+                                        <i class="fas fa-check me-1"></i>
+                                        Approve Selected
+                                    </button>
+                                    ${!this.config.page?.crud?.no_delete ? `
+                                    <button type="button" class="btn btn-danger" id="bulkDeleteBtn" disabled>
+                                        <i class="fas fa-trash me-1"></i>
+                                        Delete Selected
+                                    </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-block">
+                                <!-- Filter Section -->
+                                <div class="row mb-3">
+                                    ${this._renderFilters()}
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="button" class="btn btn-outline-secondary" id="clearFilters">
+                                            <i class="fas fa-times me-1"></i>
+                                            Clear Filters
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Data Views Container -->
+                                <div id="dataViewsContainer">
+                                    <!-- Table View (Default) -->
+                                    <div id="tableView" class="data-view active">
+                                        <div class="table-responsive">
+                                            <table id="dataTable" class="table table-striped table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th width="40">
+                                                            <input type="checkbox" id="selectAll" class="form-check-input">
+                                                        </th>
+                                                        <th width="40">
+                                                            <i class="fas fa-grip-vertical text-muted"></i>
+                                                        </th>
+                                                        ${this._generateTableHeaders()}
+                                                        ${!this.config.page?.crud?.no_action ? '<th width="120">Actions</th>' : ''}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Data will be populated by DataTables -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <!-- Horizontal List View -->
+                                    <div id="horizontalView" class="data-view">
+                                        <div id="horizontalListContainer" class="horizontal-list-container">
+                                            <!-- Horizontal list items will be generated here -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Vertical List View -->
+                                    <div id="verticalView" class="data-view">
+                                        <div id="verticalListContainer" class="vertical-list-container">
+                                            <!-- Vertical list items will be generated here -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Card View -->
+                                    <div id="cardView" class="data-view">
+                                        <div id="cardContainer" class="card-container">
+                                            <!-- Card items will be generated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add/Edit Modal -->
+            <div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dataModalLabel">Tambah Data Baru</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form id="dataForm">
+                            <div class="modal-body" id="modalFormBody">
+                                <!-- Form fields will be generated here -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        `;
+    }
+
+    _renderFilters() {
+        // Implement filter rendering based on config
+        let filtersHtml = '';
+        
+        // Status filter
+        if (this.config.page?.crud?.array?.some(field => field[1] === 'status')) {
+            filtersHtml += `
+                <div class="col-md-3">
+                    <label for="statusFilter" class="form-label">Filter Status:</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // Department filter
+        if (this.config.page?.crud?.array?.some(field => field[1] === 'department')) {
+            filtersHtml += `
+                <div class="col-md-3">
+                    <label for="departmentFilter" class="form-label">Filter Department:</label>
+                    <select class="form-select" id="departmentFilter">
+                        <option value="">Semua Department</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Marketing">Marketing</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        // Date filter
+        if (this.config.page?.crud?.array?.some(field => 
+            field[1].includes('date') || field[1].includes('tanggal') || field[1].includes('tgl'))) {
+            filtersHtml += `
+                <div class="col-md-3">
+                    <label for="dateFilter" class="form-label">Filter Tanggal:</label>
+                    <input type="date" class="form-control" id="dateFilter">
+                </div>
+            `;
+        }
+
+        return filtersHtml;
+    }
+
+    _generateTableHeaders() {
+        let headers = '';
+        const listFields = this.config.page.crud.array.filter(cfg => {
+            const typeString = cfg[2] || '';
+            return typeString.includes('-list') || typeString.includes('-table') || !typeString.includes('-');
+        });
+
+        listFields.forEach(cfg => {
+            headers += `<th>${cfg[0]}</th>`;
+        });
+
+        return headers;
+    }
+
+    async _fetchData() {
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+            const bearerToken = this.config.api_token;
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", bearerToken);
+            myHeaders.append("Cookie", "ci_session=7ub6b26t9omk8mckrvh02qol7cb2jakt");
+            myHeaders.append("apps", btoa(JSON.stringify(this.config.page.load)));
+
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+
+            const response = await fetch(`${this.config.backendUrl}${this.config.apiUrl}`, requestOptions);
+            const data = await response.json().catch(async () => {
+                const text = await response.text();
+                try {
+                    return JSON.parse(text);
+                } catch {
+                    return text;
+                }
+            });
+
+            this.data = data;
+        } catch (e) {
+            console.error("Failed to fetch data:", e);
+            this.data = [];
+            throw e;
+        }
+    }
+	async _initDataTable() {
+		const columns = await this._generateTableColumns();
+
+		if (this.table) {
+			this.table.destroy();
+		}
+
+		this.table = $('#dataTable').DataTable({
+			processing: true,
+			serverSide: true, // <<<<<< KUNCI UTAMA
+			responsive: true,
+			scrollY: '400px',
+			scrollCollapse: true,
+			ajax: {
+				url: `${this.config.backendUrl}${this.config.apiUrl}`,
+				type: 'GET',
+				headers: {
+					"Authorization": this.config.api_token,
+					"Cookie": "ci_session=7ub6b26t9omk8mckrvh02qol7cb2jakt",
+					"apps": btoa(JSON.stringify(this.config.page.load))
+				},
+				data: function (d) {
+					// Parameter yang akan dikirim ke backend
+					const params = {
+						// Parameter standar DataTables untuk server-side
+						draw: d.draw,
+						start: d.start,
+						length: d.length,
+						search: d.search.value,
+						
+						// Parameter tambahan untuk sorting
+						order: d.order,
+						columns: d.columns,
+						
+						// Parameter custom Anda (sesuaikan dengan kebutuhan backend)
+						page: Math.floor(d.start / d.length) + 1,
+						limit: d.length
+					};
+					
+					// Tambahkan filter dari UI jika ada
+					const statusFilter = $('#statusFilter').val();
+					const departmentFilter = $('#departmentFilter').val();
+					const dateFilter = $('#dateFilter').val();
+					
+					if (statusFilter) params.status = statusFilter;
+					if (departmentFilter) params.department = departmentFilter;
+					if (dateFilter) params.date = dateFilter;
+					
+					return params;
+				},
+				dataFilter: function(data) {
+					// Jika response adalah string, parse ke JSON
+					const json = typeof data === 'string' ? JSON.parse(data) : data;
+					
+					// Format response agar sesuai dengan yang diharapkan DataTables
+					return JSON.stringify({
+						draw: json.draw || 0,
+						recordsTotal: json.total || json.recordsTotal || 0,
+						recordsFiltered: json.filtered || json.recordsFiltered || 0,
+						data: json.data || json.rows || json.row || []
+					});
+				}
+			},
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',
+				search: "_INPUT_",
+				searchPlaceholder: "Cari data..."
+			},
+			dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+				 '<"row"<"col-sm-12"tr>>' +
+				 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+			columns: columns,
+			// Optional: Atur jumlah data per halaman
+			pageLength: 25,
+			lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+		});
+
+		// Event untuk refresh table ketika filter berubah
+		$('#statusFilter, #departmentFilter, #dateFilter').on('change', () => {
+			this.table.ajax.reload();
+		});
+
+		$('#clearFilters').on('click', () => {
+			$('#statusFilter, #departmentFilter').val('');
+			$('#dateFilter').val('');
+			this.table.ajax.reload();
+		});
+	}
+    async _initDataTable2() {
+        const columns = await this._generateTableColumns();
+
+        if (this.table) {
+            this.table.destroy();
+        }
+		console.log(this.data);
+        this.table = $('#dataTable').DataTable({
+            data: this.data.data.row,
+			processing: true,
+            columns: columns,
+            responsive: true,
+			 scrollY: '400px',       
+			scrollCollapse: true,   
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',
+                search: "_INPUT_",
+                searchPlaceholder: "Cari data..."
+            },
+            dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+                '<"row"<"col-sm-12"tr>>' +
+                '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        });
+		this.table = $('#dataTable').DataTable({
+			processing: true,
+			serverSide: true, // <<<<<< ini penting
+			responsive: true,
+			scrollY: '400px',
+			scrollCollapse: true,
+			ajax: (data, callback) => {
+				// Ambil parameter dari DataTables
+				let params = {
+					page: Math.floor(data.start / data.length) + 1, // hitung halaman
+					limit: data.length,
+					search: data.search.value
+				};
+
+				$.ajax({
+					url: '/api/suppliers',
+					type: 'GET',
+					data: params,
+					success: function(res) {
+						callback({
+							draw: data.draw,              // wajib, untuk sinkronisasi DataTables
+							recordsTotal: res.total,      // total semua data (misalnya 1000000)
+							recordsFiltered: res.total,   // kalau ada filter, jumlah setelah filter
+							data: res.data                // array data untuk tabel
+						});
+					}
+				});
+			},
+			language: {
+				url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',
+				search: "_INPUT_",
+				searchPlaceholder: "Cari data..."
+			},
+			dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>' +
+				 '<"row"<"col-sm-12"tr>>' +
+				 '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+			columns: columns
+		});
+    }
+
+    async _generateTableColumns() {
+        const columns = [];
+        const listFields = this.config.page.crud.array.filter(cfg => {
+            const typeString = cfg[2] || '';
+            return typeString.includes('-list') || typeString.includes('-table') || !typeString.includes('-');
+        });
+
+        // Checkbox column
+        columns.push({
+            data: null,
+            title: '<input type="checkbox" id="selectAll" class="form-check-input">',
+            orderable: false,
+            searchable: false,
+            width: '40px',
+            render: (data, type, row) => {
+                return `<input type="checkbox" class="form-check-input row-checkbox" data-id="${row.id}">`;
+            }
+        });
+
+        // Drag handle column
+        columns.push({
+            data: null,
+            title: '<i class="fas fa-grip-vertical text-muted"></i>',
+            orderable: false,
+            searchable: false,
+            width: '40px',
+            render: () => {
+                return '<i class="fas fa-grip-vertical text-muted"></i>';
+            }
+        });
+
+        // Data columns
+        listFields.forEach(cfg => {
+            let fieldName = cfg[1];
+			const typeString = cfg[2] || '';
+             if(typeString=="select"){
+				 if(!cfg[3][3]){
+				 fieldName = cfg[3][2]+"_"+cfg[3][0];
+				 }else
+				 fieldName = cfg[3][2]+"_"+cfg[3][3];
+			 }
+            columns.push({
+                data: fieldName,
+                title: cfg[0],
+                render: (data, type, row) => {
+                    return this._formatTableCell(data, fieldName, row, cfg);
+                }
+            });
+        });
+
+        // Action column
+        if (!this.config.page?.crud?.no_action) {
+            columns.push({
+                data: null,
+                title: "Aksi",
+                orderable: false,
+                searchable: false,
+                width: '120px',
+                render: (data, type, row) => {
+                    return this._renderActionButtons(row);
+                }
+            });
+        }
+		console.log(columns);
+        return columns;
+    }
+
+    _formatTableCell(data, fieldName, row, fieldConfig) {
+        // Apply table_view formatting if configured
+        if (this.config.page?.crud?.table_view?.[fieldName]) {
+            const viewConfig = this.config.page.crud.table_view[fieldName];
+            
+            if (viewConfig.tipe_view === 'bold-muted' && viewConfig.muted) {
+                return `<strong>${data}</strong> <small class="text-muted">${row[viewConfig.muted]}</small>`;
+            }
+            
+            if (viewConfig.tipe_view === 'profil_avatar') {
+                return `
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-sm me-2">
+                            <div class="avatar-title bg-primary rounded-circle">${data?.charAt(0) || 'U'}</div>
+                        </div>
+                        <div>
+                            <div>${data}</div>
+                            ${viewConfig.more_info ? `<small class="text-muted">${row[viewConfig.more_info]}</small>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (viewConfig.tipe_view === 'badge') {
+                const statusClass = viewConfig.value?.[data] || viewConfig.else || 'secondary';
+                return `<span class="badge bg-${statusClass}">${data}</span>`;
+            }
+        }
+        
+        // Apply function formatting if configured
+        if (this.config.page?.crud?.function?.[fieldName]) {
+            const funcConfig = this.config.page.crud.function[fieldName];
+            if (funcConfig.type === 'help' && window[funcConfig.class] && window[funcConfig.class][funcConfig.function]) {
+                const params = funcConfig.param.map(p => p === '!!!row???' ? row : p);
+                return window[funcConfig.class][funcConfig.function](...params);
+            }
+        }
+        
+        return data;
+    }
+
+    _renderActionButtons(row) {
+        let buttons = '';
+        
+        // Check if edit is allowed
+        let allowEdit = !this.config.page?.crud?.no_edit;
+        if (this.config.page?.crud?.edit_if) {
+            const editConfig = this.config.page.crud.edit_if;
+            const rowValue = row[editConfig.row_data];
+            const condition = this._evaluateCondition(rowValue, editConfig.value, editConfig.operan);
+            allowEdit = condition ? editConfig.true : editConfig.false;
+        }
+        
+        // Check if delete is allowed
+        let allowDelete = !this.config.page?.crud?.no_delete;
+        if (this.config.page?.crud?.delete_if) {
+            const deleteConfig = this.config.page.crud.delete_if;
+            const rowValue = row[deleteConfig.row_data];
+            const condition = this._evaluateCondition(rowValue, deleteConfig.value, deleteConfig.operan);
+            allowDelete = condition ? deleteConfig.true : deleteConfig.false;
+        }
+        
+        if (allowEdit) {
+            buttons += `<button class="btn btn-sm btn-info edit-btn" data-id="${row.id}" title="Edit">
+                <i class="fas fa-edit"></i>
+            </button>`;
+        }
+        
+        buttons += `<button class="btn btn-sm btn-success approve-btn" data-id="${row.id}" title="Approve">
+            <i class="fas fa-check"></i>
+        </button>`;
+        
+        if (allowDelete) {
+            buttons += `<button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}" title="Hapus">
+                <i class="fas fa-trash"></i>
+            </button>`;
+        }
+        
+        return buttons;
+    }
+
+    _evaluateCondition(rowValue, compareValue, operator) {
+        switch (operator) {
+            case '>': return rowValue > compareValue;
+            case '>=': return rowValue >= compareValue;
+            case '<': return rowValue < compareValue;
+            case '<=': return rowValue <= compareValue;
+            case '==': return rowValue == compareValue;
+            case '===': return rowValue === compareValue;
+            case '!=': return rowValue != compareValue;
+            case '!==': return rowValue !== compareValue;
+            default: return false;
+        }
+    }
+
+    _bindGlobalEvents() {
+        // Add new button
+        if (!this.config.page?.crud?.no_add) {
+            document.getElementById('addNewBtn').addEventListener('click', () => {
+                this._showFormModal('add');
+            });
+        }
+
+        // Edit buttons
+        $('#dataTable tbody').on('click', '.edit-btn', (e) => {
+            const id = $(e.currentTarget).data('id');
+            const rowData = this.data.data.row.find(item => item.id == id);
+            this._showFormModal('edit', rowData);
+        });
+
+        // Delete buttons
+        $('#dataTable tbody').on('click', '.delete-btn', (e) => {
+            const id = $(e.currentTarget).data('id');
+            this._handleDelete(id);
+        });
+
+        // Approve buttons
+        $('#dataTable tbody').on('click', '.approve-btn', (e) => {
+            const id = $(e.currentTarget).data('id');
+            this._handleApprove(id);
+        });
+
+        // Select all checkbox
+        $('#selectAll').on('change', (e) => {
+            const isChecked = e.target.checked;
+            $('.row-checkbox').prop('checked', isChecked);
+            this._updateBulkButtons();
+        });
+
+        // Individual row checkboxes
+        $('#dataTable tbody').on('change', '.row-checkbox', () => {
+            this._updateBulkButtons();
+        });
+
+        // Bulk actions
+        $('#bulkEditBtn').on('click', () => {
+            this._handleBulkEdit();
+        });
+
+        $('#bulkDeleteBtn').on('click', () => {
+            this._handleBulkDelete();
+        });
+
+        $('#bulkApproveBtn').on('click', () => {
+            this._handleBulkApprove();
+        });
+
+        // Filters
+        $('#statusFilter, #departmentFilter, #dateFilter').on('change', () => {
+            this._applyFilters();
+        });
+
+        $('#clearFilters').on('click', () => {
+            $('#statusFilter, #departmentFilter').val('');
+            $('#dateFilter').val('');
+            this._applyFilters();
+        });
+    }
+
+    _initViewModes() {
+        // View mode toggle events
+        $('.btn-group[aria-label="View Mode"] .btn').on('click', (e) => {
+            const viewMode = $(e.currentTarget).data('view');
+            this.switchView(viewMode);
+        });
+    }
+
+    switchView(viewMode) {
+        if (this.currentView === viewMode) return;
+
+        // Update button states
+        $('.btn-group[aria-label="View Mode"] .btn').removeClass('active');
+        $(`[data-view="${viewMode}"]`).addClass('active');
+
+        // Hide all views
+        $('.data-view').removeClass('active');
+
+        // Show loading state
+        $('#dataViewsContainer').addClass('view-loading');
+
+        // Switch to new view after short delay for smooth transition
+        setTimeout(() => {
+            this.currentView = viewMode;
+            this.renderCurrentView();
+            $('#dataViewsContainer').removeClass('view-loading');
+        }, 150);
+    }
+
+    renderCurrentView() {
+        // Hide all views first
+        $('.data-view').removeClass('active');
+
+        switch (this.currentView) {
+            case 'table':
+                this.renderTableView();
+                break;
+            case 'horizontal':
+                this.renderHorizontalView();
+                break;
+            case 'vertical':
+                this.renderVerticalView();
+                break;
+            case 'card':
+                this.renderCardView();
+                break;
+        }
+    }
+
+    renderTableView() {
+        $('#tableView').addClass('active');
+        // Refresh the DataTable if it exists
+        if (this.table) {
+            this.table.draw();
+        }
+    }
+
+    renderHorizontalView() {
+        $('#horizontalView').addClass('active');
+        const container = $('#horizontalListContainer');
+        container.empty();
+
+        const filteredData = this.getFilteredData();
+
+        filteredData.forEach(item => {
+            const listItem = this.createHorizontalListItem(item);
+            container.append(listItem);
+        });
+
+        this.initHorizontalViewEvents();
+    }
+
+    renderVerticalView() {
+        $('#verticalView').addClass('active');
+        const container = $('#verticalListContainer');
+        container.empty();
+
+        const filteredData = this.getFilteredData();
+
+        filteredData.forEach(item => {
+            const listItem = this.createVerticalListItem(item);
+            container.append(listItem);
+        });
+
+        this.initVerticalViewEvents();
+    }
+
+    renderCardView() {
+        $('#cardView').addClass('active');
+        const container = $('#cardContainer');
+        container.empty();
+
+        const filteredData = this.getFilteredData();
+
+        filteredData.forEach(item => {
+            const card = this.createCardItem(item);
+            container.append(card);
+        });
+
+        this.initCardViewEvents();
+    }
+
+    getFilteredData() {
+        let filteredData = [...this.data.data.row];
+
+        // Apply status filter
+        const statusFilter = $('#statusFilter').val();
+        if (statusFilter && statusFilter !== '') {
+            filteredData = filteredData.filter(item => item.status === statusFilter);
+        }
+
+        // Apply department filter
+        const departmentFilter = $('#departmentFilter').val();
+        if (departmentFilter && departmentFilter !== '') {
+            filteredData = filteredData.filter(item => item.department === departmentFilter);
+        }
+
+        // Apply date filter
+        const dateFilter = $('#dateFilter').val();
+        if (dateFilter) {
+            filteredData = filteredData.filter(item => {
+                const itemDate = new Date(item.joinDate).toISOString().split('T')[0];
+                return itemDate === dateFilter;
+            });
+        }
+
+        return filteredData;
+    }
+
+    createHorizontalListItem(item) {
+        const isSelected = this.selectedRows.includes(item.id);
+        const statusClass = `status-${item.status}`;
+        //const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+        
+        let fieldsHtml = '';
+        const listFields = this.config.page.crud.array.filter(cfg => {
+            const typeString = cfg[2] || '';
+            return typeString.includes('-list') || typeString.includes('-table') || !typeString.includes('-');
+        });
+
+        listFields.forEach(cfg => {
+            const fieldName = cfg[1];
+            const value = this._formatTableCell(item[fieldName], fieldName, item, cfg);
+            fieldsHtml += `
+                <div class="horizontal-list-field">
+                    <div class="horizontal-list-label">${cfg[0]}</div>
+                    <div class="horizontal-list-value">${value}</div>
+                </div>
+            `;
+        });
+
+        return $(`
+            <div class="horizontal-list-item ${isSelected ? 'selected' : ''}" data-id="${item.id}">
+                <div class="horizontal-list-checkbox">
+                    <input type="checkbox" class="form-check-input row-checkbox" data-id="${item.id}" ${isSelected ? 'checked' : ''}>
+                </div>
+                <div class="horizontal-list-drag">
+                    <i class="fas fa-grip-vertical drag-handle"></i>
+                </div>
+                <div class="horizontal-list-content">
+                    ${fieldsHtml}
+                </div>
+                <div class="horizontal-list-actions">
+                    ${this._renderActionButtons(item)}
+                </div>
+            </div>
+        `);
+    }
+
+    createVerticalListItem(item) {
+        const isSelected = this.selectedRows.includes(item.id);
+        const statusClass = `status-${item.status}`;
+        //const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+        
+        let fieldsHtml = '';
+        const listFields = this.config.page.crud.array.filter(cfg => {
+            const typeString = cfg[2] || '';
+            return typeString.includes('-list') || typeString.includes('-table') || !typeString.includes('-');
+        });
+
+        listFields.forEach(cfg => {
+            const fieldName = cfg[1];
+            const value = this._formatTableCell(item[fieldName], fieldName, item, cfg);
+            fieldsHtml += `
+                <div class="vertical-list-field">
+                    <div class="vertical-list-label">${cfg[0]}</div>
+                    <div class="vertical-list-value">${value}</div>
+                </div>
+            `;
+        });
+
+        return $(`
+            <div class="vertical-list-item ${isSelected ? 'selected' : ''}" data-id="${item.id}">
+                <div class="vertical-list-header">
+                    <div class="vertical-list-controls">
+                        <input type="checkbox" class="form-check-input row-checkbox" data-id="${item.id}" ${isSelected ? 'checked' : ''}>
+                        <i class="fas fa-grip-vertical drag-handle ms-2"></i>
+                        <span class="vertical-list-id">#${item.id}</span>
+                        <span class="vertical-list-name">${item.nama || item.name}</span>
+                    </div>
+                    <div class="vertical-list-actions">
+                        ${this._renderActionButtons(item)}
+                    </div>
+                </div>
+                <div class="vertical-list-body">
+                    ${fieldsHtml}
+                </div>
+            </div>
+        `);
+    }
+
+    createCardItem(item) {
+        const isSelected = this.selectedRows.includes(item.id);
+        const statusClass = `status-${item.status}`;
+        //const statusText = (item.status || "").charAt(0).toUpperCase() + (item.status || "").slice(1);
+        
+        let fieldsHtml = '';
+        const listFields = this.config.page.crud.array.filter(cfg => {
+            const typeString = cfg[2] || '';
+            return typeString.includes('-list') || typeString.includes('-table') || !typeString.includes('-');
+        });
+
+        listFields.forEach(cfg => {
+            const fieldName = cfg[1];
+            const value = this._formatTableCell(item[fieldName], fieldName, item, cfg);
+            fieldsHtml += `
+                <div class="card-field">
+                    <div class="card-label">${cfg[0]}</div>
+                    <div class="card-value">${value}</div>
+                </div>
+            `;
+        });
+
+        return $(`
+            <div class="data-card ${isSelected ? 'selected' : ''}" data-id="${item.id}">
+                <div class="card-header">
+                    <div class="card-controls">
+                        <input type="checkbox" class="form-check-input row-checkbox" data-id="${item.id}" ${isSelected ? 'checked' : ''}>
+                        <i class="fas fa-grip-vertical drag-handle ms-2"></i>
+                        <span class="card-id">#${item.id}</span>
+                        <span class="card-name">${item.nama || item.name}</span>
+                    </div>
+                    <div class="card-actions">
+                        ${this._renderActionButtons(item)}
+                    </div>
+                </div>
+                <div class="card-body">
+                    ${fieldsHtml}
+                </div>
+            </div>
+        `);
+    }
+
+    initHorizontalViewEvents() {
+        const container = document.querySelector('#horizontalListContainer');
+        if (this.sortable) {
+            this.sortable.destroy();
+        }
+
+        this.sortable = new Sortable(container, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            onEnd: (evt) => {
+                this.updateRowOrderFromView(evt);
+            }
+        });
+
+        // Bind checkbox events
+        $('#horizontalListContainer').on('change', '.row-checkbox', (e) => {
+            this.handleRowSelection(e);
+        });
+
+        // Bind action button events
+        $('#horizontalListContainer').on('click', '.edit-btn', (e) => {
+            this.editRecord($(e.currentTarget).data('id'));
+        });
+        $('#horizontalListContainer').on('click', '.approve-btn', (e) => {
+            this.showApprovalModal($(e.currentTarget).data('id'));
+        });
+        $('#horizontalListContainer').on('click', '.delete-btn', (e) => {
+            this.deleteRecord($(e.currentTarget).data('id'));
+        });
+    }
+
+    initVerticalViewEvents() {
+        const container = document.querySelector('#verticalListContainer');
+        if (this.sortable) {
+            this.sortable.destroy();
+        }
+
+        this.sortable = new Sortable(container, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            onEnd: (evt) => {
+                this.updateRowOrderFromView(evt);
+            }
+        });
+
+        // Bind checkbox events
+        $('#verticalListContainer').on('change', '.row-checkbox', (e) => {
+            this.handleRowSelection(e);
+        });
+
+        // Bind action button events
+        $('#verticalListContainer').on('click', '.edit-btn', (e) => {
+            this.editRecord($(e.currentTarget).data('id'));
+        });
+        $('#verticalListContainer').on('click', '.approve-btn', (e) => {
+            this.showApprovalModal($(e.currentTarget).data('id'));
+        });
+        $('#verticalListContainer').on('click', '.delete-btn', (e) => {
+            this.deleteRecord($(e.currentTarget).data('id'));
+        });
+    }
+
+    initCardViewEvents() {
+        const container = document.querySelector('#cardContainer');
+        if (this.sortable) {
+            this.sortable.destroy();
+        }
+
+        this.sortable = new Sortable(container, {
+            handle: '.drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
+            onEnd: (evt) => {
+                this.updateRowOrderFromView(evt);
+            }
+        });
+
+        // Bind checkbox events
+        $('#cardContainer').on('change', '.row-checkbox', (e) => {
+            this.handleRowSelection(e);
+        });
+
+        // Bind action button events
+        $('#cardContainer').on('click', '.edit-btn', (e) => {
+            this.editRecord($(e.currentTarget).data('id'));
+        });
+        $('#cardContainer').on('click', '.approve-btn', (e) => {
+            this.showApprovalModal($(e.currentTarget).data('id'));
+        });
+        $('#cardContainer').on('click', '.delete-btn', (e) => {
+            this.deleteRecord($(e.currentTarget).data('id'));
+        });
+    }
+
+    updateRowOrderFromView(evt) {
+        // Get the new order from the current view
+        const items = evt.to.children;
+        const newOrder = [];
+
+        for (let i = 0; i < items.length; i++) {
+            const id = parseInt($(items[i]).data('id'));
+            newOrder.push(id);
+        }
+
+        // Update data order
+        const reorderedData = [];
+        newOrder.forEach(id => {
+            const item = this.data.data.row.find(d => d.id === id);
+            if (item) {
+                reorderedData.push(item);
+            }
+        });
+
+        // Add any remaining items that weren't in the view
+        this.data.data.row.forEach(item => {
+            if (!newOrder.includes(item.id)) {
+                reorderedData.push(item);
+            }
+        });
+
+        this.data.data.row = reorderedData;
+
+        // Refresh current view
+        this.renderCurrentView();
+
+        // Show success message
+        this.showSuccessMessage('Urutan baris berhasil diubah!');
+    }
+
+    handleRowSelection(e) {
+        const id = $(e.currentTarget).data('id');
+        const isChecked = e.target.checked;
+
+        if (isChecked) {
+            this.selectedRows.push(id);
+        } else {
+            this.selectedRows = this.selectedRows.filter(rowId => rowId !== id);
+        }
+
+        this._updateBulkButtons();
+    }
+
+    _updateBulkButtons() {
+        const hasSelected = this.selectedRows.length > 0;
+        $('#bulkEditBtn, #bulkDeleteBtn, #bulkApproveBtn').prop('disabled', !hasSelected);
+    }
+
+    _showFormModal(mode, data = null) {
+        const modalElement = document.getElementById('dataModal');
+        const modal = new bootstrap.Modal(modalElement);
+
+        const modalTitle = modalElement.querySelector('.modal-title');
+        const modalBody = modalElement.querySelector('#modalFormBody');
+        const form = modalElement.querySelector('form');
+        form.reset();
+        modalBody.innerHTML = '';
+
+        modalTitle.textContent = mode === 'add' ? 'Tambah Data Baru' : `Edit Data #${data.id}`;
+
+        // Konfigurasi untuk FormBuilder
+        const formBuilderConfig = {
+            viewContext: mode === 'add' ? 'tambah' : 'edit',
+            data: data || {},
+            page: { crud: this.config.page.crud }
+        };
+        this.formBuilder = new FormBuilder(formBuilderConfig);
+
+        let allJS = '';
+        this.config.page.crud.array.forEach((fieldConfig, index) => {
+            const components = this.formBuilder.buildField(fieldConfig, index);
+            if (components.html) {
+                modalBody.innerHTML += components.html;
+                allJS += components.js;
+            }
+        });
+
+        // Eksekusi script yang dihasilkan oleh FormBuilder
+        if (allJS) {
+            const scriptTag = document.createElement('script');
+            scriptTag.textContent = allJS;
+            modalBody.appendChild(scriptTag);
+        }
+
+        // Simpan data ID di form untuk submit
+        if (mode === 'edit') {
+            const idInput = document.createElement('input');
+            idInput.type = 'hidden';
+            idInput.name = 'id';
+            idInput.value = data.id;
+            form.appendChild(idInput);
+        }
+
+        modal.show();
+
+        // Hapus event listener lama sebelum menambahkan yang baru untuk mencegah duplikasi
+        const newForm = form.cloneNode(true);
+        form.parentNode.replaceChild(newForm, form);
+
+        newForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this._handleFormSubmit(newForm, modal);
+        });
+    }
+
+    async _handleFormSubmit(formElement, modalInstance) {
+        const formData = new FormData(formElement);
+        const data = Object.fromEntries(formData.entries());
+        const isEdit = !!data.id;
+
+        this.showLoading(true);
+
+        try {
+            // Prepare request
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${this.config.api_token}`);
+            myHeaders.append("Content-Type", "application/json");
+
+            // Convert amount to number if exists
+            if (data.amount) {
+                data.amount = Number(data.amount);
+            }
+           
+            const requestOptions = {
+                method: isEdit ? "PUT" : "POST",
+                headers: myHeaders,
+                body: JSON.stringify(data),
+                redirect: "follow"
+            };
+
+            const endpoint = isEdit
+                ? `${this.config.backendUrl}${this.config.apiUrl}/${data.id}`
+                : `${this.config.backendUrl}${this.config.apiUrl}`;
+
+            // Send to API
+            const response = await fetch(endpoint, requestOptions);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Request failed');
+            }
+
+            // Refresh data
+            await this._fetchData();
+            this.table.clear().rows.add(this.data.data.row).draw();
+
+            modalInstance.hide();
+            this.showToast(
+                isEdit ? 'Data berhasil diperbarui!' : 'Data berhasil ditambahkan!',
+                'success'
+            );
+
+        } catch (error) {
+            console.error("Form submission failed:", error);
+            this.showToast(
+                error.message || 'Terjadi kesalahan saat menyimpan data',
+                'error'
+            );
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    _handleDelete(id) {
+        const result = confirm('Anda yakin ingin menghapus data ini?');
+        
+        if (result) {
+            this.showLoading(true);
+            
+            fetch(`${this.config.backendUrl}${this.config.apiUrl}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${this.config.api_token}`
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    this.data.data.row = this.data.data.row.filter(item => item.id != id);
+                    this.table.clear().rows.add(this.data.data.row).draw();
+                    this.showToast('Data berhasil dihapus.');
+                } else {
+                    throw new Error('Gagal menghapus data');
+                }
+            })
+            .catch(error => {
+                console.error("Delete failed:", error);
+                this.showToast('Gagal menghapus data.', 'error');
+            })
+            .finally(() => {
+                this.showLoading(false);
+            });
+        }
+    }
+
+    _handleApprove(id) {
+        // Implementation for approval
+        console.log('Approve item with ID:', id);
+    }
+
+    _handleBulkEdit() {
+        // Implementation for bulk edit
+        console.log('Bulk edit selected items:', this.selectedRows);
+    }
+
+    _handleBulkDelete() {
+        // Implementation for bulk delete
+        if (confirm(`Anda yakin ingin menghapus ${this.selectedRows.length} data?`)) {
+            console.log('Bulk delete selected items:', this.selectedRows);
+        }
+    }
+
+    _handleBulkApprove() {
+        // Implementation for bulk approve
+        console.log('Bulk approve selected items:', this.selectedRows);
+    }
+
+    _applyFilters() {
+		if (this.table && this.table.serverSide) {
+			// Untuk server-side, reload data dengan filter baru
+			this.table.ajax.reload();
+		} else {
+			// Untuk client-side, render ulang view
+			this.renderCurrentView();
+		}
+	}
+
+    showLoading(show) {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+    }
+
+    showToast(message, icon = 'success') {
+        // Simple toast implementation
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${icon === 'success' ? 'success' : 'danger'} border-0`;
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">${message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+        
+        // Remove toast after it's hidden
+        toast.addEventListener('hidden.bs.toast', () => {
+            document.body.removeChild(toast);
+        });
+    }
+
+    showSuccessMessage(message) {
+        this.showToast(message, 'success');
+    }
+}
