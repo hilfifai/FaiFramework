@@ -1235,7 +1235,7 @@ $pagetemp = $page;
             DB::commit();
             return redirect()->route('<?=$page['route']?>',['list','-1'])->with('success','<?=$page['title']?> Berhasil di input!');
         }
-        catch(\Exeception $e){
+        catch(\Exception $e){
             DB::rollback();
             return redirect()->back()->with('error',$e);
         }
@@ -1470,7 +1470,7 @@ $pagetemp = $page;
             DB::commit();
             return redirect()->route('<?=$page['route']?>',['list','-1'])->with('success','<?=$page['title']?> Berhasil di Ubah!');
         }
-        catch(\Exeception $e){
+        catch(\Exception $e){
             DB::rollback();
             return redirect()->back()->with('error',$e);
         }
@@ -1491,7 +1491,7 @@ $pagetemp = $page;
             DB::commit();
             return redirect()->route('<?=$page['route']?>',['list','-1'])->with('success','<?=$page['title']?> Berhasil di Hapus!');
         }
-        catch(\Exeception $e){
+        catch(\Exception $e){
             DB::rollback();
             return redirect()->back()->with('error',$e);
         }
@@ -2944,7 +2944,7 @@ $pagetemp = $page;
 
 
         return redirect()->route('<?= $page['route'] ?>',['list','-1'])->with('success','<?= $page['title'] ?> Berhasil di disetujui!');
-        } catch (\Exeception $e) {
+        } catch (\Exception $e) {
         DB::rollback();
         return redirect()->back()->with('error', $e);
         }

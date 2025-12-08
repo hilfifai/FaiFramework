@@ -108,7 +108,7 @@ class PanelFunc
                 }
                 $panel_list[$i]['panel'] = "public";
                 $panel_list[$i]['nama_panel'] = "Public ";
-                $panel_list[$i]['ip_address'] = $_SERVER['REMOTE_ADDR'];
+                $panel_list[$i]['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
             }
             $id_divisi .= "-1";
             $panel_detail = array();
@@ -141,7 +141,7 @@ class PanelFunc
                     }
                     $id_organisasi[] = $panel_list[$i]['id_organisasi'];
                 } else if ($panel_list[$i]['panel'] == 'public') {
-                    if (strtolower($_SESSION['hak_akses']) == 'public' and $panel_list[$i]['ip_address'] == $_SERVER['REMOTE_ADDR']) {
+                    if (strtolower($_SESSION['hak_akses']) == 'public' and $panel_list[$i]['ip_address'] == (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1')) {
                         $this_aktif = true;
                     }
                 }

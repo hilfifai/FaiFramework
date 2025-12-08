@@ -4,11 +4,13 @@ require_once('Pages.php');
 class Configuration extends Pages
 {
 
-	function __construct() {}
+	function __construct() {
+		parent::__construct();
+	}
 	public  static function LoadApps($page, $domain, $menuApps = -1, $return = "")
 	{
 		if (!isset($_SESSION[$domain][$menuApps][$return][$page['conection_name_database']])) {
-
+			echo $domain;
 			$fai = new MainFaiFramework();
 			$key = DB::connection($page);
 			$page['database_connected'] = $key;
@@ -47,10 +49,10 @@ class Configuration extends Pages
 					$protocol = 'http://';
 				}
 
-				if ($_SERVER['SERVER_NAME'] == 'localhost') {
+				if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'localhost') {
 					$apps->domain_sub_route = "localhost/FrameworkServer_v1/index.php";
 				}
-				if ($_SERVER['SERVER_NAME'] == '192.168.70.159') {
+				if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == '192.168.70.159') {
 					$apps->domain_sub_route = "192.168.70.159/FrameworkServer_v1/index.php";
 				}
 				if ($domain == 'admin.hibe3.com') {
@@ -391,18 +393,18 @@ class Configuration extends Pages
 			return $page;
 		} else {
 
-			return $fai->AllPage($page, $menuApps);
+			return SELF::AllPage($page, $menuApps);
 		}
 	}
-	public function AllPage($page, $menuApps = -1, $contentfaiframework = -99, $mainAll = -99)
+	public static function AllPage($page, $menuApps = -1, $contentfaiframework = -99, $mainAll = -99)
 	{
 		global $collect_refer;
 
 		if ($mainAll == -99)
-			$mainAll = $this->input('MainAll');
+			$mainAll = MainFaiFramework::get_input('MainAll');
 		if ($contentfaiframework == -99)
-			$contentfaiframework = $this->input('contentfaiframework');
-		if (!($this->input('MainAll'))) {
+			$contentfaiframework = MainFaiFramework::get_input('contentfaiframework');
+		if (!(MainFaiFramework::get_input('MainAll'))) {
 			$_POST['MainAll'] = 1;
 		}
 		$page['fai'] = new MainFaiFramework();
@@ -434,38 +436,38 @@ class Configuration extends Pages
 			if (!isset($page['get_panel']))
 				$page['get_panel'] = PanelFunc::panel_initial($page, 'all');
 
-			$apps = $this->input('apps');
-			$page_view = $this->input('page_view');
-			$type = $this->input('type');
+			$apps = MainFaiFramework::get_input('apps');
+			$page_view = MainFaiFramework::get_input('page_view');
+			$type = MainFaiFramework::get_input('type');
 
-			$id = $this->input('id');
-			if ($this->input('board') and $this->input('board') != -1)
-				$page['load']['board'] = $this->input('board');
+			$id = MainFaiFramework::get_input('id');
+			if (MainFaiFramework::get_input('board') and MainFaiFramework::get_input('board') != -1)
+				$page['load']['board'] = MainFaiFramework::get_input('board');
 			$section_menu = $page['load']['page_section_menu'];
 
-			echo  $this->page($page, $type, $id, $section_menu);
+			echo  Pages::page($page, $type, $id, $section_menu);
 			die;
 		}
 		if ($contentfaiframework == 'crudlayout' and $mainAll == 2) {
 
 			$type = $page['load']['type'];
-			$id = $this->input('id');
+			$id = MainFaiFramework::get_input('id');
 			$section_menu = $page['load']['page_section_menu'];
 
-			if ($this->input('json_decode') == 0) {
+			if (MainFaiFramework::get_input('json_decode') == 0) {
 
-				if ($this->input('crud'))
-					$page['crud'] = $this->input('crud');
-				if ($this->input('database'))
-					$page['database'] = $this->input('database');
-			} else if ($this->input('json_decode') == "1") {
+				if (MainFaiFramework::get_input('crud'))
+					$page['crud'] = MainFaiFramework::get_input('crud');
+				if (MainFaiFramework::get_input('database'))
+					$page['database'] = MainFaiFramework::get_input('database');
+			} else if (MainFaiFramework::get_input('json_decode') == "1") {
 			}
-			if ($this->input('board') and $this->input('board') != -1)
-				$page['load']['board'] = $this->input('board');
+			if (MainFaiFramework::get_input('board') and MainFaiFramework::get_input('board') != -1)
+				$page['load']['board'] = MainFaiFramework::get_input('board');
 			$apps = $page['load']['apps'];
 			$page_view = $page['load']['page_view'];
-			$page_temp  = $this->Apps($apps, $page_view, $page);
-			$view_layout = ($page_temp['view_layout'][$this->input('view_layout_number')][2]);
+			$page_temp  = Pages::Apps($apps, $page_view, $page);
+			$view_layout = ($page_temp['view_layout'][MainFaiFramework::get_input('view_layout_number')][2]);
 			$this_view_layout = $view_layout[$view_layout['menu'][$page['load']['menu']][2]];
 			$crud = array();
 			if (isset($this_view_layout['type'])) {
@@ -481,7 +483,7 @@ class Configuration extends Pages
 				$array = $this_view_layout['array'];
 			}
 			$page['load']['page_database'] = $page['load']['card']['page_database'] = $page_database;
-			$page['view_layout_number'] = $this->input('view_layout_number');
+			$page['view_layout_number'] = MainFaiFramework::get_input('view_layout_number');
 
 			$page['crud'] = isset($this_view_layout['crud']) ? $this_view_layout['crud'] : $crud;
 
@@ -492,13 +494,13 @@ class Configuration extends Pages
 			$page = Packages::initialize($page);
 			$page['route'] = $page['load']['route_page'];
 			$page['title'] = "Tambah " . $page['load']['menu'];
-			$crudlayout_content .=  $this->page($page, $this->input('type_crud'), $id, $section_menu);
+			$crudlayout_content .=  Pages::page($page, MainFaiFramework::get_input('type_crud'), $id, $section_menu);
 			die;
 		}
 
 
 
-		if ($this->input('page_view') == 'daftar_to_login'  and $mainAll == 2) {
+		if (MainFaiFramework::get_input('page_view') == 'daftar_to_login'  and $mainAll == 2) {
 
 			$_SESSION["hak_akses"] = $_SESSION[$page['load']['login-daftar-hak_akses']];
 			$_SESSION[$page['load']['login-session-utama']['session_name']] = $_SESSION[$page['load']['login-session-utama']['session_name'] . "_daftar"];
@@ -507,58 +509,68 @@ class Configuration extends Pages
 		} else
 		if (isset($page['load']['view_source'])) {
 
-			$page = $this->initialize($page);
-			$this->view_source($page, $page['load']['type']);
+			$page = Packages::initialize($page);
+			Packages::view_source($page, $page['load']['type']);
 			die;
 		}
 		if ($contentfaiframework == 'template' and $mainAll == 2) {
 
-			$template_content .= $this->template($page);
+			$template_content .= Pages::template($page);
 		}
 		if ($contentfaiframework == 'view_website_template' and $mainAll == 2) {
 
-			$pages_content .= $this->view_website_template($page);
+			$pages_content .= Pages::view_website_template($page);
 		}
 
 		if ($login and (($contentfaiframework == 'header'  and $mainAll == 2) or ($page['load']['protocol'] == 'call'))) {
 
-			if ($login)
-				$header_content .=	$this->header($page);
+			if ($login) {
+				$config = new Configuration();
+				$header_content .=	$config->header($page);
+			}
 		}
 		if (($contentfaiframework == 'navbar' and $mainAll == 2) or ($page['load']['protocol'] == 'call' and $page['load']['view_page'] == 'bundles')) {
 
-			if ($login)
-				$navbar_content .= $this->navbar($page);
+			if ($login) {
+				$config = new Configuration();
+				$navbar_content .= $config->navbar($page);
+			}
 		}
 		if ((($contentfaiframework == 'sidebar' and $mainAll == 2) or ($page['load']['protocol'] == 'call'))) {
 
 
 			$page['load']['protocol'];
 
-			if ($login)
-				$sidebar_content .=	$this->sidebar($page);
+			if ($login) {
+				$config = new Configuration();
+				$sidebar_content .=	$config->sidebar($page);
+			}
 		}
 		if ($contentfaiframework == 'sidebarin' and $mainAll == 2) {
 
-			$this->sidebarin($page);
+			$config = new Configuration();
+			$config->sidebarin($page);
 		}
 		if ($contentfaiframework == 'buttombar' and $mainAll == 2) {
 
-			if ($login)
-				$buttombar_content .=	$this->buttombar($page);
+			if ($login) {
+				$config = new Configuration();
+				$buttombar_content .=	$config->buttombar($page);
+			}
 		}
 		if ($contentfaiframework == 'changeMenu' and $mainAll == 2) {
 
-			$controller_ = $this->input('controller_');
-			$function_ = $this->input('function_');
-			$array_menu_ = $this->input('array_menu_');
-			$page['load'][$array_menu_] = $this->Apps($controller_, $function_);
-			$sidebar_content .= $this->sidebar($page);
+			$controller_ = MainFaiFramework::get_input('controller_');
+			$function_ = MainFaiFramework::get_input('function_');
+			$array_menu_ = MainFaiFramework::get_input('array_menu_');
+			$page['load'][$array_menu_] = Pages::Apps($controller_, $function_);
+			$config = new Configuration();
+			$sidebar_content .= $config->sidebar($page);
 		}
 		if ($contentfaiframework == 'link_direct') {
 			$page['route_type'] = 'just_link';
 
-			$kode = Partial::link_direct($page, $page['load']['link_route'], [$page['load']['apps'], $page['load']['page_view'], $this->input('type'), $this->input('id'), $this->input('menu'), -1, 'ID_BOARD|']);
+			$kode = Partial::link_direct($page, $page['load']['link_route'], [$page['load']['apps'], $page['load']['page_view'], MainFaiFramework::get_input('type'), MainFaiFramework::get_input('id'), MainFaiFramework::get_input('menu'), -1, 'ID_BOARD|']);
 			$data = "";
 			if ($page['load']['link'] == 'loadJs') {
 				$data = $pages_content;
@@ -567,7 +579,7 @@ class Configuration extends Pages
 			die;
 		} else
 		if ($page['load']['row_web_apps']->tipe_website != 'template_content')
-			$pages_content = $this->pages_content($page, $contentfaiframework, $mainAll);
+			$pages_content = Configuration::pages_content($page, $contentfaiframework, $mainAll);
 
 		$page['content']['header_content'] = $header_content;
 		$page['content']['sidebar_content'] = $sidebar_content;
@@ -576,7 +588,7 @@ class Configuration extends Pages
 		$page['content']['navbar_content'] = $navbar_content;
 		$page['content']['buttombar_content'] = $buttombar_content;
 		$page['content']['mainAll'] = $mainAll;
-		echo $this->content($page);
+		echo Configuration::content($page);
 	}
 
 
@@ -726,8 +738,8 @@ class Configuration extends Pages
 		} else
 		 if (!$login) {
 			// echo 'hallo';
-			if ($this->input('type'))
-				$page['load']['type'] = $this->input('type');
+			if (MainFaiFramework::get_input('type'))
+				$page['load']['type'] = MainFaiFramework::get_input('type');
 			$pages_content .= Packages::login($page, $page['load']['type'], $page['load']['id']);
 		} else {
 
@@ -792,33 +804,35 @@ class Configuration extends Pages
 					}
 				}
 				$sidebarIn = true;
-				if ($this->input("not_sidebar") == 'not') {
+				if (MainFaiFramework::get_input("not_sidebar") == 'not') {
 					$sidebarIn = false;
 				}
 				if (isset($page['get']['sidebarIn']) and $sidebarIn  and !isset($page['get']['not_sidebarIn'])) {
-					$pages_content .=	$this->sidebarin($page);
+					$config = new Configuration();
+					$pages_content .=	$config->sidebarin($page);
 				}
 				$pages_content .= Packages::view_layout($page, 'view_layout', '-1', '-1');
 			} else if (($contentfaiframework == 'pages' or $contentfaiframework == 'link_direct') and ($page['load']['contentfaiframework'] == null or (Partial::input('apps'))) and ($mainAll == 2 or $mainAll == 3)) {
 
 
 				$section_menu = $page['load']['page_section_menu'];
-				$apps = $this->input('apps');
-				$page_view = $this->input('page_view');
-				$page['load']['type'] = $type = $this->input('type');
-				$page['load']['id'] = $id = $this->input('id');
-				if ($this->input('board') and $this->input('board') != -1)
-					$page['load']['board'] = $this->input('board');
+				$apps = MainFaiFramework::get_input('apps');
+				$page_view = MainFaiFramework::get_input('page_view');
+				$page['load']['type'] = $type = MainFaiFramework::get_input('type');
+				$page['load']['id'] = $id = MainFaiFramework::get_input('id');
+				if (MainFaiFramework::get_input('board') and MainFaiFramework::get_input('board') != -1)
+					$page['load']['board'] = MainFaiFramework::get_input('board');
 
 				$sidebarIn = true;
-				if ($this->input("not_sidebar") == 'not') {
+				if (MainFaiFramework::get_input("not_sidebar") == 'not') {
 					$sidebarIn = false;
 				}
 				if (isset($page['get']['sidebarIn']) and $sidebarIn  and !isset($page['get']['not_sidebarIn'])) {
 					$pages_content .=	$this->sidebarin($page);
 				}
 				$pages = true;
-				$pages_content .=  $this->page($page, $type, $id, $section_menu);
+				$config = new Configuration();
+				$pages_content .=  $config->page($page, $type, $id, $section_menu);
 			} else
 			if (($page['load']['contentfaiframework'] == 'pages' and $mainAll == 2 and !(Partial::input('apps'))) or ($page['load']['protocol'] == 'call')) {
 
@@ -833,13 +847,14 @@ class Configuration extends Pages
 
 
 				$sidebarIn = true;
-				if ($this->input("not_sidebar") == 'not') {
+				if (MainFaiFramework::get_input("not_sidebar") == 'not') {
 					$sidebarIn = false;
 				}
 				// if (isset($page['get']['sidebarIn']) and $sidebarIn  and !isset($page['get']['not_sidebarIn'])) {
 				// 	$pages_content .=	$this->sidebarin($page);
 				// } 
-				$pages_content .=  	$this->page($page, $type, $id, $section_menu);
+				$config = new Configuration();
+				$pages_content .=  	$config->page($page, $type, $id, $section_menu);
 			}
 		}
 		return $pages_content;

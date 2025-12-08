@@ -99,7 +99,7 @@ class EthicaApi
 
             $response = curl_exec($curl);
 
-            curl_close($curl);
+            @curl_close($curl);
             $response;
             $responseData = json_decode($response, true);
             if ($responseData['status'] == 200) {
@@ -130,7 +130,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($responseData['status'] == 200) {
@@ -169,7 +169,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (! isset($responseData['status'])) {
             $responseData['status'] = 404;
@@ -212,7 +212,7 @@ class EthicaApi
 
             return $response_awal;
         }
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response_awal, true);
 
         $response = [];
@@ -413,7 +413,7 @@ class EthicaApi
         ]);
 
         $response = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         $response;
 
@@ -455,7 +455,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -481,7 +481,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if ($responseData['status'] == 200) {
 
@@ -568,7 +568,7 @@ class EthicaApi
 
         // echo $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($user_api['row'][0]->versi == 'Versi 1') {
@@ -640,7 +640,7 @@ class EthicaApi
 
         // echo $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($user_api['row'][0]->versi == 'Versi 1') {
@@ -750,7 +750,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         $responseData = json_decode($response, true);
         // print_R($responseData);
@@ -810,7 +810,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -856,7 +856,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -885,7 +885,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -916,7 +916,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
 
@@ -974,7 +974,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
 
@@ -1053,7 +1053,7 @@ class EthicaApi
         ]);
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
         if ($user_api['row'][0]->versi == 'Versi 2' and (($response['success'] ?? '') or $responseData['message'] == 'pesanan telah diapprove')) {
@@ -1319,7 +1319,7 @@ class EthicaApi
 
                     $response = curl_exec($curl);
 
-                    curl_close($curl);
+                    @curl_close($curl);
                     // echo $responseData = json_decode($response, true);
                     $responseData = json_decode($response, true);
 
@@ -1387,7 +1387,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1417,7 +1417,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1447,7 +1447,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1477,7 +1477,7 @@ class EthicaApi
         ]);
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1531,7 +1531,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         return $response;
     }
@@ -1557,7 +1557,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         return $response;
     }
 }

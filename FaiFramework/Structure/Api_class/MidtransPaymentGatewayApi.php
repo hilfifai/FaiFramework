@@ -24,7 +24,7 @@ class MidtransPaymentGatewayApi
         curl_setopt_array($ch, $options);  // Set Opsi
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($ch); // Eksekusi Curl
-        curl_close($ch);  // Stop atau tutup script
+        @curl_close($ch);  // Stop atau tutup script
         return $content;
     }
     public static function getStatus($url, $server_key, $orderID)
@@ -50,7 +50,7 @@ class MidtransPaymentGatewayApi
         $output = curl_exec($ch);
 
         // tutup curl
-        curl_close($ch);
+        @curl_close($ch);
 
         // mengembalikan hasil curl
         return $output;
@@ -80,7 +80,7 @@ class MidtransPaymentGatewayApi
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $resp = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
         //var_dump($resp);
 
 
