@@ -3417,6 +3417,7 @@ class Packages extends Partial
                             $rowoption    = $fai->database_coverter($page, $page['select_database_costum'][$field], []);
                             $value_select = $option[2];
 
+                            // $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
                             $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
                             foreach ($rowoption as $dataoption) {
                                 $option_data[$dataoption->primary_key] = $dataoption->$value_select;

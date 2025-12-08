@@ -227,7 +227,7 @@ class DatabaseFunc
         // $db_payemnt['select'][] = "(" . "SELECT json_agg(row_to_json(t)) FROM (SELECT * FROM erp__pos__utama__detail where id_erp__pos__group = erp__pos__group.id) t) as list_produk";
         $db_payemnt['utama'] = "erp__pos__group";
         if ($page['database_provider'] == 'mysql') {
-            $conn = DB::getConn($page);
+            $conn = DB::getConn();
             $dbp  = [
 
                 "select" => [
@@ -244,14 +244,16 @@ class DatabaseFunc
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
 
-            $result = mysqli_query($conn, $query);
+            $stmt = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field = mysqli_fetch_field($result)) {
-                $columns[] = $col = $field->name;
+            $columnCount = $stmt->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -312,8 +314,8 @@ class DatabaseFunc
         $db['join'][] = ["inventaris__asset__list_query", " inventaris__asset__list.id", "store__produk.id_asset", "inner"];
         $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as int) = inventaris__asset__list__varian.id", "left"];
 
-        $db['join'][]  = ["drive__file utama_file", " (utama_file.id)", " (inventaris__asset__list.foto_aset)", "left"];
-        $db['join'][]  = ["drive__file varian_file", " (varian_file.id )", " (inventaris__asset__list__varian.foto_aset_varian )", "left"];
+        $db['join'][]  = ["drive__file utama_file", "utama_file.id", "inventaris__asset__list.foto_aset", "left"];
+        $db['join'][]  = ["drive__file varian_file", "varian_file.id", "inventaris__asset__list__varian.foto_aset_varian", "left"];
         $db['where'][] = ["qty", ">=", 1];
         if ($page['database_provider'] == 'mysql') {
 
@@ -321,14 +323,16 @@ class DatabaseFunc
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
 
-            $result = mysqli_query($conn, $query);
+            $stmt = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field = mysqli_fetch_field($result)) {
-                $columns[] = $col = $field->name;
+            $columnCount = $stmt->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -367,28 +371,29 @@ class DatabaseFunc
         $BANGUNAN['join'][]  = ["webmaster__wilayah__kabupaten", "webmaster__wilayah__kabupaten.kota_id", "id_kota", 'left'];
         $BANGUNAN['join'][]  = ["webmaster__wilayah__kecamatan", "webmaster__wilayah__kecamatan.subdistrict_id", "id_kecamatan", 'left'];
         $BANGUNAN['join'][]  = ["webmaster__wilayah__postal_code", "webmaster__wilayah__postal_code.id", "id_kelurahan", 'left'];
-        $BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan__pengisi.id_apps_user", "=", "erp__pos__group.id_apps_user", 'left'];
-        $BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan.id_kota", " is ", " not null"];
+        $BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan__pengisi.id_apps_user", "=", "erp__pos__group.id_apps_user"];
+        $BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan.id_kota", "IS", "NOT NULL"];
 
         if ($page['database_provider'] == 'mysql') {
             $dbp      = $BANGUNAN;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery LIMIT 1";
 
-            $result = mysqli_query($conn, $query);
+            try {
+                $stmt = $conn->query($query);
 
-            // Ambil nama kolom dari hasil query
-            $columns = [];
-            $pairs   = [];
-            $alias   = "t";
-            if ($result) {
-
-                while ($field = mysqli_fetch_field($result)) {
-                    $columns[] = $col = $field->name;
+                // Ambil nama kolom dari hasil query
+                $columns = [];
+                $pairs   = [];
+                $alias   = "t";
+                $columnCount = $stmt->columnCount();
+                for ($i = 0; $i < $columnCount; $i++) {
+                    $meta = $stmt->getColumnMeta($i);
+                    $columns[] = $col = $meta['name'];
                     $pairs[]   = "'$col', $alias.$col";
                 }
-            } else {
-                echo "Query failed: " . mysqli_error($conn);
+            } catch (Exception $e) {
+                echo "Query failed: " . $e->getMessage();
             }
         }
         $db_payemnt['join_subquery'][] = [
@@ -447,10 +452,7 @@ class DatabaseFunc
         $db_payemnt['np']           = true;
         $db_payemnt['not_checking'] = true;
         $db_payemnt['not_schema']   = true;
-        $group                      = Database::database_coverter($page, $db_payemnt, [], 'all');
-        '<pre>';
-        $group['query'];
-        // print_r($group);
+        $group = Database::database_coverter($page, $db_payemnt, [], 'all');
         if ($group['num_rows']) {
             foreach ($group['row'] as $g) {
                 $g_temp = $g;
@@ -492,15 +494,17 @@ class DatabaseFunc
             $dbp      = $dbKonfir;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
-            $conn     = DB::getConn($page);
-            $result2  = mysqli_query($conn, $query);
+            $conn     = DB::getConn();
+            $stmt2    = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field2 = mysqli_fetch_field($result2)) {
-                $columns[] = $col = $field2->name;
+            $columnCount = $stmt2->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt2->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -562,16 +566,17 @@ class DatabaseFunc
             $dbp      = $db;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
-            $query;
-            $conn   = DB::getConn($page);
-            $result = mysqli_query($conn, $query);
+            $conn     = DB::getConn();
+            $stmt     = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field = mysqli_fetch_field($result)) {
-                $columns[] = $col = $field->name;
+            $columnCount = $stmt->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -627,15 +632,17 @@ class DatabaseFunc
             $dbp      = $dbKonfir;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
-            $conn     = DB::getConn($page);
-            $result2  = mysqli_query($conn, $query);
+            $conn     = DB::getConn();
+            $stmt2    = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field2 = mysqli_fetch_field($result2)) {
-                $columns[] = $col = $field2->name;
+            $columnCount = $stmt2->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt2->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -674,16 +681,17 @@ class DatabaseFunc
             $dbp      = $db;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
-            $query;
-            $conn   = DB::getConn($page);
-            $result = mysqli_query($conn, $query);
+            $conn     = DB::getConn();
+            $stmt     = $conn->query($query);
 
             // Ambil nama kolom dari hasil query
             $columns = [];
             $pairs   = [];
             $alias   = "t";
-            while ($field = mysqli_fetch_field($result)) {
-                $columns[] = $col = $field->name;
+            $columnCount = $stmt->columnCount();
+            for ($i = 0; $i < $columnCount; $i++) {
+                $meta = $stmt->getColumnMeta($i);
+                $columns[] = $col = $meta['name'];
                 $pairs[]   = "'$col', $alias.$col";
             }
         }
@@ -761,19 +769,25 @@ class DatabaseFunc
             $dbp      = $db;
             $getquery = Database::database_coverter($page, $dbp, [], 'source');
             $query    = "$getquery  LIMIT 1";
-            $conn     = DB::getConn($page);
-            $result   = mysqli_query($conn, $query);
+            $conn     = DB::getConn();
+            try {
+                $stmt = $conn->query($query);
 
-            // Ambil nama kolom dari hasil query
-            $columns = [];
-            $pairs   = [];
-            $alias   = "t";
-            if ($result && mysqli_num_fields($result) > 0) {
-                while ($field = mysqli_fetch_field($result)) {
-                    $columns[] = $col = $field->name;
-                    $pairs[]   = "'$col', $alias.$col";
+                // Ambil nama kolom dari hasil query
+                $columns = [];
+                $pairs   = [];
+                $alias   = "t";
+                $columnCount = $stmt->columnCount();
+                if ($columnCount > 0) {
+                    for ($i = 0; $i < $columnCount; $i++) {
+                        $meta = $stmt->getColumnMeta($i);
+                        $columns[] = $col = $meta['name'];
+                        $pairs[]   = "'$col', $alias.$col";
+                    }
+                } else {
+                    $pairs[] = "'empty', NULL";
                 }
-            } else {
+            } catch (Exception $e) {
                 $pairs[] = "'empty', NULL";
             }
         }

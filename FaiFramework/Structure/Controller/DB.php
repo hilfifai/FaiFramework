@@ -7,6 +7,7 @@ class DB
     public $conn;
     public $database_provider;
     public $error;
+    public static $logConn = null;
     public function __construct()
     {
         //session_start();
@@ -138,7 +139,7 @@ class DB
         $dbname = $page['conection_name_database'];
         $user = $page['conection_user'];
         $password = $page['conection_password'];
-        $port = "5432";
+        $port = isset($page['conection_port']) ? $page['conection_port'] : '5432';
         $key = md5($host . $dbname . $user);
         $conected = false;
         // echo 'KONEKSI';
@@ -150,16 +151,13 @@ class DB
         if (!$conected) {
 
             $database_provider = isset($page['database_provider']) ? $page['database_provider'] : 'postgres';
-            // $database_provider = 'postgres';
-            // $database_provider;
-            if ($database_provider == 'mysql') {
-                $mysqli = mysqli_connect($host, $user, $password, $dbname);
-                $mysqli = new mysqli($host, $user, $password, $dbname);
-                $conn = $mysqli;
-            } else {
-                 $connection_string = "host={$host} port={$port} dbname={$dbname} user={$user} password={$password} ";
-                $pgsql = pg_connect($connection_string);
-                $conn = $pgsql;
+            $dsn = $database_provider === 'mysql' ? "mysql:host=$host;dbname=$dbname;charset=utf8mb4" : "pgsql:host=$host;port=$port;dbname=$dbname";
+            try {
+                $pdo = new PDO($dsn, $user, $password, [PDO::ATTR_PERSISTENT => true]);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $conn = $pdo;
+            } catch (PDOException $e) {
+                die("Database connection failed: " . $e->getMessage());
             }
         }
         return $key;
@@ -170,37 +168,28 @@ class DB
 		return $conn;
 	}
      public static function beginTransaction()
-    {
-        global $conn, $database_provider;
+      {
+          global $conn;
+          if (!$conn->inTransaction()) {
+              $conn->beginTransaction();
+          }
+      }
 
-        if ($database_provider === 'postgres') {
-            pg_query($conn, "BEGIN");
-        } elseif ($database_provider === 'mysql') {
-            mysqli_begin_transaction($conn);
-        }
-    }
+     public static function commit()
+     {
+         global $conn;
+         if ($conn->inTransaction()) {
+             $conn->commit();
+         }
+     }
 
-    public static function commit()
-    {
-        global $conn, $database_provider;
-
-        if ($database_provider === 'postgres') {
-            pg_query($conn, "COMMIT");
-        } elseif ($database_provider === 'mysql') {
-            mysqli_commit($conn);
-        }
-    }
-
-    public static function rollBack()
-    {
-        global $conn, $database_provider;
-
-        if ($database_provider === 'postgres') {
-            pg_query($conn, "ROLLBACK");
-        } elseif ($database_provider === 'mysql') {
-            mysqli_rollback($conn);
-        }
-    }
+     public static function rollBack()
+     {
+         global $conn;
+         if ($conn->inTransaction()) {
+             $conn->rollBack();
+         }
+     }
     public static function query($query, $type = '', $table = '', $transaction = 1)
     {
         global $conn, $queries, $database_provider, $host, $dbname, $user, $password;
@@ -208,74 +197,71 @@ class DB
         try {
             $queries = $query;
             if (trim($query)) {
-                if ($database_provider == 'postgres') {
-                    $query = str_replace("`", "", $query);
+                $isModifying = preg_match('/^\s*(INSERT|UPDATE|DELETE)/i', $query);
+                $result = null;
 
-                    // if ($transaction) {
-                    //     pg_query($conn, "BEGIN");
-                    // }
-                    
-                    $result = pg_query($conn, $query);
-                    if (!$result) {
-                        // if ($transaction) {
-                        //     pg_query($conn, "ROLLBACK");
-                        // }
-                        throw new Exception("Error executing PostgreSQL query: " . pg_last_error($conn));
+                if ($isModifying) {
+                    DB::beginTransaction();
+
+                    $affectedRows = $conn->exec($query);
+
+                    // logging
+                    $page['conection_server'] = $host;
+                    $page['conection_name_database'] = $dbname;
+                    $page['conection_user'] = $user;
+                    $page['conection_password'] = $password;
+                    $page['database_provider'] = $database_provider;
+                    $ID = DB::lastInsertId($page, $table);
+
+                   
+
+                    $tipeTransaksi = '';
+                    if (stripos(trim($query), 'INSERT') === 0) {
+                        $tipeTransaksi = 'Penambahan';
+                    } elseif (stripos(trim($query), 'UPDATE') === 0) {
+                        $tipeTransaksi = 'Perubahan';
+                    } elseif (stripos(trim($query), 'DELETE') === 0) {
+                        $tipeTransaksi = 'Penghapusan';
                     }
 
-                    // logging hanya jika INSERT / UPDATE / DELETE
-                    if (preg_match('/^(INSERT|UPDATE|DELETE)/i', $query, $match)) {
-                        $page['conection_server'] = $host;
-                        $page['conection_name_database'] = $dbname;
-                        $page['conection_user'] = $user;
-                        $page['conection_password'] = $password;
-                        $page['database_provider'] = $database_provider;
-                        $ID = DB::lastInsertId($page, $table);
+                    $logQuery = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
+                             VALUES (:table, :id, :tipe, :waktu)";
+                    $stmt = $conn->prepare($logQuery);
+                    $stmt->execute([
+                        ':table' => $table,
+                        ':id' => $ID,
+                        ':tipe' => $tipeTransaksi,
+                        ':waktu' => date('Y-m-d H:i:s')
+                    ]);
 
-                        $dbjson = $dbname . '_json';
-                        $userjson = $database_provider=='postgres'?$user:$user . '_json';
-                        $logConn = pg_connect("host=$host dbname=$dbjson user=$userjson password=$password");
-
-                        $jenis = [
-                            'INSERT' => 'Penambahan',
-                            'UPDATE' => 'Perubahan',
-                            'DELETE' => 'Penghapusan'
-                        ][$match[1]] ?? 'TidakDiketahui';
-
-                        $logSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                               VALUES ('$table', '$ID', '$jenis', '" . date('Y-m-d H:i:s') . "')";
-                        pg_query($logConn, $logSql);
-                    }
-
-                    // if ($transaction) {
-                    //     pg_query($conn, "COMMIT");
-                    // }
-
-                    return $result;
+                    DB::commit();
+                    return $affectedRows;
                 } else {
-                    // MySQL
-                    $result = $conn->query($query);
-                    if (!$result) throw new Exception($conn->error);
-                    return $result;
+                    $stmt = $conn->query($query);
+                    return $stmt;
                 }
             }
         } catch (Exception $e) {
+            DB::rollBack();
+
             echo '<pre>';
-            echo ("Query Execution Failed: " . $e->getMessage() . '<BR> FIle' . $e->getFile() . '<br> Line:' . $e->getLine());
+            echo ("Query Execution Failed: " . $e->getMessage() . '<BR> File: ' . $e->getFile() . '<br> Line: ' . $e->getLine());
             echo "Stack trace:<br>";
 
-            // Menampilkan seluruh stack trace, termasuk file-file yang dipanggil sebelumnya
             $trace = $e->getTrace();
             foreach ($trace as $index => $traceItem) {
                 echo "#$index " . (isset($traceItem['file']) ? $traceItem['file'] : '[internal function]') .
                     " (Line: " . (isset($traceItem['line']) ? $traceItem['line'] : '?') . ")<br>";
             }
-            echo '<br> query('.$dbname.'):' . $queries;
+            echo '<br> query:' . $queries;
             die;
         }
+
+        return null;
     }
 
     public static function query2($query, $type = '', $table = '')
+
     {
 
         global $conn;
@@ -287,92 +273,44 @@ class DB
         global $password;
 
         try {
-            // echo $query;
             $queries = $query;
-            // $query;
-            $database_provider;
             if (trim($query)) {
-                if ($database_provider == 'postgres') {
-                    $result = pg_query($conn, str_replace("`", "", $query));
-                    if (!$result) {
-                        throw new Exception("Error executing PostgreSQL query: " . pg_last_error($conn) . " on query($dbname) " . $query);
-                    } else {
-                        if (substr($query, 0, strlen('INSERT')) == 'INSERT') {
-
-                            $page['conection_server'] = $host;
-                            $page['conection_name_database'] = $dbname;
-                            $page['conection_user'] = $user;
-                            $page['conection_password'] = $password;
-                            $page['database_provider'] = $database_provider;
-                            $ID = DB::lastInsertId($page, $table);
-                            $pdo = $pdoPg = new PDO("pgsql:host=$host dbname=" . $dbname . '_json', $user, $password);
-                            $insertSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                            VALUES ('$table', '$ID', 'Penambahan', '" . date('Y-m-d H:i:s') . "')"; 
-                            try {
-
-                                $pdo->exec($insertSql);
-                            } catch (PDOException $e) {
-
-                                echo "Gagal: " . $e->getMessage();
-                            }
-                        } else
-                        if (substr($query, 0, strlen('UPDATE')) == 'UPDATE') {
-
-                            $page['conection_server'] = $host;
-                            $page['conection_name_database'] = $dbname;
-                            $page['conection_user'] = $user;
-                            $page['conection_password'] = $password;
-                            $page['database_provider'] = $database_provider;
-                            $ID = DB::lastInsertId($page, $table);
-                            $pdo = $pdoPg = new PDO("pgsql:host=$host dbname=" . $dbname . '_json', $user, $password);
-                            $insertSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                            VALUES ('$table', '$ID', 'Perubahan', '" . date('Y-m-d H:i:s') . "')";
-                            try {
-
-                                $pdo->exec($insertSql);
-                            } catch (PDOException $e) {
-
-                                echo "Gagal: " . $e->getMessage();
-                            }
-                        } else
-                        if (substr($query, 0, strlen('DELETE')) == 'DELETE') {
-
-                            $page['conection_server'] = $host;
-                            $page['conection_name_database'] = $dbname;
-                            $page['conection_user'] = $user;
-                            $page['conection_password'] = $password;
-                            $page['database_provider'] = $database_provider;
-                            $ID = DB::lastInsertId($page, $table);
-                            $pdo = $pdoPg = new PDO("pgsql:host=$host dbname=" . $dbname . '_json', $user, $password);
-                            $insertSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                            VALUES ('$table', '$ID', 'Penghapusan', '" . date('Y-m-d H:i:s') . "')";
-                            try {
-
-                                $pdo->exec($insertSql);
-                            } catch (PDOException $e) {
-
-                                echo "Gagal: " . $e->getMessage();
-                            }
-                        }
+                $isModifying = preg_match('/^\s*(INSERT|UPDATE|DELETE)/i', $query);
+                if ($isModifying) {
+                    $result = $conn->exec($query);
+                    if (stripos(trim($query), 'INSERT') === 0) {
+                        $tipe = 'Penambahan';
+                    } elseif (stripos(trim($query), 'UPDATE') === 0) {
+                        $tipe = 'Perubahan';
+                    } elseif (stripos(trim($query), 'DELETE') === 0) {
+                        $tipe = 'Penghapusan';
                     }
+                    $page['conection_server'] = $host;
+                    $page['conection_name_database'] = $dbname;
+                    $page['conection_user'] = $user;
+                    $page['conection_password'] = $password;
+                    $page['database_provider'] = $database_provider;
+                    $ID = DB::lastInsertId($page, $table);
+                    if (self::$logConn === null) {
+                        $dbjson = $dbname . '_json';
+                        $logDsn = "pgsql:host=$host;dbname=$dbjson";
+                        self::$logConn = new PDO($logDsn, $user, $password, [PDO::ATTR_PERSISTENT => true]);
+                        self::$logConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    }
+                    $insertSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
+                    VALUES ('$table', '$ID', '$tipe', '" . date('Y-m-d H:i:s') . "')";
+                    self::$logConn->exec($insertSql);
                     return $result;
                 } else {
                     $result = $conn->query($query);
-                    if (!$result) {
-                        throw new Exception("<pre>Error executing MySQL query: <br> " . $conn->error);
-                    }
                     return $result;
                 }
             }
-
-            //  return !$conn->query($query)?$conn->query($query):$conn->error;
-
         } catch (Exception $e) {
             echo '<pre>';
-            echo ("Query Execution Failed: " . $e->getMessage() . '<BR> FIle' . $e->getFile() . '<br> Line:' . $e->getLine());
+            echo ("Query Execution Failed: " . $e->getMessage() . '<BR> File' . $e->getFile() . '<br> Line:' . $e->getLine());
             echo "Stack trace:<br>";
 
-            // Menampilkan seluruh stack trace, termasuk file-file yang dipanggil sebelumnya
             $trace = $e->getTrace();
             foreach ($trace as $index => $traceItem) {
                 echo "#$index " . (isset($traceItem['file']) ? $traceItem['file'] : '[internal function]') .
@@ -381,11 +319,9 @@ class DB
             echo '<br> query:' . $queries;
             die;
 
-
             return null;
         }
     }
-
     /**
      * Execute prepared queries.
      *
@@ -401,8 +337,9 @@ class DB
     }
     public static function statements($query, $statements)
     {
+        global $conn;
         try {
-            $query = $this->conn->prepare($query);
+            $stmt = $conn->prepare($query);
 
             foreach ($statements as $key => $value) {
                 $param = $statements[$key][0];
@@ -413,32 +350,30 @@ class DB
                 switch ($dataType) {
                     case 'bool':
                     case 'boolean':
-                        $query->bindValue($param, $value, \PDO::PARAM_BOOL);
+                        $stmt->bindValue($param, $value, \PDO::PARAM_BOOL);
                         break;
                     case 'null':
-                        $query->bindValue($param, $value, \PDO::PARAM_NULL);
+                        $stmt->bindValue($param, $value, \PDO::PARAM_NULL);
                         break;
                     case 'int':
                     case 'integer':
-                        $query->bindValue($param, $value, \PDO::PARAM_INT);
+                        $stmt->bindValue($param, $value, \PDO::PARAM_INT);
                         break;
                     case 'str':
                     default:
-                        $query->bindValue($param, $value, \PDO::PARAM_STR);
+                        $stmt->bindValue($param, $value, \PDO::PARAM_STR);
                         break;
                     case false:
-                        $query->bindValue($param, $value);
+                        $stmt->bindValue($param, $value);
                         break;
                 }
             }
 
-            $query->execute();
+            $stmt->execute();
 
-            return $query;
+            return $stmt;
         } catch (\PDOException $e) {
-            // $this->error = $e->getMessage();
-
-            return  $e->getMessage();;
+            return  $e->getMessage();
         }
     }
     public static function getColumnListing($page, $database_provider, $database_utama, $return_result = null)
@@ -775,30 +710,20 @@ class DB
 
     public static function fetchResponse($response, $result = 'obj')
     {
-        global $database_provider;
         if ($response) {
-            if ($database_provider == 'postgres') {
-                if ($result == 'obj')
-                    $return =  pg_fetch_all($response);
-                else  if ($result == 'num_rows')
-                    $return =  pg_num_rows($response);
-            } else {
-
-
-                if ($result == 'obj') {
-                    $return =  $response->fetch_all(MYSQLI_ASSOC);
-                } elseif ($result == 'array_num') {
-                    $return = $response->fetchAll(\PDO::FETCH_NUM);
-                } elseif ($result == 'array_assoc') {
-                    $return = $response->fetchAll(\PDO::FETCH_ASSOC);
-                } elseif ($result == 'num_rows') {
-                    $return = $response->num_rows;
-                }
+            if ($result == 'obj') {
+                $return = $response->fetchAll(PDO::FETCH_ASSOC);
+            } elseif ($result == 'array_num') {
+                $return = $response->fetchAll(PDO::FETCH_NUM);
+            } elseif ($result == 'array_assoc') {
+                $return = $response->fetchAll(PDO::FETCH_ASSOC);
+            } elseif ($result == 'num_rows') {
+                $return = $response->rowCount();
             }
         } else {
             global $conn;
-            global $query;;
-            echo "<span style='color:red'>" . $conn->error . "</span> <span style='color:blue'><pre>on query(
+            global $query;
+            echo "<span style='color:red'>" . $conn->errorInfo()[2] . "</span> <span style='color:blue'><pre>on query(
 
             " . $query . "
 
@@ -833,7 +758,7 @@ class DB
     {
         global $conn;
         if ($page['database_provider'] == 'mysql')
-            return (int) $conn->insert_id;
+            return (int) $conn->lastInsertId();
         else if ($database_utama)
             return (DB::fetchResponse(DB::query("select * from seq_$database_utama", 'SELECT')))[0]->last_value;
     }
@@ -1258,46 +1183,17 @@ class DB
 
             $return['result'] =  ($get);
             $return['num_rows'] =  DB::fetchResponse($get, 'num_rows');;
-			if($non_limit==1)
+   if($non_limit==1)
             $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit)[0]->count;;
-			if($non_limit==2)
+   if($non_limit==2)
             $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit, 'num_rows');;
             $return['db'] =  ($db);
 
             $return['query'] =  ($query);
-            if($database_provider=='postgres'){
-            pg_close($conn);
-
-
-            $page['conection_server'] = $host;
-            $page['conection_name_database'] = $dbname;
-            $page['conection_user'] = $user;
-            $page['conection_password'] = $password;
-            DB::connection($page);
-            }else{
-            //   // mysqli_close($conn);
-
-
-            //     $page['conection_server'] = $host;
-            //     $page['conection_name_database'] = $dbname;
-            //     $page['conection_user'] = $user;
-            //     $page['conection_password'] = $password;
-            //     DB::connection($page);
-            }
             return $return;
         } else {
 
             $return = DB::fetchResponse(DB::query(trim($query), 'SELECT'));
-           if($database_provider=='postgres'){
-            pg_close($conn);
-
-
-            $page['conection_server'] = $host;
-            $page['conection_name_database'] = $dbname;
-            $page['conection_user'] = $user;
-            $page['conection_password'] = $password;
-            DB::connection($page);
-        }
             return $return;
         }
     }

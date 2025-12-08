@@ -292,7 +292,6 @@ class GenerateApp
         
 
        
-        DB::connection($page);
 
         $page = $fai->LoadApps($page, $page['load']['domain'], -1, 'page');
         echo '<Br>';

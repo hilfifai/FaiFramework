@@ -7,7 +7,7 @@ define("CONECTION_NAME_DATABASE", "u996263040_moesneeds");
 define("CONECTION_USER", "u996263040_moesneeds");
 define("CONECTION_PASSWORD", "Moesneeds.id`1");
 define("CONECTION_SCHEME", "public");
-define('BASEPATH', __DIR__ . '/../');
+define('BASEPATH_FAI', __DIR__ . '/../');
 
 require_once(__DIR__ . '/Structure/Controller/Configuration.php');
 require_once(__DIR__ . '/Structure/Controller/Partial.php');
@@ -34,6 +34,7 @@ require_once(__DIR__ . '/Structure/App_class/ChatbotApp.php');
 require_once(__DIR__ . '/Structure/Content_class/CrudContent.php');
 require_once(__DIR__ . '/Structure/Content_class/CardContent.php');
 require_once(__DIR__ . '/Structure/Content_class/TemplateContent.php');
+require_once(__DIR__ . '/Structure/Content_class/SearchContent.php');
 require_once(__DIR__ . '/Structure/Content_class/Content.php');
 require_once(__DIR__ . '/Structure/Content_class/ApiContent.php');
 require_once(__DIR__ . '/Structure/Content_class/CrudContent.php');

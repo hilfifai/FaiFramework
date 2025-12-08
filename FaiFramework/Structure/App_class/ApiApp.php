@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Date;
 
-require_once BASEPATH . 'FaiFramework/Structure/Content_class/SearchContent.php';
 
 class ApiApp
 {
@@ -104,7 +103,7 @@ class ApiApp
         $data = [];
         foreach ($utama['row'] as $row) {
             $key = $row->domain_utama ?? '';
-$data[$key] = $row;
+            $data[$key] = $row;
         }
         echo json_encode($data);
     }
@@ -369,7 +368,7 @@ $data[$key] = $row;
             $page['load']['apps']      = $apps      = $data['apps'];
             $page['load']['page_view'] = $function = $data['page_view'];
             $page['load']['type']      = $type      = $data['load_type'];
-            $page['load']['id']        = $id        = $data['load_page_id'] ;
+            $page['load']['id']        = $id        = $data['load_page_id'];
             $page['load']['board']     = "-1";
 
             $page_temp                   = $page;
@@ -456,7 +455,7 @@ $data[$key] = $row;
                     break;
 
                 case 'POST':
-                    
+
                     $save = Packages::crud($page, "save", $id);
 
                     echo json_encode($save);
@@ -496,9 +495,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-              
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -578,9 +577,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -613,15 +612,19 @@ $data[$key] = $row;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $conn     = DB::getConn($page);
-                        $result   = mysqli_query($conn, $query);
+                        $result   = $conn->query($query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        while ($field = mysqli_fetch_field($result)) {
-                            $columns[] = $col = $field->name;
-                            $pairs[]   = "'$col', $alias.$col";
+                        if ($result) {
+                            for ($i = 0; $i < $result->columnCount(); $i++) {
+                                $meta = $result->getColumnMeta($i);
+                                $col = $meta['name'];
+                                $columns[] = $col;
+                                $pairs[]   = "'$col', $alias.$col";
+                            }
                         }
                     }
 
@@ -714,9 +717,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body    = json_decode(file_get_contents("php://input"), true);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -754,13 +757,13 @@ $data[$key] = $row;
                     break;
 
                 case 'PUT':
-                    $id   = $headers['id'];
+                    $id   = $headers['id']??"";
                     $save = Packages::crud($page, "update", $id);
 
                     echo json_encode($save);
                     break;
                 case 'DELETE':
-                    $id   = $headers['id'];
+                    $id   = $headers['id']??"";
                     $save = Packages::crud($page, "hapus", $id);
 
                     echo json_encode($save);
@@ -832,9 +835,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -868,15 +871,19 @@ $data[$key] = $row;
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = mysqli_query($conn, $query);
+                        $result = $conn->query($query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        while ($field = mysqli_fetch_field($result)) {
-                            $columns[] = $col = $field->name;
-                            $pairs[]   = "'$col', $alias.$col";
+                        if ($result) {
+                            for ($i = 0; $i < $result->columnCount(); $i++) {
+                                $meta = $result->getColumnMeta($i);
+                                $col = $meta['name'];
+                                $columns[] = $col;
+                                $pairs[]   = "'$col', $alias.$col";
+                            }
                         }
                     }
 
@@ -975,9 +982,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -996,15 +1003,19 @@ $data[$key] = $row;
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = mysqli_query($conn, $query);
+                        $result = $conn->query($query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        while ($field = mysqli_fetch_field($result)) {
-                            $columns[] = $col = $field->name;
-                            $pairs[]   = "'$col', $alias.$col";
+                        if ($result) {
+                            for ($i = 0; $i < $result->columnCount(); $i++) {
+                                $meta = $result->getColumnMeta($i);
+                                $col = $meta['name'];
+                                $columns[] = $col;
+                                $pairs[]   = "'$col', $alias.$col";
+                            }
                         }
                     }
 
@@ -1207,9 +1218,9 @@ $data[$key] = $row;
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
             switch ($method) {
                 case 'GET':
 
@@ -1227,15 +1238,19 @@ $data[$key] = $row;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $conn     = DB::getConn($page);
-                        $result2  = mysqli_query($conn, $query);
+                        $result2  = $conn->query($query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        while ($field2 = mysqli_fetch_field($result2)) {
-                            $columns[] = $col = $field2->name;
-                            $pairs[]   = "'$col', $alias.$col";
+                        if ($result2) {
+                            for ($i = 0; $i < $result2->columnCount(); $i++) {
+                                $meta = $result2->getColumnMeta($i);
+                                $col = $meta['name'];
+                                $columns[] = $col;
+                                $pairs[]   = "'$col', $alias.$col";
+                            }
                         }
                     }
 
@@ -1292,15 +1307,19 @@ $data[$key] = $row;
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = mysqli_query($conn, $query);
+                        $result = $conn->query($query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        while ($field = mysqli_fetch_field($result)) {
-                            $columns[] = $col = $field->name;
-                            $pairs[]   = "'$col', $alias.$col";
+                        if ($result) {
+                            for ($i = 0; $i < $result->columnCount(); $i++) {
+                                $meta = $result->getColumnMeta($i);
+                                $col = $meta['name'];
+                                $columns[] = $col;
+                                $pairs[]   = "'$col', $alias.$col";
+                            }
                         }
                     }
 
@@ -1400,9 +1419,9 @@ $data[$key] = $row;
             $method = $_SERVER['REDIRECT_HTTP_METHOD'] ?? $_SERVER['REQUEST_METHOD'];
             $body   = json_decode(file_get_contents("php://input"), true);
             // print_R($body);
-            
+
             $headers = getallheaders();
-            $id   = $headers['id'];
+            $id   = $headers['id']??"";
 
             // $decoded = base64_decode();
 
@@ -1795,15 +1814,12 @@ $data[$key] = $row;
 
             if ($live_mode == 1) {
                 // Direct output mode
-                $page['database_name']           = DATABASE_NAME;
-                $page['conection_name_database'] = CONECTION_NAME_DATABASE;
-                $page['conection_user']          = CONECTION_USER;
-                DB::connection($page);
+
 
                 $result = self::get_db_data($page, $body, $db_to_json);
                 $returnResult = [
-                    'num_rows' => count($result),
-                    'row' => array_values($result)
+                    'num_rows' => count($result[0]),
+                    'row' => array_values($result[0])
                 ];
 
                 echo json_encode($returnResult);
@@ -1828,20 +1844,16 @@ $data[$key] = $row;
 
                 if ($needs_generation) {
                     $_POST['db'] = $db_to_json;
-                    $page['database_name'] = DATABASE_NAME;
-                    $page['conection_name_database'] = CONECTION_NAME_DATABASE;
-                    $page['conection_user'] = CONECTION_USER;
-                    DB::connection($page);
+
                     $get_data = self::get_db_data($page, $body, $db_to_json);
                 }
-                if(empty($get_data)){
-                     echo json_encode(["json_data" => [], "id" => -1]);
-                }else 
-                {
-                // if (!empty($body['deviceId']) ) {
-                //     // Handle device sync
-                //     self::handle_device_sync($page, $body, $db_to_json, $get_data);
-                // } else {
+                if (empty($get_data)) {
+                    echo json_encode(["json_data" => [], "id" => -1]);
+                } else {
+                    // if (!empty($body['deviceId']) ) {
+                    //     // Handle device sync
+                    //     self::handle_device_sync($page, $body, $db_to_json, $get_data);
+                    // } else {
                     // Return processed data
                     $row = self::process_db_data($get_data);
                     echo json_encode(["json_data" => $row, "id" => -1]);
@@ -1937,7 +1949,7 @@ $data[$key] = $row;
         }
 
         $row = [];
-        if(($get_data)){
+        if (($get_data)) {
 
             foreach ($get_data as $value) {
                 foreach ($value as $key => $value2) {
@@ -1953,23 +1965,13 @@ $data[$key] = $row;
         // ini benar
 
     }
-    
+
     public static function db_json_bundle($page, $body = [])
     {
 
         //     $stmt->fetch();
         // --- CONTOH PAKAI ---
-        $page['database_name'];
-        $page['database_provider']       = DATABASE_PROVIDER;
-        $page['database_name']           = DATABASE_NAME;
-        $page['conection_server']        = CONECTION_SERVER;
-        $page['conection_name_database'] = CONECTION_NAME_DATABASE;
-        $page['conection_user']          = CONECTION_USER;
-        $page['conection_password']      = CONECTION_PASSWORD;
-        $page['conection_scheme']        = CONECTION_SCHEME;
-        // MySQL
-        unset($page['database_connected']);
-        DB::connection($page);
+
         if ($page['database_provider'] == 'mysql') {
 
             try {
@@ -2170,8 +2172,8 @@ $data[$key] = $row;
     // {
     //     if ($dbType === 'mysql') {
     //         /*
-        
-	// 	// DB::queryRaw($page, "SELECT 
+
+    // 	// DB::queryRaw($page, "SELECT 
     //                 //         t.id AS transaksi_id,
     //                 //         JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name)) AS full_product_data,
     //                 //         e.key_name
@@ -2208,9 +2210,9 @@ $data[$key] = $row;
     //                 //       $data['current'] = json_decode(json_encode($data['current']));
     //                 //       $get_data[][$row->transaksi_id] = $data;
     //                 //   }
-					
-					
-	// 	SIDE
+
+
+    // 	SIDE
     //         Proses 1 : database to json (data__transaksi)
     //         Proses 2 : every transaksi to historis
     //         Proses 3 : historis generate data to  data__transaksi
@@ -2374,7 +2376,7 @@ $data[$key] = $row;
     {
 
         // Grant all ke user untuk DB baru
-        
+
         $db_to_json = $body['db'] ?? '' ? $body['db'] : (Partial::input('db') ?? "inventaris__asset__master__kategori_toko");
         if (isset($body['db'])) {
             $db_to_json = $body['db'];
@@ -2749,40 +2751,14 @@ $data[$key] = $row;
         $id_produk_varian   = $body['id_produk_varian'];
         $query_asset_varian = "";
         $stok               = EcommerceApp::sync_update_stok($page, $id_produk, $id_asset, $id_asset_varian);
-        // echo "Batch $batchNumber ($rowAwal - $rowAkhir) sukses diinsert.\n";
-        //         if ($id_varian and ! $id_asset_varian) {
-        //             $query_asset_varian = " and id_asset_varian in( SELECT inventaris__asset__list__varian.id from inventaris__asset__list__varian
-        // LEFT JOIN inventaris__asset__list__varian master_varian on master_varian.id = inventaris__asset__list__varian.id_master_varian
-        // where inventaris__asset__list__varian.id_inventaris__asset__list  = $id_asset
-        // 										$where
-        // 											)";
 
-        //         }
-        //         DB::selectRaw('sum(coalesce(stok_available,0)) as total_stok');
-        //         DB::table("(SELECT id_produk,id_produk_varian,id_ruang_simpan,id_asset_varian,id_asset,connect_api_name,stok_available
-        // 		FROM
-        // 				inventaris__storage__data
+        $stok_available                  = EcommerceApp::stok_satuan($body);
 
-        // 		WHERE 1=1 $query_asset_varian
-        // 		order by stok_available desc) as f");
-        //         DB::whereRaw("id_asset = $id_asset");
-        //         DB::whereRaw("id_produk = $id_produk");
-        //         if ($id_asset_varian) {
-        //             DB::whereRaw("id_asset_varian = $id_asset_varian");
 
-        //         }
-        //         if ($id_produk_varian) {
-        //             DB::whereRaw("id_produk_varian = $id_produk_varian");
-
-        //         }
-        //         // DB::groupByRaw($page,["connect_api_name"]);
         echo json_encode([
-            "stok" => $stok,
+            "stok" => $stok_available,
             //         $db = DB::get('all');
         ]);
-        //,"query"=>		str_replace(['\n','\t'],'',trim($db['query']))  
-        //echo json_encode(["stok"=>(int) $db['row'][0]->total_stok,"query"=>
-        //str_replace(['\n','\t'],'',trim($db['query']))  
     }
     public static function verifikasi_wa($page)
     {
@@ -2835,7 +2811,6 @@ $data[$key] = $row;
         $where .= ')';
         $where_array[] = ["", "", $where];
         $database      = "apps_user";
-        DB::connection($page);
         $db['utama']     = $database;
         $db['where_raw'] = $where;
         $row             = Database::database_coverter($page, $db, [], 'all');
@@ -3491,11 +3466,16 @@ $data[$key] = $row;
             // print_R($all);
             $row_cart[$cart['id_cart']] = $get['row'][0];
             $stok                       = (float) EcommerceApp::sync_update_stok($page, $get['row'][0]->id_produk, $get['row'][0]->id_asset, $get['row'][0]->id_asset_varian);
-            $all_stok[]                 = ["id_cart" => $cart['id_cart'], "qty" => $cart['qty'], "stok" => $stok];
-            if ($cart['qty'] > $stok) {
+            $body_data["id_produk"] =  $get['row'][0]->id_produk;
+            $body_data["id_asset"] =  $get['row'][0]->id_asset;
+            $body_data["id_asset_varian"] =  $get['row'][0]->id_asset_varian;
+            $body_data["id_produk_varian"] =  $get['row'][0]->id_produk_varian;
+            $stok_available                  = EcommerceApp::stok_satuan($body_data);
+            $all_stok[]                 = ["id_cart" => $cart['id_cart'], "qty" => $cart['qty'], "stok" => $stok_available];
+            if ($cart['qty'] > $stok_available) {
                 $status  = 0;
-                $selisih = $stok - $cart['qty'];
-                $nama .= "<li>Barang Qty melebihi stok (stok:$stok, selisih:$selisih)</li> ";
+                $selisih = $stok_available - $cart['qty'];
+                $nama .= "<li>Barang Qty melebihi stok (stok:$stok_available, selisih:$selisih)</li> ";
             }
         }
         if ($status == 1) {
@@ -3551,7 +3531,7 @@ $data[$key] = $row;
                     $id_detail                   = EcommerceApp::cek_harga_cart_get_checkout($page, null, null, 'id_detail', $cart['id_cart'], 1, $cart['qty']);
 
                     // print_R($get['row']);
-                    ApiApp::cart_api($page, $id_group_pemesanan, $id_pemesanan, $cart['id_cart']);
+                    //ApiApp::cart_api($page, $id_group_pemesanan, $id_pemesanan, $cart['id_cart']);
 
                     $invdet                                   = [];
                     $invdet['erp__pos__utama__detail_id']     = $id_detail;
@@ -3793,7 +3773,6 @@ $data[$key] = $row;
 
         $fai         = new MainFaiFramework();
         $be3id_store = $fai->input('be3id');
-        DB::connection($page);
         DB::selectRaw('*');
         // $content = eval($content);
 
@@ -3824,7 +3803,6 @@ $data[$key] = $row;
 
         $fai         = new MainFaiFramework();
         $be3id_store = $fai->input('be3id');
-        DB::connection($page);
         DB::selectRaw('*');
         //DB::selectRaw('*');
 

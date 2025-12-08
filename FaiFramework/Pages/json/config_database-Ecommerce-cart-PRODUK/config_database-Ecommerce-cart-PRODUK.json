@@ -1,22 +1,5 @@
 {
     "1": {
-        "id_cart": "2504",
-        "image": "https:\/\/api.ethica.id\/uploads\/SEPLY\/NARA\/BESAR\/NARA 42 PASSION BLUE.jpg",
-        "max_level": "3",
-        "nama_barang": "(PRE ORDER)NARA 42",
-        "stok": "0",
-        "varian_barang": "1",
-        "nama_varian": "(PRE ORDER)NARA 42 PASSION BLUE L",
-        "id_varian_pra_order_1": "131441",
-        "id_varian_pra_order_2": "129629",
-        "id_varian_pra_order_3": "0",
-        "jumlah": "1",
-        "checked": null,
-        "id_produk": "797",
-        "id_toko": "4",
-        "harga_satuan": "289900"
-    },
-    "2": {
         "id_cart": "2284",
         "image": "https:\/\/api.ethica.id\/uploads\/SEPLY\/NAMIRA\/BESAR\/NAMIRA 10 TERACOTA.jpg",
         "max_level": "3",
@@ -33,7 +16,7 @@
         "id_toko": "4",
         "harga_satuan": "179900"
     },
-    "3": {
+    "2": {
         "id_cart": "2357",
         "image": "",
         "max_level": "3",
@@ -50,22 +33,39 @@
         "id_toko": "4",
         "harga_satuan": "0"
     },
-    "4": {
-        "id_cart": "2493",
-        "image": "https:\/\/api.ethica.id\/uploads\/SEPLY\/NAMIRA\/BESAR\/NAMIRA 07 BLACK.jpg",
+    "3": {
+        "id_cart": "2507",
+        "image": "",
         "max_level": "3",
-        "nama_barang": "NAMIRA 07",
+        "nama_barang": "ELFA 306 SPACE BLUE",
         "stok": "0",
         "varian_barang": "1",
-        "nama_varian": "NAMIRA 07 BLACK XL",
-        "id_varian_pra_order_1": "129665",
-        "id_varian_pra_order_2": "129630",
-        "id_varian_pra_order_3": "0",
+        "nama_varian": "AYUMI 535 SPACE BLUE 5XL",
+        "id_varian_pra_order_1": "129822",
+        "id_varian_pra_order_2": "129823",
+        "id_varian_pra_order_3": "129618",
         "jumlah": "1",
-        "checked": "0",
-        "id_produk": "743",
+        "checked": "1",
+        "id_produk": "148",
         "id_toko": "4",
-        "harga_satuan": "199900"
+        "harga_satuan": "349900"
+    },
+    "4": {
+        "id_cart": "2508",
+        "image": "",
+        "max_level": "3",
+        "nama_barang": "ELFA 306 SPACE BLUE",
+        "stok": "0",
+        "varian_barang": "1",
+        "nama_varian": "AYUMI 535 SPACE BLUE 5XL",
+        "id_varian_pra_order_1": "129822",
+        "id_varian_pra_order_2": "129823",
+        "id_varian_pra_order_3": "129618",
+        "jumlah": "1",
+        "checked": "1",
+        "id_produk": "148",
+        "id_toko": "4",
+        "harga_satuan": "349900"
     },
     "5": {
         "id_cart": "2241",
