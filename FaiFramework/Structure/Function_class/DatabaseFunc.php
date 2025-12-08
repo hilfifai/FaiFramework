@@ -815,7 +815,7 @@ class DatabaseFunc
         $row = Database::database_coverter($page, $dbGroup, [], 'all');
         return $row;
     }
-    public static function all_produk($page, $json_fe = 1, $limit = 100, $body)
+    public static function all_produk($page, $json_fe = 1, $limit = 100, $body=[])
     {
         ini_set('memory_limit', '2024M');
         // $db_produk['select'][] = "
@@ -904,11 +904,7 @@ class DatabaseFunc
                 $return[$row->primary_key]['on_board']         = $row->on_board;
                 $return[$row->primary_key]['on_role']          = $row->on_role;
                 $return[$row->primary_key]['privilege']        = $row->privilege;
-                if (! isset($return[$row->primary_key]['nama_varian'])) {
-                    $return[$row->primary_key]['nama_varian'] = $row->nama_varian;
-                } else {
-                    $return[$row->primary_key]['nama_varian'] .= ' ' . $row->nama_varian;
-                }
+                $return[$row->primary_key]['nama_varian'] = ($return[$row->primary_key]['nama_varian'] ?? '') . (isset($return[$row->primary_key]['nama_varian']) ? ' ' : '') . $row->nama_varian;
                 if (! isset($return[$row->primary_key]['harga_awal'])) {
                     $return[$row->primary_key]['harga_awal'] = $row->varian_barang == 1 ? $row->harga_pokok_penjualan_varian : $row->harga_pokok_penjualan;
                 } else {
@@ -997,57 +993,29 @@ class DatabaseFunc
                     $return[$row->primary_key]['list_varian']['tipe_3']['detail'] = [];
                 }
 
-                if (! isset($return[$row->primary_key]['stok'])) {
-                    $return[$row->primary_key]['stok'] = $stok;
-                } else {
-                    $return[$row->primary_key]['stok'] += $stok;
-                }
+                $return[$row->primary_key]['stok'] = ($return[$row->primary_key]['stok'] ?? 0) + $stok;
 
-                if (! isset($return[$row->primary_key]['stok_detail'][$row->id_varian_1])) {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1] = $stok;
-                } else {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1] += $stok;
-                }
+                $return[$row->primary_key]['stok_detail'][$row->id_varian_1] = ($return[$row->primary_key]['stok_detail'][$row->id_varian_1] ?? 0) + $stok;
 
-                if (! isset($return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2])) {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] = $stok;
-                } else {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] += $stok;
-                }
+                $return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] = ($return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] ?? 0) + $stok;
 
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] = $row->harga_pokok_penjualan_varian;
-                } else {
-                    $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga < $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] = $harga;
-                    }
+                $min_price = &$return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'];
+                if (!isset($min_price) || $row->harga_pokok_penjualan_varian < $min_price) {
+                    $min_price = $row->harga_pokok_penjualan_varian;
                 }
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] = $row->harga_pokok_penjualan_varian;
-                } else {
-                    $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga > $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] = $harga;
-                    }
+                $max_price = &$return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'];
+                if (!isset($max_price) || $row->harga_pokok_penjualan_varian > $max_price) {
+                    $max_price = $row->harga_pokok_penjualan_varian;
                 }
                 $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_full'] = $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] == $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] ? Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) : Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) . ' s/d ' . Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir']);
 
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'] = $row->harga_pokok_penjualan_varian;
-                } else {
-                    $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga < $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'] = $harga;
-                    }
+                $min_price2 = &$return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'];
+                if (!isset($min_price2) || $row->harga_pokok_penjualan_varian < $min_price2) {
+                    $min_price2 = $row->harga_pokok_penjualan_varian;
                 }
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'] = $row->harga_pokok_penjualan_varian;
-                } else {
-                    $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga > $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'] = $harga;
-                    }
+                $max_price2 = &$return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'];
+                if (!isset($max_price2) || $row->harga_pokok_penjualan_varian > $max_price2) {
+                    $max_price2 = $row->harga_pokok_penjualan_varian;
                 }
                 $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_full'] = $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'] == $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'] ? Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal']) : Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal']) . ' s/d ' . Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir']);
 

@@ -2659,7 +2659,7 @@ class FaiCommandTest extends CI_Controller
 
                 $response = curl_exec($curl);
 
-                curl_close($curl);
+                @curl_close($curl);
                 $json =  json_decode($response, 1);
                 // print_R($json);
                 $detail_barang_api = $json['data'][0]['list_warna'][0]['list_ukuran'][0];

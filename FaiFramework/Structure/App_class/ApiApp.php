@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Date;
 
-require_once BASEPATH . '../FaiFramework/Structure/Content_class/SearchContent.php';
+require_once BASEPATH . 'FaiFramework/Structure/Content_class/SearchContent.php';
 
 class ApiApp
 {
@@ -18,7 +18,7 @@ class ApiApp
         DB::table('web__apps');
         DB::selectRaw("web__apps.*,domain_utama,
         meta_title,
-        meta_keyword,
+        meta_keyword,106
         meta_description,
         web__template.folder_template as template_utama,
         sidebar.folder_template as template_sidebar,nomor_send_wa,
@@ -103,7 +103,8 @@ class ApiApp
 
         $data = [];
         foreach ($utama['row'] as $row) {
-            $data[$row->domain_utama] = $row;
+            $key = $row->domain_utama ?? '';
+$data[$key] = $row;
         }
         echo json_encode($data);
     }
@@ -368,7 +369,7 @@ class ApiApp
             $page['load']['apps']      = $apps      = $data['apps'];
             $page['load']['page_view'] = $function = $data['page_view'];
             $page['load']['type']      = $type      = $data['load_type'];
-            $page['load']['id']        = $id        = $data['load_page_id'];
+            $page['load']['id']        = $id        = $data['load_page_id'] ;
             $page['load']['board']     = "-1";
 
             $page_temp                   = $page;
@@ -455,12 +456,14 @@ class ApiApp
                     break;
 
                 case 'POST':
+                    
                     $save = Packages::crud($page, "save", $id);
 
                     echo json_encode($save);
                     break;
 
                 case 'PUT':
+                    $id = Partial::input('id');
                     $save = Packages::crud($page, "update", $id);
 
                     echo json_encode($save);
@@ -493,6 +496,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
+              
+            $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -572,6 +578,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
+            
+            $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -705,7 +714,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body    = json_decode(file_get_contents("php://input"), true);
+            
             $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -821,6 +832,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
+            
+            $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -961,6 +975,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
+            
+            $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -1190,6 +1207,9 @@ class ApiApp
             $method = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
+            
+            $headers = getallheaders();
+            $id   = $headers['id'];
             switch ($method) {
                 case 'GET':
 
@@ -1380,7 +1400,9 @@ class ApiApp
             $method = $_SERVER['REDIRECT_HTTP_METHOD'] ?? $_SERVER['REQUEST_METHOD'];
             $body   = json_decode(file_get_contents("php://input"), true);
             // print_R($body);
+            
             $headers = getallheaders();
+            $id   = $headers['id'];
 
             // $decoded = base64_decode();
 
@@ -1628,91 +1650,92 @@ class ApiApp
     }
     public static function get_firsh_ongkir($page)
     {
-        $ongkir = OngkirApp::print_ongkir(
-            $id_store[$i],
-            $id_kota_user,
-            $product_store_kota[$id_toko]['jumlah_berat'],
-            'first_ongkir',
-            $id_store_kota[$id_store[$i]]
-        );
+        // $ongkir = OngkirApp::print_ongkir(
+        //     $id_store[$i],
+        //     $id_kota_user,
+        //     $product_store_kota[$id_toko]['jumlah_berat'],
+        //     'first_ongkir',
+        //     $id_store_kota[$id_store[$i]]
+        // );
 
-        $return['ongkir'] .= $ongkir['print'];
-        $page['crud']['save_type'] = "insert";
-        $update                    = CRUDFunc::declare_crud_variable($fai, $page, [], 'erp__pos__delivery_order', '', [], ErpPosApp::route_nomor($page, 'Barang Jadi Ecommerce', 'nomor_do'))['$sqli'];
-        $update['paket_ongkir']    = $ongkir['paket_ongkir'];
-        $update['estimasi_kirim']  = $ongkir['estimasi_kirim'];
-        $update['tanggal_do']      = date('Y-m-d');
-        $list_data_alamat[]        = "id_provinsi";
-        $list_data_alamat[]        = "id_kota";
-        $list_data_alamat[]        = "id_kecamatan";
-        $list_data_alamat[]        = "id_kelurahan";
-        $list_data_alamat[]        = "nomor";
-        $list_data_alamat[]        = "alamat";
-        $list_data_alamat[]        = "rt";
-        $list_data_alamat[]        = "rw";
-        for ($lda = 0; $lda < count($list_data_alamat); $lda++) {
-            $nama_row = $list_data_alamat[$lda];
-            if ($nama_row == 'nomor') {
-                $nama_row = 'nomor_bangunan';
-            }
-            if ($product_store_kota[$id_store[$i]]['detail']->$nama_row) {
-                $update[$list_data_alamat[$lda] . '_asal'] = $product_store_kota[$id_store[$i]]['detail']->$nama_row;
-            }
+        // $return['ongkir'] .= $ongkir['print'];
+        // $page['crud']['save_type'] = "insert";
+        // $update                    = CRUDFunc::declare_crud_variable($fai, $page, [], 'erp__pos__delivery_order', '', [], ErpPosApp::route_nomor($page, 'Barang Jadi Ecommerce', 'nomor_do'))['$sqli'];
+        // $update['paket_ongkir']    = $ongkir['paket_ongkir'];
+        // $update['estimasi_kirim']  = $ongkir['estimasi_kirim'];
+        // $update['tanggal_do']      = date('Y-m-d');
+        // $list_data_alamat[]        = "id_provinsi";
+        // $list_data_alamat[]        = "id_kota";
+        // $list_data_alamat[]        = "id_kecamatan";
+        // $list_data_alamat[]        = "id_kelurahan";
+        // $list_data_alamat[]        = "nomor";
+        // $list_data_alamat[]        = "alamat";
+        // $list_data_alamat[]        = "rt";
+        // $list_data_alamat[]        = "rw";
+        // for ($lda = 0; $lda < count($list_data_alamat); $lda++) {
+        //     $nama_row = $list_data_alamat[$lda];
+        //     if ($nama_row == 'nomor') {
+        //         $nama_row = 'nomor_bangunan';
+        //     }
+        //     if ($product_store_kota[$id_store[$i]]['detail']->$nama_row) {
+        //         $update[$list_data_alamat[$lda] . '_asal'] = $product_store_kota[$id_store[$i]]['detail']->$nama_row;
+        //     }
 
-            if ($get_all['row'][0]->$nama_row) {
-                $update[$list_data_alamat[$lda] . '_tujuan'] = $get_all['row'][0]->$nama_row;
-            }
-        }
-        // $update['jenis'] = 'Ongkir';
-        $update['ongkir']          = $ongkir['harga_ongkir'];
-        $update['id_store_ongkir'] = $id_store[$i];
+        //     if ($get_all['row'][0]->$nama_row) {
+        //         $update[$list_data_alamat[$lda] . '_tujuan'] = $get_all['row'][0]->$nama_row;
+        //     }
 
-        $update['create_date']        = date('Y-m-d');
-        $update['id_erp__pos__utama'] = $id_pemesanan;
-        $update['total_berat']        = $product_store_kota[$id_store[$i]]['jumlah_berat'];
-        $ongkir_akhir                 = $update['ongkir_akhir']                 = $update['ongkir'];
-        $paket_ongkir                 = explode('-', $ongkir['paket_ongkir']);
-        if (isset($paket_ongkir[0])) {
+        // }
+        // // $update['jenis'] = 'Ongkir';
+        // $update['ongkir']          = $ongkir['harga_ongkir'];
+        // $update['id_store_ongkir'] = $id_store[$i];
 
-            DB::queryRaw($page, "select * from webmaster__ekspedisi where kode_ekspedisi='" . $paket_ongkir[0] . "'");
-            $eks = DB::get('all');
-            if (! $eks['num_rows']) {
-                $insert_eks['kode_ekspedisi'] = $paket_ongkir[0];
-                CRUDFunc::crud_insert($fai, $page, $insert_eks, [], "webmaster__ekspedisi", []);
-                DB::queryRaw($page, "select * from webmaster__ekspedisi where kode_ekspedisi='" . $paket_ongkir[0] . "'");
-                $eks = DB::get('all');
-            }
-            $update['id_ekpedisi'] = $eks['row'][0]->id;
-        }
-        if (isset($paket_ongkir[1])) {
-            DB::queryRaw($page, "select * from webmaster__ekspedisi__service where kode_service='" . $paket_ongkir[1] . "'");
-            $eks = DB::get('all');
-            if (! $eks['num_rows']) {
-                $insert_eks_s['id_webmaster__ekspedisi'] = $eks['row'][0]->id;
-                $insert_eks_s['kode_service']            = $paket_ongkir[1];
-                CRUDFunc::crud_insert($fai, $page, $insert_eks_s, [], "webmaster__ekspedisi__service", []);
-                DB::queryRaw($page, "select * from webmaster__ekspedisi__service where kode_service='" . $paket_ongkir[1] . "'");
-                $eks = DB::get('all');
-            }
-            $update['id_service'] = $eks['row'][0]->id;
-        }
+        // $update['create_date']        = date('Y-m-d');
+        // $update['id_erp__pos__utama'] = $id_pemesanan;
+        // $update['total_berat']        = $product_store_kota[$id_store[$i]]['jumlah_berat'];
+        // $ongkir_akhir                 = $update['ongkir_akhir']                 = $update['ongkir'];
+        // $paket_ongkir                 = explode('-', $ongkir['paket_ongkir']);
+        // if (isset($paket_ongkir[0])) {
 
-        $id_delivery_order = CRUDFunc::crud_insert($fai, $page, $update, [], "erp__pos__delivery_order", []);
+        //     DB::queryRaw($page, "select * from webmaster__ekspedisi where kode_ekspedisi='" . $paket_ongkir[0] . "'");
+        //     $eks = DB::get('all');
+        //     if (! $eks['num_rows']) {
+        //         $insert_eks['kode_ekspedisi'] = $paket_ongkir[0];
+        //         CRUDFunc::crud_insert($fai, $page, $insert_eks, [], "webmaster__ekspedisi", []);
+        //         DB::queryRaw($page, "select * from webmaster__ekspedisi where kode_ekspedisi='" . $paket_ongkir[0] . "'");
+        //         $eks = DB::get('all');
+        //     }
+        //     $update['id_ekpedisi'] = $eks['row'][0]->id;
+        // }
+        // if (isset($paket_ongkir[1])) {
+        //     DB::queryRaw($page, "select * from webmaster__ekspedisi__service where kode_service='" . $paket_ongkir[1] . "'");
+        //     $eks = DB::get('all');
+        //     if (! $eks['num_rows']) {
+        //         $insert_eks_s['id_webmaster__ekspedisi'] = $eks['row'][0]->id;
+        //         $insert_eks_s['kode_service']            = $paket_ongkir[1];
+        //         CRUDFunc::crud_insert($fai, $page, $insert_eks_s, [], "webmaster__ekspedisi__service", []);
+        //         DB::queryRaw($page, "select * from webmaster__ekspedisi__service where kode_service='" . $paket_ongkir[1] . "'");
+        //         $eks = DB::get('all');
+        //     }
+        //     $update['id_service'] = $eks['row'][0]->id;
+        // }
 
-        $product_store_kota[$id_store[$i]]['id_asset'];
-        for ($psk = 0; $psk < count($product_store_kota[$id_store[$i]]['id_asset']); $psk++) {
+        // $id_delivery_order = CRUDFunc::crud_insert($fai, $page, $update, [], "erp__pos__delivery_order", []);
 
-            $data_detail_do['id_erp__pos__delivery_order']   = $id_delivery_order;
-            $data_detail_do['id_erp__pos__utama']            = $id_pemesanan;
-            $data_detail_do['id_inventaris__asset__list_do'] = $product_store_kota[$id_store[$i]]['id_asset'][$psk];
+        // $product_store_kota[$id_store[$i]]['id_asset'];
+        // for ($psk = 0; $psk < count($product_store_kota[$id_store[$i]]['id_asset']); $psk++) {
 
-            $data_detail_do['qty_pesan_do']    = $product_store_kota[$id_store[$i]]['qty'][$psk];
-            $data_detail_do['berat_satuan_do'] = $product_store_kota[$id_store[$i]]['berat_satuan'][$psk];
-            $data_detail_do['berat_total_do']  = $product_store_kota[$id_store[$i]]['berat_total'][$psk];
-            $data_detail_do['qty_kirim']       = $product_store_kota[$id_store[$i]]['qty'][$psk];
-            $data_detail_do['sisa_qty_kirim']  = 0;
-            $id_delivery_order                 = CRUDFunc::crud_insert($fai, $page, $data_detail_do, [], "erp__pos__delivery_order__detail", []);
-        }
+        //     $data_detail_do['id_erp__pos__delivery_order']   = $id_delivery_order;
+        //     $data_detail_do['id_erp__pos__utama']            = $id_pemesanan;
+        //     $data_detail_do['id_inventaris__asset__list_do'] = $product_store_kota[$id_store[$i]]['id_asset'][$psk];
+
+        //     $data_detail_do['qty_pesan_do']    = $product_store_kota[$id_store[$i]]['qty'][$psk];
+        //     $data_detail_do['berat_satuan_do'] = $product_store_kota[$id_store[$i]]['berat_satuan'][$psk];
+        //     $data_detail_do['berat_total_do']  = $product_store_kota[$id_store[$i]]['berat_total'][$psk];
+        //     $data_detail_do['qty_kirim']       = $product_store_kota[$id_store[$i]]['qty'][$psk];
+        //     $data_detail_do['sisa_qty_kirim']  = 0;
+        //     $id_delivery_order                 = CRUDFunc::crud_insert($fai, $page, $data_detail_do, [], "erp__pos__delivery_order__detail", []);
+        // }
     }
     public static function restructureFromJS($convertedData)
     {
@@ -1743,197 +1766,186 @@ class ApiApp
 
         return $result;
     }
+    /**
+     * Get database JSON data based on live mode
+     * live=1: Direct output without processing
+     * live=2: Process and return with keys
+     * live=3: Process without return
+     * default: Generate JSON if needed, handle device sync
+     */
     public static function get_db_json($page, $body_temp = [], $return = 'json')
     {
         error_reporting(E_ALL);
         try {
-            /*
-			 live =1 untuk apa? 
-				
-				
-			 live =2 untuk apa? 
-			 no live untuk apa? 
-			 
-			 
-			 LIVE 1 dan 2 tanpa proses ke current dan perubahan langsung print
-			 
-			 no live dengan proses
-			 
-			 BEDA 1 adalah no key dan 2 with key
-			 */
-
-            // header("Access-Control-Allow-Origin: http://localhost:8080"); // Ganti dengan origin frontend
-            // header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-            // header("Access-Control-Allow-Headers: Content-Type, Authorization");
-            $page['database_provider']       = DATABASE_PROVIDER;
-            $page['database_name']           = DATABASE_NAME . '_json';
-            $page['conection_name_database'] = CONECTION_NAME_DATABASE . '_json';
-            $page['conection_server']        = CONECTION_SERVER;
-            $page['conection_user']          = CONECTION_USER;
-            $page['conection_user']          = $page['database_provider'] == 'mysql' ? CONECTION_USER . '_json' : CONECTION_USER;
-            $page['conection_password']      = CONECTION_PASSWORD;
-            $page['conection_scheme']        = CONECTION_SCHEME;
-            if (! count($body_temp)) {
-                $body = json_decode(file_get_contents("php://input"), true);
-            } else {
-                $body = $body_temp;
-            }
+            $body = !empty($body_temp) ? $body_temp : json_decode(file_get_contents("php://input"), true);
 
             $search       = $body['search'] ?? [];
             $array_search = ApiApp::restructureFromJS($search['array'] ?? []);
             header('Content-Type: application/json; charset=utf-8');
+
             $db         = $body['db'] ?? 'inventaris__asset__master__kategori_toko';
             $db_to_json = Partial::input('db') ?? $db;
-            if ($_GET['live'] ?? '') {
+
+            if (!empty($_GET['live'])) {
                 $search['live'] = $_GET['live'];
             }
-            if (($search['live'] ?? '') == 1) {
+            $limit  = $array_search['pagination']['limit'] ?? 10;
+            $offset = $search['offset'] ?? 0;
+            $live_mode = $search['live'] ?? '';
 
-                $page['database_name']           = DATABASE_NAME . '';
-                $page['conection_name_database'] = CONECTION_NAME_DATABASE . '';
-                $page['conection_user']          = CONECTION_USER . '';
+            if ($live_mode == 1) {
+                // Direct output mode
+                $page['database_name']           = DATABASE_NAME;
+                $page['conection_name_database'] = CONECTION_NAME_DATABASE;
+                $page['conection_user']          = CONECTION_USER;
                 DB::connection($page);
 
-                $result                   = ApiApp::db_json($page, $body);
-                $returnResult['num_rows'] = count($result);
-                $row                      = [];
-                foreach ($result as $value) {
-                    foreach ($value as $key => $value2) {
-
-                        $row[] = $value2;
-                    }
-                }
-                $returnResult['row'] = ($row);
+                $result = self::get_db_data($page, $body, $db_to_json);
+                $returnResult = [
+                    'num_rows' => count($result),
+                    'row' => array_values($result)
+                ];
 
                 echo json_encode($returnResult);
-                die;
+                exit;
+            }
+            if ($live_mode == 2 || (!empty($_GET['search']) && $_GET['search'] == 2)) {
+                // Process and return with keys
+                $get_data = self::get_db_data($page, $body, $db_to_json);
+                $row = self::process_db_data($get_data);
+
+                if ($return == 'json') {
+                    echo json_encode(["row" => $row]);
+                } elseif ($return == 'row') {
+                    return $row;
+                }
+            } elseif ($live_mode == 3 || (!empty($_GET['search']) && $_GET['search'] == 3)) {
+                // Process without return
+                self::get_db_data($page, $body, $db_to_json);
             } else {
+                // Default mode: check if generation needed
+                $needs_generation = self::check_generation_needed($page, $db_to_json);
 
-                // contoh ambil nilai
-
-                $page['database_name']           = DATABASE_NAME . '_json';
-                $page['conection_name_database'] = CONECTION_NAME_DATABASE . '_json';
-                $page['conection_server']        = CONECTION_SERVER;
-                $page['conection_user']          = CONECTION_USER;
-                $page['conection_user']          = $page['database_provider'] == 'mysql' ? CONECTION_USER . '_json' : CONECTION_USER;
-                DB::connection($page);
-
-                $limit  = ($array_search['pagination']['limit']) ?? 10;
-                $offset = ($search['offset']) ?? 0;
-
-                if (($search['live'] ?? '') == 2 or ($_GET['search'] ?? '') == 2) {
-                    if (in_array($db_to_json, ["checkout", "allproduk", "all_produk"])) {
-
-                        $get_data = ApiApp::db_json_bundle($page, $body);
-                    } else {
-
-                        $get_data = ApiApp::db_json($page, $body);
-                    }
-
-                    $row = [];
-                    foreach ($get_data as $value) {
-                        if (isset($value['current'])) {
-                            $current = $value['current'];
-                            if (is_array($current) && isset($current['id'])) {
-                                $id = $current['id'];
-                            }
-
-                            // Jika object
-                            elseif (is_object($current) && isset($current->id)) {
-                                $id = $current->id;
-                            } else {
-                                $id;
-                            }
-                            $row[$id] = $value['current'];
-                        } else {
-                            foreach ($value as $key => $value2) {
-
-                                $id       = $value2['current']->id;
-                                $row[$id] = $value2['current']; // ini benar
-                            }
-                        }
-                    }
-                    if ($return == 'json') {
-                        echo json_encode(["row" => $row]);
-                    } else if ($return == 'row') {
-                        return $row;
-                    }
-                } else if (($search['live'] ?? '') == 3 or ($_GET['search'] ?? '') == 3) {
-                    // ini benar
-                    if (in_array($db_to_json, ["checkout", "allproduk", "all_produk"])) {
-
-                        $get_data = ApiApp::db_json_bundle($page, $body);
-                    } else {
-
-                        $get_data = ApiApp::db_json($page, $body);
-                    }
-                } else {
-                    DB::queryRaw($page, "SELECT count(*) as count from apps_data__historis where database_utama='$db_to_json' and generate = 0 ");
-                    $all_count = DB::get('all');
-                    DB::queryRaw($page, "SELECT count(*)  as count from apps_data__transaksi where nama_db='$db_to_json'  ");
-                    $all_transaksi = DB::get('all');
-                    if ($all_count['row'][0]->count > 0 or $all_transaksi['row'][0]->count == 0) {
-
-                        $_POST['db']                     = $db_to_json;
-                        $page['database_name']           = DATABASE_NAME . '';
-                        $page['conection_name_database'] = CONECTION_NAME_DATABASE . '';
-                        $page['conection_user']          = CONECTION_USER;
-                        DB::connection($page);
-                        if (in_array($db_to_json, ["checkout", "allproduk", "all_produk"])) {
-
-                            $get_data = ApiApp::db_json_bundle($page, $body);
-                        } else {
-
-                            $get_data = ApiApp::db_json($page, $body);
-                        }
-                    }
-                    $page['database_name']           = DATABASE_NAME . '_json';
-                    $page['conection_name_database'] = CONECTION_NAME_DATABASE . '_json';
-                    $page['conection_server']        = CONECTION_SERVER;
-                    $page['conection_user']          = CONECTION_USER;
-                    $page['conection_user']          = $page['database_provider'] == 'mysql' ? CONECTION_USER . '_json' : CONECTION_USER;
+                if ($needs_generation) {
+                    $_POST['db'] = $db_to_json;
+                    $page['database_name'] = DATABASE_NAME;
+                    $page['conection_name_database'] = CONECTION_NAME_DATABASE;
+                    $page['conection_user'] = CONECTION_USER;
                     DB::connection($page);
-                    //hanya generate json saja tanpa callback
-                    if (isset($body['deviceId'])) {
-                        DB::queryRaw($page, "SELECT apps_data__transaksi.* from apps_data__transaksi
-							left join apps_data__user on apps_data__user.id_apps_data__transaksi =apps_data__transaksi.id  and apps_data__user.deviceid='" . $body['deviceId'] . "'
-							where nama_db='$db_to_json'  and (
-							apps_data__transaksi.id not in(SELECT id_apps_data__transaksi from  apps_data__user where deviceid='" . $body['deviceId'] . "')
-							or kapan_update_terakhir!=tgl_update_transaksi)
-							LIMIT 1
-						");
-                        $all = DB::get('all');
-                        foreach ($all['row'] as $row) {
-                            DB::queryRaw($page, "INSERT INTO `apps_data__user`( `id_apps_data__transaksi`, `tgl_update_transaksi`, `deviceid`, `take_date`) VALUES ('$row->id','$row->kapan_update_terakhir','" . $body['deviceId'] . "','" . date('Y-m-d H:i:s') . "')");
-                        }
-                        //jadi ini mengandalkan save dari indexed DB
-                        //if($all['row'] and $all['num_rows']){
-
-                        //echo json_encode($all['row']);
-                        $row = [];
-                        foreach ($get_data as $value) {
-                            foreach ($value as $key => $value2) {
-
-                                $row[$key] = $value2; //}else{ 
-                            }
-                        }
-                        echo json_encode([["json_data" => $row, "id" => -1]]);
-                        // ini benar
-                    } else {
-                        $row = [];
-                        foreach ($get_data as $value) {
-
-                            $id       = $value['current']->id;
-                            $row[$id] = $value['current']; //}
-
-                        }
-                        echo json_encode(["json_data" => $row, "id" => -1]);
-                    }
+                    $get_data = self::get_db_data($page, $body, $db_to_json);
+                }
+                if(empty($get_data)){
+                     echo json_encode(["json_data" => [], "id" => -1]);
+                }else 
+                {
+                // if (!empty($body['deviceId']) ) {
+                //     // Handle device sync
+                //     self::handle_device_sync($page, $body, $db_to_json, $get_data);
+                // } else {
+                    // Return processed data
+                    $row = self::process_db_data($get_data);
+                    echo json_encode(["json_data" => $row, "id" => -1]);
                 }
             }
         } catch (Exception $e) {
             echo "Error : " . $e->getMessage();
         }
+    }
+
+    /**
+     * Get database data using appropriate method
+     */
+    private static function get_db_data($page, $body, $db_to_json)
+    {
+        $bundle_tables = ["checkout", "allproduk", "all_produk"];
+
+        if (in_array($db_to_json, $bundle_tables)) {
+            return ApiApp::db_json_bundle($page, $body);
+        } else {
+            return ApiApp::db_json($page, $body);
+        }
+    }
+
+    /**
+     * Process database data into keyed array
+     */
+    private static function process_db_data($get_data)
+    {
+        $row = [];
+        foreach ($get_data as $value) {
+            if (isset($value['current'])) {
+                $id = self::get_id_from_current($value['current']);
+                $row[$id] = $value['current'];
+            } else {
+                foreach ($value as $key => $value2) {
+                    $id = $value2['current']->id;
+                    $row[$id] = $value2['current'];
+                }
+            }
+        }
+        return $row;
+    }
+
+    /**
+     * Extract ID from current data
+     */
+    private static function get_id_from_current($current)
+    {
+        if (is_array($current) && isset($current['id'])) {
+            return $current['id'];
+        } elseif (is_object($current) && isset($current->id)) {
+            return $current->id;
+        }
+        return null;
+    }
+
+    /**
+     * Check if JSON generation is needed
+     */
+    private static function check_generation_needed($page, $db_to_json)
+    {
+        DB::queryRaw($page, "SELECT count(*) as count FROM apps_data__historis WHERE database_utama='$db_to_json' AND generate = 0");
+        $all_count = DB::get('all');
+
+        DB::queryRaw($page, "SELECT count(*) as count FROM apps_data__transaksi WHERE nama_db='$db_to_json'");
+        $all_transaksi = DB::get('all');
+
+        return $all_count['row'][0]->count > 0 || $all_transaksi['row'][0]->count == 0;
+    }
+
+    /**
+     * Handle device synchronization
+     */
+    private static function handle_device_sync($page, $body, $db_to_json, $get_data)
+    {
+        $deviceId = $body['deviceId'];
+
+        $query = "SELECT apps_data__transaksi.* FROM apps_data__transaksi
+            LEFT JOIN apps_data__user ON apps_data__user.id_apps_data__transaksi = apps_data__transaksi.id AND apps_data__user.deviceid='$deviceId'
+            WHERE nama_db='$db_to_json' AND (
+                apps_data__transaksi.id NOT IN (SELECT id_apps_data__transaksi FROM apps_data__user WHERE deviceid='$deviceId')
+                OR kapan_update_terakhir != tgl_update_transaksi
+            ) LIMIT 1";
+
+        DB::queryRaw($page, $query);
+        $all = DB::get('all');
+
+        foreach ($all['row'] as $row) {
+            $insert_query = "INSERT INTO apps_data__user (id_apps_data__transaksi, tgl_update_transaksi, deviceid, take_date)
+                VALUES ('$row->id', '$row->kapan_update_terakhir', '$deviceId', '" . date('Y-m-d H:i:s') . "')";
+            DB::queryRaw($page, $insert_query);
+        }
+
+        $row = [];
+        if(($get_data)){
+
+            foreach ($get_data as $value) {
+                foreach ($value as $key => $value2) {
+                    $row[$key] = $value2;
+                }
+            }
+        }
+        echo json_encode([["json_data" => $row, "id" => -1]]);
     }
     public static function asitektur_db_json($page)
     {
@@ -1941,164 +1953,7 @@ class ApiApp
         // ini benar
 
     }
-    public function ensureDatabaseExists2($pdo, $dbType, $dbName, $username = null)
-    {
-        if ($dbType === 'mysql') {
-            /*
-        
-		// DB::queryRaw($page, "SELECT 
-                    //         t.id AS transaksi_id,
-                    //         JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name)) AS full_product_data,
-                    //         e.key_name
-                    //     FROM 
-                    //         apps_data__transaksi t
-                    //     JOIN (
-                    //         SELECT 
-                    //             id,
-                    //             SUBSTRING_INDEX(SUBSTRING_INDEX(JSON_KEYS(json_data), '\"', n*2), '\"', -1) AS key_name
-                    //         FROM 
-                    //             apps_data__transaksi
-                    //         JOIN (
-                    //             SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
-                    //             UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
-                    //         ) numbers ON n <= JSON_LENGTH(json_data)
-                    //         WHERE 
-                    //             JSON_LENGTH(json_data) > 0
-                    //     ) e ON t.id = e.id
-                    //     WHERE nama_db='$db_to_json'  and
-                    //         JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name, '.current.create_date')) IS NOT NULL
-                    //     ORDER BY 
-                    //         STR_TO_DATE(
-                    //             JSON_UNQUOTE(
-                    //                 JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name, '.current.create_date'))
-                    //             ), 
-                    //             '%Y-%m-%d %H:%i:%s'
-                    //         ) DESC
-                    //     LIMIT $offset,$limit;");
-                    //  $all = DB::get('all');
-                    // $get_data = [];
-                    //   foreach($all['row'] as $row){
-                    //       $cleaned = preg_replace('/[\r\n\t]+/', '', $row->full_product_data);
-                    //       $data = json_decode(trim($cleaned),true);;
-                    //       $data['current'] = json_decode(json_encode($data['current']));
-                    //       $get_data[][$row->transaksi_id] = $data;
-                    //   }
-					
-					
-		SIDE
-            Proses 1 : database to json (data__transaksi)
-            Proses 2 : every transaksi to historis
-            Proses 3 : historis generate data to  data__transaksi
-            Proses 4 : update date user log
-        Front END    
-            proses 4 : mendapatkan user device menyimpan di indexed DB
-            proses 5 : list 
-        */
-            $stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
-            $dbExists = $stmt->fetch();
-
-            if (! $dbExists) {
-                "Database $dbName belum ada. Membuat...\n";
-                $pdo->exec("CREATE DATABASE `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
-                "Database $dbName berhasil dibuat.\n";
-            } else {
-                "Database $dbName sudah ada.\n";
-            }
-        } elseif ($dbType === 'pgsql') {
-            // Cek apakah DB ada
-            $stmt = $pdo->prepare("SELECT 1 FROM pg_database WHERE datname = :dbname");
-            $stmt->execute([':dbname' => $dbName]);
-            $dbExists = $stmt->fetch();
-
-            if (! $dbExists) {
-                "Database $dbName belum ada. Membuat...\n";
-                $pdo->exec("CREATE DATABASE \"$dbName\"");
-
-                if ($username) {
-                    echo "Menambahkan permission untuk $username...\n";
-                    // Cek apakah DB ada
-                    $pdo->exec("GRANT ALL PRIVILEGES ON DATABASE \"$dbName\" TO \"$username\"");
-                }
-                "Database $dbName berhasil dibuat.\n";
-            } else {
-                "Database $dbName sudah ada.\n";
-            }
-        } else {
-            throw new Exception("Database type tidak dikenali.");
-        }
-        $tableName = 'apps_bundle__transaksi';
-        try {
-
-            if ($page['database_provider'] === 'mysql') {
-                $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nama_db VARCHAR(255),
-                kapan_update_terakhir DATETIME,
-                row_awal INT,
-                row_akhir INT,
-                json_data JSON,
-                generate INT DEFAULT 0
-            )";
-                // Grant all ke user untuk DB baru
-            } elseif ($page['database_provider'] === 'postgres') {
-                //$pdo->exec($sql);
-                $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
-                $stmt->execute(['table' => $tableName]);
-
-                if (! $stmt->fetch()) {
-                    echo $sql = "CREATE TABLE \"$tableName\" (
-                    id SERIAL PRIMARY KEY,
-                    nama_db TEXT,
-                    kapan_update_terakhir TIMESTAMP,
-                    row_awal INTEGER,
-                    row_akhir INTEGER,
-                    json_data JSONB,
-                    generate INTEGER DEFAULT 0
-                )";
-                    // Cek table ada atau tidak
-                    //$pdo->exec($sql);
-                    // }else{
-                }
-            }
-        } catch (Exception $e) {
-            echo "Error PostgreSQL: " . $e->getMessage();
-        }
-        $tableName = 'apps_bundle__historis';
-        try {
-
-            if ($page['database_provider'] === 'mysql') {
-                echo $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nama_db VARCHAR(255),
-                kapan_update_terakhir DATETIME,
-                row_awal INT,
-                row_akhir INT,
-                json_data JSON,
-                generate INT DEFAULT 0
-            )";
-                //     $stmt->fetch();
-            } elseif ($page['database_provider'] === 'postgres') {
-                //$pdo->exec($sql);
-                $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
-                $stmt->execute(['table' => $tableName]);
-                if (! $stmt->fetch()) {
-                    echo $sql = "CREATE TABLE \"$tableName\" (
-                    id SERIAL PRIMARY KEY,
-                    database_utama TEXT,
-                    database_id INTEGER,
-                    tipe_transaksi TEXT,
-                    waktu_perubahan TIMESTAMP,
-                    generate INTEGER DEFAULT 0
-                )";
-                    // Cek table ada atau tidak
-                    //$pdo->exec($sql);
-                    // }else{
-                }
-            }
-        } catch (Exception $e) {
-            echo "Error PostgreSQL: " . $e->getMessage();
-        }
-    }
+    
     public static function db_json_bundle($page, $body = [])
     {
 
@@ -2118,7 +1973,7 @@ class ApiApp
         if ($page['database_provider'] == 'mysql') {
 
             try {
-                $pdo = $pdoMysql = new PDO("mysql:host=" . $page['conection_server'] . ";dbname=" . $page['conection_name_database'] . '_json', $page['conection_user'] . '_json', $page['conection_password']);
+                $pdo = $pdoMysql = new PDO("mysql:host=" . $page['conection_server'] . ";dbname=" . $page['conection_name_database'] . '', $page['conection_user'] . '', $page['conection_password']);
                 //print_R($page);
             } catch (Exception $e) {
                 echo "Error MySQL: " . $e->getMessage();
@@ -2129,7 +1984,7 @@ class ApiApp
             try {
                 $pdo = $pdoPg = new PDO("pgsql:host=localhost dbname=postgres", $page['conection_user'], $page['conection_password']);
                 // PostgreSQL
-                $pdo = $pdoPg = new PDO("pgsql:host=localhost dbname=" . $page['database_name'] . '_json', $page['conection_user'], $page['conection_password']);
+                $pdo = $pdoPg = new PDO("pgsql:host=localhost dbname=" . $page['database_name'] . '', $page['conection_user'], $page['conection_password']);
             } catch (Exception $e) {
                 echo "Error PostgreSQL: " . $e->getMessage();
             }
@@ -2311,6 +2166,163 @@ class ApiApp
         // nama_db kapan update terakhir,  row awal row akhir   json_data
 
     }
+    // public function ensureDatabaseExists2($pdo, $dbType, $dbName, $username = null)
+    // {
+    //     if ($dbType === 'mysql') {
+    //         /*
+        
+	// 	// DB::queryRaw($page, "SELECT 
+    //                 //         t.id AS transaksi_id,
+    //                 //         JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name)) AS full_product_data,
+    //                 //         e.key_name
+    //                 //     FROM 
+    //                 //         apps_data__transaksi t
+    //                 //     JOIN (
+    //                 //         SELECT 
+    //                 //             id,
+    //                 //             SUBSTRING_INDEX(SUBSTRING_INDEX(JSON_KEYS(json_data), '\"', n*2), '\"', -1) AS key_name
+    //                 //         FROM 
+    //                 //             apps_data__transaksi
+    //                 //         JOIN (
+    //                 //             SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+    //                 //             UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10
+    //                 //         ) numbers ON n <= JSON_LENGTH(json_data)
+    //                 //         WHERE 
+    //                 //             JSON_LENGTH(json_data) > 0
+    //                 //     ) e ON t.id = e.id
+    //                 //     WHERE nama_db='$db_to_json'  and
+    //                 //         JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name, '.current.create_date')) IS NOT NULL
+    //                 //     ORDER BY 
+    //                 //         STR_TO_DATE(
+    //                 //             JSON_UNQUOTE(
+    //                 //                 JSON_EXTRACT(t.json_data, CONCAT('$.', e.key_name, '.current.create_date'))
+    //                 //             ), 
+    //                 //             '%Y-%m-%d %H:%i:%s'
+    //                 //         ) DESC
+    //                 //     LIMIT $offset,$limit;");
+    //                 //  $all = DB::get('all');
+    //                 // $get_data = [];
+    //                 //   foreach($all['row'] as $row){
+    //                 //       $cleaned = preg_replace('/[\r\n\t]+/', '', $row->full_product_data);
+    //                 //       $data = json_decode(trim($cleaned),true);;
+    //                 //       $data['current'] = json_decode(json_encode($data['current']));
+    //                 //       $get_data[][$row->transaksi_id] = $data;
+    //                 //   }
+					
+					
+	// 	SIDE
+    //         Proses 1 : database to json (data__transaksi)
+    //         Proses 2 : every transaksi to historis
+    //         Proses 3 : historis generate data to  data__transaksi
+    //         Proses 4 : update date user log
+    //     Front END    
+    //         proses 4 : mendapatkan user device menyimpan di indexed DB
+    //         proses 5 : list 
+    //     */$stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
+    //         $dbExists = $stmt->fetch();
+
+    //         if (! $dbExists) {
+    //             "Database $dbName belum ada. Membuat...\n";
+    //             $pdo->exec("CREATE DATABASE `$dbName` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+    //             "Database $dbName berhasil dibuat.\n";
+    //         } else {
+    //             "Database $dbName sudah ada.\n";
+    //         }
+    //     } elseif ($dbType === 'pgsql') {
+    //         // Cek apakah DB ada
+    //         $stmt = $pdo->prepare("SELECT 1 FROM pg_database WHERE datname = :dbname");
+    //         $stmt->execute([':dbname' => $dbName]);
+    //         $dbExists = $stmt->fetch();
+
+    //         if (! $dbExists) {
+    //             "Database $dbName belum ada. Membuat...\n";
+    //             $pdo->exec("CREATE DATABASE \"$dbName\"");
+
+    //             if ($username) {
+    //                 echo "Menambahkan permission untuk $username...\n";
+    //                 // Cek apakah DB ada
+    //                 $pdo->exec("GRANT ALL PRIVILEGES ON DATABASE \"$dbName\" TO \"$username\"");
+    //             }
+    //             "Database $dbName berhasil dibuat.\n";
+    //         } else {
+    //             "Database $dbName sudah ada.\n";
+    //         }
+    //     } else {
+    //         throw new Exception("Database type tidak dikenali.");
+    //     }
+    //     $tableName = 'apps_bundle__transaksi';
+    //     try {
+
+    //         if ($page['database_provider'] === 'mysql') {
+    //             $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
+    //             id INT AUTO_INCREMENT PRIMARY KEY,
+    //             nama_db VARCHAR(255),
+    //             kapan_update_terakhir DATETIME,
+    //             row_awal INT,
+    //             row_akhir INT,
+    //             json_data JSON,
+    //             generate INT DEFAULT 0
+    //         )";
+    //             // Grant all ke user untuk DB baru
+    //         } elseif ($page['database_provider'] === 'postgres') {
+    //             //$pdo->exec($sql);
+    //             $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
+    //             $stmt->execute(['table' => $tableName]);
+
+    //             if (! $stmt->fetch()) {
+    //                 echo $sql = "CREATE TABLE \"$tableName\" (
+    //                 id SERIAL PRIMARY KEY,
+    //                 nama_db TEXT,
+    //                 kapan_update_terakhir TIMESTAMP,
+    //                 row_awal INTEGER,
+    //                 row_akhir INTEGER,
+    //                 json_data JSONB,
+    //                 generate INTEGER DEFAULT 0
+    //             )";
+    //                 // Cek table ada atau tidak
+    //                 //$pdo->exec($sql);
+    //                 // }else{
+    //             }
+    //         }
+    //     } catch (Exception $e) {
+    //         echo "Error PostgreSQL: " . $e->getMessage();
+    //     }
+    //     $tableName = 'apps_bundle__historis';
+    //     try {
+
+    //         if ($page['database_provider'] === 'mysql') {
+    //             echo $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
+    //             id INT AUTO_INCREMENT PRIMARY KEY,
+    //             nama_db VARCHAR(255),
+    //             kapan_update_terakhir DATETIME,
+    //             row_awal INT,
+    //             row_akhir INT,
+    //             json_data JSON,
+    //             generate INT DEFAULT 0
+    //         )";
+    //             //     $stmt->fetch();
+    //         } elseif ($page['database_provider'] === 'postgres') {
+    //             //$pdo->exec($sql);
+    //             $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
+    //             $stmt->execute(['table' => $tableName]);
+    //             if (! $stmt->fetch()) {
+    //                 echo $sql = "CREATE TABLE \"$tableName\" (
+    //                 id SERIAL PRIMARY KEY,
+    //                 database_utama TEXT,
+    //                 database_id INTEGER,
+    //                 tipe_transaksi TEXT,
+    //                 waktu_perubahan TIMESTAMP,
+    //                 generate INTEGER DEFAULT 0
+    //             )";
+    //                 // Cek table ada atau tidak
+    //                 //$pdo->exec($sql);
+    //                 // }else{
+    //             }
+    //         }
+    //     } catch (Exception $e) {
+    //         echo "Error PostgreSQL: " . $e->getMessage();
+    //     }
+    // }
     public static function ensureDatabaseExists($pdo, $dbType, $dbName, $username = null)
     {
         if ($dbType === 'mysql') {
@@ -2362,118 +2374,7 @@ class ApiApp
     {
 
         // Grant all ke user untuk DB baru
-        // --- CONTOH PAKAI ---
-        $page['database_name'];
-        $page['database_provider']       = DATABASE_PROVIDER;
-        $page['database_name']           = DATABASE_NAME;
-        $page['conection_server']        = CONECTION_SERVER;
-        $page['conection_name_database'] = CONECTION_NAME_DATABASE;
-        $page['conection_user']          = CONECTION_USER;
-        $page['conection_password']      = CONECTION_PASSWORD;
-        $page['conection_scheme']        = CONECTION_SCHEME;
-        if ($page['database_provider'] == 'mysql') {
-
-            try {
-                $pdo = $pdoMysql = new PDO("mysql:host=" . $page['conection_server'], $page['conection_user'], $page['conection_password']);
-                ApiApp::ensureDatabaseExists($pdoMysql, 'mysql', $page['database_name'] . '_json');
-            } catch (Exception $e) {
-                echo "Error MySQL: " . $e->getMessage();
-            }
-        } else {
-
-            // MySQL
-            try {
-                $pdo = $pdoPg = new PDO("pgsql:host=localhost dbname=postgres", $page['conection_user'], $page['conection_password']);
-                ApiApp::ensureDatabaseExists($pdoPg, 'pgsql', $page['database_name'] . '_json', $page['conection_user']);
-                $pdo = $pdoPg = new PDO("pgsql:host=localhost dbname=" . $page['database_name'] . '_json', $page['conection_user'], $page['conection_password']);
-            } catch (Exception $e) {
-                echo "Error PostgreSQL: " . $e->getMessage();
-            }
-        }
-
-        $page['database_provider']       = DATABASE_PROVIDER;
-        $page['database_name']           = DATABASE_NAME;
-        $page['conection_server']        = CONECTION_SERVER;
-        $page['conection_name_database'] = CONECTION_NAME_DATABASE;
-        $page['conection_user']          = CONECTION_USER;
-        $page['conection_password']      = CONECTION_PASSWORD;
-        $page['conection_scheme']        = CONECTION_SCHEME;
-        $page['conection_name_database'] = str_replace('_json', '', $page['conection_name_database']);
-        $page['database_name']           = str_replace('_json', '', $page['database_name']);
-        unset($page['database_connected']);
-        DB::connection($page);
-        $tableName = 'apps_data__transaksi';
-        try {
-
-            if ($page['database_provider'] === 'mysql') {
-                $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nama_db VARCHAR(255),
-                kapan_update_terakhir DATETIME,
-                row_awal INT,
-                row_akhir INT,
-                json_data JSON,
-                generate INT DEFAULT 0
-            )";
-                $pdo->exec($sql);
-            } elseif ($page['database_provider'] === 'postgres') {
-                // PostgreSQL
-                $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
-                $stmt->execute(['table' => $tableName]);
-
-                if (! $stmt->fetch()) {
-                    $sql = "CREATE TABLE \"$tableName\" (
-                    id SERIAL PRIMARY KEY,
-                    nama_db TEXT,
-                    kapan_update_terakhir TIMESTAMP,
-                    row_awal INTEGER,
-                    row_akhir INTEGER,
-                    json_data JSONB,
-                    generate INTEGER DEFAULT 0
-                )";
-                    $pdo->exec($sql);
-                    // Cek table ada atau tidak
-                    // }else{
-                }
-            }
-        } catch (Exception $e) {
-            echo "Error PostgreSQL: " . $e->getMessage();
-        }
-        $tableName = 'apps_data__historis';
-        try {
-
-            if ($page['database_provider'] === 'mysql') {
-                $sql = "CREATE TABLE IF NOT EXISTS `$tableName` (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                nama_db VARCHAR(255),
-                kapan_update_terakhir DATETIME,
-                row_awal INT,
-                row_akhir INT,
-                json_data JSON,
-                generate INT DEFAULT 0
-            )";
-                $pdo->exec($sql);
-            } elseif ($page['database_provider'] === 'postgres') {
-                //     $stmt->fetch();
-                $stmt = $pdo->prepare("SELECT 1 FROM information_schema.tables WHERE table_name = :table");
-                $stmt->execute(['table' => $tableName]);
-                if (! $stmt->fetch()) {
-                    $sql = "CREATE TABLE \"$tableName\" (
-                    id SERIAL PRIMARY KEY,
-                    database_utama TEXT,
-                    database_id INTEGER,
-                    tipe_transaksi TEXT,
-                    waktu_perubahan TIMESTAMP,
-                    generate INTEGER DEFAULT 0
-                )";
-                    $pdo->exec($sql);
-                    // Cek table ada atau tidak
-                    // }else{
-                }
-            }
-        } catch (Exception $e) {
-            echo "Error PostgreSQL: " . $e->getMessage();
-        }
+        
         $db_to_json = $body['db'] ?? '' ? $body['db'] : (Partial::input('db') ?? "inventaris__asset__master__kategori_toko");
         if (isset($body['db'])) {
             $db_to_json = $body['db'];
@@ -2674,12 +2575,11 @@ class ApiApp
                 $namaDb      = $db_to_json;
                 $kapanUpdate = date('Y-m-d H:i:s');
 
-                $stmtDest = $pdo->prepare("SELECT * FROM apps_data__transaksi WHERE nama_db = '$namaDb' and row_awal= $rowAwal and row_akhir=$rowAkhir");
-                $stmtDest->execute();
-                $counttable = $stmtDest->fetch(PDO::FETCH_ASSOC);
-                // echo '<br>' . $data['num_rows'];
-                $is_ada    = isset($counttable['json_data']);
-                $data_dump = $jsonData = isset($counttable['json_data']) ? json_decode($counttable['json_data'], 1) : [];
+                DB::queryRaw($page, "SELECT * FROM apps_data__transaksi WHERE nama_db = '$namaDb' and row_awal= $rowAwal and row_akhir=$rowAkhir");
+                $counttable = DB::get('all');
+                // echo '<br>' . $counttable['num_rows'];
+                $is_ada    = $counttable['num_rows'] > 0 && isset($counttable['row'][0]->json_data);
+                $data_dump = $jsonData = $counttable['num_rows'] > 0 ? json_decode($counttable['row'][0]->json_data, 1) : [];
 
                 $ada_perubahan    = 0;
                 $literasi_darurat = 0;
@@ -2769,26 +2669,22 @@ class ApiApp
                 if (($search['live'] ?? '') == 2) {
                     // echo 'AS';
                 } else if (! $is_ada) {
-
-                    $insertSql = "INSERT INTO apps_data__transaksi (nama_db, kapan_update_terakhir, row_awal, row_akhir, json_data)
-                VALUES ('$namaDb', '$kapanUpdate', '$rowAwal', '$rowAkhir', '$jsonDataEn')";
-                    try {
-                        $pdo->exec($insertSql);
-                    } catch (PDOException $e) {
-                        echo "Gagal: " . $e->getMessage();
-                    }
+                    $insert = [
+                        'nama_db' => $namaDb,
+                        'kapan_update_terakhir' => $kapanUpdate,
+                        'row_awal' => $rowAwal,
+                        'row_akhir' => $rowAkhir,
+                        'json_data' => $jsonDataEn
+                    ];
+                    DB::insert('apps_data__transaksi', $insert);
                 } else if ($is_ada and $ada_perubahan) {
-                    $insertSql = "UPDATE  apps_data__transaksi set kapan_update_terakhir='$kapanUpdate' and json_data='$jsonDataEn'
-                    where nama_db = '$namaDb' and row_awal= '$rowAwal' and row_akhir= '$rowAkhir'";
-                    try {
-
-                        $pdo->exec($insertSql);
-                    } catch (PDOException $e) {
-                        echo '<script>alert("' . $e->getMessage() . '");</script>';
-                        "Gagal: " . $e->getMessage();
-                    }
+                    $update = [
+                        'kapan_update_terakhir' => $kapanUpdate,
+                        'json_data' => $jsonDataEn
+                    ];
+                    DB::update('apps_data__transaksi', $update, "nama_db='$namaDb' and row_awal='$rowAwal' and row_akhir='$rowAkhir'");
                 } else if ($is_ada and ! $ada_perubahan) {
-                    'TIDAK ADA PERUBAHAN';
+                    // TIDAK ADA PERUBAHAN
                 }
                 if (($search['live'] ?? '') == 1) {
                     // echo 'AS';

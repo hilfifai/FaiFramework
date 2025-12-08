@@ -436,9 +436,9 @@ class DB
 
             return $query;
         } catch (\PDOException $e) {
-            $this->error = $e->getMessage();
+            // $this->error = $e->getMessage();
 
-            return null;
+            return  $e->getMessage();;
         }
     }
     public static function getColumnListing($page, $database_provider, $database_utama, $return_result = null)
@@ -572,7 +572,7 @@ class DB
         $query .= 'VALUES (' . rtrim(trim($input['values']), ',') . ')';
 
         if (!is_null($statements) && is_array($statements)) {
-            return $this->statements($query, $statements);
+            return DB::statements($query, $statements);
         }
         $query = str_replace('`', '', $query); // Buang backtick dari MySQL-style syntax
         return DB::query($query, 'INSERT', $table);
@@ -1003,7 +1003,7 @@ class DB
 
         $db['query'] = Database::string_database($page, $fai, $queryRaw);;
     }
-    public static function get($exec = 'exec', $page = false)
+    public static function get($exec = 'exec', $page = [])
     {
         global $db;
         global $query;

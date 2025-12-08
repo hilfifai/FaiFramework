@@ -31,7 +31,7 @@ class WatsapWaApi
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data_post));
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         $response = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
 
         return $response;
     }

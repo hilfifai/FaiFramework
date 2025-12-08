@@ -9,6 +9,7 @@ export default class Link {
 		let viewpage;
 		if (data_link != 'app2') {
 
+			console.log(data_link);
 			viewpage = await this.decodeDataFromHref(data_link);
 			parts = viewpage;
 			console.log("viewpage", viewpage);

@@ -1046,7 +1046,7 @@ function harakat($text){
 
 
 	echo $resp = curl_exec($curl);
-	curl_close($curl);
+	@curl_close($curl);
 	//var_dump($resp);
 	print_r($resp);
 	//return $resp;
@@ -1104,7 +1104,7 @@ function get_web_page($url) {
 
     $content  = curl_exec($ch);
 
-    curl_close($ch);
+    @curl_close($ch);
 
     return $content;
 }

@@ -5,13 +5,38 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class TemplateContent
 {
 
+    public static function logo($page, $type="", $array="", $data=[])
+    {
+        return [$type => ["content" => ["html" => "<div class='logo'>FaiFramework</div>"]]];
+    }
+
+    public static function nama_kategori($page, $type="", $array="", $data=[])
+    {
+        return [$type => ["content" => ["html" => ""]]];
+    }
+
+    public static function primary_key($page, $type="", $array="", $data=[])
+    {
+        return [$type => ["content" => ["html" => ""]]];
+    }
+
+    public static function nomor_send_wa($page,$type="", $array="", $data=[])
+    {
+        return [$type => ["content" => ["html" => ""]]];
+    }
+
     public static function parse_template($page, $array, $i, $data = [])
     {
 
         $function = $array[$i][0];
-        $type     = $array[$i][1];
+        $type     = $array[$i][1]??"";
         if (! $function and ! $type) {
             return '';
+        }
+        if (!method_exists(self::class, $function)) {
+            $tag = $function;
+            $function = $type;
+            $type = $array[$i][2] ?? '';
         }
         // $content = self::parse_header($page,$array,$i);
         if ($function == 'pages_content') {
@@ -27,7 +52,7 @@ class TemplateContent
         } else if ($function == 'row_web_apps') {
             $content['content']['html'] = $page['load']['row_web_apps']->$type;
         } else if ($function == 'drive_file_from_database') {
-            $content['content']['html'] = Partial::get_url_file($page, $data->$type);
+            $content['content']['html'] = Partial::get_url_file($page, ($data->$type??""));
         } else if ($function == 'drive_file_db') {
             $content['content']['html'] = Partial::url_file($data);
         } else if ($function == 'database') {
@@ -156,7 +181,15 @@ class TemplateContent
             }</script>";
             return $view_to_js;
         } else {
-            $content = self::$function($page, $type, $array[$i], $data)[$type];
+            if($function){
+
+               if (is_string($function) && method_exists(static::class, $function)) {
+                    $result  = self::$function($page, $type, $array[$i], $data);
+                    $content = $result[$type] ?? null;
+                } else {
+                    $content['content']['html'] = "";
+                }
+            }
         }
         if (empty($array[$i]['return'])) {
             $array[$i]['return'] = "html_content";

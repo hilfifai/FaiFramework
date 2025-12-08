@@ -367,7 +367,6 @@ class Partial extends Database
                         if (isset($menu[$i][2]) and $menu[$i][0] == 'menu') {
                             $onclick .= 'reach_page_first(' . "'" . $menu[$i][2][0] . "'" . ',' . "'" . $menu[$i][2][1] . "'" . ',' . "'" . $menu[$i][2][2] . "'" . ',' . "'" . $menu[$i][2][3] . "'" . ');';
                         }
-
                     }
                     if (isset($menu[$i][3]) and $menu[$i][0] == 'menu') {
                         $temp_prefix_menu = str_ireplace('<ICON></ICON>', $menu[$i][3], $temp_prefix_menu);
@@ -451,7 +450,6 @@ class Partial extends Database
             } else {
                 return '#" onclick="' . $redirect . '(' . "'" . $link_route . "'" . ',' . "'" . $parameter[0] . "'" . ',' . "'" . $parameter[1] . "'" . $extend . ')';
             }
-
         }
     }
     public static function route_menu_code($page, $link_route, $parameter, $tipe_menu = 'menu')
@@ -468,7 +466,6 @@ class Partial extends Database
             if ($parameter[4] != -1) {
                 $nama = $parameter[4];
             }
-
         } else {
             $where['menu'] = -1;
         }
@@ -478,7 +475,6 @@ class Partial extends Database
             if ($parameter[5] != -1) {
                 $nama = $parameter[5];
             }
-
         } else {
             $where['nav'] = -1;
         }
@@ -515,7 +511,6 @@ class Partial extends Database
             if ($where['load_apps'] and $where['load_page_view'] and $where['load_type'] and $where['load_page_id']) {
                 $get = Database::database_coverter($page, $db, [], 'all');
             }
-
         }
         $kode_menu      = $get['row'][0]->kode_menu;
         $return['link'] = $link_route . $kode_menu;
@@ -532,7 +527,6 @@ class Partial extends Database
             if ($page['route_type']) {
                 $route_type = $page['route_type'];
             }
-
         }
         if ($route_type == 'just_just') {
             $route_type = 'just_link';
@@ -852,7 +846,6 @@ class Partial extends Database
             if ($where['load_apps'] and $where['load_page_view'] and $where['load_type'] and $where['load_page_id']) {
                 $get = Database::database_coverter($page, $db, [], 'all');
             }
-
         }
 
         return $get;
@@ -883,29 +876,29 @@ class Partial extends Database
             // Handle nested arrays jika ada
             else {
 
-                    $result[$key] = $value;
-                }
+                $result[$key] = $value;
             }
-
-            return $result;
         }
-        public static function _reconstruct_complex_data($data)
+
+        return $result;
+    }
+    public static function _reconstruct_complex_data($data)
     {
-            $result = [];
-            if ($data) {
+        $result = [];
+        if ($data) {
 
-                foreach ($data as $key => $value) {
-                    // Handle array bracket notation: key[123]
-                    if (preg_match('/^(.*)\[(\d+)\]$/', $key, $matches)) {
-                        $base_key = $matches[1];
-                        $index    = $matches[2];
+            foreach ($data as $key => $value) {
+                // Handle array bracket notation: key[123]
+                if (preg_match('/^(.*)\[(\d+)\]$/', $key, $matches)) {
+                    $base_key = $matches[1];
+                    $index    = $matches[2];
 
-                        if (! isset($result[$base_key])) {
-                            $result[$base_key] = [];
-                        }
-                        $result[$base_key][$index] = $value;
+                    if (! isset($result[$base_key])) {
+                        $result[$base_key] = [];
                     }
-                    // Handle array fields (yang berakhiran _id, _ids, dll)
+                    $result[$base_key][$index] = $value;
+                }
+                // Handle array fields (yang berakhiran _id, _ids, dll)
                 else if (preg_match('/^(.*)_id$/', $key, $matches)) {
                     $base_key     = $matches[1];
                     $result[$key] = $value; // Simpan juga field aslinya
@@ -1076,7 +1069,7 @@ class Partial extends Database
         }
         return $pagination; //return pagination links
     }
-    public static function get_avatar($page, $nama, $id_file, $database, $return_all = false, $support, $avatar_style = 0, $badge = '', $costum_class = 'avatar ', $field_data = '', $get_data = '')
+    public static function get_avatar($page, $nama, $id_file, $database, $return_all = false, $support = "", $avatar_style = 0, $badge = '', $costum_class = 'avatar ', $field_data = '', $get_data = '')
     {
 
         if ($avatar_style == 3) {
@@ -1263,7 +1256,6 @@ margin: 30px;border-radius: 10px 20px;">
             } else {
                 return '<' . $type . ' style="background:url(' . "'" . url_file($baris['row'][0]) . "'" . ');' . $style . '" class="mr-3"></' . $type . '>';
             }
-
         } else {
             return '';
         }
@@ -1746,8 +1738,7 @@ margin: 30px;border-radius: 10px 20px;">
         return $Hijriah;
     }
 
-    public function pages_load($page)
-    {}
+    public function pages_load($page) {}
     public function pages_footer($page)
     {
 
@@ -1818,23 +1809,20 @@ margin: 30px;border-radius: 10px 20px;">
                         } else {
                             $new_string = "";
                         }
-
                     } else if ($to_string == 'utama_daftar') {
                         if (isset($page['load']['login-session-utama']['session_name'])) {
                             $new_string = $_SESSION[$page['load']['login-session-utama']['session_name'] . "_daftar"];
                         } else {
                             $new_string = "";
                         }
-
                     }
                 } else if ($ex_string[0] == 'row') {
                     $to_string = $ex_string[1];
                     if ($page['section'] == 'viewsource') {
                         $new_string = '$data->' . $to_string;
                     } else {
-                        $new_string = $data->$to_string;
+                        $new_string = ($data->$to_string ?? "");
                     }
-
                 } else {
 
                     $new_string = "";
@@ -1931,7 +1919,6 @@ margin: 30px;border-radius: 10px 20px;">
             if ($i != count($ex_angka) - 1) {
                 $hasil_rupiah .= ' - ';
             }
-
         }
 
         return $hasil_rupiah;
@@ -2007,8 +1994,8 @@ margin: 30px;border-radius: 10px 20px;">
             $cleanNumber = substr($cleanNumber, 1);
         }
 
-                             // If the number starts with the country code (e.g., 62 for Indonesia), keep it
-                             // Otherwise, add a default country code if necessary
+        // If the number starts with the country code (e.g., 62 for Indonesia), keep it
+        // Otherwise, add a default country code if necessary
         $countryCode = '62'; // Default country code
         if (strpos($cleanNumber, $countryCode) !== 0) {
             $cleanNumber = $countryCode . $cleanNumber;
@@ -2205,7 +2192,6 @@ margin: 30px;border-radius: 10px 20px;">
                     if (! stripos($page_temp['crud']['costum_class'][$field], $page_temp['database']['utama'] . "__" . $field . "_0")) {
                         $page_temp['crud']['costum_class'][$field] .= $page_temp['database']['utama'] . "__$field" . "_0";
                     }
-
                 } else {
                     $page_temp['crud']['costum_class'][$field] = $page_temp['database']['utama'] . "__$field" . "_0";
                 }
@@ -2440,12 +2426,12 @@ margin: 30px;border-radius: 10px 20px;">
                 $id = $array['id'];
             }
 
-            $apps      = $database_list_template_on_list->$apps;
-            $page_view = $database_list_template_on_list->$page_view;
-            $type      = $database_list_template_on_list->$type;
-            $menu      = $database_list_template_on_list->$menu;
-            $nav       = $database_list_template_on_list->$nav;
-            $id        = $database_list_template_on_list->$id;
+            $apps      = ($database_list_template_on_list->$apps ?? "");
+            $page_view = ($database_list_template_on_list->$page_view ?? "");
+            $type      = ($database_list_template_on_list->$type ?? "");
+            $menu      = ($database_list_template_on_list->$menu ?? "");
+            $nav       = ($database_list_template_on_list->$nav ?? "");
+            $id        = ($database_list_template_on_list->$id ?? "");
             if (isset($array['route_type'])) {
                 $page['route_type'] = $array['route_type'];
             }
@@ -2509,7 +2495,6 @@ margin: 30px;border-radius: 10px 20px;">
                 if ($sql) {
                     $return = ($sql[0]->domain ? $sql[0]->domain : base_url()) . '/uploads/' . $sql[0]->path . '/' . $sql[0]->file_name_save;
                 }
-
             } else
             if ($array['tipe_header'] == 'base_url') {
                 $return = base_url();
@@ -2537,7 +2522,6 @@ margin: 30px;border-radius: 10px 20px;">
                     if ($if_get_value == Database::string_database($page, $fai, $key_if)) {
                         $return_if = $value_if;
                     }
-
                 }
             }
             if (! $return_if and isset($array['if_else'])) {
@@ -2671,7 +2655,6 @@ margin: 30px;border-radius: 10px 20px;">
                         } else {
                             $database_db['where'][] = [1, '=', 0];
                         }
-
                     }
                 }
                 $page['row_section'][$db_refer] = Database::database_coverter($page, $database_db, [], 'all');
@@ -2766,7 +2749,6 @@ margin: 30px;border-radius: 10px 20px;">
             } else if (isset($template_array['template_content'])) {
                 $template_array['content_source'] = "template_database";
             }
-
         }
         //////////////////////PROSES DATA///////////////////////////////
         if ($template_array['content_source'] == "template_content") {
@@ -3060,7 +3042,6 @@ margin: 30px;border-radius: 10px 20px;">
                 if (! in_array($row->$nama_row_id_apps_menu, $show)) {
                     $show[] = $row->$nama_row_id_apps_menu;
                 }
-
             }
         }
 
@@ -3098,7 +3079,7 @@ margin: 30px;border-radius: 10px 20px;">
                         $get = DB::get();
                         if ($get) {
                             $parent = $get[0]->parent;
-                            if ($count) {
+                            if ($count && $parent !== null && $parent !== '') {
                                 $superparent[$parent] = $count;
                             }
                         } else {
@@ -3108,7 +3089,6 @@ margin: 30px;border-radius: 10px 20px;">
                         if ($parent == 0) {
                             $loop = false;
                         }
-
                     }
                 }
                 $sub_parent = $show[$i];
@@ -3192,14 +3172,12 @@ margin: 30px;border-radius: 10px 20px;">
             if ($value and ! in_array($key, $key_hasil)) {
                 $key_hasil[] = $key;
             }
-
         }
 
         $content_return = "";
         if ($content == 'get_array') {
 
             $content_return = Partial::tree_menuFunction($page, 0, $key_hasil, 1, $content);
-
         } else {
             $content_return .= '
 				<table width="100%">
@@ -3219,7 +3197,7 @@ margin: 30px;border-radius: 10px 20px;">
         }
         return $content_return;
     }
-    public static function tree_menuFunction($page, $parent, $key_hasil, $layer = 1, $content, $menu_tree_content = '')
+    public static function tree_menuFunction($page, $parent, $key_hasil, $layer = 1, $content = "", $menu_tree_content = '')
     {
         if ($content == 'get_array') {
             $return = [];
@@ -3368,7 +3346,7 @@ margin: 30px;border-radius: 10px 20px;">
     public static function histori_user($page)
     {
 
-        $ua = getBrowser();
+        $ua = Partial::getBrowser();
 
         $isMob = is_numeric(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), "mobile"));
 
@@ -3430,7 +3408,6 @@ margin: 30px;border-radius: 10px 20px;">
             if ($page['section'] == 'viewsource') {
                 $is = 0;
             }
-
         }
         if ($is and $page['load_section'] != 'viewsource') {
             CRUDFunc::crud_insert(new MainFaiFramework(), $page, $data, [], 'apps_user__historis', []);

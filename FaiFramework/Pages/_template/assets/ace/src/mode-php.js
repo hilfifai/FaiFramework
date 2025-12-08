@@ -3051,7 +3051,7 @@ var functionMap = {
         "Checks for character(s) representing a hexadecimal digit"
     ],
     "curl_close": [
-        "void curl_close(resource ch)",
+        "void @curl_close(resource ch)",
         "Close a cURL session"
     ],
     "curl_copy_handle": [

@@ -1024,7 +1024,7 @@ class CRUDFunc2
 
 
 			//return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-		} catch (\Exeception $e) {
+		} catch (\Exception $e) {
 
 			return redirect()->back()->with('error', $e);
 		}
@@ -1056,7 +1056,7 @@ class CRUDFunc2
 			$sqli['jenis_privilage'] = $get['row'][0]->privilege;
 
 			CRUDFunc::crud_insert($fai, $page, $sqli, [], "apps_privilege", []);
-		} catch (\Exeception $e) {
+		} catch (\Exception $e) {
 			// DB::rollback();
 			return redirect()->back()->with('error', $e);
 		}
@@ -1498,7 +1498,7 @@ class CRUDFunc2
 
 			// DB::commit();
 			// return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-		} catch (Exeception $e) {
+		} catch (Exception $e) {
 			// DB::rollback();
 			// return redirect()->back()->with('error', $e);
 		}

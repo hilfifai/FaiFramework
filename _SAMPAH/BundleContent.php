@@ -1297,4 +1297,9 @@ class BundleContent
         $return["html"] = file_get_contents(__DIR__ . "/hibe3_card__cardulnav_template/hibe3_card__cardulnav_template.html.php");
         return $return;
     }
+
+    public static function logo()
+    {
+        return "<div class='logo'>FaiFramework</div>";
+    }
 }

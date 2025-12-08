@@ -1,0 +1,13 @@
+{
+  "name": "faiframework2",
+  "version": "1.0.0",
+  "description": "FaiFramework2 web application",
+  "main": "App/index.php",
+  "scripts": {
+    "start": "cd App && php -S localhost:8000 router.php",
+    "dev": "cd App && php -S localhost:8000 router.php"
+  },
+  "keywords": ["php", "framework", "web"],
+  "author": "",
+  "license": "ISC"
+}
