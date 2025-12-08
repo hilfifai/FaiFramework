@@ -9,7 +9,6 @@ class VersionApp
     }
     public static function get_versions($page)
     {
-        DB::connection($page);
         DB::table('web__versions');
         DB::orderRaw($page, 'id desc');
         $all = DB::get('all');
@@ -26,7 +25,6 @@ class VersionApp
             $status  = $_POST['status'] ?? 'alpha';
             $encrypt = isset($_POST['encryption_enabled']) ? 1 : 0;
             $fai     = new MainFaiFramework();
-            DB::connection($page);
             $insert['version_name'] = $name;
             $insert['status']       = $status;
             $insert['encrypt']      = $encrypt;
@@ -43,7 +41,6 @@ class VersionApp
             $domain = $_POST['domain'] ?? '';
 
             $fai = new MainFaiFramework();
-            DB::connection($page);
             DB::table('web__versions__user');
             DB::joinRaw('web__versions on id_web__versions  = web__versions.id ', 'left');
             DB::whereRaw("domain='$domain'");
@@ -75,7 +72,6 @@ class VersionApp
             $id = $_POST['id'] ?? '';
 
             $fai = new MainFaiFramework();
-            DB::connection($page);
             DB::table('web__versions');
             DB::orderRaw($page, 'create_date desc');
             $all = DB::get('all');

@@ -81,7 +81,7 @@ class EcommerceApp
         header('Expires: 0');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Cache-Control: private', false); // required for certain browsers 
-                                                 //header('Content-Type: application/pdf');
+        //header('Content-Type: application/pdf');
 
         header('Content-Disposition: attachment; filename="' . basename($fileName) . '";');
         header('Content-Transfer-Encoding: binary');
@@ -124,12 +124,12 @@ class EcommerceApp
 
                     $func            = $row->msfe ? $row->msfe : $row->function_execution;
                     $_POST['offset'] = 0;
-                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang), );
+                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang),);
                     $_POST['offset'] = 30;
-                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang), );
+                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang),);
 
                     $_POST['offset'] = 60;
-                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang), );
+                    ApiContent::$func($page, ($row->master_sync_id ? $row->master_sync_id : $row->id_sync), ($row->master_nama_barang ? $row->master_nama_barang : $row->nama_barang),);
 
                     //    print_R($row);
                     //    echo $id_produk;
@@ -415,12 +415,10 @@ class EcommerceApp
                 } else if ($row->asal_barang_dari == 'Api') {
                     ApiContent::send_cart($page, $row->id_detail, $row->id_api, $row->id_from_api, $row->qty_pesanan, $row->id_user);
                 }
-
             }
         }
     }
-    public static function router()
-    {}
+    public static function router() {}
     public static function diferent_value_id_apps($id_store_priduk)
     {
         if ($id_store_priduk) {
@@ -441,7 +439,6 @@ class EcommerceApp
     }
     public static function get_data_detail($page, $result_database, $type_result = 'simple')
     {
-        DB::connection($page);
         $i                      = 0;
         $diferent_value_id_apps = function () {};
         if ($result_database['num_rows']) {
@@ -567,7 +564,6 @@ class EcommerceApp
                             if (! in_array($data[$i]['varian'][$j]['nama_list_tipe_varian_3'], $data[$i]['list_varian']['tipe_3'])) {
                                 $data[$i]['list_varian']['tipe_3']['detail'][] = ["nama_varian" => $data[$i]['varian'][$j]['nama_list_tipe_varian_3'], "id_varian" => $varian->id_varian_3, "level" => 3];
                             }
-
                         }
                     }
                 } else {
@@ -593,7 +589,6 @@ class EcommerceApp
     public static function bundle_harga($page, $id_bundle_harga, $hpj)
     {
 
-        DB::connection($page);
 
         DB::table('store__bundle_harga__detail');
         DB::joinRaw('store__bundle_harga on store__bundle_harga.id = id_store__bundle_harga');
@@ -829,7 +824,6 @@ class EcommerceApp
         //     echo 'silahkan login/daftar terlebih dahulu';
         //     die;
         // }
-        DB::connection($page);
         if (! $jumlah or $jumlah < 0) {
             $jumlah = 1;
         }
@@ -1138,7 +1132,7 @@ class EcommerceApp
                     if ($harga['num_rows']) {
                         foreach ($harga['row'] as $row) {
                             $return['limit_diskon_dari'] = "hpp";
-                            $return['limit_diskon']      = (int)  - 1;
+                            $return['limit_diskon']      = (int)  -1;
                             $return['hpp']               = $produk["row"][0]->harga_pokok;
                             $return['hpj']               = $produk["row"][0]->harga_pokok;
                             if ($row->count_varian > 0) {
@@ -1382,6 +1376,15 @@ class EcommerceApp
         $db['where'][] = ["inventaris__asset__tanah__bangunan__pengisi.id_apps_user", "=", "{SESSION_UTAMA}"];
         $db['where'][] = ["inventaris__asset__tanah__bangunan.id_kota", " is ", " not null"];
     }
+    public static function stok_satuan($body)
+    {
+        DB::table('view_all_produk_stok');
+        DB::whereRaw("id_asset = '" . $body['id_asset'] . "'");
+        DB::whereRaw("id_barang_varian = '" . $body['id_asset_varian'] . "'");
+        DB::whereRaw("id_produk_varian = '" . $body['id_produk_varian'] . "'");
+        $get                  = DB::get('all');
+        return $get['row'][0]->stok_available ?? 0;
+    }
     public static function list_cart($page)
     {
         $db = [
@@ -1437,7 +1440,6 @@ class EcommerceApp
     public static function add_cart($page)
     {
 
-        DB::connection($page);
         $fai = new MainFaiFramework();
         // $data['id_panel'] = $page['get_panel']['id_panel'];
         $data['id_apps_user'] = Partial::input('id_user') ? Partial::input('id_user') : $_SESSION['id_apps_user'];
@@ -1502,8 +1504,8 @@ class EcommerceApp
         }
 
         $stok = EcommerceApp::sync_update_stok($page, $data['id_produk'], $data['id_asset'], $data['id_asset_varian']);
-
-        if ($set_qty > $stok) {
+        $stok_available                  = EcommerceApp::stok_satuan($data);
+        if ($set_qty >  $stok_available) {
             echo json_encode(["status" => "0", "stok" => $stok, "keterangan" => "Qty Pesan melebihi Stok (Stok:$stok)"]);
         } else {
 
@@ -1522,7 +1524,6 @@ class EcommerceApp
     }
     public static function jadikan_default_pengiriman($page, $type, $id)
     {
-        DB::connection($page);
         $fai = new MainFaiFramework();
         DB::update("inventaris__asset__tanah__bangunan__pengisi", ["default_pembelian_barang" => 0, "update_date" => date("Y-m-d H:i:s"), "update_by" => $_SESSION['id_apps_user']], ["id_apps_user=" . $_SESSION['id_apps_user']]);
         DB::update("inventaris__asset__tanah__bangunan__pengisi", ["default_pembelian_barang" => 1, "update_date" => date("Y-m-d H:i:s"), "update_by" => $_SESSION['id_apps_user']], ["id_inventaris__asset__tanah__bangunan	=" . Partial::input('id_bangunan') . " and id_apps_user=" . $_SESSION['id_apps_user']]);
@@ -1530,7 +1531,6 @@ class EcommerceApp
     public static function save_pengiriman_ke($page, $type, $id)
     {
 
-        DB::connection($page);
         $fai                       = new MainFaiFramework();
         $array                     = $fai->apps("Inventaris_aset", "bangunan")['crud']['array'];
         $array                     = Database::converting_array_field($page, $array);
@@ -1628,7 +1628,6 @@ class EcommerceApp
     }
     public static function select_varian_cart($page, $type, $id)
     {
-        DB::connection($page);
         $fai = new MainFaiFramework();
         if ($fai->input('id_cart')) {
             $id_cart = $fai->input('id_cart');
@@ -1704,7 +1703,6 @@ class EcommerceApp
     }
     public static function select_varian($page, $type, $id)
     {
-        DB::connection($page);
         $fai       = new MainFaiFramework();
         $id_asset  = (int) $fai->input('id_asset');
         $id_produk = (int) $fai->input('id_produk');
@@ -2107,7 +2105,6 @@ SELECT '6') AS level
             } else {
                 return $return;
             }
-
         }
     }
 
@@ -2219,7 +2216,6 @@ SELECT '6') AS level
 
     public static function print_pesanan($page, $type, $id, $id_pesanan = null, $type_return = 'cart')
     {
-        DB::connection($page);
         $fai = new MainFaiFramework();
         // $insert_potongan["id_store_produk_diskon"] = $return['id_produk'];
         // $insert_potongan["id_barang_varian_diskon"] = $return['id_barang_varian'];
@@ -2553,7 +2549,6 @@ SELECT '6') AS level
                                     if ($total_diskon_voucher > $harga_jual_diskon) {
                                         $total_diskon_voucher = $harga_jual_diskon;
                                     }
-
                                 }
                                 $update_diskon['total_diskon']      = $total_diskon_voucher;
                                 $update_diskon['harga_jual_diskon'] = $harga_jual_diskon;
@@ -2694,7 +2689,6 @@ SELECT '6') AS level
                                 if ($get_all['row'][0]->$nama_row) {
                                     $update[$list_data_alamat[$lda] . '_tujuan'] = $get_all['row'][0]->$nama_row;
                                 }
-
                             }
                             // echo '<br>';
                             $update['ongkir']          = $ongkir['harga_ongkir'];
@@ -2762,7 +2756,6 @@ SELECT '6') AS level
                                             if ($total_diskon_voucher > $harga_jual_diskon) {
                                                 $total_diskon_voucher = $harga_jual_diskon;
                                             }
-
                                         }
                                         $update_diskon['total_diskon']      = $total_diskon_voucher;
                                         $update_diskon['harga_jual_diskon'] = $harga_jual_diskon;
@@ -2900,7 +2893,6 @@ SELECT '6') AS level
         } else {
             return $return;
         }
-
     }
 
     public static function update_database_checkout($page, $type, $id)
@@ -3098,21 +3090,22 @@ SELECT '6') AS level
         }
         return $return;
     }
+    public static function getFirstCharacter($inputString)
+    {
+        // DB::whereRaw('erp__pos__utama.id_panel=' . $page['get_panel']['id_panel']);
+        if (! empty($inputString)) {
+            // $insert_id = DB::lastInsertId($page, 'erp__pos__utama');
+            $firstChar = substr($inputString, 0, 1);
+            return $firstChar;
+        } else {
+            return ""; // DB::whereRaw('erp__pos__utama.id_panel=' . $page['get_panel']['id_panel']);
+        }
+    }
     public static function inisiate_store_pesanan_group($page, $force = 0, $tipe_group = "Barang Jadi Ecommerce")
     {
         $return = [];
         if (isset($_SESSION['id_apps_user'])) {
-            function getFirstCharacter($inputString)
-            {
-                // DB::whereRaw('erp__pos__utama.id_panel=' . $page['get_panel']['id_panel']);
-                if (! empty($inputString)) {
-                    // $insert_id = DB::lastInsertId($page, 'erp__pos__utama');
-                    $firstChar = substr($inputString, 0, 1);
-                    return $firstChar;
-                } else {
-                    return ""; // DB::whereRaw('erp__pos__utama.id_panel=' . $page['get_panel']['id_panel']);
-                }
-            }
+
             DB::table('erp__pos__group');
             DB::whereRaw('erp__pos__group.id_panel=' . $page['get_panel']['id_panel']);
             DB::whereRaw("erp__pos__group.id_apps_user='" . $_SESSION['id_apps_user'] . "'");
@@ -3121,7 +3114,7 @@ SELECT '6') AS level
             $cek = DB::get('all');
             if (! $cek['num_rows'] or $force) {
                 $data = [
-                    'nomor'        => "PO-" . getFirstCharacter($tipe_group) . "/" . date('ymdHis') . "/" . rand(100, 999),
+                    'nomor'        => "PO-" . EcommerceApp::getFirstCharacter($tipe_group) . "/" . date('ymdHis') . "/" . rand(100, 999),
                     'id_panel'     => $page['get_panel']['id_panel'],
                     'id_apps_user' => $_SESSION['id_apps_user'],
                     'tanggal'      => date('Y-m-d H:i:s'),
@@ -3154,7 +3147,6 @@ SELECT '6') AS level
 
         $pemesanan_grup     = EcommerceApp::inisiate_store_pesanan_group($page);
         $id_group_pemesanan = $pemesanan_grup['id'];
-        DB::connection($page);
         DB::update('erp__pos__pra_order', ["active" => 0, "status_pra_order" => "Hapus"], [('id=' . $id_cart)]);
         DB::delete('erp__pos__utama__detail', [('id_cart=' . $id_cart), ('id_erp__pos__group =' . $id_group_pemesanan)], "Where Array");
         echo '1';
@@ -3641,15 +3633,15 @@ SELECT '6') AS level
     //             $pesanan = $this->db->where('id_store_pesanan', $store_pesanan)->get('store_pesanan')->row();
     //             if ($pesanan->payment_type == 'Manual Transfer Bank') {
     //                 $konfirm = "
-	// 				<h3>Konfirmasi Pembayaran</h3>
-	// 				Lakukan Konfirmasi Pembayaran, dengan cara:<br>
-	// 				1. pastikan anda login sesuai akun yang sama saat pemesanan<br>
-	// 				2. klik icon profile, kemudian pilih konfirmasi pembayaran. atau klik button yang ada di bawah ini<br>
-	// 				3. Pilih Nomor Invoice, pastikan nomor invoice yang anda pilih sesuai dengan pembayaran yang dilakukan
-	// 				4. Lalu isi form yang lainnya, kemudian Simpan<br><br><br>
+    // 				<h3>Konfirmasi Pembayaran</h3>
+    // 				Lakukan Konfirmasi Pembayaran, dengan cara:<br>
+    // 				1. pastikan anda login sesuai akun yang sama saat pemesanan<br>
+    // 				2. klik icon profile, kemudian pilih konfirmasi pembayaran. atau klik button yang ada di bawah ini<br>
+    // 				3. Pilih Nomor Invoice, pastikan nomor invoice yang anda pilih sesuai dengan pembayaran yang dilakukan
+    // 				4. Lalu isi form yang lainnya, kemudian Simpan<br><br><br>
 
-	// 				<a href='http://weareislam.id/Store//konfirmasi-pembayaran.html' style='background-color: #206bc4;  border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Konfirmasi Pembayaran</a>
-	// 				";
+    // 				<a href='http://weareislam.id/Store//konfirmasi-pembayaran.html' style='background-color: #206bc4;  border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Konfirmasi Pembayaran</a>
+    // 				";
     //                 $imgBrand     = 'BankBNI.png';
     //                 $payment_code = '0902402741 ';
     //                 $an           = 'a.n HILFI MUHAMAD ARYAWAN<br>(BNI SYARIAH/BSI)';
@@ -3680,23 +3672,23 @@ SELECT '6') AS level
     //                 $title        = 'Gerai Retail';
     //             }
     //             $msg = "
-	// 			Bismillah, <br>
-	// 			Hallo Sahabat " . $user->nama_lengkap . ",<br>
-	// 			Jazakumullahu khair, telah memesan barang barang dari website kami, berikut adalah rincian pembayaran yang sahabat harus lakukan:<br><br>
-	// 			<center>
-	// 			<b>Total Bayar</b><br>
-	// 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
-	// 			<font style='color:#222'>Jatuh Tempo pada :<br> " . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s') . "</font><br><br>
-	// 			Lakukan Pembayaran:<br>
-	// 			$title<br>
-	// 				<h3 style='padding-bottom:5px;padding-top:5px;margin: 0px;'>
+    // 			Bismillah, <br>
+    // 			Hallo Sahabat " . $user->nama_lengkap . ",<br>
+    // 			Jazakumullahu khair, telah memesan barang barang dari website kami, berikut adalah rincian pembayaran yang sahabat harus lakukan:<br><br>
+    // 			<center>
+    // 			<b>Total Bayar</b><br>
+    // 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
+    // 			<font style='color:#222'>Jatuh Tempo pada :<br> " . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s') . "</font><br><br>
+    // 			Lakukan Pembayaran:<br>
+    // 			$title<br>
+    // 				<h3 style='padding-bottom:5px;padding-top:5px;margin: 0px;'>
     //               		<img src=" . base_url() . 'images/' . $imgBrand . " width='50px'> <br><font style='font-size:25px;'><b>" . $payment_code . "</b></font><br>
     //               	</h3>
     //               	<div class=''>$an</div>
     //               	$konfirm
-	// 			</center>
+    // 			</center>
 
-	// 			";
+    // 			";
     //             ob_start();
     //             send_email($user->email, $user->nama_lengkap, "Pembayaran Weareislam.id Pemesanan Tanggal" . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s'), $msg);
     //             ob_end_clean();
@@ -3732,22 +3724,22 @@ SELECT '6') AS level
     //     foreach ($data->result() as $baris) {
 
     //         $content .= '
-	// 						<label class="form-selectgroup-item flex-fill mb-2">
-	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
-	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-	// 						<div class="me-3">
-	// 						<span class="">' . $no++ . '</span>
-	// 						</div>
-	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-	// 						<div  class=" text-left ">
-	// 						<div class="font-weight-bold" style="text-align: left;"> ' . $baris->nama_barang . '</div>
-	// 						<div class="text-muted" style="text-align: left;">' . $baris->jumlah . 'x    ' . $baris->warna . '   ' . $baris->type . ' </div>
-	// 						<div class="text-muted" style="text-align: left;"> Harga ' . $baris->harga_total . ' </div>
+    // 						<label class="form-selectgroup-item flex-fill mb-2">
+    // 						<input class="form-selectgroup-input" disabled  type="checkbox">
+    // 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+    // 						<div class="me-3">
+    // 						<span class="">' . $no++ . '</span>
+    // 						</div>
+    // 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+    // 						<div  class=" text-left ">
+    // 						<div class="font-weight-bold" style="text-align: left;"> ' . $baris->nama_barang . '</div>
+    // 						<div class="text-muted" style="text-align: left;">' . $baris->jumlah . 'x    ' . $baris->warna . '   ' . $baris->type . ' </div>
+    // 						<div class="text-muted" style="text-align: left;"> Harga ' . $baris->harga_total . ' </div>
 
-	// 						</div>
-	// 						</div>
-	// 						</div>
-	// 						</label>';
+    // 						</div>
+    // 						</div>
+    // 						</div>
+    // 						</label>';
     //         $total_bayar += $baris->harga_total;
     //         $id_pesanan = $baris->id_store_pesanan;
     //     }
@@ -3755,37 +3747,37 @@ SELECT '6') AS level
     //     $ongkir = $this->db->select_sum('harga_total')->where('id_store_pesanan', $id_pesanan)->where('jenis', 'ongkir')->get('store_pesanan_detail')->row()->harga_total;
 
     //     $content .= '
-	// 						<label class="form-selectgroup-item flex-fill mb-2">
-	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
-	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-	// 						<div class="me-3">
-	// 						<span class="">' . $no++ . '</span>
-	// 						</div>
-	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-	// 						<div  class=" text-left ">
-	// 						<div class="font-weight-bold" style="text-align: left;"> Zakat Mal</div>
-	// 						<div class="text-muted" style="text-align: left;">' . rupiah($zakat) . ' </div>
+    // 						<label class="form-selectgroup-item flex-fill mb-2">
+    // 						<input class="form-selectgroup-input" disabled  type="checkbox">
+    // 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+    // 						<div class="me-3">
+    // 						<span class="">' . $no++ . '</span>
+    // 						</div>
+    // 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+    // 						<div  class=" text-left ">
+    // 						<div class="font-weight-bold" style="text-align: left;"> Zakat Mal</div>
+    // 						<div class="text-muted" style="text-align: left;">' . rupiah($zakat) . ' </div>
 
-	// 						</div>
-	// 						</div>
-	// 						</div>
-	// 						</label>';
+    // 						</div>
+    // 						</div>
+    // 						</div>
+    // 						</label>';
     //     $content .= '
-	// 						<label class="form-selectgroup-item flex-fill mb-2">
-	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
-	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-	// 						<div class="me-3">
-	// 						<span class="">' . $no++ . '</span>
-	// 						</div>
-	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-	// 						<div  class=" text-left ">
-	// 						<div class="font-weight-bold" style="text-align: left;"> Ongkir</div>
-	// 						<div class="text-muted" style="text-align: left;">' . rupiah($ongkir) . ' </div>
+    // 						<label class="form-selectgroup-item flex-fill mb-2">
+    // 						<input class="form-selectgroup-input" disabled  type="checkbox">
+    // 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+    // 						<div class="me-3">
+    // 						<span class="">' . $no++ . '</span>
+    // 						</div>
+    // 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+    // 						<div  class=" text-left ">
+    // 						<div class="font-weight-bold" style="text-align: left;"> Ongkir</div>
+    // 						<div class="text-muted" style="text-align: left;">' . rupiah($ongkir) . ' </div>
 
-	// 						</div>
-	// 						</div>
-	// 						</div>
-	// 						</label>';
+    // 						</div>
+    // 						</div>
+    // 						</div>
+    // 						</label>';
 
     //     $total_bayar += $zakat;
     //     $total_bayar += $ongkir;
@@ -3810,39 +3802,39 @@ SELECT '6') AS level
     //         //echo'tess';
     //         $this->db->insert('apps_file', $uploadData[$i]);
     //         $img .= "
-	// 	 	<img src=" . base_url('upload/') . $uploadData[$i]['path'] . '/' . $uploadData[$i]['file_name'] . " width='500px'/>		 	";
+    // 	 	<img src=" . base_url('upload/') . $uploadData[$i]['path'] . '/' . $uploadData[$i]['file_name'] . " width='500px'/>		 	";
     //     }
     //     $user = $this->db->where('id_apps_user', $_SESSION['id_apps'])->get('apps_user')->row();
     //     //echo $user->email;
     //     $pesanan = $this->db->where('nomor_invoice', $data['nomor_invoice'])->get('store_pesanan')->row();
 
     //     $konfirm = "
-	// 				<h3>Konfirmasi Pembayaran</h3>
+    // 				<h3>Konfirmasi Pembayaran</h3>
 
 
-	// 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/detail/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Lihat Lebih Detail</a>
-	// 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=benar' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Benar</a>
-	// 				<a href='http://weareislam.id/Store/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=tidak' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Tidak Benar</a>
-	// 				";
+    // 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/detail/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Lihat Lebih Detail</a>
+    // 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=benar' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Benar</a>
+    // 				<a href='http://weareislam.id/Store/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=tidak' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Tidak Benar</a>
+    // 				";
 
     //     $msg = "
-	// 			Bismillah, <br>
-	// 			Hallo Sahabat Bapak Admin,<br>
-	// 			Sahabat kita " . $user->nama_lengkap . " telah sudah melakukan pembayaran, mangga di cek,<br><br><br>
-	// 			<center>
-	// 			<b>Total Bayar</b><br>
-	// 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
-	// 			<font style='color:#222'>
-	// 			Atas Nama : <b> " . $data['nama'] . "</b><br>
-	// 			No Rek : <b> " . $data['no_rek'] . "</b><br>
-	// 			bank : <b> " . $data['bank'] . "</b><br>
-	// 			$img
-	// 			</font><br><br>
-	// 			$konfirm
+    // 			Bismillah, <br>
+    // 			Hallo Sahabat Bapak Admin,<br>
+    // 			Sahabat kita " . $user->nama_lengkap . " telah sudah melakukan pembayaran, mangga di cek,<br><br><br>
+    // 			<center>
+    // 			<b>Total Bayar</b><br>
+    // 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
+    // 			<font style='color:#222'>
+    // 			Atas Nama : <b> " . $data['nama'] . "</b><br>
+    // 			No Rek : <b> " . $data['no_rek'] . "</b><br>
+    // 			bank : <b> " . $data['bank'] . "</b><br>
+    // 			$img
+    // 			</font><br><br>
+    // 			$konfirm
 
-	// 			</center>
+    // 			</center>
 
-	// 			";
+    // 			";
     //     ob_start();
     //     send_email('hilfimuhamad@gmail.com', "Admin We Are Islam", "Konfirmasi Pembayaran User " . $user->nama_lengkap, $msg, ["hermawanbujil60@gmail.com", "Refafauzia00@gmail.com"]);
     //     //echo count($uploadData);

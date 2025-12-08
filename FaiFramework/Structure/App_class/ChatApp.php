@@ -117,7 +117,6 @@ class ChatApp
 
 	public static function proses_brodcast($page)
 	{
-		DB::connection($page);
 		$fai = new MainFaiFramework();
 		unset($database_check);
 		$database_check['select'][] = '*';
