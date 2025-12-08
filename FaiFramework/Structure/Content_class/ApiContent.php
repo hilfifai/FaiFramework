@@ -2699,29 +2699,14 @@ class ApiContent
                 $cust_seq = $get_content['row'][0]->content;
             }
         }
-
+        
         // $stok_api = ApiContent::$function($page, $row->id_sync_master_varian_asset, $id_api, $row, ($stok_api['detail'] ?? []));
 
         $start            = Partial::input('offset') ? Partial::input('offset') : 0;
         $row              = (object) [];
         $row->nama_barang = $search;
         $get_data         = ApiContent::$function($page, $id, $id_api, $row, ($stok_api['detail'] ?? []))['response']['response']['data'];
-        // print_R($get_data);
-        // if ($user_api['row'][0]->versi == 'Versi 2') {
-        //     $array = ['Offset: ' . $start, 'key: ' . $apikey, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
-        //     if ($search) {
-        //         $array[] = 'search: ' . $search;
-        //         $array[] = 'is_preorder: T';
-        //     }
-        //     $get_data = json_decode(EthicaApi::get_produk_v2($link, $array), 1);
-        //     $get_data = $get_data['data'];
-        // } else if ($user_api['row'][0]->versi == 'Versi 1') {
-        //     $param    = "&is_preorder=F&is_ada_stok=T";
-        //     $get_data = json_decode(EthicaApi::get_produk($cust_seq, $search, $link, $param), 1);
-        // }
-        // print_R($get_data);
-
-        // $count            = count(($get_data));
+       
         $page['db']['np'] = true;
         $fai              = new MainFaiFramework();
         $dataReturn       = [];

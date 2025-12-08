@@ -72,7 +72,6 @@ export default class OptionTriggrer extends FaiModule {
         };
         console.log(type);
         const encoded = await btoa(JSON.stringify(type));
-        const enPage = window.fai.getModule("linkHelper").encodeDataForHref(data);;;
         // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
         link_direct(encoded);
         // Uncomment untuk redirect sesungguhnya:
