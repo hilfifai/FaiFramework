@@ -558,11 +558,11 @@ class EthicaApi
         $nama_barang;
         if ($user_api['row'][0]->versi == 'Versi 1') {
             $nama_barang = str_replace(' ', '%20', $nama_barang);
-            $array       = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: F', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
+            $array       = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: T', 'is_preorder: T', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
 
-            $link .= "?key=" . $user['apikey'] . '&offset=0&is_pre_order=F&search=' . $nama_barang . '&customer_seq=' . $customer_seq . '';
+            $link .= "?key=" . $user['apikey'] . '&offset=0&is_pre_order=T&is_preorder=T&search=' . $nama_barang . '&customer_seq=' . $customer_seq . '';
         } else if ($user_api['row'][0]->versi == 'Versi 2') {
-            $array_header = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: F', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
+            $array_header = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: T', 'is_preorder: T', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
 
             $link .= "?key=" . $user['apikey'];
         }
