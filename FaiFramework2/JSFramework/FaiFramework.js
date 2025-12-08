@@ -31,6 +31,10 @@ export class FaiFramework extends FaiModule {
 		this.base_url = base_url;
 		this.base_url_non_index = base_url_non_index;
 		this.base_url_object = base_url_object;
+		await this.setModule("domain", this.domain);
+		await this.setModule("base_url", this.base_url);
+		await this.setModule("base_url_non_index", this.base_url_non_index);
+		await this.setModule("base_url_object", this.base_url_object);
 		if (!domainDetail) {
 			this.domainDetail = await this.getDomainDetail(this.domain);;
 		} else {
@@ -43,10 +47,7 @@ export class FaiFramework extends FaiModule {
 		} else {
 			this.template = template;
 		}
-		await this.setModule("domain", this.domain);
-		await this.setModule("base_url", this.base_url);
-		await this.setModule("base_url_non_index", this.base_url_non_index);
-		await this.setModule("base_url_object", this.base_url_object);
+		
 		await this.setModule("template", this.template);
 		await this.setModule("originalTemplate", this.originalTemplate);
 		await this.setModule("domainDetail", this.domainDetail);
