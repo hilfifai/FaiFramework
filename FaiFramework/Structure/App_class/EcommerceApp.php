@@ -1,8 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . "/../../vendor/autoload.php";
 require_once 'PaymentGatewayApp.php';
-require_once 'OngkirApp.php';
+// require_once 'OngkirApp.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
@@ -3371,601 +3370,601 @@ SELECT '6') AS level
         die;
     }
 
-    public function send_ulasan($jenis, $id_store_pesanan, $id_store_barang, $nilai = null)
-    {
-        $dataInput = Partial::input('dataInput');
-        if ($jenis == 'ulasan') {
-            $data['ulasan'] = $dataInput;
-            $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_barang_ulasan', $data);
-        } else if ($jenis == 'nilai') {
-            $data['nilai'] = $nilai;
-            $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_barang_ulasan', $data);
-            echo $this->db->last_query();
-            $nilaiAVG               = $this->db->select_avg('nilai')->where('id_store_barang', $id_store_barang)->get('store_barang_ulasan')->row()->nilai;
-            $barang['nilai_ulasan'] = $nilaiAVG;
-            $this->db->where('id_store_barang ', $id_store_barang)->update('store_barang', $barang);
-        } else if ($jenis == 'doa') {
-            $data['doa'] = $dataInput;
-            $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_doa', $data);
-        }
-    }
+    // public function send_ulasan($jenis, $id_store_pesanan, $id_store_barang, $nilai = null)
+    // {
+    //     $dataInput = Partial::input('dataInput');
+    //     if ($jenis == 'ulasan') {
+    //         $data['ulasan'] = $dataInput;
+    //         $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_barang_ulasan', $data);
+    //     } else if ($jenis == 'nilai') {
+    //         $data['nilai'] = $nilai;
+    //         $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_barang_ulasan', $data);
+    //         echo $this->db->last_query();
+    //         $nilaiAVG               = $this->db->select_avg('nilai')->where('id_store_barang', $id_store_barang)->get('store_barang_ulasan')->row()->nilai;
+    //         $barang['nilai_ulasan'] = $nilaiAVG;
+    //         $this->db->where('id_store_barang ', $id_store_barang)->update('store_barang', $barang);
+    //     } else if ($jenis == 'doa') {
+    //         $data['doa'] = $dataInput;
+    //         $this->db->where('id_store_pesanan ', $id_store_pesanan)->where('id_apps_user ', $_SESSION['id_apps'])->where('id_store_barang ', $id_store_barang)->update('store_doa', $data);
+    //     }
+    // }
 
-    public function check_status_payment()
-    {
-        $row = $this->db->or_where('store_pesanan.status_pembayaran', 'menunggu')->or_where('store_pesanan_bayar.transaction_status', 'pending')->join('store_pesanan_bayar', 'store_pesanan.id_store_pesanan_bayar=store_pesanan_bayar.id_store_pesanan_bayar')->get('store_pesanan')->result();
-        foreach ($row as $data) {
-            $this->get_check_status_payment($data->order_id, $data->id_store_pesanan, $data->id_store_pesanan_bayar, $data->gross_amount);
-        }
-    }
-    public function get_check_status_payment($order_id, $store_pesanan, $store_bayar, $total_bayar)
-    {
-        try {
-            $url      = 'https://api.midtrans.com/v2/';
-            $response = getStatus2($url, 'VT-server-xV8ByBbVg0ZT4mZbLSXTTtru', $order_id);
-            // ChatApp::altenatif_send_massage($page, $row['row'][0]->id, $data['message'], -2, 'utama', 1, $data);
-        } catch (Exception $e) {
-            //  
-            die();
-        }
-        $response = json_decode($response, true);
-        // payment_api 
+    // public function check_status_payment()
+    // {
+    //     $row = $this->db->or_where('store_pesanan.status_pembayaran', 'menunggu')->or_where('store_pesanan_bayar.transaction_status', 'pending')->join('store_pesanan_bayar', 'store_pesanan.id_store_pesanan_bayar=store_pesanan_bayar.id_store_pesanan_bayar')->get('store_pesanan')->result();
+    //     foreach ($row as $data) {
+    //         $this->get_check_status_payment($data->order_id, $data->id_store_pesanan, $data->id_store_pesanan_bayar, $data->gross_amount);
+    //     }
+    // }
+    // public function get_check_status_payment($order_id, $store_pesanan, $store_bayar, $total_bayar)
+    // {
+    //     try {
+    //         $url      = 'https://api.midtrans.com/v2/';
+    //         $response = getStatus2($url, 'VT-server-xV8ByBbVg0ZT4mZbLSXTTtru', $order_id);
+    //         // ChatApp::altenatif_send_massage($page, $row['row'][0]->id, $data['message'], -2, 'utama', 1, $data);
+    //     } catch (Exception $e) {
+    //         //  
+    //         die();
+    //     }
+    //     $response = json_decode($response, true);
+    //     // payment_api 
 
-        $store_pesanan . '- Status = ' . $response['transactions'][0]['transaction_status'];
-        $updateBayar['transaction_status'] = $response['transactions'][0]['transaction_status'];
-        $this->db->where('id_store_pesanan_bayar', $store_bayar)->update('store_pesanan_bayar', $updateBayar);
-        if ($response['transactions'][0]['transaction_status'] == 'expire' or $response['transactions'][0]['transaction_status'] == 'cancle') {
-            if ($response['transactions'][0]['transaction_status'] == 'expire') {
-                $data['status_pembayaran'] = 'Waktu Habis';
-            }
+    //     $store_pesanan . '- Status = ' . $response['transactions'][0]['transaction_status'];
+    //     $updateBayar['transaction_status'] = $response['transactions'][0]['transaction_status'];
+    //     $this->db->where('id_store_pesanan_bayar', $store_bayar)->update('store_pesanan_bayar', $updateBayar);
+    //     if ($response['transactions'][0]['transaction_status'] == 'expire' or $response['transactions'][0]['transaction_status'] == 'cancle') {
+    //         if ($response['transactions'][0]['transaction_status'] == 'expire') {
+    //             $data['status_pembayaran'] = 'Waktu Habis';
+    //         }
 
-            if ($response['transactions'][0]['transaction_status'] == 'cancel') {
-                $data['status_pembayaran'] = 'Transaksi Gagal';
-            }
+    //         if ($response['transactions'][0]['transaction_status'] == 'cancel') {
+    //             $data['status_pembayaran'] = 'Transaksi Gagal';
+    //         }
 
-            $data['status'] = 'gagal';
-            $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $data);
-            $data_user_cart       = $this->db->select('id_store_user_cart')->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->result();
-            $UpdateCart['status'] = 'Belum Beli';
-            foreach ($data_user_cart as $cart) {
-                $this->db->where('id_store_user_cart', $cart->id_store_user_cart)->update('store_user_cart', $UpdateCart);
-            }
-        } else if ($response['transactions'][0]['transaction_status'] == 'success' or $response['transactions'][0]['transaction_status'] == 'capture' or $response['transactions'][0]['transaction_status'] == 'settlement') {
-            // echo " < pre > ";print_r($response);
-            $updatePesanan['tgl_bayar']         = date('Y-m-d H:i:s');
-            $updatePesanan['status']            = 'selesai';
-            $updatePesanan['status_pembayaran'] = 'selesai';
-            $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $updatePesanan);
-            $data_barang = $this->db->where('id_store_pesanan', $store_pesanan)->where('jenis', 'barang')->get('store_pesanan_detail')->result();
-            // echo $e->getMessage();
-            $updateDetail['status_pengiriman'] = 'Dalam Antrian';
-            foreach ($data_barang as $row_barang) {
-                $barang = $this->db->where('id_store_barang', $row_barang->id_store_barang)->get('store_barang')->row();
-                //print_r($response);
-                $updateBarang['total_terjual'] = ($barang->total_terjual) + (1);
-                $updateBarang['stok']          = ($barang->stok) - (1);
-                $this->db->where('id_store_barang', $row_barang->id_store_barang)->update('store_barang', $updateBarang);
-                $id_distributor = $barang->id_store_distributor;
-                $ongkir         = $this->db->where('jenis', 'ongkir')->where('id_store_distributor', $id_distributor)->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->row();
-                $estimasi_hari  = explode('-', $ongkir->estimasi_hari);
-                $estimasi_awal  = $estimasi_hari[0];
-                $estimasi_akhir = ($estimasi_hari[1]) + (1);
+    //         $data['status'] = 'gagal';
+    //         $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $data);
+    //         $data_user_cart       = $this->db->select('id_store_user_cart')->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->result();
+    //         $UpdateCart['status'] = 'Belum Beli';
+    //         foreach ($data_user_cart as $cart) {
+    //             $this->db->where('id_store_user_cart', $cart->id_store_user_cart)->update('store_user_cart', $UpdateCart);
+    //         }
+    //     } else if ($response['transactions'][0]['transaction_status'] == 'success' or $response['transactions'][0]['transaction_status'] == 'capture' or $response['transactions'][0]['transaction_status'] == 'settlement') {
+    //         // echo " < pre > ";print_r($response);
+    //         $updatePesanan['tgl_bayar']         = date('Y-m-d H:i:s');
+    //         $updatePesanan['status']            = 'selesai';
+    //         $updatePesanan['status_pembayaran'] = 'selesai';
+    //         $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $updatePesanan);
+    //         $data_barang = $this->db->where('id_store_pesanan', $store_pesanan)->where('jenis', 'barang')->get('store_pesanan_detail')->result();
+    //         // echo $e->getMessage();
+    //         $updateDetail['status_pengiriman'] = 'Dalam Antrian';
+    //         foreach ($data_barang as $row_barang) {
+    //             $barang = $this->db->where('id_store_barang', $row_barang->id_store_barang)->get('store_barang')->row();
+    //             //print_r($response);
+    //             $updateBarang['total_terjual'] = ($barang->total_terjual) + (1);
+    //             $updateBarang['stok']          = ($barang->stok) - (1);
+    //             $this->db->where('id_store_barang', $row_barang->id_store_barang)->update('store_barang', $updateBarang);
+    //             $id_distributor = $barang->id_store_distributor;
+    //             $ongkir         = $this->db->where('jenis', 'ongkir')->where('id_store_distributor', $id_distributor)->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->row();
+    //             $estimasi_hari  = explode('-', $ongkir->estimasi_hari);
+    //             $estimasi_awal  = $estimasi_hari[0];
+    //             $estimasi_akhir = ($estimasi_hari[1]) + (1);
 
-                $updateDetail['perkiraan_sampai_awal']  = tambah_tanggal(date('Y-m-d'), $estimasi_awal);
-                $updateDetail['perkiraan_sampai_akhir'] = tambah_tanggal(date('Y-m-d'), $estimasi_akhir);
+    //             $updateDetail['perkiraan_sampai_awal']  = tambah_tanggal(date('Y-m-d'), $estimasi_awal);
+    //             $updateDetail['perkiraan_sampai_akhir'] = tambah_tanggal(date('Y-m-d'), $estimasi_akhir);
 
-                $this->db->where('id_store_pesanan_detail', $row_barang->id_store_pesanan_detail)->update('store_pesanan_detail', $updateDetail);
-            }
-            $point['id_store_pesanan'] = $store_pesanan;
-            $point['id_apps_user']     = $_SESSION['id_apps'];
-            $point['point']            = intdiv((int) $total_bayar, 5000);
-            $total_insert              = $this->db->where($point)->get('store_point')->num_rows();
-            if ($total_insert == 0) {
-                $this->db->insert('store_point', $point);
-            }
+    //             $this->db->where('id_store_pesanan_detail', $row_barang->id_store_pesanan_detail)->update('store_pesanan_detail', $updateDetail);
+    //         }
+    //         $point['id_store_pesanan'] = $store_pesanan;
+    //         $point['id_apps_user']     = $_SESSION['id_apps'];
+    //         $point['point']            = intdiv((int) $total_bayar, 5000);
+    //         $total_insert              = $this->db->where($point)->get('store_point')->num_rows();
+    //         if ($total_insert == 0) {
+    //             $this->db->insert('store_point', $point);
+    //         }
 
-        }
-    }
-    public function initialize_payment($store_pesanan, $invoice, $payment_type, $payment_brand)
-    {
-        $data_pesanan = $this->belanja->data_pesanan($store_pesanan);
+    //     }
+    // }
+    // public function initialize_payment($store_pesanan, $invoice, $payment_type, $payment_brand)
+    // {
+    //     $data_pesanan = $this->belanja->data_pesanan($store_pesanan);
 
-        //tambah total terjual
-        $ongkir = $this->db->select_sum('harga_total')->where('jenis', 'ongkir')
-            ->where('id_store_pesanan', $store_pesanan)
-            ->get('store_pesanan_detail')->row()->harga_total;
-        $data_ongkir = $this->belanja->data_pesanan('ongkir', $store_pesanan);
-        $total       = 0;
+    //     //tambah total terjual
+    //     $ongkir = $this->db->select_sum('harga_total')->where('jenis', 'ongkir')
+    //         ->where('id_store_pesanan', $store_pesanan)
+    //         ->get('store_pesanan_detail')->row()->harga_total;
+    //     $data_ongkir = $this->belanja->data_pesanan('ongkir', $store_pesanan);
+    //     $total       = 0;
 
-        $total += 0;
-        $total += $ongkir;
+    //     $total += 0;
+    //     $total += $ongkir;
 
-        foreach ($data_pesanan->result() as $pesanan) {
-            $total += $pesanan->harga_total;
-        }
-        //Dalam Antrian
-        //	print_r($barang->total_terjual);
+    //     foreach ($data_pesanan->result() as $pesanan) {
+    //         $total += $pesanan->harga_total;
+    //     }
+    //     //Dalam Antrian
+    //     //	print_r($barang->total_terjual);
 
-        $transaction_details = [
-            'order_id'     => $store_pesanan . '-' . $invoice,
-            'gross_amount' => $total,
-        ];
-        $user_all =
-        $this->db->where('id_apps_user', $_SESSION['id_apps'])
-            ->join('apps_wilayah_kabupaten', 'apps_user.id_kota_user = apps_wilayah_kabupaten.kota_id', 'left')
-            ->join('apps_wilayah_provinsi', 'apps_wilayah_provinsi.provinsi_id = apps_wilayah_kabupaten.provinsi_id')
-            ->get('apps_user')->row();
-        //$zakat        = $this->db->select('nominal')->where('jenis','pembelian_barang')->where('id_store_pesanan',$this->uri->segment(2))		->get('zakat')->row()->nominal;
-        $billing_address = [
-            'first_name'   => $user_all->nama_lengkap,
-            'last_name'    => "",
-            'address'      => $user_all->alamat,
-            'city'         => $user_all->type . ' ' . $user_all->kota_name,
-            'postal_code'  => $user_all->kode_pos,
-            'phone'        => $user_all->no_hp,
-            'country_code' => 'IDN',
-        ];
+    //     $transaction_details = [
+    //         'order_id'     => $store_pesanan . '-' . $invoice,
+    //         'gross_amount' => $total,
+    //     ];
+    //     $user_all =
+    //     $this->db->where('id_apps_user', $_SESSION['id_apps'])
+    //         ->join('apps_wilayah_kabupaten', 'apps_user.id_kota_user = apps_wilayah_kabupaten.kota_id', 'left')
+    //         ->join('apps_wilayah_provinsi', 'apps_wilayah_provinsi.provinsi_id = apps_wilayah_kabupaten.provinsi_id')
+    //         ->get('apps_user')->row();
+    //     //$zakat        = $this->db->select('nominal')->where('jenis','pembelian_barang')->where('id_store_pesanan',$this->uri->segment(2))		->get('zakat')->row()->nominal;
+    //     $billing_address = [
+    //         'first_name'   => $user_all->nama_lengkap,
+    //         'last_name'    => "",
+    //         'address'      => $user_all->alamat,
+    //         'city'         => $user_all->type . ' ' . $user_all->kota_name,
+    //         'postal_code'  => $user_all->kode_pos,
+    //         'phone'        => $user_all->no_hp,
+    //         'country_code' => 'IDN',
+    //     ];
 
-        //$items = ($item);
-        $shipping_address = [
-            'first_name'   => "We Are Islam",
-            'last_name'    => "Store",
-            'address'      => "Jl Babakan Ciserueuh Timur RT 01/07",
-            'city'         => "Bandung",
-            'postal_code'  => "40255",
-            'phone'        => "08987423444",
-            'country_code' => 'IDN',
-        ];
-        //print_r($items);
-        // Populate customer's billing address
-        $customer_details = [
-            'first_name'       => $user_all->nama_lengkap,
-            'last_name'        => "",
-            'email'            => $user_all->email,
-            'phone'            => $user_all->no_hp,
-            'billing_address'  => $billing_address,
-            'shipping_address' => $shipping_address,
-        ];
+    //     //$items = ($item);
+    //     $shipping_address = [
+    //         'first_name'   => "We Are Islam",
+    //         'last_name'    => "Store",
+    //         'address'      => "Jl Babakan Ciserueuh Timur RT 01/07",
+    //         'city'         => "Bandung",
+    //         'postal_code'  => "40255",
+    //         'phone'        => "08987423444",
+    //         'country_code' => 'IDN',
+    //     ];
+    //     //print_r($items);
+    //     // Populate customer's billing address
+    //     $customer_details = [
+    //         'first_name'       => $user_all->nama_lengkap,
+    //         'last_name'        => "",
+    //         'email'            => $user_all->email,
+    //         'phone'            => $user_all->no_hp,
+    //         'billing_address'  => $billing_address,
+    //         'shipping_address' => $shipping_address,
+    //     ];
 
-        // Populate customer's shipping address
-        $token_id = "asasa21212312";
+    //     // Populate customer's shipping address
+    //     $token_id = "asasa21212312";
 
-        //billing address (alamat penagihan) sama seperti alamat pengiriman (shipping address).
-        $transaction_data['payment_type'] = $payment_type;
-        if ($payment_type == 'bank_transfer') {
-            $transaction_data['bank_transfer'] = ['bank' => $payment_brand];
-        } else
-        if ($payment_type == 'cstore') {
-            $transaction_data['cstore'] = ['store' => $payment_brand, 'message' => "We Are Islam Store"];
-        }
-        $transaction_data['transaction_details'] = $transaction_details;
-        // Populate customer's info
-        $transaction_data['customer_details'] = $customer_details;
-        // Token ID from checkout page
-        $curl = curl_init();
+    //     //billing address (alamat penagihan) sama seperti alamat pengiriman (shipping address).
+    //     $transaction_data['payment_type'] = $payment_type;
+    //     if ($payment_type == 'bank_transfer') {
+    //         $transaction_data['bank_transfer'] = ['bank' => $payment_brand];
+    //     } else
+    //     if ($payment_type == 'cstore') {
+    //         $transaction_data['cstore'] = ['store' => $payment_brand, 'message' => "We Are Islam Store"];
+    //     }
+    //     $transaction_data['transaction_details'] = $transaction_details;
+    //     // Populate customer's info
+    //     $transaction_data['customer_details'] = $customer_details;
+    //     // Token ID from checkout page
+    //     $curl = curl_init();
 
-        curl_setopt_array($curl, [
-            CURLOPT_URL            => "https://api.sandbox.midtrans.com/v2/SANDBOX-G710367688-806/status",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST  => "GET",
-            CURLOPT_POSTFIELDS     => "\n\n",
-            CURLOPT_HTTPHEADER     => [
-                "Accept: application/json",
-                "Content-Type: application/json",
-                "Authorization: SB-Mid-client-0FHNOdX3KizpO3B0",
-            ],
-        ]);
-        $content = curl_exec($curl);
-        print_r($content);
+    //     curl_setopt_array($curl, [
+    //         CURLOPT_URL            => "https://api.sandbox.midtrans.com/v2/SANDBOX-G710367688-806/status",
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING       => "",
+    //         CURLOPT_MAXREDIRS      => 10,
+    //         CURLOPT_TIMEOUT        => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+    //         CURLOPT_CUSTOMREQUEST  => "GET",
+    //         CURLOPT_POSTFIELDS     => "\n\n",
+    //         CURLOPT_HTTPHEADER     => [
+    //             "Accept: application/json",
+    //             "Content-Type: application/json",
+    //             "Authorization: SB-Mid-client-0FHNOdX3KizpO3B0",
+    //         ],
+    //     ]);
+    //     $content = curl_exec($curl);
+    //     print_r($content);
 
-        try {
-            $url      = 'https://api.sandbox.midtrans.com/v2/charge';
-            $response = remotePost($url, 'SB-Mid-server-nqV_1C85dJJgOEOlwS-YN1M8', json_encode($transaction_data, true));
-            // Transaction data to be sent
-        } catch (Exception $e) {
-            //$transaction_data['item_details'] = $items;
-            die();
-        }
-        $response = json_decode($response, true);
-        //print_r($transaction_data);
-        $data['id_store_pesanan']   = $store_pesanan;
-        $data['status_code']        = $response['status_code'];
-        $data['status_message']     = $response['status_message'];
-        $data['transaction_id']     = $response['transaction_id'];
-        $data['order_id']           = $response['order_id'];
-        $data['gross_amount']       = $response['gross_amount'];
-        $data['currency']           = $response['currency'];
-        $data['payment_type']       = $response['payment_type'];
-        $data['transaction_time']   = $response['transaction_time'];
-        $data['transaction_status'] = $response['transaction_status'];
-        $data['merchant_id']        = $response['merchant_id'];
-        if ($payment_type == 'cstore') {
+    //     try {
+    //         $url      = 'https://api.sandbox.midtrans.com/v2/charge';
+    //         $response = remotePost($url, 'SB-Mid-server-nqV_1C85dJJgOEOlwS-YN1M8', json_encode($transaction_data, true));
+    //         // Transaction data to be sent
+    //     } catch (Exception $e) {
+    //         //$transaction_data['item_details'] = $items;
+    //         die();
+    //     }
+    //     $response = json_decode($response, true);
+    //     //print_r($transaction_data);
+    //     $data['id_store_pesanan']   = $store_pesanan;
+    //     $data['status_code']        = $response['status_code'];
+    //     $data['status_message']     = $response['status_message'];
+    //     $data['transaction_id']     = $response['transaction_id'];
+    //     $data['order_id']           = $response['order_id'];
+    //     $data['gross_amount']       = $response['gross_amount'];
+    //     $data['currency']           = $response['currency'];
+    //     $data['payment_type']       = $response['payment_type'];
+    //     $data['transaction_time']   = $response['transaction_time'];
+    //     $data['transaction_status'] = $response['transaction_status'];
+    //     $data['merchant_id']        = $response['merchant_id'];
+    //     if ($payment_type == 'cstore') {
 
-            $data['payment_code'] = $response['payment_code'];
-            $data['store']        = $response['store'];
-        } else
-        if ($payment_type == 'bank_transfer') {
-            if ($payment_brand != 'permata') {
+    //         $data['payment_code'] = $response['payment_code'];
+    //         $data['store']        = $response['store'];
+    //     } else
+    //     if ($payment_type == 'bank_transfer') {
+    //         if ($payment_brand != 'permata') {
 
-                $data['bank']       = $response['va_numbers'][0]['bank'];
-                $data['va_numbers'] = $response['va_numbers'][0]['va_number'];
-            } else {
-                // echo " < pre > ";print_r($response);
-                $data['bank']       = $payment_brand;
-                $data['va_numbers'] = $response['permata_va_number'];
-            }
+    //             $data['bank']       = $response['va_numbers'][0]['bank'];
+    //             $data['va_numbers'] = $response['va_numbers'][0]['va_number'];
+    //         } else {
+    //             // echo " < pre > ";print_r($response);
+    //             $data['bank']       = $payment_brand;
+    //             $data['va_numbers'] = $response['permata_va_number'];
+    //         }
 
-            $data['fraud_status'] = $response['fraud_status'];
-        }
-        if ($data['transaction_id'] != null) {
+    //         $data['fraud_status'] = $response['fraud_status'];
+    //     }
+    //     if ($data['transaction_id'] != null) {
 
-            $this->db->insert('store_pesanan_bayar', $data);
-            return $this->db->insert_id();
-        }
-    }
-    public function bayar($store_pesanan)
-    {
-        if (isset($_GET['proses'])) {
-            if ($_GET['proses'] == 'input') {
+    //         $this->db->insert('store_pesanan_bayar', $data);
+    //         return $this->db->insert_id();
+    //     }
+    // }
+    // public function bayar($store_pesanan)
+    // {
+    //     if (isset($_GET['proses'])) {
+    //         if ($_GET['proses'] == 'input') {
 
-                $row = $this->db->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->result();
+    //             $row = $this->db->where('id_store_pesanan', $store_pesanan)->get('store_pesanan_detail')->result();
 
-                $data['status'] = 'Proses Pembayaran';
-                foreach ($row as $baris) {
-                    $this->db->where('id_store_user_cart', $baris->id_store_user_cart)->update('store_user_cart', $data);
-                }
-                $data                      = Partial::input('data');
-                $data['payment_type']      = Partial::input('payment_type');
-                $data['payment_brand']     = Partial::input('payment_brand');
-                $data['status']            = 'pembayaran';
-                $data['tgl_pesan']         = date('Y-m-d H:i:s');
-                $data['tgl_expired_bayar'] = tambah_tanggal(date('Y-m-d'), 1) . ' ' . date('H:i:s');
-                $data['nomor_invoice']     = date('ymdHis') . rand(10000, 99999);
+    //             $data['status'] = 'Proses Pembayaran';
+    //             foreach ($row as $baris) {
+    //                 $this->db->where('id_store_user_cart', $baris->id_store_user_cart)->update('store_user_cart', $data);
+    //             }
+    //             $data                      = Partial::input('data');
+    //             $data['payment_type']      = Partial::input('payment_type');
+    //             $data['payment_brand']     = Partial::input('payment_brand');
+    //             $data['status']            = 'pembayaran';
+    //             $data['tgl_pesan']         = date('Y-m-d H:i:s');
+    //             $data['tgl_expired_bayar'] = tambah_tanggal(date('Y-m-d'), 1) . ' ' . date('H:i:s');
+    //             $data['nomor_invoice']     = date('ymdHis') . rand(10000, 99999);
 
-                if ($data['payment_type'] != 'Manual Transfer Bank') {
+    //             if ($data['payment_type'] != 'Manual Transfer Bank') {
 
-                    $insert_id = $this->initialize_payment($store_pesanan, $data['nomor_invoice'], $data['payment_type'], $data['payment_brand']);
+    //                 $insert_id = $this->initialize_payment($store_pesanan, $data['nomor_invoice'], $data['payment_type'], $data['payment_brand']);
 
-                    $data['id_store_pesanan_bayar'] = $insert_id;
-                }
+    //                 $data['id_store_pesanan_bayar'] = $insert_id;
+    //             }
 
-                $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $data);
-                redirect(base_url() . 'bayar.html/' . $store_pesanan . '?proses=email');
-            } else
-            if ($_GET['proses'] == 'email') {
-                $user = $this->db->where('id_apps_user', $_SESSION['id_apps'])->get('apps_user')->row();
-                // echo $e->getMessage();
-                $pesanan = $this->db->where('id_store_pesanan', $store_pesanan)->get('store_pesanan')->row();
-                if ($pesanan->payment_type == 'Manual Transfer Bank') {
-                    $konfirm = "
-					<h3>Konfirmasi Pembayaran</h3>
-					Lakukan Konfirmasi Pembayaran, dengan cara:<br>
-					1. pastikan anda login sesuai akun yang sama saat pemesanan<br>
-					2. klik icon profile, kemudian pilih konfirmasi pembayaran. atau klik button yang ada di bawah ini<br>
-					3. Pilih Nomor Invoice, pastikan nomor invoice yang anda pilih sesuai dengan pembayaran yang dilakukan
-					4. Lalu isi form yang lainnya, kemudian Simpan<br><br><br>
+    //             $this->db->where('id_store_pesanan', $store_pesanan)->update('store_pesanan', $data);
+    //             redirect(base_url() . 'bayar.html/' . $store_pesanan . '?proses=email');
+    //         } else
+    //         if ($_GET['proses'] == 'email') {
+    //             $user = $this->db->where('id_apps_user', $_SESSION['id_apps'])->get('apps_user')->row();
+    //             // echo $e->getMessage();
+    //             $pesanan = $this->db->where('id_store_pesanan', $store_pesanan)->get('store_pesanan')->row();
+    //             if ($pesanan->payment_type == 'Manual Transfer Bank') {
+    //                 $konfirm = "
+	// 				<h3>Konfirmasi Pembayaran</h3>
+	// 				Lakukan Konfirmasi Pembayaran, dengan cara:<br>
+	// 				1. pastikan anda login sesuai akun yang sama saat pemesanan<br>
+	// 				2. klik icon profile, kemudian pilih konfirmasi pembayaran. atau klik button yang ada di bawah ini<br>
+	// 				3. Pilih Nomor Invoice, pastikan nomor invoice yang anda pilih sesuai dengan pembayaran yang dilakukan
+	// 				4. Lalu isi form yang lainnya, kemudian Simpan<br><br><br>
 
-					<a href='http://weareislam.id/Store//konfirmasi-pembayaran.html' style='background-color: #206bc4;  border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Konfirmasi Pembayaran</a>
-					";
-                    $imgBrand     = 'BankBNI.png';
-                    $payment_code = '0902402741 ';
-                    $an           = 'a.n HILFI MUHAMAD ARYAWAN<br>(BNI SYARIAH/BSI)';
-                    $title        = 'Bank Transfer Ke';
-                } else if ($pesanan->payment_type == 'bank_transfer') {
-                    $payment = $this->db->where('id_store_pesanan_bayar', $pesanan->id_store_pesanan_bayar)->get('store_pesanan_bayar')->row();
-                    if ($pesanan->payment_brand == 'bni') {
-                        $imgBrand = 'BankBNI.png';
-                    } else if ($pesanan->payment_brand == 'bri') {
-                        $imgBrand = 'BankBRI.png';
-                    } else if ($pesanan->payment_brand == 'bca') {
-                        $imgBrand = 'BankBCA.png';
-                    } else if ($pesanan->payment_brand == 'permata') {
-                        $imgBrand = 'BankPermata.png';
-                    }
+	// 				<a href='http://weareislam.id/Store//konfirmasi-pembayaran.html' style='background-color: #206bc4;  border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Konfirmasi Pembayaran</a>
+	// 				";
+    //                 $imgBrand     = 'BankBNI.png';
+    //                 $payment_code = '0902402741 ';
+    //                 $an           = 'a.n HILFI MUHAMAD ARYAWAN<br>(BNI SYARIAH/BSI)';
+    //                 $title        = 'Bank Transfer Ke';
+    //             } else if ($pesanan->payment_type == 'bank_transfer') {
+    //                 $payment = $this->db->where('id_store_pesanan_bayar', $pesanan->id_store_pesanan_bayar)->get('store_pesanan_bayar')->row();
+    //                 if ($pesanan->payment_brand == 'bni') {
+    //                     $imgBrand = 'BankBNI.png';
+    //                 } else if ($pesanan->payment_brand == 'bri') {
+    //                     $imgBrand = 'BankBRI.png';
+    //                 } else if ($pesanan->payment_brand == 'bca') {
+    //                     $imgBrand = 'BankBCA.png';
+    //                 } else if ($pesanan->payment_brand == 'permata') {
+    //                     $imgBrand = 'BankPermata.png';
+    //                 }
 
-                    $title        = '  Vitual Account Billing';
-                    $payment_code = $payment->va_numbers;
-                } else if ($pesanan->payment_type == 'cstore') {
-                    $payment = $this->db->where('id_store_pesanan_bayar', $pesanan->id_store_pesanan_bayar)->get('store_pesanan_bayar')->row();
-                    if ($pesanan->payment_brand == 'alfamart') {
-                        $imgBrand = 'alfamart.png';
-                    } else if ($pesanan->payment_brand == 'indomaret') {
-                        $imgBrand = 'indomaret.png';
-                    }
+    //                 $title        = '  Vitual Account Billing';
+    //                 $payment_code = $payment->va_numbers;
+    //             } else if ($pesanan->payment_type == 'cstore') {
+    //                 $payment = $this->db->where('id_store_pesanan_bayar', $pesanan->id_store_pesanan_bayar)->get('store_pesanan_bayar')->row();
+    //                 if ($pesanan->payment_brand == 'alfamart') {
+    //                     $imgBrand = 'alfamart.png';
+    //                 } else if ($pesanan->payment_brand == 'indomaret') {
+    //                     $imgBrand = 'indomaret.png';
+    //                 }
 
-                    $payment_code = $payment->payment_code;
-                    $title        = 'Gerai Retail';
-                }
-                $msg = "
-				Bismillah, <br>
-				Hallo Sahabat " . $user->nama_lengkap . ",<br>
-				Jazakumullahu khair, telah memesan barang barang dari website kami, berikut adalah rincian pembayaran yang sahabat harus lakukan:<br><br>
-				<center>
-				<b>Total Bayar</b><br>
-				<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
-				<font style='color:#222'>Jatuh Tempo pada :<br> " . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s') . "</font><br><br>
-				Lakukan Pembayaran:<br>
-				$title<br>
-					<h3 style='padding-bottom:5px;padding-top:5px;margin: 0px;'>
-                  		<img src=" . base_url() . 'images/' . $imgBrand . " width='50px'> <br><font style='font-size:25px;'><b>" . $payment_code . "</b></font><br>
-                  	</h3>
-                  	<div class=''>$an</div>
-                  	$konfirm
-				</center>
+    //                 $payment_code = $payment->payment_code;
+    //                 $title        = 'Gerai Retail';
+    //             }
+    //             $msg = "
+	// 			Bismillah, <br>
+	// 			Hallo Sahabat " . $user->nama_lengkap . ",<br>
+	// 			Jazakumullahu khair, telah memesan barang barang dari website kami, berikut adalah rincian pembayaran yang sahabat harus lakukan:<br><br>
+	// 			<center>
+	// 			<b>Total Bayar</b><br>
+	// 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
+	// 			<font style='color:#222'>Jatuh Tempo pada :<br> " . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s') . "</font><br><br>
+	// 			Lakukan Pembayaran:<br>
+	// 			$title<br>
+	// 				<h3 style='padding-bottom:5px;padding-top:5px;margin: 0px;'>
+    //               		<img src=" . base_url() . 'images/' . $imgBrand . " width='50px'> <br><font style='font-size:25px;'><b>" . $payment_code . "</b></font><br>
+    //               	</h3>
+    //               	<div class=''>$an</div>
+    //               	$konfirm
+	// 			</center>
 
-				";
-                ob_start();
-                send_email($user->email, $user->nama_lengkap, "Pembayaran Weareislam.id Pemesanan Tanggal" . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s'), $msg);
-                ob_end_clean();
-            }
-            redirect(base_url() . 'bayar.html/' . $store_pesanan . '');
-        } else {
+	// 			";
+    //             ob_start();
+    //             send_email($user->email, $user->nama_lengkap, "Pembayaran Weareislam.id Pemesanan Tanggal" . tgl_indo(nice_date($pesanan->tgl_expired_bayar, 'Y-m-d')) . " Pukul " . nice_date($pesanan->tgl_expired_bayar, 'H:i:s'), $msg);
+    //             ob_end_clean();
+    //         }
+    //         redirect(base_url() . 'bayar.html/' . $store_pesanan . '');
+    //     } else {
 
-            $page['content']  = '_v_store/v_belanja_bayar';
-            $page['pesanan']  = $pesanan  = $this->db->where('id_store_pesanan', $this->uri->segment(2))->get('store_pesanan')->row();
-            $page['user_all'] =
-            $this->db->where('id_apps_user', $_SESSION['id_apps'])
-                ->join('apps_wilayah_kabupaten', 'apps_user.id_kota_user = apps_wilayah_kabupaten.kota_id', 'left')
-                ->join('apps_wilayah_provinsi', 'apps_wilayah_provinsi.provinsi_id = apps_wilayah_kabupaten.provinsi_id')
-                ->get('apps_user')->row();
-            $this->load->view('layout/content', $page);
-        }
-    }
+    //         $page['content']  = '_v_store/v_belanja_bayar';
+    //         $page['pesanan']  = $pesanan  = $this->db->where('id_store_pesanan', $this->uri->segment(2))->get('store_pesanan')->row();
+    //         $page['user_all'] =
+    //         $this->db->where('id_apps_user', $_SESSION['id_apps'])
+    //             ->join('apps_wilayah_kabupaten', 'apps_user.id_kota_user = apps_wilayah_kabupaten.kota_id', 'left')
+    //             ->join('apps_wilayah_provinsi', 'apps_wilayah_provinsi.provinsi_id = apps_wilayah_kabupaten.provinsi_id')
+    //             ->get('apps_user')->row();
+    //         $this->load->view('layout/content', $page);
+    //     }
+    // }
 
-    public function get_invoice_barang()
-    {
-        $data = $this->db
-            ->select('store_pesanan.*,store_pesanan_detail.*,store_barang.*')
-            ->select('(IF(store_pesanan_detail.id_store_varian_warna!=0, concat(" Warna : ",(Select nama_varian from store_barang_varian where store_barang_varian.id_store_barang_varian =  store_pesanan_detail.id_store_varian_warna)), null)) as warna')
-            ->select('(IF(store_pesanan_detail.id_store_varian_type!=0,concat(" Type : ",(Select nama_varian from store_barang_varian where store_barang_varian.id_store_barang_varian =  store_pesanan_detail.id_store_varian_type)), null)) as type')
-            ->where('store_pesanan.nomor_invoice', Partial::input('no_inv'))
-            ->from('store_pesanan')
-            ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
-            ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
-            ->get();
-        $content     = '';
-        $no          = 1;
-        $total_bayar = 0;
-        foreach ($data->result() as $baris) {
+    // public function get_invoice_barang()
+    // {
+    //     $data = $this->db
+    //         ->select('store_pesanan.*,store_pesanan_detail.*,store_barang.*')
+    //         ->select('(IF(store_pesanan_detail.id_store_varian_warna!=0, concat(" Warna : ",(Select nama_varian from store_barang_varian where store_barang_varian.id_store_barang_varian =  store_pesanan_detail.id_store_varian_warna)), null)) as warna')
+    //         ->select('(IF(store_pesanan_detail.id_store_varian_type!=0,concat(" Type : ",(Select nama_varian from store_barang_varian where store_barang_varian.id_store_barang_varian =  store_pesanan_detail.id_store_varian_type)), null)) as type')
+    //         ->where('store_pesanan.nomor_invoice', Partial::input('no_inv'))
+    //         ->from('store_pesanan')
+    //         ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
+    //         ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
+    //         ->get();
+    //     $content     = '';
+    //     $no          = 1;
+    //     $total_bayar = 0;
+    //     foreach ($data->result() as $baris) {
 
-            $content .= '
-							<label class="form-selectgroup-item flex-fill mb-2">
-							<input class="form-selectgroup-input" disabled  type="checkbox">
-							<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-							<div class="me-3">
-							<span class="">' . $no++ . '</span>
-							</div>
-							<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-							<div  class=" text-left ">
-							<div class="font-weight-bold" style="text-align: left;"> ' . $baris->nama_barang . '</div>
-							<div class="text-muted" style="text-align: left;">' . $baris->jumlah . 'x    ' . $baris->warna . '   ' . $baris->type . ' </div>
-							<div class="text-muted" style="text-align: left;"> Harga ' . $baris->harga_total . ' </div>
+    //         $content .= '
+	// 						<label class="form-selectgroup-item flex-fill mb-2">
+	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
+	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+	// 						<div class="me-3">
+	// 						<span class="">' . $no++ . '</span>
+	// 						</div>
+	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+	// 						<div  class=" text-left ">
+	// 						<div class="font-weight-bold" style="text-align: left;"> ' . $baris->nama_barang . '</div>
+	// 						<div class="text-muted" style="text-align: left;">' . $baris->jumlah . 'x    ' . $baris->warna . '   ' . $baris->type . ' </div>
+	// 						<div class="text-muted" style="text-align: left;"> Harga ' . $baris->harga_total . ' </div>
 
-							</div>
-							</div>
-							</div>
-							</label>';
-            $total_bayar += $baris->harga_total;
-            $id_pesanan = $baris->id_store_pesanan;
-        }
-        $zakat  = $this->db->select('nominal')->where('id_store_pesanan', $id_pesanan)->get('zakat')->row()->nominal;
-        $ongkir = $this->db->select_sum('harga_total')->where('id_store_pesanan', $id_pesanan)->where('jenis', 'ongkir')->get('store_pesanan_detail')->row()->harga_total;
+	// 						</div>
+	// 						</div>
+	// 						</div>
+	// 						</label>';
+    //         $total_bayar += $baris->harga_total;
+    //         $id_pesanan = $baris->id_store_pesanan;
+    //     }
+    //     $zakat  = $this->db->select('nominal')->where('id_store_pesanan', $id_pesanan)->get('zakat')->row()->nominal;
+    //     $ongkir = $this->db->select_sum('harga_total')->where('id_store_pesanan', $id_pesanan)->where('jenis', 'ongkir')->get('store_pesanan_detail')->row()->harga_total;
 
-        $content .= '
-							<label class="form-selectgroup-item flex-fill mb-2">
-							<input class="form-selectgroup-input" disabled  type="checkbox">
-							<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-							<div class="me-3">
-							<span class="">' . $no++ . '</span>
-							</div>
-							<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-							<div  class=" text-left ">
-							<div class="font-weight-bold" style="text-align: left;"> Zakat Mal</div>
-							<div class="text-muted" style="text-align: left;">' . rupiah($zakat) . ' </div>
+    //     $content .= '
+	// 						<label class="form-selectgroup-item flex-fill mb-2">
+	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
+	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+	// 						<div class="me-3">
+	// 						<span class="">' . $no++ . '</span>
+	// 						</div>
+	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+	// 						<div  class=" text-left ">
+	// 						<div class="font-weight-bold" style="text-align: left;"> Zakat Mal</div>
+	// 						<div class="text-muted" style="text-align: left;">' . rupiah($zakat) . ' </div>
 
-							</div>
-							</div>
-							</div>
-							</label>';
-        $content .= '
-							<label class="form-selectgroup-item flex-fill mb-2">
-							<input class="form-selectgroup-input" disabled  type="checkbox">
-							<div class="form-selectgroup-label d-flex align-items-centerr p-3">
-							<div class="me-3">
-							<span class="">' . $no++ . '</span>
-							</div>
-							<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
-							<div  class=" text-left ">
-							<div class="font-weight-bold" style="text-align: left;"> Ongkir</div>
-							<div class="text-muted" style="text-align: left;">' . rupiah($ongkir) . ' </div>
+	// 						</div>
+	// 						</div>
+	// 						</div>
+	// 						</label>';
+    //     $content .= '
+	// 						<label class="form-selectgroup-item flex-fill mb-2">
+	// 						<input class="form-selectgroup-input" disabled  type="checkbox">
+	// 						<div class="form-selectgroup-label d-flex align-items-centerr p-3">
+	// 						<div class="me-3">
+	// 						<span class="">' . $no++ . '</span>
+	// 						</div>
+	// 						<div class="form-selectgroup-label-content text-left d-flex " style="color: #000;">
+	// 						<div  class=" text-left ">
+	// 						<div class="font-weight-bold" style="text-align: left;"> Ongkir</div>
+	// 						<div class="text-muted" style="text-align: left;">' . rupiah($ongkir) . ' </div>
 
-							</div>
-							</div>
-							</div>
-							</label>';
+	// 						</div>
+	// 						</div>
+	// 						</div>
+	// 						</label>';
 
-        $total_bayar += $zakat;
-        $total_bayar += $ongkir;
-        $return['content']      = $content;
-        $return['id_pesanan']   = $id_pesanan;
-        $return['total_barang'] = $data->num_rows();
-        $return['total_bayar']  = rupiah($total_bayar);
-        $return['total_inv']    = Partial::input('no_inv');
-        echo json_encode($return);
-    }
-    public function send_konfirm_bayar()
-    {
-        $data                 = Partial::input('data');
-        $data['id_apps_user'] = $_SESSION['id_apps'];
-        $this->db->insert('store_pesanan_bayar_konfirm', $data);
-        $id         = $this->db->insert_id();
-        $uploadData = $this->_do_upload('file', 'Store', 'store_pesanan_bayar_konfirm', 'KonfirmBayar');
-        //print_r($response);
-        $img = "";
-        for ($i = 0; $i < count($uploadData); $i++) {
-            $uploadData[$i]['id_ext'] = $id;
-            //echo'tess';
-            $this->db->insert('apps_file', $uploadData[$i]);
-            $img .= "
-		 	<img src=" . base_url('upload/') . $uploadData[$i]['path'] . '/' . $uploadData[$i]['file_name'] . " width='500px'/>		 	";
-        }
-        $user = $this->db->where('id_apps_user', $_SESSION['id_apps'])->get('apps_user')->row();
-        //echo $user->email;
-        $pesanan = $this->db->where('nomor_invoice', $data['nomor_invoice'])->get('store_pesanan')->row();
+    //     $total_bayar += $zakat;
+    //     $total_bayar += $ongkir;
+    //     $return['content']      = $content;
+    //     $return['id_pesanan']   = $id_pesanan;
+    //     $return['total_barang'] = $data->num_rows();
+    //     $return['total_bayar']  = rupiah($total_bayar);
+    //     $return['total_inv']    = Partial::input('no_inv');
+    //     echo json_encode($return);
+    // }
+    // public function send_konfirm_bayar()
+    // {
+    //     $data                 = Partial::input('data');
+    //     $data['id_apps_user'] = $_SESSION['id_apps'];
+    //     $this->db->insert('store_pesanan_bayar_konfirm', $data);
+    //     $id         = $this->db->insert_id();
+    //     $uploadData = $this->_do_upload('file', 'Store', 'store_pesanan_bayar_konfirm', 'KonfirmBayar');
+    //     //print_r($response);
+    //     $img = "";
+    //     for ($i = 0; $i < count($uploadData); $i++) {
+    //         $uploadData[$i]['id_ext'] = $id;
+    //         //echo'tess';
+    //         $this->db->insert('apps_file', $uploadData[$i]);
+    //         $img .= "
+	// 	 	<img src=" . base_url('upload/') . $uploadData[$i]['path'] . '/' . $uploadData[$i]['file_name'] . " width='500px'/>		 	";
+    //     }
+    //     $user = $this->db->where('id_apps_user', $_SESSION['id_apps'])->get('apps_user')->row();
+    //     //echo $user->email;
+    //     $pesanan = $this->db->where('nomor_invoice', $data['nomor_invoice'])->get('store_pesanan')->row();
 
-        $konfirm = "
-					<h3>Konfirmasi Pembayaran</h3>
+    //     $konfirm = "
+	// 				<h3>Konfirmasi Pembayaran</h3>
 
 
-					<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/detail/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Lihat Lebih Detail</a>
-					<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=benar' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Benar</a>
-					<a href='http://weareislam.id/Store/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=tidak' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Tidak Benar</a>
-					";
+	// 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/detail/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Lihat Lebih Detail</a>
+	// 				<a href='http://weareislam.id/Store/Admin/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=benar' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Benar</a>
+	// 				<a href='http://weareislam.id/Store/konfirmasi_pembayaran/send/?auth=b894ba59093db2515774580cdc93726e&id_konfirm=$id&value=tidak' style='background-color: #206bc4;  border: none;  color: white;  padding: 5px 12px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;'>Tidak Benar</a>
+	// 				";
 
-        $msg = "
-				Bismillah, <br>
-				Hallo Sahabat Bapak Admin,<br>
-				Sahabat kita " . $user->nama_lengkap . " telah sudah melakukan pembayaran, mangga di cek,<br><br><br>
-				<center>
-				<b>Total Bayar</b><br>
-				<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
-				<font style='color:#222'>
-				Atas Nama : <b> " . $data['nama'] . "</b><br>
-				No Rek : <b> " . $data['no_rek'] . "</b><br>
-				bank : <b> " . $data['bank'] . "</b><br>
-				$img
-				</font><br><br>
-				$konfirm
+    //     $msg = "
+	// 			Bismillah, <br>
+	// 			Hallo Sahabat Bapak Admin,<br>
+	// 			Sahabat kita " . $user->nama_lengkap . " telah sudah melakukan pembayaran, mangga di cek,<br><br><br>
+	// 			<center>
+	// 			<b>Total Bayar</b><br>
+	// 			<font style='font-size:20px'><b>" . rupiah($pesanan->total_bayar) . "</b></font><br>
+	// 			<font style='color:#222'>
+	// 			Atas Nama : <b> " . $data['nama'] . "</b><br>
+	// 			No Rek : <b> " . $data['no_rek'] . "</b><br>
+	// 			bank : <b> " . $data['bank'] . "</b><br>
+	// 			$img
+	// 			</font><br><br>
+	// 			$konfirm
 
-				</center>
+	// 			</center>
 
-				";
-        ob_start();
-        send_email('hilfimuhamad@gmail.com', "Admin We Are Islam", "Konfirmasi Pembayaran User " . $user->nama_lengkap, $msg, ["hermawanbujil60@gmail.com", "Refafauzia00@gmail.com"]);
-        //echo count($uploadData);
-        //print_r($uploadData[$i]);
-        ob_end_clean();
-        //echo $user->email;
-        redirect(base_url() . 'konfirmasi-pembayaran.html');
-    }
+	// 			";
+    //     ob_start();
+    //     send_email('hilfimuhamad@gmail.com', "Admin We Are Islam", "Konfirmasi Pembayaran User " . $user->nama_lengkap, $msg, ["hermawanbujil60@gmail.com", "Refafauzia00@gmail.com"]);
+    //     //echo count($uploadData);
+    //     //print_r($uploadData[$i]);
+    //     ob_end_clean();
+    //     //echo $user->email;
+    //     redirect(base_url() . 'konfirmasi-pembayaran.html');
+    // }
 }
-class Belanja
-{
+// class Belanja
+// {
 
-    public function data_distributor($id_store_distributor)
-    {
-        $query = $this->db->where('id_store_distributor', $id_store_distributor)
-            ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id')
-            ->get('store_distributor');
-        return $query;
-    }
-    public function data_cart_distributor($id_store_distributor)
-    {
-        $query = $this->db->where('id_apps_user ', $_SESSION['id_apps'])->where('status', 'Belum Beli')->where('jenis  ', 'ongkir')->where('id_store_distributor', $id_store_distributor)
-            ->get('store_user_cart');
-        return $query;
-    }
-    public function data_ulasan()
-    {
-        $data_pesanan = $this->db
-            ->where('store_pesanan.status ', 'selesai')
-            ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
-            ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
+//     public function data_distributor($id_store_distributor)
+//     {
+//         $query = $this->db->where('id_store_distributor', $id_store_distributor)
+//             ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id')
+//             ->get('store_distributor');
+//         return $query;
+//     }
+//     public function data_cart_distributor($id_store_distributor)
+//     {
+//         $query = $this->db->where('id_apps_user ', $_SESSION['id_apps'])->where('status', 'Belum Beli')->where('jenis  ', 'ongkir')->where('id_store_distributor', $id_store_distributor)
+//             ->get('store_user_cart');
+//         return $query;
+//     }
+//     public function data_ulasan()
+//     {
+//         $data_pesanan = $this->db
+//             ->where('store_pesanan.status ', 'selesai')
+//             ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
+//             ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
 
-            ->where('store_pesanan_detail.jenis ', 'barang')
-            ->where('store_pesanan.id_apps_user', $_SESSION['id_apps'])
+//             ->where('store_pesanan_detail.jenis ', 'barang')
+//             ->where('store_pesanan.id_apps_user', $_SESSION['id_apps'])
 
-            ->get('store_pesanan');
-        return $data_pesanan;
-    }
-    public function data_pesanan($id_store_pesanan = null, $status = null)
-    {
-        if ($id_store_pesanan) {
-            $this->db->where('store_pesanan.id_store_pesanan ', $id_store_pesanan);
-        } else {
-            $this->db->where('store_pesanan.status !=', 'aktif');
-        }
-        if ($status) {
-            $this->db->where('store_pesanan.status ', $status);
-        }
+//             ->get('store_pesanan');
+//         return $data_pesanan;
+//     }
+//     public function data_pesanan($id_store_pesanan = null, $status = null)
+//     {
+//         if ($id_store_pesanan) {
+//             $this->db->where('store_pesanan.id_store_pesanan ', $id_store_pesanan);
+//         } else {
+//             $this->db->where('store_pesanan.status !=', 'aktif');
+//         }
+//         if ($status) {
+//             $this->db->where('store_pesanan.status ', $status);
+//         }
 
-        $data_pesanan = $this->db
+//         $data_pesanan = $this->db
 
-            ->where('store_pesanan_detail.jenis ', 'barang')
-            ->where('store_pesanan.id_apps_user', $_SESSION['id_apps'])
-            ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
-            ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
-            ->join('store_distributor', 'store_barang.id_store_distributor = store_distributor.id_store_distributor')
-            ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id')
-            ->order_by('store_pesanan_detail.id_store_pesanan')
-            ->get('store_pesanan');
-        return $data_pesanan;
-    }
-    public function data_store_cart($id_store_cart = null, $status = null, $panel = 'umum')
-    {
-        if ($id_store_cart) {
-            $this->db->where('id_store_user_cart', $id_store_cart);
-        }
-        $data_cart = $this->db->where('id_apps_user', $_SESSION['id_apps'])
-            ->where('store_user_cart.status', 'Belum Beli')
-        //send_email('hermawanbujil60@gmail.com',"Admin We Are Islam","Konfirmasi Pembayaran User ".$user->nama_lengkap,$msg,"hermawanbujil60@gmail.com,Refafauzia00@gmail.com");
-            ->join('store_barang', 'store_user_cart.id_store_barang = store_barang.id_store_barang')
-            ->join('store_distributor', 'store_barang.id_store_distributor = store_distributor.id_store_distributor', 'left')
-            ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id', 'left')
-            ->order_by('store_barang.id_store_distributor')
-            ->get('store_user_cart');
-        //send_email('Refafauzia00@gmail.com',"Admin We Are Islam","Konfirmasi Pembayaran User ".$user->nama_lengkap,$msg,"hermawanbujil60@gmail.com,Refafauzia00@gmail.com");
-        return $data_cart;
-    }
-    public function send_zakat($store_pesanan, $zakat)
-    {
-        $data['id_store_pesanan'] = $store_pesanan;
-        $data['id_apps_user']     = $_SESSION['id_apps'];
-        $data['nominal']          = $zakat;
-        $data['zakat_sisa']       = $zakat;
-        $data['tgl_input']        = date('Y-m-d H:i:s');
-        $data['jenis']            = 'pembelian_barang';
-        $this->db->where('id_store_pesanan', $store_pesanan)->where('jenis', 'pembelian_barang')->delete('zakat');
-        $this->db->insert('zakat', $data);
-    }
+//             ->where('store_pesanan_detail.jenis ', 'barang')
+//             ->where('store_pesanan.id_apps_user', $_SESSION['id_apps'])
+//             ->join('store_pesanan_detail', 'store_pesanan_detail.id_store_pesanan = store_pesanan.id_store_pesanan')
+//             ->join('store_barang', 'store_pesanan_detail.id_store_barang = store_barang.id_store_barang')
+//             ->join('store_distributor', 'store_barang.id_store_distributor = store_distributor.id_store_distributor')
+//             ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id')
+//             ->order_by('store_pesanan_detail.id_store_pesanan')
+//             ->get('store_pesanan');
+//         return $data_pesanan;
+//     }
+//     public function data_store_cart($id_store_cart = null, $status = null, $panel = 'umum')
+//     {
+//         if ($id_store_cart) {
+//             $this->db->where('id_store_user_cart', $id_store_cart);
+//         }
+//         $data_cart = $this->db->where('id_apps_user', $_SESSION['id_apps'])
+//             ->where('store_user_cart.status', 'Belum Beli')
+//         //send_email('hermawanbujil60@gmail.com',"Admin We Are Islam","Konfirmasi Pembayaran User ".$user->nama_lengkap,$msg,"hermawanbujil60@gmail.com,Refafauzia00@gmail.com");
+//             ->join('store_barang', 'store_user_cart.id_store_barang = store_barang.id_store_barang')
+//             ->join('store_distributor', 'store_barang.id_store_distributor = store_distributor.id_store_distributor', 'left')
+//             ->join('apps_wilayah_kabupaten', 'store_distributor.id_kota = apps_wilayah_kabupaten.kota_id', 'left')
+//             ->order_by('store_barang.id_store_distributor')
+//             ->get('store_user_cart');
+//         //send_email('Refafauzia00@gmail.com',"Admin We Are Islam","Konfirmasi Pembayaran User ".$user->nama_lengkap,$msg,"hermawanbujil60@gmail.com,Refafauzia00@gmail.com");
+//         return $data_cart;
+//     }
+//     public function send_zakat($store_pesanan, $zakat)
+//     {
+//         $data['id_store_pesanan'] = $store_pesanan;
+//         $data['id_apps_user']     = $_SESSION['id_apps'];
+//         $data['nominal']          = $zakat;
+//         $data['zakat_sisa']       = $zakat;
+//         $data['tgl_input']        = date('Y-m-d H:i:s');
+//         $data['jenis']            = 'pembelian_barang';
+//         $this->db->where('id_store_pesanan', $store_pesanan)->where('jenis', 'pembelian_barang')->delete('zakat');
+//         $this->db->insert('zakat', $data);
+//     }
 
-    public function get_saldo($kategori)
-    {
+//     public function get_saldo($kategori)
+//     {
 
-        if ($kategori == 'zakat') {
-            $this->db
-                ->where('zakat.id_apps_user', $_SESSION['id_apps']);
-            $this->db->from('zakat')
-                ->join('store_pesanan', 'zakat.id_store_pesanan = store_pesanan.id_store_pesanan')
-                ->where('store_pesanan.status_pembayaran', 'selesai');
-            $result = 'zakat_sisa';
-            $this->db->select_sum('zakat.zakat_sisa');
+//         if ($kategori == 'zakat') {
+//             $this->db
+//                 ->where('zakat.id_apps_user', $_SESSION['id_apps']);
+//             $this->db->from('zakat')
+//                 ->join('store_pesanan', 'zakat.id_store_pesanan = store_pesanan.id_store_pesanan')
+//                 ->where('store_pesanan.status_pembayaran', 'selesai');
+//             $result = 'zakat_sisa';
+//             $this->db->select_sum('zakat.zakat_sisa');
 
-            return $this->db->get()->row()->zakat_sisa;
-        } else if ($kategori == 'donasi') {
-            $this->db
-                ->where('donasi.id_apps_user', $_SESSION['id_apps']);
-            $this->db->from('donasi')
-                ->where('store_pesanan.status_pembayaran', 'selesai')
-                ->join('store_pesanan', 'donasi.id_store_pesanan = store_pesanan.id_store_pesanan  ');
-            $result = 'donasi_sisa';
-            $this->db->select_sum('donasi.donasi_sisa');
+//             return $this->db->get()->row()->zakat_sisa;
+//         } else if ($kategori == 'donasi') {
+//             $this->db
+//                 ->where('donasi.id_apps_user', $_SESSION['id_apps']);
+//             $this->db->from('donasi')
+//                 ->where('store_pesanan.status_pembayaran', 'selesai')
+//                 ->join('store_pesanan', 'donasi.id_store_pesanan = store_pesanan.id_store_pesanan  ');
+//             $result = 'donasi_sisa';
+//             $this->db->select_sum('donasi.donasi_sisa');
 
-            return $this->db->get()->row()->donasi_sisa;
-        } else if ($kategori == 'sisa_total_donasi') {
-            $this->db
-                ->where('donasi.id_apps_user', $_SESSION['id_apps']);
-            $this->db->from('donasi')
-                ->where('store_pesanan.status_pembayaran', 'selesai')
-                ->join('store_pesanan', 'donasi.id_store_pesanan = store_pesanan.id_store_pesanan  ');
-            $result = 'donasi_sisa_total';
-            $this->db->select_sum('donasi.donasi_sisa_total');
+//             return $this->db->get()->row()->donasi_sisa;
+//         } else if ($kategori == 'sisa_total_donasi') {
+//             $this->db
+//                 ->where('donasi.id_apps_user', $_SESSION['id_apps']);
+//             $this->db->from('donasi')
+//                 ->where('store_pesanan.status_pembayaran', 'selesai')
+//                 ->join('store_pesanan', 'donasi.id_store_pesanan = store_pesanan.id_store_pesanan  ');
+//             $result = 'donasi_sisa_total';
+//             $this->db->select_sum('donasi.donasi_sisa_total');
 
-            return $this->db->get()->row()->donasi_sisa_total;
-        }
-    }
-}
+//             return $this->db->get()->row()->donasi_sisa_total;
+//         }
+//     }
+// }

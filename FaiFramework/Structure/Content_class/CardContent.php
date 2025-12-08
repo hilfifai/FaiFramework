@@ -553,7 +553,7 @@ class CardContentSection
         } else {
             $status = false;
         }
-        curl_close($ch);
+        @curl_close($ch);
         return $status;
     }
     function content_menu($page, $card, $template_name, $extend = '')

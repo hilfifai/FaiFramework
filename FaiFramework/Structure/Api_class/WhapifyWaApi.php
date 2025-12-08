@@ -41,7 +41,7 @@ class WhapifyWaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         return $response;
     }
@@ -87,7 +87,7 @@ class WhapifyWaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         return $response;
     }
@@ -118,7 +118,7 @@ class WhapifyWaApi
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
         $result = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
         echo "<pre>";
         return ($result);
     }

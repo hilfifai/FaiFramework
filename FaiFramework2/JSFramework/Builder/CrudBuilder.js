@@ -1,7 +1,7 @@
 import FormBuilder from './FormBuilder.js';
 
 import FaiModule from '../FaiModule.js';
-export default class CrudBuilder  extends FaiModule{
+export default class CrudBuilder extends FaiModule {
     constructor() {
         super();
         this.config = {
@@ -1245,6 +1245,7 @@ export default class CrudBuilder  extends FaiModule{
     }
 
     _showFormModal(mode, data = null) {
+        
         if (this.formMode === 'modal') {
             this._showFormModalMode(mode, data);
         } else {
@@ -1279,6 +1280,12 @@ export default class CrudBuilder  extends FaiModule{
         title.text(mode === 'add' ? 'Tambah Data Baru' : `Edit Data #${data.id}`);
 
         console.log(this.getModule('domainDetail'));
+        this.config.page.crud.load ||= {};
+        this.config.page.crud.load.database ||= {};
+        this.config.page.crud.load.database.id ||= {};
+        this.config.page.crud.load.database.id.on_table = this.getModule('domainDetail').database_id_on_table;
+        this.config.page.crud.load.database.id.text = this.getModule('domainDetail').database_id_text;
+        this.config.page.crud.load.database.id.type = this.getModule('domainDetail').database_id_type;
         const formBuilderConfig = {
             viewContext: mode === 'add' ? 'tambah' : 'edit',
             data: data || {},
@@ -1302,8 +1309,8 @@ export default class CrudBuilder  extends FaiModule{
             formBody.append(scriptTag);
         }
 
-        if (mode === 'edit') {
-            form.append(`<input type="hidden" name="id" value="${data.id}">`);
+        if (mode === 'edit' && !$('.id_form_crud').length) {
+            form.append(`<input type="hidden" class="id_form_crud" name="id" value="${data.id}">`);
         }
 
         container.show();
@@ -1391,28 +1398,30 @@ export default class CrudBuilder  extends FaiModule{
         });
 
         // Event handler untuk tombol tambah dan refresh dalam form
-        this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
-            const tableName = subKategori[1];
+        if (this.config.page.crud.sub_kategori) {
+            this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
+                const tableName = subKategori[1];
 
-            // Tombol tambah
-            $(`#formAddSubKategori-${tableName}`).on('click', () => {
-                this._showSubKategoriFormInForm('add', tableName, index, parentId);
+                // Tombol tambah
+                $(`#formAddSubKategori-${tableName}`).on('click', () => {
+                    this._showSubKategoriFormInForm('add', tableName, index, parentId);
+                });
+
+                $(`#formAddSubKategoriForm-${tableName}`).on('click', () => {
+                    this._showSubKategoriFormInForm('add', tableName, index, parentId);
+                });
+
+                // Tombol refresh
+                $(`#formRefreshSubKategori-${tableName}`).on('click', () => {
+                    this._loadSubKategoriInForm(tableName, index, parentId, true);
+                });
             });
 
-            $(`#formAddSubKategoriForm-${tableName}`).on('click', () => {
-                this._showSubKategoriFormInForm('add', tableName, index, parentId);
-            });
-
-            // Tombol refresh
-            $(`#formRefreshSubKategori-${tableName}`).on('click', () => {
-                this._loadSubKategoriInForm(tableName, index, parentId, true);
-            });
-        });
-
-        // Load data untuk tab pertama
-        const firstTab = this.config.page.crud.sub_kategori[0];
-        if (firstTab) {
-            this._loadSubKategoriInForm(firstTab[1], 0, parentId);
+            // Load data untuk tab pertama
+            const firstTab = this.config.page.crud.sub_kategori[0];
+            if (firstTab) {
+                this._loadSubKategoriInForm(firstTab[1], 0, parentId);
+            }
         }
     }
 
@@ -1513,15 +1522,15 @@ export default class CrudBuilder  extends FaiModule{
                 
                 <div class="tab-content mt-3" id="formSubKategoriTabContent">
         `;
+        if (this.config.page.crud.sub_kategori) {
+            this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
+                const tableName = subKategori[1];
+                const displayType = subKategori[3] || 'table';
+                const isActive = index === 0 ? 'show active' : '';
+                const config = this.config.page.crud.sub_kategori_config?.[tableName];
+                const noAdd = config?.noAdd || false;
 
-        this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
-            const tableName = subKategori[1];
-            const displayType = subKategori[3] || 'table';
-            const isActive = index === 0 ? 'show active' : '';
-            const config = this.config.page.crud.sub_kategori_config?.[tableName];
-            const noAdd = config?.noAdd || false;
-
-            html += `
+                html += `
                 <div class="tab-pane fade ${isActive}" id="formTabContent-${tableName}" 
                      role="tabpanel" aria-labelledby="formTab-${tableName}">
                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -1541,11 +1550,12 @@ export default class CrudBuilder  extends FaiModule{
                     </div>
                     
                     ${displayType === 'table' ?
-                    this._renderSubKategoriInFormTable(tableName, index) :
-                    this._renderSubKategoriInFormForms(tableName, index)}
+                        this._renderSubKategoriInFormTable(tableName, index) :
+                        this._renderSubKategoriInFormForms(tableName, index)}
                 </div>
             `;
-        });
+            });
+        }
 
         html += `
                 </div>
@@ -1571,9 +1581,12 @@ export default class CrudBuilder  extends FaiModule{
         const parentId = parentData.id;
 
         // Load data untuk semua sub kategori
-        for (const subKategori of this.config.page.crud.sub_kategori) {
-            const tableName = subKategori[1];
-            await this._loadSingleSubKategoriInForm(tableName, parentId);
+        if(this.config.page.crud.sub_kategori){
+
+            for (const subKategori of this.config.page.crud.sub_kategori) {
+                const tableName = subKategori[1];
+                await this._loadSingleSubKategoriInForm(tableName, parentId);
+            }
         }
     }
     _renderSubKategoriInForm(parentData = null) {
@@ -1589,7 +1602,7 @@ export default class CrudBuilder  extends FaiModule{
            
                 <div class="card-body">
     `;
-
+        if( this.config.page.crud.sub_kategori){
         this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
             const tableName = subKategori[1];
             const displayName = subKategori[0];
@@ -1698,7 +1711,7 @@ export default class CrudBuilder  extends FaiModule{
             </div>
         `;
         });
-
+    }
         html += `
                 </div>
             </div>
@@ -2435,6 +2448,7 @@ export default class CrudBuilder  extends FaiModule{
         });
         if (!this.config.page?.crud?.no_add) {
             document.getElementById('addNewBtn').addEventListener('click', () => {
+                 $('.id_form_crud').val("");
                 this._showFormModal('add');
             });
         }

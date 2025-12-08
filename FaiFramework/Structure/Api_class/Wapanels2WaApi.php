@@ -37,7 +37,7 @@ class Wapanels2WaApi
 
         echo $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         return $response;
     }
     public static function send_media($nomor_receive, $pesan, $link_media)
@@ -74,7 +74,7 @@ class Wapanels2WaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         //echo $response;
 
         return $response;

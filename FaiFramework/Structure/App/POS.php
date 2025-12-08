@@ -1222,7 +1222,7 @@ class POS extends POS_USER
             DB::commit($page);
 
             return redirect($page)->route('purchase_order', ['list', '-1'])->with('success',  'Kontrabon Berhasil di input!');
-        } catch (\Exeception $e) {
+        } catch (\Exception $e) {
             DB::rollback($page);
             return redirect($page)->back($page)->with('error', $e);
         }
@@ -1247,7 +1247,7 @@ class POS extends POS_USER
             DB::commit($page);
 
             return redirect($page)->route('purchase_order', ['list', '-1'])->with('success',  'Kontrabon Berhasil di input!');
-        } catch (\Exeception $e) {
+        } catch (\Exception $e) {
             DB::rollback($page);
             return redirect($page)->back($page)->with('error', $e);
         }
