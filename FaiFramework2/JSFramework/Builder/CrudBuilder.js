@@ -3,6 +3,7 @@ import FormBuilder from './FormBuilder.js';
 import FaiModule from '../FaiModule.js';
 export default class CrudBuilder  extends FaiModule{
     constructor() {
+        super();
         this.config = {
             isViewChange: false,
             isChangeView: false,

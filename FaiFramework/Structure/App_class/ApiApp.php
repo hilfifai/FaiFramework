@@ -116,7 +116,7 @@ class ApiApp
         DB::table('erp__pos__group');
         DB::selectRaw("* ");
         DB::whereRaw("tanggal = DATE(NOW()) and status = 'Pemesanan'");
-       
+
         // DB::joinRaw("website__bundles__list on web__list_apps_menu.id_bundle = website__bundles__list.id",'left');
         $utama = DB::get('all');
 
@@ -874,7 +874,7 @@ class ApiApp
                             "not_where_active" => "",
                             "select"           => [
                                 $page['database_provider'] == 'postgres' ? "id_erp__pos__delivery_order,json_agg(row_to_json(t)) as detail" :
-                                "id_erp__pos__stok_opname,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as detail",
+                                    "id_erp__pos__stok_opname,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as detail",
                             ],
                             "utama_query"      => $db,
                             "group"            => [
@@ -999,7 +999,7 @@ class ApiApp
                             "not_where_active" => "",
                             "select"           => [
                                 $page['database_provider'] == 'postgres' ? "id_erp__pos__delivery_order,json_agg(row_to_json(t)) as detail" :
-                                "id_erp__pos__delivery_order,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as detail",
+                                    "id_erp__pos__delivery_order,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as detail",
                             ],
                             "utama_query"      => $db,
                             "group"            => [
@@ -1227,7 +1227,7 @@ class ApiApp
                             "not_where_active" => "",
                             "select"           => [
                                 $page['database_provider'] == 'postgres' ? "id_erp__pos__inventory__outgoing,json_agg(row_to_json(t)) as breakdown" :
-                                "id_erp__pos__inventory__outgoing,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as breakdown",
+                                    "id_erp__pos__inventory__outgoing,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as breakdown",
                             ],
                             "utama_query"      => $dbKonfir,
                             "group"            => [
@@ -1292,7 +1292,7 @@ class ApiApp
                             "not_where_active" => "",
                             "select"           => [
                                 $page['database_provider'] == 'postgres' ? "id_erp__pos__inventory,json_agg(row_to_json(t)) as items" :
-                                "id_erp__pos__inventory,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as items",
+                                    "id_erp__pos__inventory,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as items",
                             ],
                             "utama_query"      => $db,
                             "group"            => [
@@ -1662,7 +1662,6 @@ class ApiApp
             if ($get_all['row'][0]->$nama_row) {
                 $update[$list_data_alamat[$lda] . '_tujuan'] = $get_all['row'][0]->$nama_row;
             }
-
         }
         // $update['jenis'] = 'Ongkir';
         $update['ongkir']          = $ongkir['harga_ongkir'];
@@ -1859,7 +1858,6 @@ class ApiApp
                     } else if ($return == 'row') {
                         return $row;
                     }
-
                 } else if (($search['live'] ?? '') == 3 or ($_GET['search'] ?? '') == 3) {
                     // ini benar
                     if (in_array($db_to_json, ["checkout", "allproduk", "all_produk"])) {
@@ -1995,7 +1993,8 @@ class ApiApp
         Front END    
             proses 4 : mendapatkan user device menyimpan di indexed DB
             proses 5 : list 
-        */$stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
+        */
+            $stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
             $dbExists = $stmt->fetch();
 
             if (! $dbExists) {
@@ -2325,7 +2324,8 @@ class ApiApp
                             }    
                     }
                 }
-            */$stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
+            */
+            $stmt  = $pdo->query("SHOW DATABASES LIKE " . $pdo->quote($dbName));
             $dbExists = $stmt->fetch();
 
             if (! $dbExists) {
@@ -2740,7 +2740,6 @@ class ApiApp
                             if ($row->create_date ?? '') {
                                 $jsonData[$row->id ?? $literasi_darurat]['json_data'][$row->update_date ?? $row->create_date] = ($row);
                             }
-
                         }
 
                         $literasi_darurat++;
@@ -2854,7 +2853,7 @@ class ApiApp
         $id_produk_varian   = $body['id_produk_varian'];
         $query_asset_varian = "";
         $stok               = EcommerceApp::sync_update_stok($page, $id_produk, $id_asset, $id_asset_varian);
-// echo "Batch $batchNumber ($rowAwal - $rowAkhir) sukses diinsert.\n";
+        // echo "Batch $batchNumber ($rowAwal - $rowAkhir) sukses diinsert.\n";
         //         if ($id_varian and ! $id_asset_varian) {
         //             $query_asset_varian = " and id_asset_varian in( SELECT inventaris__asset__list__varian.id from inventaris__asset__list__varian
         // LEFT JOIN inventaris__asset__list__varian master_varian on master_varian.id = inventaris__asset__list__varian.id_master_varian
@@ -2862,24 +2861,24 @@ class ApiApp
         // 										$where
         // 											)";
 
-//         }
+        //         }
         //         DB::selectRaw('sum(coalesce(stok_available,0)) as total_stok');
         //         DB::table("(SELECT id_produk,id_produk_varian,id_ruang_simpan,id_asset_varian,id_asset,connect_api_name,stok_available
         // 		FROM
         // 				inventaris__storage__data
 
-// 		WHERE 1=1 $query_asset_varian
+        // 		WHERE 1=1 $query_asset_varian
         // 		order by stok_available desc) as f");
         //         DB::whereRaw("id_asset = $id_asset");
         //         DB::whereRaw("id_produk = $id_produk");
         //         if ($id_asset_varian) {
         //             DB::whereRaw("id_asset_varian = $id_asset_varian");
 
-//         }
+        //         }
         //         if ($id_produk_varian) {
         //             DB::whereRaw("id_produk_varian = $id_produk_varian");
 
-//         }
+        //         }
         //         // DB::groupByRaw($page,["connect_api_name"]);
         echo json_encode([
             "stok" => $stok,
@@ -3015,7 +3014,6 @@ class ApiApp
         }
 
         echo json_encode($returnjson);
-
     }
     public static function get_logout($page)
     {
@@ -3224,7 +3222,6 @@ class ApiApp
                     if (! in_array($utama->id_utama . '-' . $id_api, $list_utama)) {
                         $list_utama[] = $utama->id_utama . '-' . $id_api;
                     }
-
                 }
             }
             $send_order      = [];
@@ -3461,7 +3458,6 @@ class ApiApp
                 if ($get_db_bangunan['row'][0]->nomor_bangunan) {
                     $erp_do['nomor_tujuan'] = $get_db_bangunan['row'][0]->nomor_bangunan;
                 }
-
             }
             $ongkir                 = json_decode(Partial::input('ongkir'), true);
             $total_ongkir           = 0;
@@ -3615,6 +3611,8 @@ class ApiApp
                     $detail = $row_cart[$cart['id_cart']];
                     DB::table("store__toko__gudang");
                     DB::whereRaw('store__toko__gudang.id_store__toko=' . $row_cart[$cart['id_cart']]->id_toko);
+
+                    DB::whereRaw("store__toko__gudang.active=1");
                     DB::orderByRaw($page, [["store__toko__gudang.urutan", "asc"]]);
                     $get = DB::get("all");
                     if (! isset($pemesanan[$detail->id_toko])) {
