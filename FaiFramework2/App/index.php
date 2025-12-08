@@ -404,6 +404,191 @@
             align-items: center;
             z-index: 9999;
         }
+        /* Container Utama */
+.discount__content {
+    background: #fdfdfd;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Judul Voucher */
+.discount__content h6 {
+    color: #1c1c1c;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Form Wrapper - Menggunakan Relative Positioning */
+.discount__content form {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Input Field */
+.discount__content form input {
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    color: #444;
+    padding-left: 20px;
+    padding-right: 100px; /* Memberi ruang untuk tombol di kanan */
+    border: 1px solid #ddd;
+    border-radius: 50px; /* Bentuk Pill/Oval */
+    outline: none;
+    transition: all 0.3s;
+    background: #fff;
+}
+
+.discount__content form input:focus {
+    border-color: #e3a53e; /* Merah saat aktif */
+}
+
+/* Tombol Apply */
+.discount__content form .site-btn {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    height: 42px; /* Sedikit lebih kecil dari input */
+    border: none;
+    background: #e3a53e; /* Warna utama */
+    color: #ffffff;
+    padding: 0 25px;
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.discount__content form .site-btn:hover {
+    background: #a31111;
+}
+
+/* --- Styling untuk Custom Tags (Voucher Aktif & List) --- */
+
+/* Voucher yang sedang digunakan (Success Alert style) */
+voucher_digunakan {
+    display: block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+/* List Voucher yang tersedia */
+voucher_list {
+    display: block;
+    margin-top: 15px;
+    border-top: 1px dashed #ddd;
+    padding-top: 10px;
+}
+
+/* Contoh jika voucher list berisi item (div/li) */
+voucher_list > div {
+    padding: 8px 0;
+    font-size: 13px;
+    color: #666;
+    border-bottom: 1px solid #f1f1f1;
+}
+/* Reset dasar untuk elemen terkait */
+.product__details__button,
+.product__details__button * {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif; /* Ganti dengan font website Anda */
+}
+
+/* Container Utama */
+.product__details__button {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Jarak antara quantity dan tombol */
+    margin-top: 20px;
+    flex-wrap: wrap; /* Agar responsif di layar kecil */
+}
+
+/* Bagian Quantity */
+.quantity {
+    display: flex;
+    align-items: center;
+}
+
+.quantity span {
+    font-weight: 600;
+    color: #333;
+    margin-right: 10px;
+}
+
+/* Wrapper Input Quantity */
+.pro-qty {
+    width: 100px; /* Lebar area input */
+    height: 50px;
+    display: inline-block;
+    position: relative;
+    background: #f5f5f5; /* Background abu-abu muda */
+    border-radius: 25px; /* Membuat bentuk oval/pill */
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.pro-qty input {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    color: #444;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    outline: none;
+}
+
+/* Tombol Add to Cart */
+.cart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ffffff;
+    background: #e3a53e; /* Warna Merah Utama (Bisa diganti) */
+    padding: 14px 30px;
+    border-radius: 50px; /* Tombol bulat */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(202, 21, 21, 0.3);
+}
+
+.cart-btn span {
+    margin-right: 5px;
+    font-size: 18px;
+    margin-bottom: 3px; /* Penyesuaian ikon */
+}
+
+/* Efek Hover Tombol */
+.cart-btn:hover {
+    background: #a31111; /* Warna lebih gelap saat hover */
+    transform: translateY(-2px); /* Efek naik sedikit */
+    box-shadow: 0 8px 20px rgba(202, 21, 21, 0.4);
+}
+
+/* Responsif untuk HP */
+@media (max-width: 480px) {
+    .product__details__button {
+        justify-content: center;
+    }
+    
+    .quantity {
+        margin-bottom: 15px;
+    }
+}
     </style>
 </head>
 
@@ -537,7 +722,12 @@
         const base_url_non_index = document.getElementById('base_url_non_index').value;
         const base_url_object = document.getElementById('base_url_object').value;
         window.fai = new FaiFramework();
-        await window.fai.init("fai_init", "moesneeds.id", 'v1.0.4-alpha41', base_url, base_url_non_index, base_url_object);
+        var option = {
+            pending_order:true
+        }  
+        await window.fai.init("fai_init", option,"moesneeds.id", 'v1.0.4-alpha44', 
+
+                            base_url, base_url_non_index, base_url_object);
         await window.fai.setupFullWebContent();
         /*
         const crudArray = [

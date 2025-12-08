@@ -670,13 +670,20 @@ class ApiContent
         }
         return $get_row_id;
     }
+    
+    public static function get_list_ethica_order_preorder($page)
+    {
+        $search         = Partial::input('search');
+        $return['data'] = (array) ApiContent::get_list_order($page, 10, 2,$search, 'data');
+        return $return;
+    }
     public static function get_list_ethica_order($page)
     {
         $search         = Partial::input('search');
-        $return['data'] = (array) ApiContent::get_list_order($page, 7, $search, 'data');
+        $return['data'] = (array) ApiContent::get_list_order($page, 7, 1,$search, 'data');
         return $return;
     }
-    public static function get_list_order($page, $id, $id_api)
+    public static function get_list_order($page, $id_sync, $id_api)
     {
         $db['select'][] = "
         erp__pos__utama.no_purchose_order,status_acc_sync_pesanan,status_sync_pesanan,response_acc_sync_pesanan,response_sync_pesanan,
@@ -719,6 +726,12 @@ class ApiContent
         if (Partial::input('length')) {
             $db['limit_raw'] = Partial::input('length') . " Offset " . Partial::input('start');
         }
+
+        $db['where'][] = ["(select count(*) as count  from erp__pos__utama__detail 
+                left join view_inventaris_list on view_inventaris_list.id = id_inventaris__asset__list 
+                WHERE 
+                        erp__pos__utama.id = erp__pos__utama__detail.id_erp__pos__utama
+                and view_inventaris_list.id_api = $id_api)",">","0"];
         $get  = Database::database_coverter($page, $db, [], 'all');
         $no   = 0;
         $data = [];
@@ -1009,12 +1022,12 @@ class ApiContent
                     $link_acc = base_url() . "/FaiServer/costum/" . "Ecommerce" . '/' . "acc_sync_order" . '/' . $page['load']['id_web__apps'] . '/' . "1" . '/' . $row->primary_key . '/' . $row->id_sync_pesanan . '/' . $row->id_apps_user;
 
                     $aksi .= "
-                            <a href='javascript:void(0)' onclick='link_acc_pesanan(this," . $page['load']['id_web__apps'] . ",1,$row->primary_key,$row->id_sync_pesanan, $row->id_apps_user)' class='btn btn-primary'>Acc</a>
+                            <a href='javascript:void(0)' onclick='link_acc_pesanan(this," . $page['load']['id_web__apps'] . ",$id_api,$row->primary_key,$row->id_sync_pesanan, $row->id_apps_user)' class='btn btn-primary'>Acc</a>
                             ";
                     $link_acc = base_url() . "/FaiServer/costum/" . "Ecommerce" . '/' . "cancel_order" . '/' . $page['load']['id_web__apps'] . '/' . "1" . '/' . $row->primary_key . '/' . $row->id_sync_pesanan . '/' . $row->id_apps_user;
 
                     $aksi .= "
-                            <a href='javascript:void(0)' onclick='link_cancel_pesanan(this," . $page['load']['id_web__apps'] . ",1,$row->primary_key,$row->id_sync_pesanan, $row->id_apps_user)'
+                            <a href='javascript:void(0)' onclick='link_cancel_pesanan(this," . $page['load']['id_web__apps'] . ",$id_api,$row->primary_key,$row->id_sync_pesanan, $row->id_apps_user)'
 							class='btn btn-primary'>Cancel Order</a>
                             ";
                     //$link_acc =  base_url()."/FaiServer/costum/"."Ecommerce".'/'. "cancel_order".'/'. $page['load']['id_web__apps'].'/'. "1".'/'. $row->primary_key;
@@ -1681,7 +1694,8 @@ class ApiContent
         $link      = $user_api['row'][0]->$type_link;
         $link      = str_replace('{HTTPS}', 'https', $link);
         $link      = str_replace('{HTTP}', 'http', $link);
-
+        $db['utama'] = "apps_user";
+        $user        = Database::database_coverter($page, $db, [], 'all');
         if ($user['row']) {
             foreach ($user['row'] as $row) {
                 $no++;
@@ -2374,6 +2388,11 @@ class ApiContent
         $page['db']['np'] = true;
         $fai              = new MainFaiFramework();
         $nomor            = 0;
+         DB::table('api_master__sync');
+        DB::joinRaw('api_master__link on api_master__link.id = id_link');
+
+        DB::whereRawPage($page, "api_master__sync.id=$id");
+        $Get = DB::get('all');
         if (count($sarimbit)) {
 
             foreach ($sarimbit as $key => $value) {
@@ -2544,6 +2563,8 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
+        $start            = Partial::input('offset') ? Partial::input('offset') : 0;
+        $count            = count($sarimbit);
         if (! Partial::input('non_produk')) {
             if ($start) {
                 $return .= '<button type="button" class="btn btn-primary" onclick="cari_sync(' . ((int) $start - $count) . ')">Prev</button>';
@@ -3243,6 +3264,8 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
+        $start            = Partial::input('offset') ? Partial::input('offset') : 0;
+        $count            = count($data);
         if ($start) {
             $return .= '<button type="button" class="btn btn-primary" onclick="cari_sync(' . ((int) $start - $count) . ')">Prev</button>';
         }
@@ -3610,6 +3633,9 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
+        
+        $start            = Partial::input('offset') ? Partial::input('offset') : 0;
+        $count            = count($data);
         if ($start) {
             $return .= '<button type="button" class="btn btn-primary" onclick="cari_sync(' . ((int) $start - $count) . ')">Prev</button>';
         }
@@ -3862,6 +3888,9 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
+        
+        $start            = Partial::input('offset') ? Partial::input('offset') : 0;
+        $count            = count($data);
         if ($start) {
             $return .= '<button type="button" class="btn btn-primary" onclick="cari_sync(' . ((int) $start - $count) . ')">Prev</button>';
         }

@@ -41,6 +41,79 @@ export async function link_acc_pesanan(button, id_web__apps, id_api, primary_key
 
 
 }
+export async function js_delete_cart(id_cart) {
+  const isLoggedIn = await await window.fai.getModule('loginHelper').checkLoginStatus();
+
+  if (isLoggedIn) {
+    $.ajax({
+
+      type: "post",
+      dataType: "html",
+      data: { id_cart: id_cart },
+      url: window.fai.getModule('base_url') + "api/delete_cart",
+      dataType: "json",
+      beforeSend: function () {
+        // $("#summary").html("Tunggu Sebentar"); // Menampilkan indikator loading
+        Swal.fire({
+          title: 'Sedang memproses...',
+          text: 'Mohon tunggu sebentar. ',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      },
+      success: function (responseData) {
+
+        Swal.close();
+        if (responseData.status == 1) {
+
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Sukses!',
+            text: 'Sukses memproses penghapusan Cart!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+
+          $('#store_cart-' + id_cart).remove();
+        } else if (responseData.status == 0) {
+          // swal("Gagal!", responseData.keterangan, "error");
+          swal("Gagal!",
+            "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
+            "error");
+          // }
+        } else {
+
+          swal("Gagal!",
+            "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
+            "error");
+        }
+
+
+      },
+
+
+      error: function () {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal!',
+          text: 'Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+      }
+    });
+  } else {
+    console.log("Belum login");
+    open_login();
+  }
+}
 export async function link_cancel_pesanan(button, id_web__apps, id_api, primary_key, id_sync_pesanan, id_apps_user) {
   const parent = button.parentNode;
   const span = document.createElement('span');
@@ -495,9 +568,14 @@ export async function proses_checkout_temp(id_cart) {
 export async function initialize_checkout() {
   console.clear();
   console.log('INITIAL CHECKOUT');
-  $('#billingProfileSection').html("");
-  $('#selectedBilling').html("");
-  $('#deliveries').html("");
+  let skeletonBilling = `<h5 class="mb-4">Pilih Alamat Penerima<span class="float-right"><button class="btn btn-sm btn-light" id="tambahAlamatPenerima" onclick="tambah_alamat_penerima()"><i class="fa fa-chevron-left mr-2"></i>Tambah</button><button class="btn btn-sm btn-light" id="cancelChangeBilling" onclick="kembali_alamat_penerima_selected()"><i class="fa fa-chevron-left mr-2"></i>Cancel</button></span></h5><div class="list-group" id="content_list_tambah_alamat_penerima"><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div></div>`;
+  let skeletonSelectedBilling = `<div class="float-right"><button class="btn btn-light btn-sm" id="changeBilling" onclick="kembali_alamat_penerima_cari()">Change</button></div><div class="skeleton" style="height: 120px; background: #f0f0f0;"></div>`;
+  let skeletonDeliveries = `<h4 class="mb-4 mt-4">Detail Pemesanan Barang</h4><div class="card mb-3"><div class="card-body"><div class="skeleton" style="height: 200px; background: #f0f0f0;"></div></div></div>`;
+  let skeletonSummary = `<h4 class="mb-4 mt-3">Rincian Pesanan</h4><div class="card mt-3"><div class="card-body"><div class="skeleton" style="height: 150px; background: #f0f0f0;"></div></div></div>`;
+  $('#billingProfileSection').html(skeletonBilling);
+  $('#selectedBilling').html(skeletonSelectedBilling);
+  $('#deliveries').html(skeletonDeliveries);
+  $('.sticky-top').html(skeletonSummary);
   let page = window.fai.getModule("versionContent");
 
   const storeName = "checkout";
@@ -1337,7 +1415,7 @@ export async function proses_cek_bayar(confirm = 0) {
               "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
               "error");
           } else {
-            if (responseData.send_order[0].response.status=='keranjang tidak ditemukan') {
+            if (responseData.send_order[0].response.status == 'keranjang tidak ditemukan') {
               Swal.fire("Gagal!",
                 responseData.send_order[0].response.status + ", lakukan order ulang karena cart lebih dari 1 hari/jam 12 malam",
                 "error");
@@ -1950,7 +2028,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
         // $("#summary").html("Tunggu Sebentar"); // Menampilkan indikator loading
         Swal.fire({
           title: 'Sedang memproses...',
-          text: 'Mohon tunggu sebentar. s',
+          text: 'Mohon tunggu sebentar.',
           allowOutsideClick: false,
           showConfirmButton: false,
           didOpen: () => {

@@ -3118,7 +3118,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
     // Render delivery list
     renderDeliveryList() {
         if (!this.currentSo) return;
-        alert();
+        // alert();
 
         this.currentSo.deliveryOrders = this.deliveryOrders.filter(p => p.id_erp__pos__group === this.currentSo.primary_key);
         console.log(this.currentSo.deliveryOrders);

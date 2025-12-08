@@ -20,25 +20,22 @@ export class FaiFramework extends FaiModule {
 		this.domainDetail = {};
 		this.after_init = {};
 	}
-
-	async init(containerId, domain, version = null, base_url = "", base_url_non_index = "", base_url_object = "", domainDetail = null, template = null) {
+ 
+	async init(containerId, option,domain, version = null, base_url = "", base_url_non_index = "", base_url_object = "", domainDetail = null, template = null) {
 		await this.initModule();
 		this.containerId = containerId;
+		this.option = option;
+		
 		this.domain = domain;
 		this.version = version;
 		this.base_url = base_url;
 		this.base_url_non_index = base_url_non_index;
 		this.base_url_object = base_url_object;
-		await this.setModule("domain", this.domain);
-		await this.setModule("base_url", this.base_url);
-		await this.setModule("base_url_non_index", this.base_url_non_index);
-		await this.setModule("base_url_object", this.base_url_object);
 		if (!domainDetail) {
 			this.domainDetail = await this.getDomainDetail(this.domain);;
 		} else {
 			this.domainDetail = domainDetail;
 		}
-		console.log(this.domainDetail);
 		if (!template) {
 			this.template = await this.domainDetail.template_utama;
 			this.originalTemplate = await this.domainDetail.template_utama;
@@ -46,9 +43,15 @@ export class FaiFramework extends FaiModule {
 		} else {
 			this.template = template;
 		}
+		await this.setModule("domain", this.domain);
+		await this.setModule("base_url", this.base_url);
+		await this.setModule("base_url_non_index", this.base_url_non_index);
+		await this.setModule("base_url_object", this.base_url_object);
+		await this.setModule("template", this.template);
+		await this.setModule("originalTemplate", this.originalTemplate);
+		await this.setModule("domainDetail", this.domainDetail);
 
 	}
-	async sayHello() { console.log("sayHello"); }
 	async setupFullWebContent() {
 		await this.setupContent();
 		await this.setupModule();
@@ -58,6 +61,7 @@ export class FaiFramework extends FaiModule {
 		await this.setMetaWeb();
 		await this.processPages();
 		await this.setSearch();
+		await this.optionTriggrer();
 
 	}
 	async setMetaWeb() {
@@ -209,11 +213,14 @@ export class FaiFramework extends FaiModule {
 	async setSearch() {
 		await this.getModule("SearchProcessing").initSearch();
 	}
+	async optionTriggrer(){
+			await this.getModule("optionTriggrer").init(this.option);
+	}
 	async getDomainDetail(domain) {
 
 		let apiEndpoint = await this.getModule("base_url") + "api/main_web/";
 		let dataApi = await this.getModule("urlHelper").fetchDataFromApi(apiEndpoint, 'GET', null);
-		console.log(domain);
+		
 		return dataApi[domain];
 	}
 	async getVersionControl(version_name) {

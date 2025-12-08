@@ -36,7 +36,7 @@
                 <div class="">
                     <span class="cart__price" id="satuan-harga-<ID-CART></ID-CART>"><HARGA-SATUAN></HARGA-SATUAN> </span>
                     <input class="cart__price" id="satuan-harga-val<ID-CART></ID-CART>" value="<HARGA-SATUAN></HARGA-SATUAN>" type="hidden">
-                    <span class="cart__price" id="stok-<ID-CART></ID-CART>" style="text-align: right;float: right;margin: 0 25px;">Stok: <STOK></STOK>
+                    <!-- <span class="cart__price" id="stok-<ID-CART></ID-CART>" style="text-align: right;float: right;margin: 0 25px;">Stok: <STOK></STOK> -->
                     </span>
                 </div>
                 <input class="cart__price" id="stok-val<ID-CART></ID-CART>" value="<STOK></STOK>" type="hidden">

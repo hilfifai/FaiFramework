@@ -947,7 +947,6 @@ class EthicaApi
             } else {
                 $link_full = $link_endpoint . '?key=' . $key_api . '&tipe_apps=W';
             }
-
         }
         // echo $link_full;
         //  die;
@@ -1022,9 +1021,9 @@ class EthicaApi
             } else {
                 $link_full = $link_endpoint . '?key=' . $key_api . '&tipe_apps=W';
             }
-
         }
         $link_full;
+      //  echo $user_api['row'][0]->id_api;
         // echo $seq;
         //  die;
         curl_setopt_array($curl, [
@@ -1043,6 +1042,7 @@ class EthicaApi
                 "seq"                  => "$seq",
                 "tipe_apps"            => "W",
                 "user_admin_eksternal" => $_SESSION['id_apps_user'],
+                "is_preorder"          => $user_api['row'][0]->id_api == 1 ? "F" : "T",
             ],
             CURLOPT_HTTPHEADER     => [
                 'Cookie: PHPSESSID=hl041fbt0er6qdqumm6i5abeuc',
@@ -1209,7 +1209,7 @@ class EthicaApi
                 $data['alamat_pengirim_lengkap'] = $row->alamat_asal . ($row->no_bangunan_asal ? "No. " . $row->no_bangunan_asal : "");
                 $data['alamat_pengirim']         = $data['nama_pengirim'] . ", Alamat: " . $row->alamat_asal . ($row->no_bangunan_asal ? "No. " . $row->no_bangunan_asal : "") . ' Kel:' . $row->kelurahan_asal . ' Kec:' . $row->kecamatan_asal . ', ' . $row->provinsi_asal . ' ' . $row->kota_asal . ', ' . $row->postal_code_asal . ($row->patokan_asal ? "(Patokan: " . $row->patokan_asal . ")" : "") . " No Hp:" . $data['no_hp_pengirim'];
                 $data['alamat_kirim']            = "Kepada Yth:" . $data['nama'] .
-                "Alamat : " . $data['alamat'] . ($row->no_bangunan_tujuan ? "No. " . $row->no_bangunan_tujuan : "") . ' Kel:' . $data['kelurahan'] . ' Kec:' . $data['kecamatan'] . ', ' . $data['provinsi'] . ' ' . $data['kota'] . ', ' . $row->postal_code . ($row->patokan_tujuan ? "(Patokan: " . $row->patokan_tujuan . ")" : "") . " No. HP :" . $data['no_hp'];
+                    "Alamat : " . $data['alamat'] . ($row->no_bangunan_tujuan ? "No. " . $row->no_bangunan_tujuan : "") . ' Kel:' . $data['kelurahan'] . ' Kec:' . $data['kecamatan'] . ', ' . $data['provinsi'] . ' ' . $data['kota'] . ', ' . $row->postal_code . ($row->patokan_tujuan ? "(Patokan: " . $row->patokan_tujuan . ")" : "") . " No. HP :" . $data['no_hp'];
 
                 if ($data['service'] == 'CTC') {
                     $data['service'] = "REG";
@@ -1286,6 +1286,9 @@ class EthicaApi
                     "detail"                  => json_encode($barang),
                     "key"                     => $data['apikey'],
                 ];
+                if ($user_api['row'][0]->id_api == 2) {
+                    $array['is_preorder'] = "F";
+                }
                 $true = true;
                 foreach ($array as $key => $value) {
                     if ($key == 'ongkos_kirim') {

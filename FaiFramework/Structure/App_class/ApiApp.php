@@ -107,6 +107,25 @@ class ApiApp
         }
         echo json_encode($data);
     }
+    public static function get_pending_order($page)
+    {
+        header("Access-Control-Allow-Origin: http://localhost:8080"); // Ganti dengan origin frontend
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+        DB::table('erp__pos__group');
+        DB::selectRaw("* ");
+        DB::whereRaw("tanggal = DATE(NOW()) and status = 'Pemesanan'");
+       
+        // DB::joinRaw("website__bundles__list on web__list_apps_menu.id_bundle = website__bundles__list.id",'left');
+        $utama = DB::get('all');
+
+        // $db_produk['join'][] = ["drive__file ", " cast(utama_file.id as text)", " cast(inventaris__asset__list.foto_aset as text)", "left"];
+
+        $data = [];
+        unset($utama['query']);
+        echo json_encode($utama);
+    }
     public static function done_integrasi_db($page)
     {
         $deviceId        = Partial::input('device_id');
@@ -487,6 +506,7 @@ class ApiApp
                     $db['utama']   = "inventaris__asset__tanah__gudang__ruang_bangun";
                     $db['join'][]  = ["inventaris__asset__tanah__gudang", " inventaris__asset__tanah__gudang.id", "id_inventaris__asset__tanah__gudang", "LEFT"];
                     $db['where'][] = ["inventaris__asset__tanah__gudang__ruang_bangun.active", "=", 1];
+                    $db['where'][] = ["inventaris__asset__tanah__gudang.active", "=", 1];
 
                     $row = Database::database_coverter($page, $db, [], 'all');
 

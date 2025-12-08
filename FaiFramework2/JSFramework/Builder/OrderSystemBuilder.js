@@ -273,7 +273,7 @@ export default class OrderSystemBuilder extends FaiModule {
 					return { ...stok_opname, detail };
 				});
 			}));
-			alert();
+			// alert();
 		}
 
 		if (need.has("delivery_orders")) {

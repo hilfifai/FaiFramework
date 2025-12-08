@@ -25,7 +25,7 @@ export default class CorePages extends FaiModule {
                 css: "",
             }
         }
-        alert();
+        // alert();
         console.log("items", item);
         console.log("page", page);
         let result_pages_content = await this.pages_content(item, page);

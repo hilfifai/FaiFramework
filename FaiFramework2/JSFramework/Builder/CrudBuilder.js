@@ -1,6 +1,7 @@
 import FormBuilder from './FormBuilder.js';
 
-export default class CrudBuilder {
+import FaiModule from '../FaiModule.js';
+export default class CrudBuilder  extends FaiModule{
     constructor() {
         this.config = {
             isViewChange: false,
@@ -1276,7 +1277,7 @@ export default class CrudBuilder {
 
         title.text(mode === 'add' ? 'Tambah Data Baru' : `Edit Data #${data.id}`);
 
-
+        console.log(this.getModule('domainDetail'));
         const formBuilderConfig = {
             viewContext: mode === 'add' ? 'tambah' : 'edit',
             data: data || {},
@@ -3195,7 +3196,7 @@ export default class CrudBuilder {
 
     _handleDelete(id) {
         const result = confirm('Anda yakin ingin menghapus data ini?');
-        alert();
+        // alert();
         if (result) {
             this.showLoading(true);
 

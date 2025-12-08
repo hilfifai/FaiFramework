@@ -448,6 +448,60 @@ class Store
 		$page['get']['sidebarIn'] = true;;
 		return $page;
 	}
+	public static function toko__gudang($page)
+	{
+		//get 
+
+		$page['title'] = ucwords(str_replace("_", " ", __FUNCTION__));
+		$page['route'] = __FUNCTION__;
+		$page['layout_pdf'] = array('a4', 'portait');
+
+		$database_utama = "store__" . __FUNCTION__."";
+		$primary_key = null;
+
+		$array = array(
+			array("Gudang", "gudang", "select", array("inventaris__asset__tanah__gudang", null, "nama_gudang")),
+			array("Urutan", "urutan", "text"),
+		);
+			// $sub_kategori[] = ["Bank", "keuangan__akun", null, "form"];
+			// $array_sub_kategori[] = array(
+			// 	array("Panel", "panel", "select", array("panel", null, "nama_panel")),
+			// 	array("Kategori", "kategori", "select", array("keuangan__kategori", null, "nama_kategori")),
+
+			// 	array("Nama Akun", "nama_akun", "text-req"),
+			// 	array("Bank", "bank", "text-req"),
+			// 	array("No Rekening", "norek", "text-req"),
+			// 	array("Atas Nama", "atas_nama", "text-req"),
+			// 	array("Ketarangan", "keterangan_akun", "text"),
+
+			// );
+			// $sub_kategori[] = ["Gudang toko", $database_utama . "__gudang", null, "form"];
+			// $array_sub_kategori[] = array(
+			// 	
+
+			// );
+		// $page['crud']['select_database_costum']['id_inventory_bangunan_toko']['where'][] = array('inventaris__asset__tanah__bangunan.id_panel','=','ID_PANEL|');
+		$search = array();
+		// $page['crud']['sub_kategori'] = $sub_kategori;
+		// $page['crud']['array_sub_kategori'] = $array_sub_kategori;
+
+		$search = array();
+
+		$page['crud']['array'] = $array;
+		$page['crud']['search'] = $search;
+		
+        $page['crud']['insert_default_value']['id_store__toko']  = "WORKSPACE_SINGLE_TOKO|";
+        $page['crud']['insert_default_value']['id_panel'] = "WORKSPACE_SINGLE_PANEL|";
+
+		$page['database']['utama'] = $database_utama;
+		$page['database']['primary_key'] = $primary_key;
+		$page['database']['select'] = array("*",);;
+		$page['database']['join'] = array();
+		$page['database']['where'] = array();
+        $page['database']['where'][]     = [$database_utama.".id_store__toko", "=", "WORKSPACE_SINGLE_TOKO|"];
+		$page['get']['sidebarIn'] = true;;
+		return $page;
+	}
 	public static function mitra()
 	{
 		//get 

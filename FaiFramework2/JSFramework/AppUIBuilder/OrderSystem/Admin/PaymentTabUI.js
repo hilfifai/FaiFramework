@@ -821,10 +821,10 @@ export default class PaymentTabUI extends OrderSystemBuilder {
         }
     }
     showBankTransferModal(paymentData) {
-        alert();
+        // alert();
         const modalBody = document.getElementById('bankTransferModalBody');
         if (!modalBody) return;
-        alert();
+        // alert();
         modalBody.innerHTML = `
                     <div class="bank-transfer-info">
                         <h6><i class="fas fa-info-circle"></i> Informasi Rekening Tujuan</h6>
