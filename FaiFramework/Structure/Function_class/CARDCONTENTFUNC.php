@@ -14,7 +14,7 @@ class CARDCONTENTFUNC
         } else {
             $status = false;
         }
-        curl_close($ch);
+        @curl_close($ch);
         return $status;
     }
     function menu($page, $card, $template_name, $extend = '')

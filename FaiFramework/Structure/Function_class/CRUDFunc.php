@@ -1,5 +1,8 @@
 <?php
 date_default_timezone_set("Asia/Jakarta");
+
+use Illuminate\Support\Facades\Hash;
+
 class CRUDFunc
 {
 
@@ -131,7 +134,8 @@ class CRUDFunc
                     }
                     $insert_number_code['select'][] = 'count(*) as total';
 
-                    $root = $row_insert['row'][0]->total + 1 + $plus;}
+                    $root = $row_insert['row'][0]->total + 1 + $plus;
+                }
                 if (isset($page['crud']['insert_number_code'][$field]['root']['sprintf'][$is])) {
                     if ($page['section'] == 'viewsource') {
                         $return_content .= '$root= sprintf("%0' . $page['crud']['insert_number_code'][$field]['root']['sprintf_number'][$is] . 'd", $root);';
@@ -196,7 +200,7 @@ class CRUDFunc
         if ((in_array(Partial::input('tipe_page'), ['edit']))) {
             $db            = $page['database'];
             $db['where'][] = [$db['utama'] . ".id", '=', $id];
-            $database      = $fai->database_coverter($page, $db, null, );
+            $database      = $fai->database_coverter($page, $db, null,);
         } else {
             $database[0] = (object) [$id_result_to => -1];
         }
@@ -284,7 +288,6 @@ class CRUDFunc
             if ($typearray != 'file' and isset($input_content[$page['save']['no_list_sub_kategori']])) {
                 $input_content = $input_content[$page['save']['no_list_sub_kategori']];
             }
-
         } else {
             $field_name    = $field;
             $input_content = Partial::input($field) ? Partial::input($field) : null;
@@ -391,7 +394,9 @@ class CRUDFunc
 
                         $input_content = CRUDFunc::input_content($page, $database_utama, $array, $i, $typearray, $field)['$input_content'];
                     }
-                    $input_content = str_replace("'", "{KUTIP}", $input_content);
+                    if ($input_content !== null) {
+                        $input_content = str_replace("'", "{KUTIP}", $input_content);
+                    }
 
                     $array_declare = CRUDFunc::array_declare($fai, $page, $database_utama, $input_content, $array, $i);
 
@@ -417,12 +422,10 @@ class CRUDFunc
                         if ($return_data) {
                             $sqli_to_split[$page['crud']['split_database']['array'][$field]][$field] = $return_data;
                         }
-
                     } else {
                         if ($return_data) {
                             $sqli[$field] = $return_data;
                         }
-
                     }
                 }
             }
@@ -435,12 +438,10 @@ class CRUDFunc
                         if ($return_data) {
                             $sqli_to_split[$page['crud']['split_database']['array'][$field]][$field] = $return_data;
                         }
-
                     } else {
                         if ($return_data) {
                             $sqli[$field] = $return_data;
                         }
-
                     }
                 }
             }
@@ -451,23 +452,19 @@ class CRUDFunc
                         if (Partial::input($field)) {
                             $return_data = Hash::make(Partial::input($field));
                         }
-
                     } else if ($value == 'hapusrupiah') {
                         if (Partial::input($field)) {
                             $return_data = $fai->hapusRupiah(Partial::input($field));
                         }
-
                     }
                     if (! empty($page['crud']['split_database']['array'][$field]) and $page['save']['section'] != 'sub_kategori') {
                         if ($return_data) {
                             $sqli_to_split[$page['crud']['split_database']['array'][$field]][$field] = $return_data;
                         }
-
                     } else {
                         if ($return_data) {
                             $sqli[$field] = $return_data;
                         }
-
                     }
                 }
             }
@@ -486,12 +483,10 @@ class CRUDFunc
                     if (Partial::input($key)) {
                         $sqli[$key] = Hash::make(Partial::input($key));
                     }
-
                 } else if ($value == 'hapusrupiah') {
                     if (Partial::input($key)) {
                         $sqli[$key] = $fai->hapusRupiah(Partial::input($key));
                     }
-
                 }
             }
         }
@@ -512,20 +507,17 @@ class CRUDFunc
                     if ($return_data) {
                         $sqli_to_split[$page['crud']['split_database_sub_kategori'][$database_utama]['array'][$field]][$field] = $return_data;
                     }
-
                 } else
                 if (! empty($page['crud']['split_database']['array'][$field]) and $page['save']['section'] != 'sub_kategori') {
                     // echo 'masuk';
                     if ($return_data) {
                         $sqli_to_split[$page['crud']['split_database']['array'][$field]][$field] = $return_data;
                     }
-
                 } else {
                     // echo 'masuk2';
                     if ($return_data) {
                         $sqli[$field] = $return_data;
                     }
-
                 }
             }
         }
@@ -553,7 +545,7 @@ class CRUDFunc
                                                 $array = ($page['crud']['total']['content'][$k]["array"]);
                                                 for ($i = 0; $i < count($array); $i++) {
                                                     $sqli_to_database[$database_utama_temp . "_" . $page['crud']['total']['content'][$k]["id"]]['sqli'][$page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]] =
-                                                    Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]);
+                                                        Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]);
                                                     $sqli_to_database[$database_utama_temp . "_" . $page['crud']['total']['content'][$k]["id"]]['array'][] = ["", $page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1], "number"];
                                                 }
                                             }
@@ -573,13 +565,13 @@ class CRUDFunc
                                     for ($i = 0; $i < count($array); $i++) {
                                         if ($array[$i][2] == 'number') {
                                             $sqli[$page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]] =
-                                            Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) ? Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) : 0;
+                                                Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) ? Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) : 0;
                                         } else if ($array[$i][2] == 'select') {
                                             $sqli[$page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]] =
-                                            Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) ? Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) : 0;
+                                                Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) ? Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]) : 0;
                                         } else {
                                             $sqli[$page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]] =
-                                            Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]);
+                                                Partial::input($page['crud']['total']['content'][$k]["id"] . "_" . $array[$i][1]);
                                         }
                                     }
                                 }
@@ -662,18 +654,15 @@ class CRUDFunc
                     if ($return_data) {
                         $sqli_to_split[$page['crud']['split_database_sub_kategori'][$database_utama]['array'][$field]][$field] = $array_website_return_data;
                     }
-
                 } else
                 if (! empty($page['crud']['split_database']['array'][$field]) and $page['save']['section'] != 'sub_kategori') {
                     if ($return_data) {
                         $sqli_to_split[$page['crud']['split_database']['array'][$field]][$field] = $array_website_return_data;
                     }
-
                 } else {
                     if ($return_data) {
                         $sqli[$to_field] = $array_website_return_data;
                     }
-
                 }
             }
         } else if (in_array('number', $extypearray)) {
@@ -703,7 +692,6 @@ class CRUDFunc
                 } else {
                     $return_data = $input_content;
                 }
-
             } else {
                 $return_data = $input_content;
             }
@@ -711,27 +699,27 @@ class CRUDFunc
             if (! isset($page['save']['type_sub_kategori'])) {
             } else
             if ($page['save']['type_sub_kategori'] == 'normal') {
-                $input_field = Partial::input($field_name)[$no];
+                // $input_field = Partial::input($field_name)[$no];
             } else if ($page['save']['type_sub_kategori'] == 'tree') {
-                $field_name = $field_name . '_tree' . $level;
-                if ($level == 1) {
-                    $input_field                                                                        = Partial::input($field_name)[$no][$no2];
-                    $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id1;
-                } else if ($level == 2) {
+                // $field_name = $field_name . '_tree' . $level;
+                // if ($level == 1) {
+                //     $input_field                                                                        = Partial::input($field_name)[$no][$no2];
+                //     $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id1;
+                // } else if ($level == 2) {
 
-                    $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3];
-                    $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id2;
-                } else if ($level == 3) {
-                    $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4];
-                    $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id3;
-                } else if ($level == 4) {
-                    $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4][$no5];
-                    $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id4;
-                } else if ($level == 5) {
-                    $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4][$no5][$no6];
-                    $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id5;
-                }
-                $sqli['tree_level'] = $level;
+                //     $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3];
+                //     $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id2;
+                // } else if ($level == 3) {
+                //     $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4];
+                //     $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id3;
+                // } else if ($level == 4) {
+                //     $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4][$no5];
+                //     $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id4;
+                // } else if ($level == 5) {
+                //     $input_field                                                                        = Partial::input($field_name)[$no][$no2][$no3][$no4][$no5][$no6];
+                //     $sqli[Database::converting_primary_key($page, $database_utama . '', 'primary_key')] = $id5;
+                // }
+                // $sqli['tree_level'] = $level;
             }
         }
         if ($page['save']['section'] == 'sub_kategori' and isset($page['crud']['split_database_sub_kategori'][$database_utama]['array'][$field])) {
@@ -891,7 +879,6 @@ class CRUDFunc
                     if ($page['crud']['view'] == 'update_approval') {
                         $extend = false;
                     }
-
                 }
                 if (isset($page['crud']['array_extend']['extend']) and $extend) {
                     CRUDFunc::exted($page, $page['crud']['array_extend'], $database_utama, $id, 'extend');
@@ -1334,7 +1321,7 @@ class CRUDFunc
             }
             // DB::commit();
             // return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-        } catch (Exeception $e) {
+        } catch (Exception $e) {
             // DB::rollback();
             // return redirect()->back()->with('error', $e);
         }
@@ -1449,7 +1436,6 @@ class CRUDFunc
                     if (isset($utama['row'][0])) {
                         $page['load']['id_web__apps'] = $utama['row'][0]->primary_key;
                     }
-
                 }
                 $sqli['on_web_apps'] = isset($page['load']['id_web__apps']) ? $page['load']['id_web__apps'] : null;
                 if (isset($page['get_panel']['id_panel'])) {
@@ -1492,7 +1478,7 @@ class CRUDFunc
                     }
                 }
             }
-            $sqli[$to_key] = str_replace("'", '&#39;', $sqli[$to_key]);
+            $sqli[$to_key] = str_replace("'", '&#39;', $sqli[$to_key] ?? '');
         }
         if ($tipe == 'insert') {
 
@@ -1579,7 +1565,6 @@ class CRUDFunc
             if ($where[3] == 'string') {
                 $page['crud']['oninsert_sub_kategori'][$a][$nama_array_execution]['database']["where"][] = [$where[0], $where[1], "'" . $where_content . "'"];
             }
-
         }
         $row   = $fai->database_coverter($page, $page['crud']['oninsert_sub_kategori'][$a][$nama_array_execution]['database'], [], 'source');
         $query = $row;
@@ -1731,12 +1716,10 @@ class CRUDFunc
                         if (Partial::input($key)) {
                             $sqli[$key] = Hash::make(Partial::input($key));
                         }
-
                     } else if ($value == 'hapusrupiah') {
                         if (Partial::input($key)) {
                             $sqli[$key] = $fai->hapusRupiah(Partial::input($key));
                         }
-
                     }
                 }
             }
@@ -1764,7 +1747,6 @@ class CRUDFunc
                 if ($page['crud']['view'] == 'update_approval') {
                     $extend = false;
                 }
-
             }
             if (isset($page['crud']['array_extend']['extend']) and $extend) {
                 CRUDFunc::exted($page, $page['crud']['array_extend'], $database_utama, $id, 'extend');
@@ -1950,9 +1932,9 @@ class CRUDFunc
             }
 
             //return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-        } catch (\Exeception $e) {
+        } catch (\Exception $e) {
 
-            return redirect()->back()->with('error', $e);
+            // return redirect()->back()->with('error', $e);
         }
     }
 }

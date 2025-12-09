@@ -33,7 +33,7 @@ class WapanelsWaApi
                                                     
               $response = curl_exec($curl);
                                                     
-              curl_close($curl);
+              @curl_close($curl);
               
               return $response;
     }
@@ -70,7 +70,7 @@ class WapanelsWaApi
                                                     
               $response = curl_exec($curl);
                                                     
-              curl_close($curl);
+              @curl_close($curl);
                $response;
         return($response);
     }
@@ -99,7 +99,7 @@ class WapanelsWaApi
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 
         $result = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
         echo "<pre>";
         return($result);
     }

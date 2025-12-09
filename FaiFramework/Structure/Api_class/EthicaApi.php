@@ -99,7 +99,7 @@ class EthicaApi
 
             $response = curl_exec($curl);
 
-            curl_close($curl);
+            @curl_close($curl);
             $response;
             $responseData = json_decode($response, true);
             if ($responseData['status'] == 200) {
@@ -130,7 +130,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($responseData['status'] == 200) {
@@ -169,7 +169,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (! isset($responseData['status'])) {
             $responseData['status'] = 404;
@@ -212,7 +212,7 @@ class EthicaApi
 
             return $response_awal;
         }
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response_awal, true);
 
         $response = [];
@@ -304,57 +304,7 @@ class EthicaApi
         }
 
         $response = json_encode($response);
-        // $sarimbit[$value['nama_sarimbit']]['data']['seq'] = $value['seq_sarimbit'];
-        // $sarimbit[$value['nama_sarimbit']]['data']['gambar'] = $value['gambar'];
-        // $sarimbit[$value['nama_sarimbit']]['data']['gambar_sedang'] = $value['gambar_sedang'];
-        // $sarimbit[$value['nama_sarimbit']]['data']['gambar_besar'] = $value['gambar_besar'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['barcode'] = $value['barcode'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['nama_produk'] = $value['nama_produk'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['warna'] = $value['WARNA'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['ukuran'] = $value['UKURAN'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['artikel'] = $value['artikel'];
-        // $sarimbit[$value['nama_sarimbit']]['barang'][$no]['stok'] = $value['stok'];
-        // "data": [
-        //     {
-        //         "artikel": "NARA 02",
-        //         "stok": "6",
-        //         "brand": "SEPLY",
-        //         "sub_brand": "NARA",
-        //         "katalog": "01",
-        //         "tahun": "2025-01-01",
-        //         "tipe_brg": "A",
-        //         "jumlah_data": "1",
-        //         "list_warna": [
-        //             {
-        //                 "warna": "ASH DAWN",
-        //                 "list_ukuran": [
-        //                     {
-        //                         "ukuran": "S",
-        //                         "stok": "6",
-        //                         "seq": "81073",
-        //                         "barcode": "301250700011873002",
-        //                         "nama": "NARA 02 ASH DAWN S",
-        //                         "brand": "SEPLY",
-        //                         "sub_brand": "NARA",
-        //                         "warna": "ASH DAWN",
-        //                         "katalog": "01",
-        //                         "tahun": "2025-01-01",
-        //                         "tipe_brg": "A",
-        //                         "harga": "249900",
-        //                         "gambar": "https://api.ethica.id//uploads/SEPLY/NARA/TUMBNAIL/NARA 02 ASH DAWN.jpg",
-        //                         "gambar_besar": "https://api.ethica.id//uploads/SEPLY/NARA/BESAR/NARA 02 ASH DAWN.jpg",
-        //                         "gambar_sedang": "https://api.ethica.id//uploads/SEPLY/NARA/SEDANG/NARA 02 ASH DAWN.jpg",
-        //                         "keterangan": "- Bukaan depan menggunakan zipper\n- Variasi potongan lengkung pada bagian dada dengan detail frill\n- Variasi potongan pada sisi pinggang dengan detail kancing\n- Variasi list vertikal sampai dengan potongan bawah\n- Variasi kerut pada bagian bawah dengan detail frill dan list\n- Lengan menggunakan manset dengan variasi list hidup\n- Saku sembunyi di sisi kanan",
-        //                         "is_preorder": "F",
-        //                         "tgl_release": "2024-11-14",
-        //                         "klasifikasi": "Diamond",
-        //                         "berat": "0.5"
-        //                     }
-        //                 ],
-        //                 "stok": "6"
-        //             }
-        //         ]
-        //     }
+       
 
         if (! isset($responseData['status'])) {
             $responseData['status'] = 404;
@@ -413,7 +363,7 @@ class EthicaApi
         ]);
 
         $response = curl_exec($curl);
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         $response;
 
@@ -455,7 +405,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -481,7 +431,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if ($responseData['status'] == 200) {
 
@@ -568,7 +518,7 @@ class EthicaApi
 
         // echo $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($user_api['row'][0]->versi == 'Versi 1') {
@@ -608,11 +558,11 @@ class EthicaApi
         $nama_barang;
         if ($user_api['row'][0]->versi == 'Versi 1') {
             $nama_barang = str_replace(' ', '%20', $nama_barang);
-            $array       = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: F', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
+            $array       = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: T', 'is_preorder: T', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
 
-            $link .= "?key=" . $user['apikey'] . '&offset=0&is_pre_order=F&search=' . $nama_barang . '&customer_seq=' . $customer_seq . '';
+            $link .= "?key=" . $user['apikey'] . '&offset=0&is_pre_order=T&is_preorder=T&search=' . $nama_barang . '&customer_seq=' . $customer_seq . '';
         } else if ($user_api['row'][0]->versi == 'Versi 2') {
-            $array_header = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: F', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
+            $array_header = ['Offset: 0', 'key: ' . $apikey, 'is_pre_order: T', 'is_preorder: T', 'search: ' . $nama_barang, 'Cookie: PHPSESSID=2epb23rm5b3lt8f0jtb6ujdd05'];
 
             $link .= "?key=" . $user['apikey'];
         }
@@ -640,7 +590,7 @@ class EthicaApi
 
         // echo $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         // print_R($responseData);
         if ($user_api['row'][0]->versi == 'Versi 1') {
@@ -690,7 +640,7 @@ class EthicaApi
                 "barang_seq"   => $id_from_api,
                 "qty"          => $qty,
                 "user_id"      => $id_user, //1669,
-                "is_preorder"  => "F",
+                "is_preorder"  => $user_api['row'][0]->id_api == 1 ? "F" : "T",
                 "tipe_apps"    => "W",
             ];
             $link .= "?key=" . $user['apikey'];
@@ -701,23 +651,15 @@ class EthicaApi
                 "barang_seq"   => $id_from_api,
                 "qty"          => $qty,
                 "user_id"      => $id_user,
-                "is_preorder"  => "F",
+                "is_preorder"  => $user_api['row'][0]->id_api == 1 ? "F" : "T",
                 "tipe_apps"    => "W",
 
                 "key"          => $user["apikey"],
-                // "barang_seq:" . $id_from_api,
-                // "qty:" . $qty,
-                // "user_id:" . $_SESSION['id_apps_user'],
-                // "is_preorder:F",
-                // "tipe_apps:W",
+           
             ];
             $array_header = [
 
-                // "barang_seq" => $id_from_api,
-                // "qty" => $qty,
-                // "user_id" => $_SESSION['id_apps_user'],
-                // "is_preorder"=>"F",
-                // "tipe_apps"=>"W",
+              
 
                 "key:" . $user["apikey"],
                 "barang-seq:" . $id_from_api,
@@ -750,7 +692,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         $responseData = json_decode($response, true);
         // print_R($responseData);
@@ -810,7 +752,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -856,7 +798,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -885,7 +827,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
 
         return $responseData;
@@ -916,7 +858,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
 
@@ -974,7 +916,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
 
@@ -1053,7 +995,7 @@ class EthicaApi
         ]);
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         // echo $responseData = json_decode($response, true);
         $responseData = json_decode($response, true);
         if ($user_api['row'][0]->versi == 'Versi 2' and (($response['success'] ?? '') or $responseData['message'] == 'pesanan telah diapprove')) {
@@ -1287,7 +1229,7 @@ class EthicaApi
                     "key"                     => $data['apikey'],
                 ];
                 if ($user_api['row'][0]->id_api == 2) {
-                    $array['is_preorder'] = "F";
+                    $array['is_preorder'] = "T";
                 }
                 $true = true;
                 foreach ($array as $key => $value) {
@@ -1319,7 +1261,7 @@ class EthicaApi
 
                     $response = curl_exec($curl);
 
-                    curl_close($curl);
+                    @curl_close($curl);
                     // echo $responseData = json_decode($response, true);
                     $responseData = json_decode($response, true);
 
@@ -1387,7 +1329,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1417,7 +1359,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1447,7 +1389,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1477,7 +1419,7 @@ class EthicaApi
         ]);
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         $responseData = json_decode($response, true);
         if (isset($responseData[0]['artikel'])) {
 
@@ -1531,7 +1473,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         return $response;
     }
@@ -1557,7 +1499,7 @@ class EthicaApi
 
         $response = curl_exec($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
         return $response;
     }
 }

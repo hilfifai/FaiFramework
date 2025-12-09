@@ -11,7 +11,7 @@ class Pages extends Packages
 	public static function Apps($class, $function, $page = array(), $param1 = "", $param2 = "", $param3 = "", $param4 = "", $param5 = "")
 	{
 
-		$class = ucfirst($class);
+		$class = ucfirst($class??"");
 		if ($class and $class != -1) {
 			require_once(dirname(__FILE__) . "/../App/$class.php");
 			return $class::$function($page, $param1, $param2, $param3, $param4, $param5);
@@ -324,8 +324,12 @@ class Pages extends Packages
 
 				if (isset($page['load']['config']))
 					$page['config'] = $page['load']['config'];
-
-				$page['website']['content'][0] = $page['load']['header'];
+				if (isset($page['load']['header'])) {
+					$header = $page['load']['header'];
+				} else {
+					$header = ""; // atau []
+				}
+				$page['website']['content'][0] = $header ;
 				$header_content = Packages::view_website($page, '<HEADER></HEADER>');
 				$header_content;
 			} else {
@@ -355,7 +359,7 @@ class Pages extends Packages
 				foreach ($tag_list['row'] as $tag) {
 					$content_array_header = [];
 					if ($tag->tipe == 'website') {
-						$website_header['content'] = $this->webcontent($header, $tag->id_website_master);
+						$website_header['content'] = Configuration::webcontent($header, $tag->id_website_master);
 						$content_array_header = $website_header;
 					}
 

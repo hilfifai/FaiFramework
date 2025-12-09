@@ -35,7 +35,7 @@ class RajaOngkirApi extends CI_Controller
 				));
 			$response = curl_exec($curl);
 			$err      = curl_error($curl);
-			curl_close($curl);
+			@curl_close($curl);
 			$data     = json_decode($response, true);
 			for($i = 0; $i < count($data['rajaongkir']['results']); $i++)
 			{
@@ -62,7 +62,7 @@ class RajaOngkirApi extends CI_Controller
 				));
 			$response = curl_exec($curl);
 			$err      = curl_error($curl);
-			curl_close($curl);
+			@curl_close($curl);
 			$data     = json_decode($response, true);
 			for($i = 0; $i < count($data['rajaongkir']['results']); $i++)
 			{
@@ -94,7 +94,7 @@ class RajaOngkirApi extends CI_Controller
 
 		$response = curl_exec($curl);
 		$err      = curl_error($curl);
-		curl_close($curl);
+		@curl_close($curl);
 
 		if($err)
 		{
@@ -126,7 +126,7 @@ class RajaOngkirApi extends CI_Controller
 			// https://pro.rajaongkir.com/api/city?province=1
 		$response = curl_exec($curl);
 		$err      = curl_error($curl);
-		curl_close($curl);
+		@curl_close($curl);
 
 		if($err)
 		{
@@ -173,7 +173,7 @@ class RajaOngkirApi extends CI_Controller
 			// https://pro.rajaongkir.com/api/city?province=1
 		$response = curl_exec($curl);
 		$err      = curl_error($curl);
-		curl_close($curl);
+		@curl_close($curl);
 
 		if($err)
 		{
@@ -220,7 +220,7 @@ class RajaOngkirApi extends CI_Controller
 
 		$response = curl_exec($curl);
 		$err      = curl_error($curl);
-		curl_close($curl);
+		@curl_close($curl);
 
 		if($err)
 		{
@@ -261,7 +261,7 @@ class RajaOngkirApi extends CI_Controller
 		$response = curl_exec($curl);
 		$err      = curl_error($curl);
 
-		curl_close($curl);
+		@curl_close($curl);
 
 		if($err)
 		{
@@ -299,7 +299,7 @@ class RajaOngkirApi extends CI_Controller
         $response = curl_exec($curl);
         $err      = curl_error($curl);
 
-        curl_close($curl);
+        @curl_close($curl);
 
         if ($err) {
             //echo "cURL Error #:" . $err;
