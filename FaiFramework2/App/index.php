@@ -1,3 +1,5 @@
+<?php
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -16,7 +18,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link style="<?php echo base_url(); ?>FaiFramework/Pages/OrderSystem/style.css">
+    <link style="../../FaiFramework/Pages/OrderSystem/style.css">
 
     <style>
         table>tbody>tr>td {
@@ -644,7 +646,9 @@ voucher_list > div {
 
     <!-- Login Container -->
     <div id="login-builder-container"></div>
-
+    <?php
+    // base_url() is defined in MainFaiFramework.php
+    ?>
     <!-- Hidden Inputs -->
     <input type="hidden" id="template" value="<?php echo base_url(); ?>">
     <input type="hidden" id="base_template" value="<?php echo base_url(); ?>">
@@ -717,7 +721,7 @@ voucher_list > div {
     <script type="module">
         import {
             FaiFramework
-        } from '<?php echo str_replace('index.php/', '', base_url()); ?>FaiFramework2/JSFramework/FaiFramework.js';
+        } from '../FaiFramework2/JSFramework/FaiFramework.js';
         const base_url = document.getElementById('base_url').value;
         const base_url_non_index = document.getElementById('base_url_non_index').value;
         const base_url_object = document.getElementById('base_url_object').value;
@@ -725,7 +729,7 @@ voucher_list > div {
         var option = {
             pending_order:true
         }  
-        await window.fai.init("fai_init", option,"moesneeds.id", 'v1.0.4-alpha44', 
+        await window.fai.init("fai_init", option,"moesneeds.id", 'v1.0.4-alpha45', 
 
                             base_url, base_url_non_index, base_url_object);
         await window.fai.setupFullWebContent();

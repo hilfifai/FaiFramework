@@ -4068,7 +4068,7 @@ class Helper_function
 
                 ]);
             DB::commit();
-        } catch (\Exeception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', $e);
         }

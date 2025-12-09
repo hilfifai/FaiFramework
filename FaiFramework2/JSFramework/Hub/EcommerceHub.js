@@ -1341,21 +1341,38 @@ export async function proses_cek_bayar(confirm = 0) {
   // Ambil nilai input
   formData.append('id_user', isLoggedIn.userId);
   formData.append('checkout_id', checkout_id);
-
+  let status_push = true;
   $('.collect_id').each(function () {
     const id = $(this).val(); // Ambil ID unik
 
-    formData.append(`bank[${id}]`, $('#konfirm_bayar-bank-' + id).val());
-    formData.append(`an[${id}]`, $('#konfirm_bayar-an-' + id).val());
-    formData.append(`norek[${id}]`, $('#konfirm_bayar-norek-' + id).val());
-    formData.append(`tanggal[${id}]`, $('#konfirm_bayar-tanggal-' + id).val());
-    formData.append(`nominal[${id}]`, $('#konfirm_bayar-nominal-' + id).val());
+    const bank = $('#konfirm_bayar-bank-' + id).val();
+    const an = $('#konfirm_bayar-an-' + id).val();
+    const norek = $('#konfirm_bayar-norek-' + id).val();
+    const tanggal = $('#konfirm_bayar-tanggal-' + id).val();
+    const nominal = $('#konfirm_bayar-nominal-' + id).val();
+
+    formData.append(`bank[${id}]`, bank);
+    formData.append(`an[${id}]`, an);
+    formData.append(`norek[${id}]`, norek);
+    formData.append(`tanggal[${id}]`, tanggal);
+    formData.append(`nominal[${id}]`, nominal);
 
     const fileInput = document.getElementById('konfirm_bayar-file-' + id);
     if (fileInput && fileInput.files.length > 0) {
       formData.append(`file[${id}]`, fileInput.files[0]);
+    } else {
+      status_push = false;
+    }
+
+    if (!bank.trim() || !an.trim() || !norek.trim() || !tanggal.trim() || !nominal.trim()) {
+      status_push = false;
     }
   });
+  if(!status_push){
+       Swal.fire("Gagal!",
+              "Terdapat Field yang kosong!",
+              "error");
+  }else
   if (isLoggedIn) {
     $.ajax({
 
@@ -2036,7 +2053,8 @@ export async function proses_checkout_cek_stok(confirm = 0) {
           }
         });
       },
-      success: async function (responseData) {
+      success:  function (responseData) {
+        alert("berhasil");
         Swal.close();
         if (responseData.status == 1) {
 
@@ -2050,8 +2068,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
             3: responseData.id,
           };
           console.log(type);
-          const encoded = await btoa(JSON.stringify(type));
-          const enPage = window.fai.getModule("linkHelper").encodeDataForHref(data);;;
+          const encoded =  btoa(JSON.stringify(type));
           // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
           link_direct(encoded);
 
