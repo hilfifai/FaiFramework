@@ -3105,7 +3105,6 @@ SELECT '6') AS level
     {
         $return = [];
         if (isset($_SESSION['id_apps_user'])) {
-
             DB::table('erp__pos__group');
             DB::whereRaw('erp__pos__group.id_panel=' . $page['get_panel']['id_panel']);
             DB::whereRaw("erp__pos__group.id_apps_user='" . $_SESSION['id_apps_user'] . "'");

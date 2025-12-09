@@ -1418,6 +1418,7 @@ class CRUDFunc
         foreach ($sqli as $field => $string) {
             // echo '<br>' . $field;
             $sqli[$field] = Database::string_database($page, $fai, $string);
+            if($sqli[$field])
             $sqli[$field] = str_replace("'", "\''", $sqli[$field]);
         }
         if ($database_utama != 'form' and ! isset($page['db']['np'])) {
@@ -1444,7 +1445,7 @@ class CRUDFunc
                 if (isset($page['load']['board'])) {
                     if (! in_array($page['load']['board'], [-1, null])) {
                         $sqli['on_board'] = $page['load']['board'];
-                        $sqli['on_role']  = isset($_SESSION['board_role-' . $page['load']['board']]) ? $_SESSION['board_role-' . $page['load']['board']] : null;
+                        $sqli['on_role']  = isset($_SESSION['board_role-' . $page['load']['board']]) ? $_SESSION['board_role-' . $page['load']['board']] ??0: null;
                     }
                 }
             } else if ($tipe == 'update') {
@@ -1467,24 +1468,31 @@ class CRUDFunc
             }
             //  echo $columns[$database_utama][$to_key];
             if (isset($columns[$database_utama][$to_key])) {
-                if (in_array($columns[$database_utama][$to_key], ["interger", "numeric", 'float'])) {
-                    $sqli[$to_key] = str_replace(
-                        str_split('abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM'),
-                        "",
-                        $to_value
-                    );
+                // print_R($columns[$database_utama][$to_key]);
+                // echo '<br>';
+                if (in_array($columns[$database_utama][$to_key], ["interger", "numeric", 'float',"int",'double'])) {
+                    if($sqli[$to_key]){
+
+                        $sqli[$to_key] = str_replace(
+                            str_split('abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM'),
+                            "",
+                            $to_value
+                        );
+                    }
                     if (! $sqli[$to_key]) {
                         $sqli[$to_key] = 0;
+                        
                     }
+                    
                 }
             }
             $sqli[$to_key] = str_replace("'", '&#39;', $sqli[$to_key] ?? '');
         }
         if ($tipe == 'insert') {
-
+            
             DB::insert($database_utama, $sqli);
             //  json_encode(["utama" => $database_utama, "sqli" => $sqli, "last_insert" => DB::lastInsertId($page, $database_utama)]);
-
+            
             return DB::lastInsertId($page, $database_utama);
         } else {
             $where = $update_where;

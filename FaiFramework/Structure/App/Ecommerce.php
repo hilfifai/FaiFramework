@@ -868,7 +868,7 @@ class Ecommerce
 		$page['config']['database']['TUMB']['where'][] = array("((ref_database", '=', "'ltw_inventaris__asset__list') or ref_database='inventaris__asset__list')");
 		// $page['config']['database']['SAMPUL']['where'][] = array("inventaris__asset__list.id",'=','ref_external_id');
 		// $page['config']['database']['TUMB']['where'][] = array("support",'=',"'Sampul'");
-		$page['config']['database']['TUMB']['where'][] = array("CAST(sizes AS int)", '>', '0');
+		$page['config']['database']['TUMB']['where'][] = array("CAST(sizes AS SIGNED)", '>', '0');
 		$page['config']['database']['TUMB']['where'][] = array("store__produk.id", '=', 'LOAD_ID|');
 		$page['config']['database']['TUMB']['np'] = true;
 

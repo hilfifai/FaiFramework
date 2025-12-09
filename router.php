@@ -6,6 +6,7 @@ $request = $_SERVER['REQUEST_URI'];
 $path = parse_url($request, PHP_URL_PATH);
 
 // Remove leading slash
+if($path)
 $path = ltrim($path, '/');
 
 // If it's a static file that exists, serve it with correct headers

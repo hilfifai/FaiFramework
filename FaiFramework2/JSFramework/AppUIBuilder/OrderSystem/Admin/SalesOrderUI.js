@@ -1014,6 +1014,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
         // View button
         document.querySelectorAll('[data-action="view"]').forEach(button => {
             button.addEventListener('click', (e) => {
+                
                 const soId = e.target.closest('[data-so-id]').dataset.soId;
                 this.viewSoDetail(soId);
             });
@@ -1384,9 +1385,12 @@ export default class SalesOrderUI extends OrderSystemBuilder {
 
     // View SO detail
     viewSoDetail(soId) {
-        this.currentSo = this.salesOrders.find(so => so.primary_key === soId);
+          alert(soId);
+          console.log(this.salesOrders);
+        this.currentSo = this.salesOrders.find(so => so.primary_key == soId);
+        console.log(this.currentSo);
         if (!this.currentSo) return;
-
+        alert();
         this.showSoDetail();
         this.populateSoDetail();
     }
@@ -2520,30 +2524,22 @@ export default class SalesOrderUI extends OrderSystemBuilder {
     }
 
     renderRackEntry(item, outgoingId, index, rack = null) {
-        const rackOptions = [
-            { id: 'R001', name: 'Rak Elektronik A1' },
-            { id: 'R002', name: 'Rak Elektronik A2' },
-            { id: 'R003', name: 'Rak Elektronik B1' },
-            { id: 'R004', name: 'Rak Elektronik B2' },
-            { id: 'R005', name: 'Rak Aksesoris A1' },
-            { id: 'R006', name: 'Rak Aksesoris A2' },
-            { id: 'R007', name: 'Rak Aksesoris B1' },
-            { id: 'R008', name: 'Rak Aksesoris B2' }
-        ];
+       
 
         const remainingQuantity = (item.qty_pesan || item.quantity) - this.getProcessedQuantity(item);
         const maxQuantity = rack ? ((item.qty_pesan || item.quantity) - this.getProcessedQuantity(item) + (rack.qty_keluar_out || 0)) : remainingQuantity;
-
+        alert( rack.id_ruang_simpan_out );
         return `
     <div class="rack-entry" data-index="${index}">
         <div class="rack-selection">
             <select class="form-select rack-select" 
                 data-outgoing-id="${outgoingId}"
                 data-product-id="${item.id_produk_inv || item.id}"
+                data-id_ruang_simpan_out="${rack.id_ruang_simpan_out}"
                 data-index="${index}">
                 <option value="">Pilih Rak</option>
                 ${this.warehouseRacks.map(opt => `
-                    <option value="${opt.id}" ${rack && rack.id_ruang_simpan_out === opt.id ? 'selected' : ''}>
+                    <option value="${opt.id}" ${rack.id_ruang_simpan_out == opt.id ? 'selected' : ''}>
                         ${opt.name}
                     </option>
                 `).join('')}

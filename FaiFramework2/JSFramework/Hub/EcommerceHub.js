@@ -566,7 +566,6 @@ export async function proses_checkout_temp(id_cart) {
 }
 
 export async function initialize_checkout() {
-  console.clear();
   console.log('INITIAL CHECKOUT');
   let skeletonBilling = `<h5 class="mb-4">Pilih Alamat Penerima<span class="float-right"><button class="btn btn-sm btn-light" id="tambahAlamatPenerima" onclick="tambah_alamat_penerima()"><i class="fa fa-chevron-left mr-2"></i>Tambah</button><button class="btn btn-sm btn-light" id="cancelChangeBilling" onclick="kembali_alamat_penerima_selected()"><i class="fa fa-chevron-left mr-2"></i>Cancel</button></span></h5><div class="list-group" id="content_list_tambah_alamat_penerima"><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div></div>`;
   let skeletonSelectedBilling = `<div class="float-right"><button class="btn btn-light btn-sm" id="changeBilling" onclick="kembali_alamat_penerima_cari()">Change</button></div><div class="skeleton" style="height: 120px; background: #f0f0f0;"></div>`;
@@ -2400,12 +2399,13 @@ export async function prosessearchdata(index) {
       value: `%${query}%`
     });
     const queryBody = {
-      db: 'all_produk', // atau nama db dinamis Anda
+      db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
       limit: getalldata.data.itemsPerPage[index], // atau batas yang Anda inginkan
-      offset: 0
+      offset: 0,
+      function : 'all_produk'
     };
-    data_produk = await loadJSON('all_produk', queryBody);
+    data_produk = await loadJSON('view_produk_detail', queryBody);
 
     console.log(data_produk);
     getalldata.data_produk[index] = data_produk;
