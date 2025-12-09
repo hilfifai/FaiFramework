@@ -106,6 +106,7 @@ class ApiApp
             $data[$key] = $row;
         }
         echo json_encode($data);
+        die;
     }
     public static function get_pending_order($page)
     {
@@ -157,6 +158,82 @@ class ApiApp
         $id_device = $device['row'][0]->id;
         DB::update("apps_device__transaksi", ["status_generate" => "1"], [["id_apps_device", "=", "$id_device"], ["id", "=", "$primary_key"]], 'Where Array');
         echo json_encode(["status" => 1]);
+    }
+    public static function json($page)
+    {
+        header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($input)) {
+            $input = [];
+        }
+
+        $db_name = $input['db'] ?? 'all_produk';
+        $where = $input['where'] ?? [];
+        if (!is_array($where)) {
+            $where = [];
+        }
+        $limit = $input['limit'] ?? 10;
+        $offset = $input['offset'] ?? 0;
+        $orderBy = $input['orderBy'] ?? [];
+        if (!is_array($orderBy)) {
+            $orderBy = [];
+        }
+
+
+
+
+        // Reset for main query
+        DB::table($db_name);
+        DB::selectRaw('*');
+        // Reapply where
+        if (!empty($where)) {
+            foreach ($where as $condition) {
+                if (!is_array($condition)) {
+                    continue;
+                }
+                if (isset($condition['fields']) && $condition['operator'] === 'like_or_fields') {
+                    $fields = $condition['fields'];
+                    if (!is_array($fields)) {
+                        $fields = [$fields];
+                    }
+                    $value = $condition['value'] ?? '';
+                    $whereOr = [];
+                    foreach ($fields as $field) {
+                        if ($field)
+                            $whereOr[] = "$field LIKE '$value'";
+                    }
+                    DB::whereRaw('(' . implode(' OR ', $whereOr) . ')');
+                }
+            }
+        }
+        // Reapply order
+        if (!empty($orderBy)) {
+
+            DB::orderRaw($page, ($orderBy['field'] . " " . $orderBy['direction'] ?? 'ASC'));
+        }
+
+        // Apply limit and offset
+        DB::limitRaw($page, $limit, $offset);
+
+        $result = DB::get('all');
+        if ($input['function']) {
+            ob_start();
+            $result = DatabaseFunc::all_produk($result, $page);
+            ob_end_clean();
+        }
+        $response = [
+            'success' => true,
+            'data' => $result['row'],
+            'total' => $result['num_rows_non_limit'],
+            'limit' => $limit,
+            'offset' => $offset
+        ];
+
+        echo json_encode($response);
     }
     public static function integrasi_db($page)
     {
@@ -497,7 +574,7 @@ class ApiApp
             $body = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -579,7 +656,7 @@ class ApiApp
             $body = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -603,28 +680,24 @@ class ApiApp
                     $db['join'][] = ["store__produk", " store__produk.id", "erp__pos__utama__detail.id_produk", "LEFT"];
                     $db['join'][] = ["store__toko", " store__toko.id", "store__produk.id_toko", "LEFT"];
                     $db['join'][] = ["inventaris__asset__list_query", " inventaris__asset__list.id", "erp__pos__utama__detail.id_inventaris__asset__list", "LEFT"];
-                    $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as int) = inventaris__asset__list__varian.id", "LEFT"];
+                    $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as signed) = inventaris__asset__list__varian.id", "LEFT"];
 
                     $db['where'][] = ["qty", ">=", 1];
-                    if ($page['database_provider'] == 'mysql') {
+                   if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $conn     = DB::getConn($page);
-                        $result   = $conn->query($query);
+                        $result   = mysqli_query($conn, $query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        if ($result) {
-                            for ($i = 0; $i < $result->columnCount(); $i++) {
-                                $meta = $result->getColumnMeta($i);
-                                $col = $meta['name'];
-                                $columns[] = $col;
-                                $pairs[]   = "'$col', $alias.$col";
-                            }
+                        while ($field = mysqli_fetch_field($result)) {
+                            $columns[] = $col = $field->name;
+                            $pairs[]   = "'$col', $alias.$col";
                         }
                     }
 
@@ -648,11 +721,11 @@ class ApiApp
                     ];
 
                     $dbGroup['np']       = "erp__pos__group";
-                    $dbGroup['select'][] = "*,'process' as status,(select sum(grand_total) FROM erp__pos__utama__detail where erp__pos__utama__detail.id_erp__pos__group=erp__pos__group.id) as total,nama_lengkap,email";
+                    $dbGroup['select'][] = "*,erp__pos__group.id,'process' as status,(select sum(grand_total) FROM erp__pos__utama__detail where erp__pos__utama__detail.id_erp__pos__group=erp__pos__group.id) as total,nama_lengkap,email";
                     $dbGroup['utama']    = "erp__pos__group";
                     $dbGroup['where'][]  = ["tipe_group", "!=", "'Pembelian Barang'"];
                     $dbGroup['order'][]  = ["erp__pos__group.id", "desc"];
-                    $dbGroup['join'][]   = ["apps_user", "apps_user.id_apps_user", "erp__pos__group.id_apps_user"];
+                    $dbGroup['join'][]   = ["apps_user", "apps_user.id_apps_user", "erp__pos__group.id_apps_user", "left"];
                     $row                 = Database::database_coverter($page, $dbGroup, [], 'all');
 
                     echo json_encode($row["row"]);
@@ -710,6 +783,19 @@ class ApiApp
             echo "Error MySQL: " . $e->getMessage();
         }
     }
+    public static function test_group($page)
+    {
+        $data = [
+            'nomor'        => "PO-" . EcommerceApp::getFirstCharacter("Pembelian Barang") . "/" . date('ymdHis') . "/" . rand(100, 999),
+            'id_panel'     => $page['get_panel']['id_panel'],
+            'id_apps_user' => $_SESSION['id_apps_user'],
+            'tanggal'      => date('Y-m-d H:i:s'),
+            'status'       => 'Aktif',
+            'tipe_group'   => "Pembelian Barang",
+        ];
+        print_R($data);
+       echo $insert_id = CRUDFunc::crud_insert(new MainFaiFramework(), $page, $data, [], "erp__pos__group", []);
+    }
     public static function purchase_orders($page)
     {
         $fai = new MainFaiFramework();
@@ -719,7 +805,7 @@ class ApiApp
             $body    = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -749,7 +835,7 @@ class ApiApp
                         $detail['berat_total']                = $detail['qty'] * $items['variant_detail']['berat_varian'];
                         $detail['total_harga']                = $detail['qty'] * $detail['harga_penjualan'];
                         $detail['tipe_diskon']                = 'Presentase';
-
+                      
                         CRUDFunc::crud_insert($fai, $page, $detail, [], 'erp__pos__utama__detail');
                     }
                     $row = DatabaseFunc::purchase_order($page, $id_group_pemesanan);
@@ -757,13 +843,13 @@ class ApiApp
                     break;
 
                 case 'PUT':
-                    $id   = $headers['id']??"";
+                    $id   = $headers['id'] ?? "";
                     $save = Packages::crud($page, "update", $id);
 
                     echo json_encode($save);
                     break;
                 case 'DELETE':
-                    $id   = $headers['id']??"";
+                    $id   = $headers['id'] ?? "";
                     $save = Packages::crud($page, "hapus", $id);
 
                     echo json_encode($save);
@@ -837,7 +923,7 @@ class ApiApp
             $body = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -864,26 +950,22 @@ class ApiApp
                     $db['join'][]         = ["inventaris__asset__list", "inventaris__asset__list.id", "id_asset"];
                     $db['join'][]         = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_asset_varian", 'left'];
 
-                    if ($page['database_provider'] == 'mysql') {
+                      if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = $conn->query($query);
+                        $result = mysqli_query($conn, $query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        if ($result) {
-                            for ($i = 0; $i < $result->columnCount(); $i++) {
-                                $meta = $result->getColumnMeta($i);
-                                $col = $meta['name'];
-                                $columns[] = $col;
-                                $pairs[]   = "'$col', $alias.$col";
-                            }
+                        while ($field = mysqli_fetch_field($result)) {
+                            $columns[] = $col = $field->name;
+                            $pairs[]   = "'$col', $alias.$col";
                         }
                     }
 
@@ -984,7 +1066,7 @@ class ApiApp
             $body = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -996,26 +1078,22 @@ class ApiApp
                     $db['np']    = "t";
                     $db['utama'] = "erp__pos__delivery_order__detail";
 
-                    if ($page['database_provider'] == 'mysql') {
+                     if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = $conn->query($query);
+                        $result = mysqli_query($conn, $query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        if ($result) {
-                            for ($i = 0; $i < $result->columnCount(); $i++) {
-                                $meta = $result->getColumnMeta($i);
-                                $col = $meta['name'];
-                                $columns[] = $col;
-                                $pairs[]   = "'$col', $alias.$col";
-                            }
+                        while ($field = mysqli_fetch_field($result)) {
+                            $columns[] = $col = $field->name;
+                            $pairs[]   = "'$col', $alias.$col";
                         }
                     }
 
@@ -1220,7 +1298,7 @@ class ApiApp
             $body = json_decode(file_get_contents("php://input"), true);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
 
@@ -1238,19 +1316,15 @@ class ApiApp
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
                         $query    = "$getquery  LIMIT 1";
                         $conn     = DB::getConn($page);
-                        $result2  = $conn->query($query);
+                        $result2  = mysqli_query($conn, $query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        if ($result2) {
-                            for ($i = 0; $i < $result2->columnCount(); $i++) {
-                                $meta = $result2->getColumnMeta($i);
-                                $col = $meta['name'];
-                                $columns[] = $col;
-                                $pairs[]   = "'$col', $alias.$col";
-                            }
+                        while ($field2 = mysqli_fetch_field($result2)) {
+                            $columns[] = $col = $field2->name;
+                            $pairs[]   = "'$col', $alias.$col";
                         }
                     }
 
@@ -1307,19 +1381,15 @@ class ApiApp
                         $query    = "$getquery  LIMIT 1";
                         $query;
                         $conn   = DB::getConn($page);
-                        $result = $conn->query($query);
+                        $result = mysqli_query($conn, $query);
 
                         // Ambil nama kolom dari hasil query
                         $columns = [];
                         $pairs   = [];
                         $alias   = "t";
-                        if ($result) {
-                            for ($i = 0; $i < $result->columnCount(); $i++) {
-                                $meta = $result->getColumnMeta($i);
-                                $col = $meta['name'];
-                                $columns[] = $col;
-                                $pairs[]   = "'$col', $alias.$col";
-                            }
+                        while ($field = mysqli_fetch_field($result)) {
+                            $columns[] = $col = $field->name;
+                            $pairs[]   = "'$col', $alias.$col";
                         }
                     }
 
@@ -1421,7 +1491,7 @@ class ApiApp
             // print_R($body);
 
             $headers = getallheaders();
-            $id   = $headers['id']??"";
+            $id   = $headers['id'] ?? "";
 
             // $decoded = base64_decode();
 
@@ -1526,8 +1596,8 @@ class ApiApp
                                 $invout['id_erp__pos__inventory_detail'] = $insert_id_det;
                                 $invout['id_barang_masuk']               = $detail['detail']['id_inventaris__asset__list'];
                                 $invout['id_barang_masuk_varian']        = $detail['detail']['id_barang_varian'];
-                                $invout['id_produk_masuk']               = null;
-                                $invout['id_produk_varian_masuk']        = null;
+                                // $invout['id_produk_masuk']               = null;
+                                // $invout['id_produk_varian_masuk']        = null;
                                 $invout['qty_pesan_masuk']               = $detail['detail']['qty'];
                                 $invout['id_erp__pos__inventory']        = $inventori[$id_pemesanan];
                                 $invout['nomor_receive']                 = $getNumberRecceive;
@@ -3483,6 +3553,7 @@ class ApiApp
             DB::beginTransaction();
             try {
                 $get_id = $id_group_pemesanan = EcommerceApp::inisiate_store_pesanan_group($page, 1)['id'];
+
                 foreach ($send_cart_proses as $cart) {
                     $detail = $row_cart[$cart['id_cart']];
                     DB::table("store__toko__gudang");
@@ -3526,6 +3597,7 @@ class ApiApp
                         }
                         $inventori[$id_pemesanan] = $insert_id;
                     }
+
                     $_POST['id_group_pemesanan'] = $id_group_pemesanan;
                     $_POST['id_pemesanan']       = $id_pemesanan;
                     $id_detail                   = EcommerceApp::cek_harga_cart_get_checkout($page, null, null, 'id_detail', $cart['id_cart'], 1, $cart['qty']);
@@ -3560,13 +3632,12 @@ class ApiApp
                         foreach ($get['row'] as $row) {
                             if ($sisa_stok > 0) {
 
-                                DB::table("inventaris__storage__data");
-
-                                DB::whereRaw("inventaris__storage__data.id_gudang =$row->id_gudang");
-                                DB::whereRaw("inventaris__storage__data.id_produk = $detail->id_produk");
-                                DB::whereRaw("inventaris__storage__data.id_asset = $detail->id_asset");
-                                DB::whereRaw("inventaris__storage__data.id_asset_varian = $detail->id_asset_varian");
-                                DB::whereRaw("inventaris__storage__data.id_produk_varian = $detail->id_produk_varian");
+                                DB::table("view_all_produk_stok_per_gudang");
+                                DB::whereRaw("view_all_produk_stok_per_gudang.id_gudang =$row->id_gudang");
+                                DB::whereRaw("view_all_produk_stok_per_gudang.id_asset = $detail->id_asset");
+                                DB::whereRaw("view_all_produk_stok_per_gudang.id_barang_varian = $detail->id_asset_varian");
+                                DB::whereRaw("view_all_produk_stok_per_gudang.id_produk_varian = $detail->id_produk_varian");
+                                // DB::whereRaw("view_storage.id_produk_varian = $detail->id_produk_varian");
                                 $stok = DB::get("all");
                                 foreach ($stok['row'] as $rs) {
                                     if ($sisa_stok > 0) {
@@ -3582,6 +3653,7 @@ class ApiApp
                                         $out_break['stok_out']            = $rs->stok_available;
                                         $out_break['urutan']              = $urutan;
                                         $float                            = $sisa_stok;
+                                        // print_R($out_break);
                                         if ($float > $rs->stok_available) {
                                             $float = $rs->stok_available;
                                         }
@@ -3589,7 +3661,7 @@ class ApiApp
                                         $id_breakdown                = CRUDFunc::crud_insert(new MainFaiFramework(), $page, $out_break, [], "erp__pos__inventory__outgoing_breakdown", []);
 
                                         $update_stok['stok_available'] = $rs->stok_available - $float;
-                                        $update_stok['stok_reserved']  = $rs->stok_reserved + $float;
+                                        // $update_stok['stok_reserved']  = $rs->stok_reserved + $float;
                                         CRUDFunc::crud_update(new MainFaiFramework(), $page, $update_stok, [], [], [], 'inventaris__storage__data', 'id', $rs->id);
                                         $sisa_stok -= $float;
 

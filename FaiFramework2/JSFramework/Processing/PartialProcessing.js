@@ -155,13 +155,14 @@ export default class PartialProcessing extends FaiModule {
   async urlFramework(template, url) {
     let protocol = location.protocol + "//"; // otomatis 'http://' atau 'https://'
     let host = location.hostname; // sama dengan $_SERVER['SERVER_NAME']
+    let port = location.port ? `:${location.port}` : "";
     let suffix = "";
 
-    if (host === "localhost") {
-      suffix = "/FrameworkServer_v1";
-    }
+    // if (host === "localhost") {
+    //   suffix = "/FrameworkServer_v1";
+    // }
 
-    return `${protocol}${host}${suffix}/FaiFramework/Pages/_template/${template}/${url}`;
+    return `${protocol}${host}${port}${suffix}/FaiFramework/Pages/_template/${template}/${url}`;
   }
 
   async proses_array_website_database_list_array(page, getDatabaseListOnList, dbRow, array, dl, databaseListTemplate,

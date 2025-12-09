@@ -10,10 +10,9 @@ class Configuration extends Pages
 	public  static function LoadApps($page, $domain, $menuApps = -1, $return = "")
 	{
 		if (!isset($_SESSION[$domain][$menuApps][$return][$page['conection_name_database']])) {
-			echo $domain;
+			
 			$fai = new MainFaiFramework();
-			$key = DB::connection($page);
-			$page['database_connected'] = $key;
+			
 
 			DB::table('web__apps');
 			DB::selectRaw("*,web__apps.id as primary_key,website__template__list.nama_template");

@@ -117,7 +117,7 @@ class BundleContent
         }
         if (isset($page['load']['id_web__apps'])) {
 
-            $sql = DB::fetchResponse(DB::select("select * from drive__file where ref_database='web__apps' and ref_external_id=" . $page['load']['id_web__apps'] . " and CAST(sizes AS int)>0 order by create_date desc, sizes desc"));
+            $sql = DB::fetchResponse(DB::select("select * from drive__file where ref_database='web__apps' and ref_external_id=" . $page['load']['id_web__apps'] . " and CAST(sizes AS SIGNED)>0 order by create_date desc, sizes desc"));
             if (($sql))
                 $return = ($sql[0]->domain ? $sql[0]->domain : base_url()) . '/uploads/' . $sql[0]->path . '/' . $sql[0]->file_name_save;
             return $return;

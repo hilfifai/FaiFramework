@@ -1,9 +1,9 @@
 {
     "3492": {
-        "id": "3492",
+        "id": 3492,
         "id_apps": null,
         "struktur_menu": "Workspace Home Ecommerce",
-        "active": "1",
+        "active": 1,
         "create_by": null,
         "create_date": null,
         "update_by": null,
@@ -42,10 +42,10 @@
         "apps_id": "r0KIxAQPZMlHYJMcmF2C"
     },
     "2828": {
-        "id": "2828",
-        "id_apps": "70",
+        "id": 2828,
+        "id_apps": 70,
         "struktur_menu": "Workspace > Dashboard",
-        "active": "1",
+        "active": 1,
         "create_by": null,
         "create_date": null,
         "update_by": null,
@@ -62,8 +62,8 @@
         "menu": "-1",
         "nav": "-1",
         "board": "ID_BOARD|",
-        "parent": "0",
-        "urutan": "1",
+        "parent": 0,
+        "urutan": 1,
         "on_panel": null,
         "on_board": null,
         "page": "Backend",
