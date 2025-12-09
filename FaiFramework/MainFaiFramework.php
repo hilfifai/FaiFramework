@@ -1,24 +1,22 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../','./.env');
+if($_SERVER['HTTP_HOST']=='localhost' or $_SERVER['HTTP_HOST']=='localhost:8000'){
+	
+	require_once __DIR__ . '/../vendor/autoload.php';
+	$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../','./.env');
+	$dotenv->load();
+	define('BASEPATH', __DIR__ . '/../');
+}
 
-// if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost') {
-//     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env.development');
-// } else {
-//     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
-// }
-$dotenv->load();
-
-define("APP_FRAMEWORK", $_ENV['APP_FRAMEWORK'] ?: "standalone");
-define("DATABASE_PROVIDER", $_ENV['DATABASE_PROVIDER'] ?: "mysql");
-define("CONECTION_SERVER", $_ENV['CONECTION_SERVER'] ?: "localhost");
-define("DATABASE_NAME", $_ENV['DATABASE_NAME'] ?: "u996263040_moesneeds");
-define("CONECTION_NAME_DATABASE", $_ENV['CONECTION_NAME_DATABASE'] ?: "u996263040_moesneeds");
-define("CONECTION_USER", $_ENV['CONECTION_USER'] ?: "u996263040_moesneeds");
-define("CONECTION_PASSWORD", $_ENV['CONECTION_PASSWORD'] );
-define("CONECTION_SCHEME", $_ENV['CONECTION_SCHEME'] ?: "public");
+define("APP_FRAMEWORK", $_ENV['APP_FRAMEWORK'] ??"standalone");
+define("DATABASE_PROVIDER", $_ENV['DATABASE_PROVIDER'] ?? "mysql");
+define("CONECTION_SERVER", $_ENV['CONECTION_SERVER'] ?? "localhost");
+define("DATABASE_NAME", $_ENV['DATABASE_NAME'] ?? "u996263040_moesneeds");
+define("CONECTION_NAME_DATABASE", $_ENV['CONECTION_NAME_DATABASE'] ?? "u996263040_moesneeds");
+define("CONECTION_USER", $_ENV['CONECTION_USER'] ?? "u996263040_moesneeds");
+define("CONECTION_PASSWORD", isset($_ENV['CONECTION_PASSWORD'])?$_ENV['CONECTION_PASSWORD'] : 'Moesneeds.id`1' );
+define("CONECTION_SCHEME", $_ENV['CONECTION_SCHEME'] ?? "public");
 define('BASEPATH_FAI', __DIR__ . '/' . ($_ENV['BASEPATH_FAI'] ?? '../'));
-define('BASEPATH', __DIR__ . '/../');
+
 
 require_once(__DIR__ . '/Structure/Controller/Configuration.php');
 require_once(__DIR__ . '/Structure/Controller/Partial.php');
