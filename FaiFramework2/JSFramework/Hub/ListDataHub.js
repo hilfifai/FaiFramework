@@ -201,10 +201,11 @@ export default class ListDataHub extends FaiModule {
       value: `%${query}%`
     });
     const queryBody = {
-      db: 'all_produk', // atau nama db dinamis Anda
+      db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
       limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
-      offset: 0
+      offset: 0,
+      function : 'all_produk'
     };
     data_produk = await window.fai.getModule('Data').loadJSON('all_produk', queryBody);
 

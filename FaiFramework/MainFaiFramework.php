@@ -1,13 +1,24 @@
 <?php
-define("APP_FRAMEWORK", "standalone");
-define("DATABASE_PROVIDER", "mysql");
-define("CONECTION_SERVER", "srv1867.hstgr.io");
-define("DATABASE_NAME", "u996263040_moesneeds");
-define("CONECTION_NAME_DATABASE", "u996263040_moesneeds");
-define("CONECTION_USER", "u996263040_moesneeds");
-define("CONECTION_PASSWORD", "Moesneeds.id`1");
-define("CONECTION_SCHEME", "public");
-define('BASEPATH_FAI', __DIR__ . '/../');
+require_once __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../','./.env');
+
+// if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost') {
+//     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env.development');
+// } else {
+//     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
+// }
+$dotenv->load();
+
+define("APP_FRAMEWORK", $_ENV['APP_FRAMEWORK'] ?: "standalone");
+define("DATABASE_PROVIDER", $_ENV['DATABASE_PROVIDER'] ?: "mysql");
+define("CONECTION_SERVER", $_ENV['CONECTION_SERVER'] ?: "localhost");
+define("DATABASE_NAME", $_ENV['DATABASE_NAME'] ?: "u996263040_moesneeds");
+define("CONECTION_NAME_DATABASE", $_ENV['CONECTION_NAME_DATABASE'] ?: "u996263040_moesneeds");
+define("CONECTION_USER", $_ENV['CONECTION_USER'] ?: "u996263040_moesneeds");
+define("CONECTION_PASSWORD", $_ENV['CONECTION_PASSWORD'] );
+define("CONECTION_SCHEME", $_ENV['CONECTION_SCHEME'] ?: "public");
+define('BASEPATH_FAI', __DIR__ . '/' . ($_ENV['BASEPATH_FAI'] ?? '../'));
+define('BASEPATH', __DIR__ . '/../');
 
 require_once(__DIR__ . '/Structure/Controller/Configuration.php');
 require_once(__DIR__ . '/Structure/Controller/Partial.php');
@@ -131,6 +142,7 @@ class MainFaiFramework extends Configuration
 
 	public static function route_request()
 	{
+
 		// Parse the request URI
 		$requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 		$scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
@@ -171,7 +183,7 @@ class MainFaiFramework extends Configuration
 		$page['conection_user'] = CONECTION_USER;
 		$page['conection_password'] = CONECTION_PASSWORD;
 		$page['conection_scheme'] = CONECTION_SCHEME;
-
+		
 		$type_load = MainFaiFramework::get_input('load_function') ?: $type_load;
 		if ((MainFaiFramework::get_input('frameworksubdomain')) && MainFaiFramework::get_input('frameworksubdomain') != 'undefined') {
 			$domain = MainFaiFramework::get_input('frameworksubdomain');
@@ -196,7 +208,7 @@ class MainFaiFramework extends Configuration
 
 		$page['load_section'] = "page";
 		$page['section'] = "page";
-		 $domain;
+		$domain;
 		if ($type_load == 'costum') {
 			MainFaiFramework::costum($page, $domain, $all, $function, $id_web_apps, $param1, $param2, $param3, $param4, $param5);
 		} elseif ($type_load == 'login') {
@@ -233,8 +245,11 @@ class MainFaiFramework extends Configuration
 		} elseif ($type_load == 'profile') {
 			// Handle profile
 		} elseif ($type_load == 'api') {
+
 			$page = $fai->LoadApps($page, $domain, -1, 'page');
 			MainFaiFramework::api($all, $page, $domain);
+		} elseif ($type_load == 'json') {
+			MainFaiFramework::json($all);
 		} elseif ($type_load == 'test_script') {
 			MainFaiFramework::test_script($all);
 		} elseif ($type_load == 'store') {
@@ -524,21 +539,12 @@ class MainFaiFramework extends Configuration
 
 	public static function api($function, $page, $domain)
 	{
-		if ($domain == '192.168.70.159') {
-			$domain = 'hibe3.com';
-		}
-		$page['load_section'] = $page['section'] = "page";
-		$page['section_initialize'] = "crud_utama";
-		$page['database_provider'] = DATABASE_PROVIDER;
-		$page['database_name'] = DATABASE_NAME;
-		$page['conection_name_database'] = CONECTION_NAME_DATABASE;
-		$page['conection_server'] = CONECTION_SERVER;
-		$page['conection_user'] = CONECTION_USER;
-		$page['conection_password'] = CONECTION_PASSWORD;
-		$page['conection_scheme'] = CONECTION_SCHEME;
-		$page['app_framework'] = APP_FRAMEWORK;
-
-		$get = DB::fetchResponse(DB::select("select *,web__apps.id as id_web__apps from web__apps left join web__menu on web__menu.id = id_first_menu left join web__template on web__template.id = id_template where domain_utama='$domain'"));
+		
+		
+		$get = DB::fetchResponse(DB::select("select *,web__apps.id as id_web__apps 
+		from web__apps 
+		left join web__menu on web__menu.id = id_first_menu 
+		left join web__template on web__template.id = id_template where domain_utama='$domain'"));
 
 		if (count($get)) {
 			$apps = $get[0];

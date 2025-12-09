@@ -145,9 +145,10 @@ export default class FormBuilder {
         pConfig.originalTypeString = typeString;
 
         // Handle select options validation
-        if (pConfig.type === 'select') {
+        if (pConfig.originalTypeString === 'select') {
             if (!pConfig.options || !Array.isArray(pConfig.options)) {
-                console.error(`${pConfig.text} options not complete`);
+                
+                console.error(`${pConfig.text} options not complete`,pConfig);
                 throw new Error(`${pConfig.text} options not complete`);
             }
             if (!pConfig.options[1]) {

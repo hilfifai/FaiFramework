@@ -297,11 +297,7 @@ class Database extends DB
 
 		if (!isset($page['section'])) $page['section'] = '';
 		$database_utama = isset($database['utama']) ? $database['utama'] : '';
-		// $database_utama = isset($database['alias']) ? $database['alias'] : $database_utama;
-		// echo '<Br>';
-		// echo '<Br>';
-		// echo 'in database';print_r($database);
-		// echo '<Br>';
+		
 		$database_manipulation = Packages::database_manipulation($page, $database_utama,  $database, $array, "", 'database_converter');
         // print_R($database_manipulation['database_costum']);
 		$db_temp_utama = $database_utama = $database_manipulation['utama'];
@@ -878,7 +874,7 @@ class Database extends DB
 					}
 					if (!in_array('privilege', $columns)) {
 
-						DB::select("ALTER TABLE $schema$database_utama ADD privilege text DEFAULT 'Private Website';");
+						DB::select("ALTER TABLE $schema$database_utama ADD privilege varchar(200) DEFAULT 'Private Website';");
 					}
 				}
 				if (!in_array((isset($page['load']['database']['active']) ? $page['load']['database']['active'] : "active"), $columns)) {
@@ -931,7 +927,7 @@ class Database extends DB
 					}
 					if (!in_array('privilege', $columns)) {
 
-						DB::select("ALTER TABLE $schema$database_utama ADD privilege text DEFAULT 'Private Website';");
+						DB::select("ALTER TABLE $schema$database_utama ADD privilege varchar(200) DEFAULT 'Private Website';");
 					}
 				}
 				if (!in_array((isset($page['load']['database']['active']) ? $page['load']['database']['active'] : "active"), $columns)) {

@@ -54,8 +54,8 @@ export default class CorePages extends FaiModule {
         } else if (section == 'produk') {
             const db = await openDB(transaksiDB, "web__list_apps_menu");
             const allData = await getAllFromStore(db, {
-                "utama": "all_produk"
-            }, "all_produk", {
+                "utama": "view_produk_detail"
+            }, "view_produk_detail", {
                 "id_search": id
             });
             const item = allData[id];

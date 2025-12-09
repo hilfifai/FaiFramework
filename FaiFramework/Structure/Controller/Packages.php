@@ -1532,7 +1532,7 @@ class Packages extends Partial
             $select[] = $database_utama . "." . $field . " as " . $field . '_multiple';
         } else if ($type == 'file') {
             $join[]                                                           = ["drive__file as file_$field", "file_$field.ref_database='$database_utama' and file_$field.input_name", "'$field' and file_$field.ref_external_id=$database_utama.id", 'left'];
-            $select[]                                                         = "(case when cast(file_$field.sizes as int)>0 then concat(file_$field.path,file_$field.file_name_save) else '' end) as " . $array['array'][$i][1] . '_' . $database_utama;
+            $select[]                                                         = "(case when cast(file_$field.sizes as SIGNED)>0 then concat(file_$field.path,file_$field.file_name_save) else '' end) as " . $array['array'][$i][1] . '_' . $database_utama;
             $page['crud']['field_database'][$field][$database_utama]['value'] = $array['array'][$i][1] . '_' . $database_utama;
             // } else if ($type == 'editor-code') {
             // 	$concat = true;

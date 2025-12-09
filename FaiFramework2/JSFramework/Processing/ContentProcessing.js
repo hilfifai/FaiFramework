@@ -109,8 +109,11 @@ export default class ContentProcessing extends FaiModule {
                 let storeName = item.refer_db;
                 const array_set = [];
                 let bodyReq = {};
+                bodyReq.db = 'view_produk_detail';
+                bodyReq.function = 'all_produk';
+               
                 if (item.pagination.limit) {
-                    bodyReq.limit = item.pagination.limit;
+                    bodyReq.limit_function = item.pagination.limit;
                 }
                 if (item.pagination.order_by) {
                     bodyReq.orderBy = {
@@ -129,14 +132,10 @@ export default class ContentProcessing extends FaiModule {
                     });
                     bodyReq.where = whereClause
                 }
+                 bodyReq.limit = 1000;
 
-                // const queryBody = {
-                //     db: 'all_produk', // atau nama db dinamis Anda
-                //     where: whereClause,
-                //     limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
-                //     offset: 0
-                // };
-                let allData = await this.getModule('Data').loadJSON('all_produk', bodyReq);
+               
+                let allData = await this.getModule('Data').loadJSON('view_produk_detail', bodyReq);
                 //allData = Object.entries(Data);
                 //console.log('allData',allData);
                 //allData =  await ParseAllData(data, {});;
