@@ -4,8 +4,8 @@
   "description": "Unified FaiFramework with PHP and JS components",
   "main": "index_standalone.php",
   "scripts": {
-    "start": "php -S localhost:8000 router.php",
-    "dev": "php -S localhost:8000 router.php"
+    "start": "cp .env.production .env && php -S localhost:8000 router.php",
+    "dev": "cp .env.development .env && php -S localhost:8000 router.php"
   },
   "keywords": ["php", "framework", "web", "javascript"],
   "author": "",

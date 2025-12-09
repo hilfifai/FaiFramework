@@ -7,7 +7,7 @@ export default class Link {
 		let id;
 		let parts;
 		let viewpage;
-		if (data_link != 'app2') {
+		if (data_link != 'app2' && data_link) {
 
 			console.log(data_link);
 			viewpage = await this.decodeDataFromHref(data_link);
