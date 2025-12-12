@@ -28,7 +28,7 @@ class BundleContent
             if ($code == 'BE3-LOGO') {
                 return Bundlecontent::logo($page, $array_website);
             } else if ($code == 'BE3-LINK-CART') {
-                return Bundlecontent::link_cart($page, $array_website);
+                // return Bundlecontent::link_cart($page, $array_website);
             } else if ($code == 'BE3-LINK-LOGIN') {
                 return Bundlecontent::login($page, $array_website);
             } else if ($code == 'BE3-LINK-REGISTER') {
@@ -39,18 +39,18 @@ class BundleContent
                 return Bundlecontent::list_panel_workspace($page, $array_website);
             } else if ($code == 'BE3-LIST-ROLE-WORKSPACE') {
                 return Bundlecontent::list_role_workspace($page, $array_website);
-            } else if ($code == 'BE3-E-BOX') {
-                return Bundlecontent::ecommerce_dasboard_box($page, $array_website);
-            } else if ($code == 'BE3-EC-D1') {
-                return Bundlecontent::ecommerce_dasboard_bundles_1($page, $array_website);
-            } else if ($code == 'BE3-EC-D2') {
-                return Bundlecontent::ecommerce_dasboard_bundles_2($page, $array_website);
-            } else if ($code == 'BE3-EC-D3') {
-                return Bundlecontent::ecommerce_dasboard_bundles_3($page, $array_website);
-            } else if ($code == 'BE3-W-VB2') {
-                return Bundlecontent::visitor_bundles_2($page, $array_website);
-            } else if ($code == 'BE3-W-VB1') {
-                return Bundlecontent::visitor_bundles_1($page, $array_website);
+            // } else if ($code == 'BE3-E-BOX') {
+            //     return Bundlecontent::ecommerce_dasboard_box($page, $array_website);
+            // } else if ($code == 'BE3-EC-D1') {
+            //     return Bundlecontent::ecommerce_dasboard_bundles_1($page, $array_website);
+            // } else if ($code == 'BE3-EC-D2') {
+            //     return Bundlecontent::ecommerce_dasboard_bundles_2($page, $array_website);
+            // } else if ($code == 'BE3-EC-D3') {
+            //     return Bundlecontent::ecommerce_dasboard_bundles_3($page, $array_website);
+            // } else if ($code == 'BE3-W-VB2') {
+            //     return Bundlecontent::visitor_bundles_2($page, $array_website);
+            // } else if ($code == 'BE3-W-VB1') {
+            //     return Bundlecontent::visitor_bundles_1($page, $array_website);
             } else if ($code == 'BE3-ASHION-HOME-PRODUK_GROUP_KLASIFIKASI') {
                 return Bundlecontent::ashion_home_produk_group_klasifikasi($page, $array_website);
             } else if ($code == 'BE3-ASHION-HOME-DISKON') {
@@ -117,7 +117,7 @@ class BundleContent
         }
         if (isset($page['load']['id_web__apps'])) {
 
-            $sql = DB::fetchResponse(DB::select("select * from drive__file where ref_database='web__apps' and ref_external_id=" . $page['load']['id_web__apps'] . " and CAST(sizes AS int)>0 order by create_date desc, sizes desc"));
+            $sql = DB::fetchResponse(DB::select("select * from drive__file where ref_database='web__apps' and ref_external_id=" . $page['load']['id_web__apps'] . " and CAST(sizes AS SIGNED)>0 order by create_date desc, sizes desc"));
             if (($sql))
                 $return = ($sql[0]->domain ? $sql[0]->domain : base_url()) . '/uploads/' . $sql[0]->path . '/' . $sql[0]->file_name_save;
             return $return;
@@ -563,7 +563,9 @@ class BundleContent
     public static function load_json($page, $function, $type, $row_json, $template)
     {
         $base = __DIR__ . "/../../Pages/bundle/load_json/";
-
+         $return["html"] =  file_get_contents($base . "load_json.html.php");
+        $return["css"] =  file_get_contents($base . "load_json.css.php");
+        $return["js"] =  file_get_contents($base . "load_json.js.php");
         return $return;
     }
 
@@ -598,6 +600,9 @@ class BundleContent
     public static function malefashion_home_diskon($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/malefashion_home_diskon/";
+         $return["html"] =  file_get_contents($base . "malefashion_home_diskon.html.php");
+        $return["css"] =  file_get_contents($base . "malefashion_home_diskon.css.php");
+        $return["js"] =  file_get_contents($base . "malefashion_home_diskon.js.php");
 
         return $return;
     }
@@ -891,13 +896,18 @@ class BundleContent
     public static function ashion_home_profil($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_home_profil/";
-
+         $return["html"] =  file_get_contents($base . "ashion_home_profil.html.php");
+        $return["css"] =  file_get_contents($base . "ashion_home_profil.css.php");
+        $return["js"] =  file_get_contents($base . "ashion_home_profil.js.php");
         return $return;
     }
 
     public static function ashion_contact_us($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_contact_us/";
+         $return["html"] =  file_get_contents($base . "ashion_contact_us.html.php");
+        $return["css"] =  file_get_contents($base . "ashion_contact_us.css.php");
+        $return["js"] =  file_get_contents($base . "ashion_contact_us.js.php");
 
         return $return;
     }
@@ -916,6 +926,9 @@ class BundleContent
     public static function ashion_home_produk_group_klasifikasi($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_home_produk_group_klasifikasi/";
+         $return["html"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.html.php");
+        $return["css"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.css.php");
+        $return["js"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.js.php");
 
         return $return;
     }
@@ -2559,9 +2572,9 @@ class BundleContent
   {
     $return['css'] = '
     
-      <link rel="stylesheet" href="' . $page['fai']->urlframework("ashion", "css/owl.carousel.min.css") . '" type="text/css">
+      <link rel="stylesheet" href="' . Partial::urlframework("ashion", "css/owl.carousel.min.css") . '" type="text/css">
           
-      <script src="' . $page['fai']->urlframework("ashion", "js/owl.carousel.min.js") . '"></script>
+      <script src="' . Partial::urlframework("ashion", "js/owl.carousel.min.js") . '"></script>
           <style>
           .product-details {
         padding-top: 70px;

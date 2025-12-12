@@ -1,3 +1,5 @@
+<?php
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -16,7 +18,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link style="<?php echo base_url(); ?>FaiFramework/Pages/OrderSystem/style.css">
+    <link style="../../FaiFramework/Pages/OrderSystem/style.css">
 
     <style>
         table>tbody>tr>td {
@@ -404,191 +406,296 @@
             align-items: center;
             z-index: 9999;
         }
+
         /* Container Utama */
-.discount__content {
-    background: #fdfdfd;
-    padding: 20px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
+        .discount__content {
+            background: #fdfdfd;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
 
-/* Judul Voucher */
-.discount__content h6 {
-    color: #1c1c1c;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 15px;
-    font-size: 14px;
-    letter-spacing: 1px;
-}
+        /* Judul Voucher */
+        .discount__content h6 {
+            color: #1c1c1c;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
 
-/* Form Wrapper - Menggunakan Relative Positioning */
-.discount__content form {
-    position: relative;
-    width: 100%;
-    margin-bottom: 15px;
-}
+        /* Form Wrapper - Menggunakan Relative Positioning */
+        .discount__content form {
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+        }
 
-/* Input Field */
-.discount__content form input {
-    width: 100%;
-    height: 50px;
-    font-size: 14px;
-    color: #444;
-    padding-left: 20px;
-    padding-right: 100px; /* Memberi ruang untuk tombol di kanan */
-    border: 1px solid #ddd;
-    border-radius: 50px; /* Bentuk Pill/Oval */
-    outline: none;
-    transition: all 0.3s;
-    background: #fff;
-}
+        /* Input Field */
+        .discount__content form input {
+            width: 100%;
+            height: 50px;
+            font-size: 14px;
+            color: #444;
+            padding-left: 20px;
+            padding-right: 100px;
+            /* Memberi ruang untuk tombol di kanan */
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            /* Bentuk Pill/Oval */
+            outline: none;
+            transition: all 0.3s;
+            background: #fff;
+        }
 
-.discount__content form input:focus {
-    border-color: #e3a53e; /* Merah saat aktif */
-}
+        .discount__content form input:focus {
+            border-color: #e3a53e;
+            /* Merah saat aktif */
+        }
 
-/* Tombol Apply */
-.discount__content form .site-btn {
-    position: absolute;
-    right: 4px;
-    top: 4px;
-    height: 42px; /* Sedikit lebih kecil dari input */
-    border: none;
-    background: #e3a53e; /* Warna utama */
-    color: #ffffff;
-    padding: 0 25px;
-    border-radius: 40px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+        /* Tombol Apply */
+        .discount__content form .site-btn {
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            height: 42px;
+            /* Sedikit lebih kecil dari input */
+            border: none;
+            background: #e3a53e;
+            /* Warna utama */
+            color: #ffffff;
+            padding: 0 25px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
 
-.discount__content form .site-btn:hover {
-    background: #a31111;
-}
+        .discount__content form .site-btn:hover {
+            background: #a31111;
+        }
 
-/* --- Styling untuk Custom Tags (Voucher Aktif & List) --- */
+        /* --- Styling untuk Custom Tags (Voucher Aktif & List) --- */
 
-/* Voucher yang sedang digunakan (Success Alert style) */
-voucher_digunakan {
-    display: block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 13px;
-}
+        /* Voucher yang sedang digunakan (Success Alert style) */
+        voucher_digunakan {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
 
-/* List Voucher yang tersedia */
-voucher_list {
-    display: block;
-    margin-top: 15px;
-    border-top: 1px dashed #ddd;
-    padding-top: 10px;
-}
+        /* List Voucher yang tersedia */
+        voucher_list {
+            display: block;
+            margin-top: 15px;
+            border-top: 1px dashed #ddd;
+            padding-top: 10px;
+        }
 
-/* Contoh jika voucher list berisi item (div/li) */
-voucher_list > div {
-    padding: 8px 0;
-    font-size: 13px;
-    color: #666;
-    border-bottom: 1px solid #f1f1f1;
-}
-/* Reset dasar untuk elemen terkait */
-.product__details__button,
-.product__details__button * {
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif; /* Ganti dengan font website Anda */
-}
+        /* Contoh jika voucher list berisi item (div/li) */
+        voucher_list>div {
+            padding: 8px 0;
+            font-size: 13px;
+            color: #666;
+            border-bottom: 1px solid #f1f1f1;
+        }
 
-/* Container Utama */
-.product__details__button {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Jarak antara quantity dan tombol */
-    margin-top: 20px;
-    flex-wrap: wrap; /* Agar responsif di layar kecil */
-}
+        /* Reset dasar untuk elemen terkait */
+        .product__details__button,
+        .product__details__button * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            /* Ganti dengan font website Anda */
+        }
 
-/* Bagian Quantity */
-.quantity {
-    display: flex;
-    align-items: center;
-}
+        /* Container Utama */
+        .product__details__button {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            /* Jarak antara quantity dan tombol */
+            margin-top: 20px;
+            flex-wrap: wrap;
+            /* Agar responsif di layar kecil */
+        }
 
-.quantity span {
-    font-weight: 600;
-    color: #333;
-    margin-right: 10px;
-}
+        /* Bagian Quantity */
+        .quantity {
+            display: flex;
+            align-items: center;
+        }
 
-/* Wrapper Input Quantity */
-.pro-qty {
-    width: 100px; /* Lebar area input */
-    height: 50px;
-    display: inline-block;
-    position: relative;
-    background: #f5f5f5; /* Background abu-abu muda */
-    border-radius: 25px; /* Membuat bentuk oval/pill */
-    overflow: hidden;
-    border: 1px solid #ddd;
-}
+        .quantity span {
+            font-weight: 600;
+            color: #333;
+            margin-right: 10px;
+        }
 
-.pro-qty input {
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    font-size: 16px;
-    color: #444;
-    font-weight: 600;
-    border: none;
-    background: transparent;
-    outline: none;
-}
+        /* Wrapper Input Quantity */
+        .pro-qty {
+            width: 100px;
+            /* Lebar area input */
+            height: 50px;
+            display: inline-block;
+            position: relative;
+            background: #f5f5f5;
+            /* Background abu-abu muda */
+            border-radius: 25px;
+            /* Membuat bentuk oval/pill */
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
 
-/* Tombol Add to Cart */
-.cart-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #ffffff;
-    background: #e3a53e; /* Warna Merah Utama (Bisa diganti) */
-    padding: 14px 30px;
-    border-radius: 50px; /* Tombol bulat */
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(202, 21, 21, 0.3);
-}
+        .pro-qty input {
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #444;
+            font-weight: 600;
+            border: none;
+            background: transparent;
+            outline: none;
+        }
 
-.cart-btn span {
-    margin-right: 5px;
-    font-size: 18px;
-    margin-bottom: 3px; /* Penyesuaian ikon */
-}
+        /* Tombol Add to Cart */
+        .cart-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: #e3a53e;
+            /* Warna Merah Utama (Bisa diganti) */
+            padding: 14px 30px;
+            border-radius: 50px;
+            /* Tombol bulat */
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(202, 21, 21, 0.3);
+        }
 
-/* Efek Hover Tombol */
-.cart-btn:hover {
-    background: #a31111; /* Warna lebih gelap saat hover */
-    transform: translateY(-2px); /* Efek naik sedikit */
-    box-shadow: 0 8px 20px rgba(202, 21, 21, 0.4);
-}
+        .cart-btn span {
+            margin-right: 5px;
+            font-size: 18px;
+            margin-bottom: 3px;
+            /* Penyesuaian ikon */
+        }
 
-/* Responsif untuk HP */
-@media (max-width: 480px) {
-    .product__details__button {
-        justify-content: center;
-    }
-    
-    .quantity {
-        margin-bottom: 15px;
-    }
-}
+        /* Efek Hover Tombol */
+        .cart-btn:hover {
+            background: #a31111;
+            /* Warna lebih gelap saat hover */
+            transform: translateY(-2px);
+            /* Efek naik sedikit */
+            box-shadow: 0 8px 20px rgba(202, 21, 21, 0.4);
+        }
+
+        /* Responsif untuk HP */
+        @media (max-width: 480px) {
+            .product__details__button {
+                justify-content: center;
+            }
+
+            .quantity {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* 1. Container Utama - Posisi Fixed di Pojok Kanan Atas */
+        #alertContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            width: 100%;
+            max-width: 350px;
+            /* Lebar maksimal toast */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* Jarak antar toast jika muncul lebih dari satu */
+            pointer-events: none;
+            /* Agar area kosong tidak memblokir klik di belakangnya */
+        }
+
+        /* 2. Style Dasar Alert (Toast) */
+        .alert-global {
+            position: relative;
+            padding: 16px;
+            padding-right: 40px;
+            /* Ruang untuk tombol close */
+            margin-bottom: 0;
+            border: none;
+            border-radius: 8px;
+            /* Sudut melengkung */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            /* Efek melayang */
+            color: #fff;
+            /* Teks warna putih */
+            font-size: 14px;
+            pointer-events: auto;
+            /* Mengaktifkan klik pada alert */
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Animasi untuk Bootstrap 'show' */
+        .alert-global.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 3. Tombol Close (Menyesuaikan agar berwarna putih) */
+        .alert-global .btn-close {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            filter: invert(1) grayscale(100%) brightness(200%);
+            /* Membuat icon X menjadi putih */
+            opacity: 0.8;
+        }
+
+        .alert-global .btn-close:hover {
+            opacity: 1;
+        }
+
+        /* 4. Varian Warna (Success, Danger, Primary, Default) */
+
+        /* Success - Hijau */
+        .global-alert-success {
+            background-color: #28a745;
+            /* Bisa diganti #198754 (Bootstrap 5) */
+            background-image: linear-gradient(45deg, #28a745, #34ce57);
+        }
+
+        /* Danger - Merah */
+        .global-alert-danger {
+            background-color: #dc3545;
+            background-image: linear-gradient(45deg, #dc3545, #e4606d);
+        }
+
+        /* Primary - Biru */
+        .global-alert-primary {
+            background-color: #0d6efd;
+            background-image: linear-gradient(45deg, #0d6efd, #4690ff);
+        }
+
+        /* Default - Abu-abu gelap */
+        .global-alert-default {
+            background-color: #343a40;
+            background-image: linear-gradient(45deg, #343a40, #4b545c);
+        }
     </style>
 </head>
 
@@ -644,7 +751,7 @@ voucher_list > div {
 
     <!-- Login Container -->
     <div id="login-builder-container"></div>
-
+    <div id="alertContainer"></div>
     <!-- Hidden Inputs -->
     <input type="hidden" id="template" value="<?php echo base_url(); ?>">
     <input type="hidden" id="base_template" value="<?php echo base_url(); ?>">
@@ -717,17 +824,17 @@ voucher_list > div {
     <script type="module">
         import {
             FaiFramework
-        } from '<?php echo str_replace('index.php/', '', base_url()); ?>FaiFramework2/JSFramework/FaiFramework.js';
+        } from '../FaiFramework2/JSFramework/FaiFramework.js';
         const base_url = document.getElementById('base_url').value;
         const base_url_non_index = document.getElementById('base_url_non_index').value;
         const base_url_object = document.getElementById('base_url_object').value;
         window.fai = new FaiFramework();
         var option = {
-            pending_order:true
-        }  
-        await window.fai.init("fai_init", option,"moesneeds.id", 'v1.0.4-alpha44', 
+            pending_order: true
+        }
+        await window.fai.init("fai_init", option, "moesneeds.id", 'v1.0.4-alpha45',
 
-                            base_url, base_url_non_index, base_url_object);
+            base_url, base_url_non_index, base_url_object);
         await window.fai.setupFullWebContent();
         /*
         const crudArray = [
@@ -747,3 +854,6 @@ voucher_list > div {
         fai.crud(crudArray);
         */
     </script>
+</body>
+
+</html>

@@ -4,7 +4,7 @@ require_once(__DIR__ . '/../Chatbot_class/Ecommerce_produk.php');
 require_once(__DIR__ . '/../Chatbot_class/Bot_Quran.php');
 class ChatbotApp
 {
-    public static function router($page, $data, $id_chat_room = null, $id_chat_massage = null, $is_wa, $data_wa)
+    public static function router($page, $data, $id_chat_room = null, $id_chat_massage = null, $is_wa=false, $data_wa=[])
     {
         $page['no_change_transaction'] = true;
         date_default_timezone_set('Asia/Jakarta');
@@ -194,7 +194,7 @@ class ChatbotApp
             echo 'hi';
             Bot_Quran::halaman($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa, $ex);
         } else {
-            Bot_Quran::surat_ayat($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa, $ex);
+            // Bot_Quran::surat_ayat($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa, $ex);
         }
     }
     public static function ecommerce_router($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa)

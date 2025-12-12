@@ -1,15 +1,15 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
-define("APP_FRAMEWORK", "ci");
-// define("DATABASE_PROVIDER", "postgres");
-define("CONECTION_SERVER", "localhost");
-define("DATABASE_PROVIDER", "mysql");
-// define("CONECTION_SERVER", "moesneeds.id");
-define("DATABASE_NAME", "u996263040_moesneeds");
-define("CONECTION_NAME_DATABASE", "u996263040_moesneeds");
-define("CONECTION_USER", "u996263040_moesneeds");
-define("CONECTION_PASSWORD", "Moesneeds.id`1");
-define("CONECTION_SCHEME", "public");
+// defined('BASEPATH') or exit('No direct script access allowed');
+// define("APP_FRAMEWORK", "ci");
+// // define("DATABASE_PROVIDER", "postgres");
+// define("CONECTION_SERVER", "localhost");
+// define("DATABASE_PROVIDER", "mysql");
+// // define("CONECTION_SERVER", "moesneeds.id");
+// define("DATABASE_NAME", "u996263040_moesneeds");
+// define("CONECTION_NAME_DATABASE", "u996263040_moesneeds");
+// define("CONECTION_USER", "u996263040_moesneeds");
+// define("CONECTION_PASSWORD", "Moesneeds.id`1");
+// define("CONECTION_SCHEME", "public");
 require_once BASEPATH . '../FaiFramework/MainFaiFramework.php';
 require_once BASEPATH . '../FaiFramework/Structure/App_class/ApiApp.php';
 require_once BASEPATH . '../FaiFramework/Structure/App_class/VersionApp.php';
@@ -19,8 +19,10 @@ require_once BASEPATH . '../FaiFramework/Structure/App_class/ChatbotApp.php';
 
 class FaiServer extends CI_Controller
 {
-
-    public function index($all = -1, $function = "", $id_web_apps = "", $param1 = "", $param2 = "", $param3 = "", $param4 = "", $param5 = "")
+    public function index(){
+        MainFaiFramework::route_request();
+    }
+    public function index2($all = -1, $function = "", $id_web_apps = "", $param1 = "", $param2 = "", $param3 = "", $param4 = "", $param5 = "")
     {
         // ini_set('memory_limit', '-1');
         //error_reporting(0);

@@ -34,7 +34,6 @@ export default class DataProcessing extends FaiModule {
 					return (dataFromAPI);;
 				} else {
 					return (dataFromAPI);;
-					// alert(2);
 					// Transaksi IndexedDB
 					/* const writeTx = db.transaction(storeName, "readwrite");
 					 const writeStore = writeTx.objectStore(storeName);
@@ -187,7 +186,7 @@ export default class DataProcessing extends FaiModule {
 					},
 					limit: 2
 				};*/
-			const response = await fetch(this.getModule("base_url") + 'json/' + db, {
+			const response = await fetch(this.getModule("base_url") + 'api/json/' + db, {
 				headers: {
 					'Authorization': `Bearer ${token}`
 				},

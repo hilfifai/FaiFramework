@@ -566,7 +566,6 @@ export async function proses_checkout_temp(id_cart) {
 }
 
 export async function initialize_checkout() {
-  console.clear();
   console.log('INITIAL CHECKOUT');
   let skeletonBilling = `<h5 class="mb-4">Pilih Alamat Penerima<span class="float-right"><button class="btn btn-sm btn-light" id="tambahAlamatPenerima" onclick="tambah_alamat_penerima()"><i class="fa fa-chevron-left mr-2"></i>Tambah</button><button class="btn btn-sm btn-light" id="cancelChangeBilling" onclick="kembali_alamat_penerima_selected()"><i class="fa fa-chevron-left mr-2"></i>Cancel</button></span></h5><div class="list-group" id="content_list_tambah_alamat_penerima"><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div><div class="skeleton" style="height: 120px; background: #f0f0f0; margin-bottom: 10px;"></div></div>`;
   let skeletonSelectedBilling = `<div class="float-right"><button class="btn btn-light btn-sm" id="changeBilling" onclick="kembali_alamat_penerima_cari()">Change</button></div><div class="skeleton" style="height: 120px; background: #f0f0f0;"></div>`;
@@ -1341,21 +1340,38 @@ export async function proses_cek_bayar(confirm = 0) {
   // Ambil nilai input
   formData.append('id_user', isLoggedIn.userId);
   formData.append('checkout_id', checkout_id);
-
+  let status_push = true;
   $('.collect_id').each(function () {
     const id = $(this).val(); // Ambil ID unik
 
-    formData.append(`bank[${id}]`, $('#konfirm_bayar-bank-' + id).val());
-    formData.append(`an[${id}]`, $('#konfirm_bayar-an-' + id).val());
-    formData.append(`norek[${id}]`, $('#konfirm_bayar-norek-' + id).val());
-    formData.append(`tanggal[${id}]`, $('#konfirm_bayar-tanggal-' + id).val());
-    formData.append(`nominal[${id}]`, $('#konfirm_bayar-nominal-' + id).val());
+    const bank = $('#konfirm_bayar-bank-' + id).val();
+    const an = $('#konfirm_bayar-an-' + id).val();
+    const norek = $('#konfirm_bayar-norek-' + id).val();
+    const tanggal = $('#konfirm_bayar-tanggal-' + id).val();
+    const nominal = $('#konfirm_bayar-nominal-' + id).val();
+
+    formData.append(`bank[${id}]`, bank);
+    formData.append(`an[${id}]`, an);
+    formData.append(`norek[${id}]`, norek);
+    formData.append(`tanggal[${id}]`, tanggal);
+    formData.append(`nominal[${id}]`, nominal);
 
     const fileInput = document.getElementById('konfirm_bayar-file-' + id);
     if (fileInput && fileInput.files.length > 0) {
       formData.append(`file[${id}]`, fileInput.files[0]);
+    } else {
+      status_push = false;
+    }
+
+    if (!bank.trim() || !an.trim() || !norek.trim() || !tanggal.trim() || !nominal.trim()) {
+      status_push = false;
     }
   });
+  if(!status_push){
+       Swal.fire("Gagal!",
+              "Terdapat Field yang kosong!",
+              "error");
+  }else
   if (isLoggedIn) {
     $.ajax({
 
@@ -2036,7 +2052,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
           }
         });
       },
-      success: async function (responseData) {
+      success:  function (responseData) {
         Swal.close();
         if (responseData.status == 1) {
 
@@ -2050,8 +2066,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
             3: responseData.id,
           };
           console.log(type);
-          const encoded = await btoa(JSON.stringify(type));
-          const enPage = window.fai.getModule("linkHelper").encodeDataForHref(data);;;
+          const encoded =  btoa(JSON.stringify(type));
           // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
           link_direct(encoded);
 
@@ -2106,7 +2121,6 @@ export async function js_cek_harga(id_cart) {
     }
 
   };
-  alert(qty_cart);
   if (qty_cart) {
     let formatQty = await formatRupiah(qty_cart, '');
     let formatSubtotal = await formatRupiah(subtotal_cart);
@@ -2383,12 +2397,13 @@ export async function prosessearchdata(index) {
       value: `%${query}%`
     });
     const queryBody = {
-      db: 'all_produk', // atau nama db dinamis Anda
+      db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
       limit: getalldata.data.itemsPerPage[index], // atau batas yang Anda inginkan
-      offset: 0
+      offset: 0,
+      function : 'all_produk'
     };
-    data_produk = await loadJSON('all_produk', queryBody);
+    data_produk = await loadJSON('view_produk_detail', queryBody);
 
     console.log(data_produk);
     getalldata.data_produk[index] = data_produk;

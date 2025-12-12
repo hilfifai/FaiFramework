@@ -169,7 +169,6 @@
         }
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert();
             var formData = new FormData();
             var fileInput = document.getElementById('excel_file');
             formData.append("excel_file", fileInput.files[0]);

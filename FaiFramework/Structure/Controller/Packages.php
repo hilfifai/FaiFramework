@@ -1,12 +1,17 @@
 <?php
 
 require_once 'Partial.php';
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 class Packages extends Partial
 {
     public function __construct()
     {
         parent::__construct();
-        session_start();
+       if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
     }
     public static function initialize($page)
     {
@@ -731,7 +736,7 @@ class Packages extends Partial
                     }
                 } else if ($key == -2) {
                     if (Partial::input('status-appr', '_GET')) {
-                        $page['database']['where'][] = [$database_utama . "." . $field_appr . "_status", "=", Partial::input('status-appr', '_GET')];
+                        $page['database']['where'][] = [$database_utama . "." . ($field_appr??"") . "_status", "=", Partial::input('status-appr', '_GET')];
                     }
                 } else {
                     $i = $key;
@@ -1527,7 +1532,7 @@ class Packages extends Partial
             $select[] = $database_utama . "." . $field . " as " . $field . '_multiple';
         } else if ($type == 'file') {
             $join[]                                                           = ["drive__file as file_$field", "file_$field.ref_database='$database_utama' and file_$field.input_name", "'$field' and file_$field.ref_external_id=$database_utama.id", 'left'];
-            $select[]                                                         = "(case when cast(file_$field.sizes as int)>0 then concat(file_$field.path,file_$field.file_name_save) else '' end) as " . $array['array'][$i][1] . '_' . $database_utama;
+            $select[]                                                         = "(case when cast(file_$field.sizes as SIGNED)>0 then concat(file_$field.path,file_$field.file_name_save) else '' end) as " . $array['array'][$i][1] . '_' . $database_utama;
             $page['crud']['field_database'][$field][$database_utama]['value'] = $array['array'][$i][1] . '_' . $database_utama;
             // } else if ($type == 'editor-code') {
             // 	$concat = true;
@@ -3115,7 +3120,7 @@ class Packages extends Partial
             }
         } else if ($type == 'field_value_automatic') {
 
-            $page['crud']['field_value_automatic'][$fai->input('field_auto_change')]['database']['where'][] = [$page['crud']['field_value_automatic'][$fai->input('field_auto_change')]['request_where'], "=", $fai->input(value)];
+            $page['crud']['field_value_automatic'][$fai->input('field_auto_change')]['database']['where'][] = [$page['crud']['field_value_automatic'][$fai->input('field_auto_change')]['request_where'], "=", $fai->input('value')];
             $row                                                                                            = $fai->database_coverter($page, $page['crud']['field_value_automatic'][$fai->input('field_auto_change')]['database'], []);
             echo json_encode($row[0]);
         } else if ($type == 'field_value_automatic_sub_kategori') {
@@ -3412,11 +3417,12 @@ class Packages extends Partial
                             $rowoption    = $fai->database_coverter($page, $page['select_database_costum'][$field], []);
                             $value_select = $option[2];
 
-                            $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
-                            foreach ($rowoption as $dataoption) {
-                                $option_data[$dataoption->primary_key] = $dataoption->$value_select;
-                            }
-                            $sqli[$field] = array_search($sheetData[$j][$fai->toAlpha($i)], $option_data);
+                            // $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
+                            // $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
+                            // foreach ($rowoption as $dataoption) {
+                            //     $option_data[$dataoption->primary_key] = $dataoption->$value_select;
+                            // }
+                            // $sqli[$field] = array_search($sheetData[$j][$fai->toAlpha($i)], $option_data);
                         } else {
 
                             $sqli[$field] = $sheetData[$j][$fai->toAlpha($i)];
@@ -3482,7 +3488,7 @@ class Packages extends Partial
 				*/
         } else if ($type == "PDFPage2") {
 
-            echo view('crud.PDFPage', compact('page'));
+            echo Partial::view('crud.PDFPage', compact('page'));
         } else if ($type == "PDFPage") {
 
             $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -3615,9 +3621,9 @@ class Packages extends Partial
                 DB::update($database_utama, $update, $where);
 
                 //return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-            } catch (\Exeception $e) {
+            } catch (\Exception $e) {
                 // DB::rollback();
-                return redirect()->back()->with('error', $e);
+                // return redirect()->back()->with('error', $e);
             }
         } else if ($type == "decline_appr") {
 
@@ -3630,9 +3636,9 @@ class Packages extends Partial
                 DB::update($database_utama, $update, $where);
 
                 //return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
-            } catch (\Exeception $e) {
+            } catch (\Exception $e) {
                 // DB::rollback();
-                return redirect()->back()->with('error', $e);
+                // return redirect()->back()->with('error', $e);
             }
         } else {
             if ($type == 'list') {
@@ -4006,9 +4012,10 @@ class Packages extends Partial
                     $domain = $_SERVER['HTTP_HOST'];
                 }
 
-                $ci     = &get_instance();
                 $db_get = DB::get_clear();
-                $page   = $fai->LoadApps($page, $domain, ($ci->uri->segment(2) ? $ci->uri->segment(2) : -1), 'page');
+                $segment = Partial::uri_segment();
+
+                $page   = $fai->LoadApps($page, $domain, ($segment[2] ? $segment[2] : -1), 'page');
 
                 DB::set_db($db_get);
             }
@@ -4243,7 +4250,7 @@ class Packages extends Partial
                     }
                     $to_id = substr($to_id, 0, -1);
                 }
-                $nestedData['aksi'] = '<input  type="checkbox" ' . (in_array($value->primary_key, explode(',', $request->checked)) ? 'checked' : '') . ' id="checbox_search_load_sub_kategori_' . "" . $page['crud']['sub_kategori'][$sub_kategori_id][1] . "" . '' . $value->primary_key . '" onclick=""pilih_search_load_sub_kategori_' . "" . $page['crud']['sub_kategori'][$sub_kategori_id][1] . "('$to_id')" . '" class="btn btn-success btn-xs">';
+                $nestedData['aksi'] = '<input  type="checkbox" ' . (in_array($value->primary_key, explode(',', $value->checked)) ? 'checked' : '') . ' id="checbox_search_load_sub_kategori_' . "" . $page['crud']['sub_kategori'][$sub_kategori_id][1] . "" . '' . $value->primary_key . '" onclick=""pilih_search_load_sub_kategori_' . "" . $page['crud']['sub_kategori'][$sub_kategori_id][1] . "('$to_id')" . '" class="btn btn-success btn-xs">';
 
                 // $nestedData['aksi'] =  "<button type='button' onclick=" . '"' . "pilih_search_load_sub_kategori_" . $page['crud']['sub_kategori'][$sub_kategori_id][1] . "('$to_id')" . '"' . " class='btn btn-success btn-xs'>Pilih</button>";
 

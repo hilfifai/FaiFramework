@@ -431,7 +431,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             if (query && query.length >= 2) {
                 // Search dengan query
                 payload = {
-                    "db": "all_produk",
+                    "db": "view_produk_detail", "function": "all_produk",
                     "where": [{
                         "fields": ["nama_barang", "nama_varian", "barcode", "barcode_varian"],
                         "operator": "like_or_fields",
@@ -443,7 +443,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             } else {
                 // Tampilkan semua produk (default)
                 payload = {
-                    "db": "all_produk",
+                    "db": "view_produk_detail", "function": "all_produk",
                     "limit": limit,
                     "offset": (page - 1) * limit
                 };
@@ -455,7 +455,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -500,7 +500,10 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         }
     }
     transformProductData(products) {
-        return products.map(product => {
+        console.log(products);
+        const productArray = Object.values(products);
+        
+        return productArray.map(product => {
             // Jika produk punya multiple varian, kita tampilkan semua varian sebagai produk terpisah
             const variants = [];
 
@@ -1077,7 +1080,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             <p class="text-muted">Kelola pembayaran dan buat kontrabon dengan mudah</p>
         </div>
         
-        <div id="alertContainer"></div>
+        
         
         <!-- Tampilan akan diisi oleh JavaScript -->
     </div>
@@ -1339,7 +1342,17 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
 
     populatePoDetail() {
-        const po = this.filteredPurchaseOrders.find(p => p.id === this.currentPoId);
+        let poList;
+        if (Array.isArray(this.filteredPurchaseOrders)) {
+        poList = this.filteredPurchaseOrders;
+    } else if (typeof this.filteredPurchaseOrders === "object" && this.filteredPurchaseOrders !== null) {
+        // jika object, convert menjadi array dari values-nya
+        poList = Object.values(this.filteredPurchaseOrders);
+    } else {
+        console.error("filteredPurchaseOrders bukan array atau object:", this.filteredPurchaseOrders);
+        return;
+    }
+        const po = poList.find(p => p.id === this.currentPoId);
 
         // PERBAIKAN: Debug lebih detail
         if (!po) {
@@ -1740,7 +1753,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     async getProductDataByBarcode(barcode) {
         try {
             const payload = {
-                "db": "all_produk",
+                "db": "view_produk_detail", "function": "all_produk",
                 "where": [{
                     "fields": ["nama_barang", "nama_varian", "barcode", "barcode_varian"],
                     "operator": "like_or_fields",
@@ -1756,7 +1769,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1778,9 +1791,9 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
     async findProductByBarcodeAPI(barcode) {
         try {
-            // Gunakan endpoint /json/all_produk dengan payload yang sesuai
+            // Gunakan endpoint /api/json/all_produk dengan payload yang sesuai
             const payload = {
-                "db": "all_produk",
+                "db": "view_produk_detail", "function": "all_produk",
                 "where": [{
                     "fields": ["nama_barang", "nama_varian", "barcode", "barcode_varian"],
                     "operator": "like_or_fields",
@@ -1797,7 +1810,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -3449,7 +3462,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 viewElement.innerHTML = this.renderEditReceivingForm(item, receivingItem);
             }
         } else {
-            alert("??");
+           //??
         }
     }
 
@@ -4918,7 +4931,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 this.showNotification('Tidak ada barang yang diterima!', 'error');
                 return;
             }
-            
+
             await this.savePurchaseOrder();
             this.resetPOData();
             this.showView('poListView');
@@ -8916,21 +8929,7 @@ const additionalCSS = `
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .alert {
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+        
         #contrabonPreview {
             margin-top: 20px;
             border: 1px solid #ddd;

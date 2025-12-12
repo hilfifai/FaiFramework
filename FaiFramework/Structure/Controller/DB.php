@@ -157,19 +157,19 @@ class DB
                 $mysqli = new mysqli($host, $user, $password, $dbname);
                 $conn = $mysqli;
             } else {
-                 $connection_string = "host={$host} port={$port} dbname={$dbname} user={$user} password={$password} ";
+                $connection_string = "host={$host} port={$port} dbname={$dbname} user={$user} password={$password} ";
                 $pgsql = pg_connect($connection_string);
                 $conn = $pgsql;
             }
         }
         return $key;
     }
-     public static function getConn()
+    public static function getConn()
     {
-		global $conn;
-		return $conn;
-	}
-     public static function beginTransaction()
+        global $conn;
+        return $conn;
+    }
+    public static function beginTransaction()
     {
         global $conn, $database_provider;
 
@@ -214,7 +214,7 @@ class DB
                     // if ($transaction) {
                     //     pg_query($conn, "BEGIN");
                     // }
-                    
+
                     $result = pg_query($conn, $query);
                     if (!$result) {
                         // if ($transaction) {
@@ -232,19 +232,19 @@ class DB
                         $page['database_provider'] = $database_provider;
                         $ID = DB::lastInsertId($page, $table);
 
-                        $dbjson = $dbname . '_json';
-                        $userjson = $database_provider=='postgres'?$user:$user . '_json';
-                        $logConn = pg_connect("host=$host dbname=$dbjson user=$userjson password=$password");
+                        // $dbjson = $dbname . '_json';
+                        // $userjson = $database_provider=='postgres'?$user:$user . '_json';
+                        // $logConn = pg_connect("host=$host dbname=$dbjson user=$userjson password=$password");
 
-                        $jenis = [
-                            'INSERT' => 'Penambahan',
-                            'UPDATE' => 'Perubahan',
-                            'DELETE' => 'Penghapusan'
-                        ][$match[1]] ?? 'TidakDiketahui';
+                        // $jenis = [
+                        //     'INSERT' => 'Penambahan',
+                        //     'UPDATE' => 'Perubahan',
+                        //     'DELETE' => 'Penghapusan'
+                        // ][$match[1]] ?? 'TidakDiketahui';
 
-                        $logSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                               VALUES ('$table', '$ID', '$jenis', '" . date('Y-m-d H:i:s') . "')";
-                        pg_query($logConn, $logSql);
+                        // $logSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
+                        //        VALUES ('$table', '$ID', '$jenis', '" . date('Y-m-d H:i:s') . "')";
+                        // pg_query($logConn, $logSql);
                     }
 
                     // if ($transaction) {
@@ -270,7 +270,7 @@ class DB
                 echo "#$index " . (isset($traceItem['file']) ? $traceItem['file'] : '[internal function]') .
                     " (Line: " . (isset($traceItem['line']) ? $traceItem['line'] : '?') . ")<br>";
             }
-            echo '<br> query('.$dbname.'):' . $queries;
+            echo '<br> query(' . $dbname . '):' . $queries;
             die;
         }
     }
@@ -307,7 +307,7 @@ class DB
                             $ID = DB::lastInsertId($page, $table);
                             $pdo = $pdoPg = new PDO("pgsql:host=$host dbname=" . $dbname . '_json', $user, $password);
                             $insertSql = "INSERT INTO apps_data__historis (database_utama, database_id, tipe_transaksi, waktu_perubahan)
-                            VALUES ('$table', '$ID', 'Penambahan', '" . date('Y-m-d H:i:s') . "')"; 
+                            VALUES ('$table', '$ID', 'Penambahan', '" . date('Y-m-d H:i:s') . "')";
                             try {
 
                                 $pdo->exec($insertSql);
@@ -402,7 +402,8 @@ class DB
     public static function statements($query, $statements)
     {
         try {
-            $query = $this->conn->prepare($query);
+            global $conn;
+            $query = $conn->prepare($query);
 
             foreach ($statements as $key => $value) {
                 $param = $statements[$key][0];
@@ -436,7 +437,8 @@ class DB
 
             return $query;
         } catch (\PDOException $e) {
-            $this->error = $e->getMessage();
+            echo '<pre>';
+            echo ("Prepared Query Execution Failed: " . $e->getMessage() . '<BR> FIle' . $e->getFile() . '<br> Line:' . $e->getLine());
 
             return null;
         }
@@ -572,7 +574,7 @@ class DB
         $query .= 'VALUES (' . rtrim(trim($input['values']), ',') . ')';
 
         if (!is_null($statements) && is_array($statements)) {
-            return $this->statements($query, $statements);
+            return DB::statements($query, $statements);
         }
         $query = str_replace('`', '', $query); // Buang backtick dari MySQL-style syntax
         return DB::query($query, 'INSERT', $table);
@@ -624,7 +626,7 @@ class DB
 
         // echo $query;
 
-        return DB::query($query,'',$table);
+        return DB::query($query, '', $table);
     }
 
     /**
@@ -923,25 +925,25 @@ class DB
     public static function withRaw($join, $mode = '')
     {
         global $db;
-       
+
         $db['with'][] = $join;
     }
     public static function procedureRaw($join, $mode = '')
     {
         global $db;
-       
+
         $db['procedure'][] = $join;
     }
     public static function functionRaw($join, $mode = '')
     {
         global $db;
-       
+
         $db['function'][] = $join;
     }
     public static function viewRaw($join, $mode = '')
     {
         global $db;
-       
+
         $db['view'][] = $join;
     }
     public static function limitRaw($page, $start, $total_from_start = '')
@@ -1003,7 +1005,7 @@ class DB
 
         $db['query'] = Database::string_database($page, $fai, $queryRaw);;
     }
-    public static function get($exec = 'exec', $page = false)
+    public static function get($exec = 'exec', $page = [])
     {
         global $db;
         global $query;
@@ -1019,11 +1021,12 @@ class DB
         //     DB::connection($page); 
         // }
         // print_R($db);
-        if (!isset($page['load']['database']['id'])) {
-            $page['load']['database']['id']['text'] = 'id';
-            $page['load']['database']['id']['type'] = 'prefix'; //prefix//sufix
-            $page['load']['database']['id']['on_table'] = false; //true->id_(nama table)//false->just id
-        }
+        $page['load']['database']['id'] = $page['load']['database']['id'] ?? [
+            'text'     => 'id',
+            'type'     => 'prefix',
+            'on_table' => false,
+        ];
+
         $select_udah = [];
         if (isset($db['select'][0])) {
             for ($i = 0; $i < count($db['select']); $i++) {
@@ -1093,82 +1096,82 @@ class DB
         if (!isset($db['query'])) {
             $query = "SELECT 
                 $select ";
-			$query_non_limit = "SELECT count(*) as count";
+            $query_non_limit = "SELECT count(*) as count";
             if (!empty($db['table'])) {
                 $query .= " 
                 FROM " . $db['table'] . ' ';
-				$query_non_limit .= " FROM " . $db['table'] . "";
+                $query_non_limit .= " FROM " . $db['table'] . "";
                 $query .= $join;
-				$query_non_limit .= $join;
-                if ($where){
-					$query .= "
+                $query_non_limit .= $join;
+                if ($where) {
+                    $query .= "
                  WHERE $where ";
-				$query_non_limit .= "
+                    $query_non_limit .= "
                  WHERE $where ";
-				}
-                if ($group){
-					$query .= "
+                }
+                if ($group) {
+                    $query .= "
                  GROUP BY $group ";
-					$query_non_limit .= "
+                    $query_non_limit .= "
                   GROUP BY $group ";
-				}
+                }
                 if ($order) $query .= "
                  ORDER BY $order ";
             }
-			$non_limit = 1;
+            $non_limit = 1;
         } else {
             $query = $db['query'];
 
             if ($where) $where = " WHERE $where ";
 
             $query = str_replace('|WHERE|', $where, $query);
-			$query_non_limit =  "$query";
-			$non_limit = 2;
+            $query_non_limit =  "$query";
+            $non_limit = 2;
         }
 
         $limit = "";
         if (isset($db['limit']))
             $limit = $db['limit'];
 
-       
+
         if ($limit) $query .= "  LIMIT $limit ";
 
 
-       
-        if(isset($db['with'])){
-           
-        // foreach($db['with'] as $with){
-        //     $query = '
-        //     '.$with.$query;
-        // }
-         $query = 'WITH 
-            '.implode(',',$db['with']).$query;
+
+        if (isset($db['with'])) {
+
+            // foreach($db['with'] as $with){
+            //     $query = '
+            //     '.$with.$query;
+            // }
+            $query = 'WITH 
+            ' . implode(',', $db['with']) . $query;
         }
-        if(isset($db['procedure'])){
-            $procedure="";
+        if (isset($db['procedure'])) {
+            $procedure = "";
             for ($i = 0; $i < count($db['procedure']); $i++) {
                 $procedure_query = $db['procedure'][$i][0];
                 $procedure_name = $db['procedure'][$i][1];
                 $parameter = $db['procedure'][$i][2];
                 $fieldparameter = $db['procedure'][$i][3];
-                $procedure_query = str_replace("<PROCEDURE-WHERE>","$fieldparameter=$parameter",$procedure_query);
-                if($database_provider=='postgres'){
-                $procedure.="CREATE OR REPLACE PROCEDURE $procedure_name(
+                $procedure_query = str_replace("<PROCEDURE-WHERE>", "$fieldparameter=$parameter", $procedure_query);
+                if ($database_provider == 'postgres') {
+                    $procedure .= "CREATE OR REPLACE PROCEDURE $procedure_name(
                     $parameter INTEGER
                 )
                 LANGUAGE SQL
                 AS $$
                     $procedure_query
                 $$;";
-                }else{
+                } else {
 
-                    $procedure .='DELIMITER $$
+                    $procedure .= 'DELIMITER $$
                     
-                    DROP PROCEDURE IF EXISTS '.$procedure_name.'$$
+                    DROP PROCEDURE IF EXISTS ' . $procedure_name . '$$
                     
-                    CREATE PROCEDURE '.$procedure_name.'(IN '.$parameter.' INT)
+                    CREATE PROCEDURE ' . $procedure_name . '(IN ' . $parameter . ' INT)
                     BEGIN
-                      '.$procedure_query.';
+                      ' . $procedure_query . ';
                     END$$
                     
                     DELIMITER ;
@@ -1176,34 +1179,34 @@ class DB
                     ';
                 }
             }
-            
+
             // $query =$procedure.$query;
         }
-        if(isset($db['function'])){
-            $procedure="";
+        if (isset($db['function'])) {
+            $procedure = "";
             for ($i = 0; $i < count($db['function']); $i++) {
                 $procedure_query = $db['function'][$i][0];
                 $procedure_name = $db['function'][$i][1];
                 $parameter = $db['function'][$i][2];
                 $fieldparameter = $db['function'][$i][3];
-                $procedure_query = str_replace("<PROCEDURE-WHERE>","$fieldparameter=$parameter",$procedure_query);
-                if($database_provider=='postgres'){
-                $procedure.="CREATE OR REPLACE PROCEDURE $procedure_name(
+                $procedure_query = str_replace("<PROCEDURE-WHERE>", "$fieldparameter=$parameter", $procedure_query);
+                if ($database_provider == 'postgres') {
+                    $procedure .= "CREATE OR REPLACE PROCEDURE $procedure_name(
                     $parameter INTEGER
                 )
                 LANGUAGE SQL
                 AS $$
                     $procedure_query
                 $$;";
-                }else{
+                } else {
 
-                    $procedure .='DELIMITER $$
+                    $procedure .= 'DELIMITER $$
                     
-                    DROP FUNCTION IF EXISTS '.$procedure_name.'$$
+                    DROP FUNCTION IF EXISTS ' . $procedure_name . '$$
                     
-                    CREATE FUNCTION '.$procedure_name.'(IN '.$parameter.' INT)
+                    CREATE FUNCTION ' . $procedure_name . '(IN ' . $parameter . ' INT)
                     BEGIN
-                      '.$procedure_query.';
+                      ' . $procedure_query . ';
                     END$$
                     
                     DELIMITER ;
@@ -1211,39 +1214,39 @@ class DB
                     ';
                 }
             }
-             $procedure;
+            $procedure;
             // $query =$procedure.$query;
         }
-        if(isset($db['view'])){
+        if (isset($db['view'])) {
             for ($i = 0; $i < count($db['view']); $i++) {
-            $procedure="";
+                $procedure = "";
                 $procedure_query = $db['view'][$i][0];
                 $procedure_name = $db['view'][$i][1];
                 $parameter = $db['view'][$i][2];
                 $fieldparameter = $db['view'][$i][3];
-                $procedure_query = str_replace("<PROCEDURE-WHERE>","1=1",$procedure_query);
-                if($database_provider=='postgres'){
-                $procedure.="CREATE OR REPLACE PROCEDURE $procedure_name(
+                $procedure_query = str_replace("<PROCEDURE-WHERE>", "1=1", $procedure_query);
+                if ($database_provider == 'postgres') {
+                    $procedure .= "CREATE OR REPLACE PROCEDURE $procedure_name(
                     $parameter INTEGER
                 )
                 LANGUAGE SQL
                 AS $$
                     $procedure_query
                 $$;";
-                }else{
+                } else {
 
-                    $procedure .='CREATE VIEW IF NOT EXISTS '.$procedure_name.' as 
-                      '.$procedure_query.';
+                    $procedure .= 'CREATE VIEW IF NOT EXISTS ' . $procedure_name . ' as 
+                      ' . $procedure_query . ';
                     
                 
                     ';
                 }
-                   // DB::query(trim($procedure), 'SELECT');
+                // DB::query(trim($procedure), 'SELECT');
             }
-           
+
             // $query =$procedure.$query;
         }
-         $db = array();
+        $db = array();
         $query = str_replace('`', '', $query); // Buang backtick dari MySQL-style syntax
         //  echo $query;
         // echo '<br>';
@@ -1258,46 +1261,46 @@ class DB
 
             $return['result'] =  ($get);
             $return['num_rows'] =  DB::fetchResponse($get, 'num_rows');;
-			if($non_limit==1)
-            $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit)[0]->count;;
-			if($non_limit==2)
-            $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit, 'num_rows');;
+            if ($non_limit == 1)
+                $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit)[0]->count;;
+            if ($non_limit == 2)
+                $return['num_rows_non_limit'] =  DB::fetchResponse($get_non_limit, 'num_rows');;
             $return['db'] =  ($db);
 
             $return['query'] =  ($query);
-            if($database_provider=='postgres'){
-            pg_close($conn);
+            if ($database_provider == 'postgres') {
+                pg_close($conn);
 
 
-            $page['conection_server'] = $host;
-            $page['conection_name_database'] = $dbname;
-            $page['conection_user'] = $user;
-            $page['conection_password'] = $password;
-            DB::connection($page);
-            }else{
-            //   // mysqli_close($conn);
+                $page['conection_server'] = $host;
+                $page['conection_name_database'] = $dbname;
+                $page['conection_user'] = $user;
+                $page['conection_password'] = $password;
+                DB::connection($page);
+            } else {
+                //   // mysqli_close($conn);
 
 
-            //     $page['conection_server'] = $host;
-            //     $page['conection_name_database'] = $dbname;
-            //     $page['conection_user'] = $user;
-            //     $page['conection_password'] = $password;
-            //     DB::connection($page);
+                //     $page['conection_server'] = $host;
+                //     $page['conection_name_database'] = $dbname;
+                //     $page['conection_user'] = $user;
+                //     $page['conection_password'] = $password;
+                //     DB::connection($page);
             }
             return $return;
         } else {
 
             $return = DB::fetchResponse(DB::query(trim($query), 'SELECT'));
-           if($database_provider=='postgres'){
-            pg_close($conn);
+            if ($database_provider == 'postgres') {
+                pg_close($conn);
 
 
-            $page['conection_server'] = $host;
-            $page['conection_name_database'] = $dbname;
-            $page['conection_user'] = $user;
-            $page['conection_password'] = $password;
-            DB::connection($page);
-        }
+                $page['conection_server'] = $host;
+                $page['conection_name_database'] = $dbname;
+                $page['conection_user'] = $user;
+                $page['conection_password'] = $password;
+                DB::connection($page);
+            }
             return $return;
         }
     }

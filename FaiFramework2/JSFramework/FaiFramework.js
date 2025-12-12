@@ -4,6 +4,7 @@ import LoginHub from './Hub/LoginHub.js';
 import * as EcommerceHub from './Hub/EcommerceHub.js';
 import ListDataHub from './Hub/ListDataHub.js';
 import * as GeneralHub from './Hub/GeneralHub.js';
+import { setShowAlert } from './Helper/Notification.js';
 
 export class FaiFramework extends FaiModule {
 	constructor() {
@@ -31,6 +32,10 @@ export class FaiFramework extends FaiModule {
 		this.base_url = base_url;
 		this.base_url_non_index = base_url_non_index;
 		this.base_url_object = base_url_object;
+		await this.setModule("domain", this.domain);
+		await this.setModule("base_url", this.base_url);
+		await this.setModule("base_url_non_index", this.base_url_non_index);
+		await this.setModule("base_url_object", this.base_url_object);
 		if (!domainDetail) {
 			this.domainDetail = await this.getDomainDetail(this.domain);;
 		} else {
@@ -43,10 +48,7 @@ export class FaiFramework extends FaiModule {
 		} else {
 			this.template = template;
 		}
-		await this.setModule("domain", this.domain);
-		await this.setModule("base_url", this.base_url);
-		await this.setModule("base_url_non_index", this.base_url_non_index);
-		await this.setModule("base_url_object", this.base_url_object);
+		
 		await this.setModule("template", this.template);
 		await this.setModule("originalTemplate", this.originalTemplate);
 		await this.setModule("domainDetail", this.domainDetail);
@@ -357,3 +359,4 @@ Object.getOwnPropertyNames(Object.getPrototypeOf(loginHub))
 // Optional: Bisa juga expose class-nya kalau butuh
 window.loginHub = loginHub;
 window.fai = this;
+window.setShowAlert = setShowAlert;

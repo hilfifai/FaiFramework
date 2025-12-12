@@ -1,17 +1,19 @@
-class OutgoingUI {
+export default class OutgoingUI {
             constructor() {
-                this.outgoings = orderSystemJson.outgoing;
+                
+            }  
+            init(config) { 
+				this.config=config;
+				this.outgoings = this.config.orderSystemJson.outgoing;
                 this.filteredOutgoings = [...this.outgoings];
                 this.currentOutgoing = null;
                 this.currentView = 'list'; // 'list' or 'detail'
-                this.orders = orderSystemJson.list_pesanan;
-                this.warehouses = orderSystemJson.gudang;
-                this.inventory = orderSystemJson.inventory;
-                this.products = orderSystemJson.produk;
-            }
-            
-            init() {
-                this.render();
+                this.orders = this.config.orderSystemJson.list_pesanan;
+                this.warehouses = this.config.orderSystemJson.gudang;
+                this.inventory = this.config.orderSystemJson.inventory;
+                this.products = this.config.orderSystemJson.produk;
+				      
+                 this.render();
                 this.renderOutgoingList();
                 this.setupEventListeners();
                 this.updateStats();

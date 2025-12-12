@@ -1,0 +1,25 @@
+name: Deploy to Shared Hosting
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ftp-deploy:
+    name: Deploy via SFTP/FTPS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Upload to Hosting via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@4.3.6 
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ftps
+          local-dir: ./        # folder lokal yang mau diupload
+          server-dir: /public_html/ # folder di hosting
+          timeout: 600

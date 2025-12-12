@@ -310,7 +310,7 @@ class DatabaseFunc
         $db['join'][] = ["store__produk", " store__produk.id", "erp__pos__utama__detail.id_produk", "inner"];
         $db['join'][] = ["store__toko", " store__toko.id", "store__produk.id_toko", "inner"];
         $db['join'][] = ["inventaris__asset__list_query", " inventaris__asset__list.id", "store__produk.id_asset", "inner"];
-        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as int) = inventaris__asset__list__varian.id", "left"];
+        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as signed) = inventaris__asset__list__varian.id", "left"];
 
         $db['join'][]  = ["drive__file utama_file", " (utama_file.id)", " (inventaris__asset__list.foto_aset)", "left"];
         $db['join'][]  = ["drive__file varian_file", " (varian_file.id )", " (inventaris__asset__list__varian.foto_aset_varian )", "left"];
@@ -752,7 +752,7 @@ class DatabaseFunc
         $db['join'][] = ["store__produk", " store__produk.id", "erp__pos__utama__detail.id_produk", "LEFT"];
         $db['join'][] = ["store__toko", " store__toko.id", "store__produk.id_toko", "LEFT"];
         $db['join'][] = ["inventaris__asset__list_query", " inventaris__asset__list.id", "erp__pos__utama__detail.id_inventaris__asset__list", "LEFT"];
-        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as int) = inventaris__asset__list__varian.id", "LEFT"];
+        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as SIGNED) = inventaris__asset__list__varian.id", "LEFT"];
 
         $db['where'][] = ["qty", ">=", 1];
         $db['where'][] = ["erp__pos__utama__detail.active", "=", 1];
@@ -815,7 +815,7 @@ class DatabaseFunc
         $row = Database::database_coverter($page, $dbGroup, [], 'all');
         return $row;
     }
-    public static function all_produk($page, $json_fe = 1, $limit = 100, $body)
+    public static function all_produk($data,$page, $json_fe = 1, $limit = 100, $body=[])
     {
         ini_set('memory_limit', '2024M');
         // $db_produk['select'][] = "
@@ -864,24 +864,24 @@ class DatabaseFunc
         // $db_produk['order'][] = ["store__produk.id", "desc"];
         // //$db_produk['limit_raw'] = "1";
         // 
-        $db_produk['utama'] = "view_produk_detail";
-        //$db_produk['utama'] = "view_all_produk_stok";
-        if (isset($body['search']['id_produk'])) {
-            $db_produk['where'][] = [$db_produk['utama'] . ".id", "=", $body['search']['id_produk']];
-        }
-        if (isset($body['search']['id_produk_varian'])) {
-            $db_produk['where'][] = [$db_produk['utama'] . ".id_produk_varian", "=", $body['search']['id_produk_varian']];
-        }
-        if (isset($body['search']['limit'])) {
-            $db_produk['limit'] = $body['search']['limit'];
-        }
-        $db_produk['np'] = true;
-        $produk          = Database::database_coverter($page, $db_produk, [], 'all');
+        // $db_produk['utama'] = "view_produk_detail";
+        // //$db_produk['utama'] = "view_all_produk_stok";
+        // if (isset($body['search']['id_produk'])) {
+        //     $db_produk['where'][] = [$db_produk['utama'] . ".id", "=", $body['search']['id_produk']];
+        // }
+        // if (isset($body['search']['id_produk_varian'])) {
+        //     $db_produk['where'][] = [$db_produk['utama'] . ".id_produk_varian", "=", $body['search']['id_produk_varian']];
+        // }
+        // if (isset($body['search']['limit'])) {
+        //     $db_produk['limit'] = $body['search']['limit'];
+        // }
+        // $db_produk['np'] = true;
+        // $produk          = Database::database_coverter($page, $db_produk, [], 'all');
         // echo '<pre>';echo $produk['query'];die;
         $stok = 0;
         if ($json_fe) {
             $return = [];
-            foreach ($produk['row'] as $row) {
+            foreach ($data['row'] as $row) {
                 $stok                                          = $row->stok_available ?? 0;
                 $return[$row->primary_key]['id']               = $row->primary_key;
                 $return[$row->primary_key]['nama_barang']      = $row->nama_barang;
@@ -1089,10 +1089,10 @@ class DatabaseFunc
                 ];
             }
         } else {
-            $return = $produk['row'];
+            $return = $data['row'];
         }
 
-        return $return;
+        return ["row"=>$return,"num_rows_non_limit"=>$data['num_rows_non_limit']];
     }
     public static function new_produk_last($page, $limit)
     {

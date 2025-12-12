@@ -1,0 +1,13 @@
+{
+  "name": "faiframework",
+  "version": "1.0.0",
+  "description": "Unified FaiFramework with PHP and JS components",
+  "main": "index_standalone.php",
+  "scripts": {
+    "start": "cp .env.production .env && php -S localhost:8000 router.php",
+    "dev": "cp .env.development .env && php -S localhost:8000 router.php"
+  },
+  "keywords": ["php", "framework", "web", "javascript"],
+  "author": "",
+  "license": "ISC"
+}

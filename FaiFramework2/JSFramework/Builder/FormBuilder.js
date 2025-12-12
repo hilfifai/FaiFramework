@@ -11,7 +11,7 @@ export default class FormBuilder {
         this.config = {
             viewContext: 'tambah',
             data: {},
-            
+
             fai: {
                 route_v: (page, route, params) => `/api/select2?field=${params[0]}`
             },
@@ -28,7 +28,7 @@ export default class FormBuilder {
      */
     buildField(rawFieldConfig, numbering = 0) {
         const pConfig = this._initialize(rawFieldConfig, numbering);
-        
+
         if (!pConfig.isVisible) {
             return { html: '', js: '', css: '' };
         }
@@ -39,28 +39,98 @@ export default class FormBuilder {
     // ===================================================================
     // LANGKAH 1: INISIALISASI
     // ===================================================================
-    
+
     _initialize(rawConfig, numbering) {
         let pConfig = { numbering };
 
+        // Handle text and field
         pConfig.text = rawConfig[0] || '';
         pConfig.field = (rawConfig[1] || '').toLowerCase().trim().replace('.', '');
+         pConfig.originalField = rawConfig[5] || pConfig.field;
+        // Generate field from text if missing
         if (!pConfig.field && pConfig.text) {
             pConfig.field = pConfig.text.toLowerCase().replace(/ /g, '_');
+            // Remove content in parentheses or question marks
+            if (pConfig.field.includes('(')) {
+                pConfig.field = pConfig.field.substring(0, pConfig.field.indexOf('('));
+            }
+            if (pConfig.field.includes('?')) {
+                pConfig.field = pConfig.field.substring(0, pConfig.field.indexOf('?'));
+            }
+            if (pConfig.field.includes('!')) {
+                pConfig.field = pConfig.field.substring(0, pConfig.field.indexOf('!'));
+            }
         }
+
+        // Generate text from field if missing
         if (!pConfig.text && pConfig.field) {
-            pConfig.text = pConfig.field.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            let fieldTemp = pConfig.field;
+            // Remove suffixes
+            if (fieldTemp.endsWith('_seq')) {
+                fieldTemp = fieldTemp.substring(0, fieldTemp.length - 4);
+            }
+            if (fieldTemp.endsWith('_id')) {
+                fieldTemp = fieldTemp.substring(0, fieldTemp.length - 3);
+            }
+            if (fieldTemp.startsWith('id_')) {
+                fieldTemp = fieldTemp.substring(3);
+            }
+            pConfig.text = fieldTemp.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         }
+
+        // Clean text
+        if (pConfig.text.endsWith('_seq')) {
+            pConfig.text = pConfig.text.substring(0, pConfig.text.length - 4);
+        }
+        if (pConfig.text.endsWith('_id')) {
+            pConfig.text = pConfig.text.substring(0, pConfig.text.length - 3);
+        }
+        if (pConfig.text.startsWith('id_')) {
+            pConfig.text = pConfig.text.substring(3);
+        }
+        pConfig.text = pConfig.text.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
         const typeString = rawConfig[2] || 'text';
         const typeParts = typeString.split('-');
-        
-        const baseTypes = ['text','select_manual', 'select', 'textarea', 'photos', 'file', 'picture', 'editor', 'radio', 'checkbox', 'hidden', 'password', 'number', 'div'];
+
+        const baseTypes = ['text', 'select_manual', 'select', 'textarea', 'photos', 'file', 'picture', 'editor', 'radio', 'checkbox', 'hidden', 'password', 'number', 'div'];
         pConfig.type = baseTypes.includes(typeParts[0]) ? typeParts[0] : 'text';
+
+        // Handle select/select-relation field modification
+        if (['select', 'select-relation'].includes(pConfig.type)) {
+            let fieldTemp = pConfig.field;
+            // Remove suffixes
+            if (fieldTemp.endsWith('_seq')) {
+                pConfig.field = fieldTemp.substring(0, fieldTemp.length - 4);
+            }
+            if (fieldTemp.endsWith('_id')) {
+                pConfig.field = fieldTemp.substring(0, fieldTemp.length - 3);
+            }
+            if (fieldTemp.startsWith('id_')) {
+                pConfig.field = fieldTemp.substring(3);
+            }
+
+            // Apply database ID configuration
+            console.log(this.config.page.crud.load);
+            const dbId = this.config.page.crud.load?.database?.id;
+            if (dbId) {
+
+                if (dbId.type === 'suffix') {
+                    pConfig.field = pConfig.field + '_' + dbId.text;
+                } else {
+                    pConfig.field = dbId.text + '_' + pConfig.field;
+                }
+            }
+
+            // Use custom field if provided
+            if (rawConfig[4]) {
+                pConfig.field = rawConfig[4];
+            }
+        }
 
         this._determineVisibility(pConfig, typeParts);
         this._processFlags(pConfig, typeParts);
-        
+
         const pageCrud = this.config.page.crud || {};
         pConfig.prefixName = pageCrud.prefix_name || '';
         pConfig.suffixName = pageCrud.sufix_name || '';
@@ -70,20 +140,34 @@ export default class FormBuilder {
 
         pConfig.options = rawConfig[3] || [];
         pConfig.extraConfig = rawConfig[4] || {};
-        pConfig.originalField = rawConfig[5] || pConfig.field;
+       
         pConfig.originalTypeString = typeString;
-        
+
+        // Handle select options validation
+        if (pConfig.originalTypeString === 'select') {
+            if (!pConfig.options || !Array.isArray(pConfig.options)) {
+                
+                console.error(`${pConfig.text} options not complete`,pConfig);
+                throw new Error(`${pConfig.text} options not complete`);
+            }
+            if (!pConfig.options[1]) {
+                // Convert primary key - this would need database access
+                // For now, assume it's handled elsewhere
+                pConfig.options[1] = null; // Placeholder
+            }
+        }
+
         return pConfig;
     }
 
     _determineVisibility(pConfig, typeParts) {
         const view = this.config.viewContext;
-       
+
         let visible = true;
         if (typeParts.length > 1) {
             const flags = new Set(typeParts);
             if (flags.has('relation')) visible = (view === 'view');
-            else if ((flags.has('table') || flags.has('list')) && flags.has('crud')) visible = ['tambah', 'edit', 'view','list'].includes(view);
+            else if ((flags.has('table') || flags.has('list')) && flags.has('crud')) visible = ['tambah', 'edit', 'view', 'list'].includes(view);
             else if (flags.has('table') || flags.has('list')) visible = (view === 'list');
             else if (flags.has('appr')) visible = ['list', 'appr'].includes(view);
             else if (flags.has('editview')) visible = ['edit', 'view'].includes(view);
@@ -94,18 +178,18 @@ export default class FormBuilder {
             else if (flags.has('hidden_input')) visible = (view !== 'list');
             else if (flags.has('crud')) visible = true;;
         }
-        
-       
+
+
         const nonView = this.config.page.non_view || {};
 
-        
+
         if (view === 'list' && nonView.list && nonView.list[pConfig.field]) visible = false;
         if (view === 'tambah' && nonView.Tambah && nonView.Tambah[pConfig.field]) visible = false;
         if (view === 'edit' && nonView.Edit && nonView.Edit[pConfig.field]) visible = false;
-       
+
         pConfig.isVisible = visible;
     }
-    
+
     _processFlags(pConfig, typeParts) {
         const flags = new Set(typeParts);
         pConfig.isRequired = flags.has('req');
@@ -126,24 +210,24 @@ export default class FormBuilder {
             inputInline: this._buildInputAttributes(pConfig),
             customClass: this._buildCustomClass(pConfig)
         };
-        
+
         const handlerName = `_handle_${pConfig.originalTypeString.replace(/-/g, '_')}`;
-       
+
         if (typeof this[handlerName] === 'function') {
             return this[handlerName](context);
         }
-        
+
         const baseHandlerName = `_handle_${pConfig.type}`;
-       
+
         if (typeof this[baseHandlerName] === 'function') {
             return this[baseHandlerName](context);
         }
 
         return this._handle_standard_input(context, pConfig.type);
     }
-    
+
     _getValue(pConfig) {
-       
+
         const pageCrud = this.config.page.crud || {};
         const view = this.config.viewContext;
         const data = this.config.data || {};
@@ -154,18 +238,18 @@ export default class FormBuilder {
         }
 
         let value = data[pConfig.field] || '';
-        
+
         if (view === 'tambah' && pageCrud.insert_value && pageCrud.insert_value[pConfig.field]) {
             value = this._processSpecialValues(pageCrud.insert_value[pConfig.field]);
         } else if (view === 'edit' && pageCrud.update_value && pageCrud.update_value[pConfig.field] && !value) {
             value = this._processSpecialValues(pageCrud.update_value[pConfig.field]);
         }
-        
+
         if (pConfig.type === 'password') return '';
 
         return value;
     }
-     _processSpecialValues(stringValue) {
+    _processSpecialValues(stringValue) {
         if (stringValue === 'date:now') {
             return new Date().toISOString().split('T')[0];
         }
@@ -173,52 +257,52 @@ export default class FormBuilder {
     }
 
     _buildWrapper(pConfig) {
-        
-       
+
+
         const { text, field, numbering, inputGroup } = pConfig;
         const formType = (this.config.page.crud || {}).form_type || 1;
         let startDiv, endDiv;
-        if(this.config.page.crud.startDiv){
+        if (this.config.page.crud.startDiv) {
             startDiv = this.config.page.crud.startDiv;
-           startDiv =  startDiv.replace(new RegExp(`<TEXT></TEXT>`, 'gi'),text || '')
-           startDiv =  startDiv.replace(new RegExp(`<FIELD_NUMBERING></FIELD_NUMBERING>`, 'gi'),field+numbering || '')
+            startDiv = startDiv.replace(new RegExp(`<TEXT></TEXT>`, 'gi'), text || '')
+            startDiv = startDiv.replace(new RegExp(`<FIELD_NUMBERING></FIELD_NUMBERING>`, 'gi'), field + numbering || '')
             endDiv = this.config.page.crud.endDiv;
-           endDiv =  endDiv.replace(new RegExp(`<TEXT></TEXT>`, 'gi'),text || '')
-           endDiv =  endDiv.replace(new RegExp(`<FIELD_NUMBERING></FIELD_NUMBERING>`, 'gi'),field+numbering || '')
-        }else
-        if (formType === 1) { // Horizontal
-            startDiv = `<div class="form-group row mb-1"><label class="control-label col-3" style="font-weight:600">${text}</label><div class="col-9">`;
-            endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
-        } else { // Vertical
-            startDiv = `<div class="form-group mb-1"><label class="control-label" style="font-weight:600">${text}</label><div>`;
-            endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
-        }
-        
+            endDiv = endDiv.replace(new RegExp(`<TEXT></TEXT>`, 'gi'), text || '')
+            endDiv = endDiv.replace(new RegExp(`<FIELD_NUMBERING></FIELD_NUMBERING>`, 'gi'), field + numbering || '')
+        } else
+            if (formType === 1) { // Horizontal
+                startDiv = `<div class="form-group row mb-1"><label class="control-label col-3" style="font-weight:600">${text}</label><div class="col-9">`;
+                endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
+            } else { // Vertical
+                startDiv = `<div class="form-group mb-1"><label class="control-label" style="font-weight:600">${text}</label><div>`;
+                endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
+            }
+
         if (inputGroup.prefix || inputGroup.suffix) {
-             startDiv += `<div class="input-group">`;
-             if(inputGroup.prefix) startDiv += `<span class="input-group-text">${inputGroup.prefix}</span>`;
-             endDiv = (inputGroup.suffix ? `<span class="input-group-text">${inputGroup.suffix}</span>` : '') + `</div>` + endDiv;
+            startDiv += `<div class="input-group">`;
+            if (inputGroup.prefix) startDiv += `<span class="input-group-text">${inputGroup.prefix}</span>`;
+            endDiv = (inputGroup.suffix ? `<span class="input-group-text">${inputGroup.suffix}</span>` : '') + `</div>` + endDiv;
         }
 
         return { startDiv, endDiv };
     }
-    
+
     _buildCustomClass(pConfig) {
         // ... (Implementasi dari jawaban sebelumnya sudah bagus)
         let classes = ` ${pConfig.field}`;
         if (pConfig.isRight) classes += ' text-right';
         if (pConfig.isNumber) classes += ' is-number';
-        
+
         const pageCrud = this.config.page.crud || {};
         if (pageCrud.costum_class && pageCrud.costum_class[pConfig.field]) {
-            classes += " "+`${pageCrud.costum_class[pConfig.field]}${classes}`;
+            classes += " " + `${pageCrud.costum_class[pConfig.field]}${classes}`;
         }
         if (pageCrud.allCostumClass) {
-            classes += " "+pageCrud.allCostumClass;
+            classes += " " + pageCrud.allCostumClass;
         }
         return classes.trim();
     }
-    
+
     _buildInputAttributes(pConfig) {
         // ... (Implementasi dari jawaban sebelumnya sudah bagus)
         const pageCrud = this.config.page.crud || {};
@@ -229,14 +313,14 @@ export default class FormBuilder {
         if (pConfig.isNumber) {
             attributes += ` onkeypress="return event.charCode >= 48 && event.charCode <= 57" data-number="true"`;
         }
-        
+
         if (pageCrud.field_value_automatic && pageCrud.field_value_automatic[pConfig.field]) {
             attributes += ` onchange="field_value_automatic_${pConfig.field}(this)"`;
         }
 
         return attributes.trim();
     }
-    
+
 
     _handle_standard_input(context, inputType = 'text') {
         const { pConfig, value, wrapper, inputInline, customClass } = context;
@@ -260,7 +344,7 @@ export default class FormBuilder {
     _handle_password(context) {
         return this._handle_standard_input(context, 'password');
     }
-    
+
     _handle_number(context) {
         return this._handle_standard_input(context, 'number');
     }
@@ -269,15 +353,15 @@ export default class FormBuilder {
         const { pConfig, value } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
         const html = `<input name="${name}" id="${pConfig.field}${pConfig.numbering}" type="hidden" value="${value}">`;
-        return { html, js:'', css:'' };
+        return { html, js: '', css: '' };
     }
-    
+
     _handle_div(context) {
         const { pConfig } = context;
         const html = `<h4>${pConfig.text}</h4><div id="${pConfig.field}"></div>`;
-        return { html, js:'', css:'' };
+        return { html, js: '', css: '' };
     }
-    
+
     _handle_textarea(context) {
         const { pConfig, value, wrapper, inputInline, customClass } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
@@ -296,14 +380,17 @@ export default class FormBuilder {
     }
 
     _handle_select(context) {
-		
-		const apps = this.config.page_config.page.load.apps;
-		const page_view = this.config.page_config.page.load.page_view;
+
+        const apps = this.config.page_config.page.load.apps;
+        const page_view = this.config.page_config.page.load.page_view;
         const { pConfig, value, wrapper, inputInline, customClass } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
         const pageCrud = this.config.page.crud || {};
-        const ajaxUrl = this.config.fai.route_v(this.config.page, pageCrud.route, [`${pConfig.field}`, -1]);
+        const ajaxUrl = this.config.fai.route_v(this.config.page, pageCrud.route, [`${pConfig.originalField}`, -1]);
         const html = `${wrapper.startDiv}<select name="${name}" id="${pConfig.field}${pConfig.numbering}" class="${customClass.includes('no-form-control') ? customClass : 'form-control ' + customClass} select2" ${inputInline}></select>${wrapper.endDiv}`;
+        console.log(this.config.data);
+
+        
         const js = `
             $(document).ready(function() {
                 const selectEl = $('#${pConfig.field}${pConfig.numbering}');
@@ -312,11 +399,11 @@ export default class FormBuilder {
                 selectEl.select2({
                     placeholder: 'Pilih ${pConfig.text}',
                     allowClear: true,
-                    ajax: { url: '${ajaxUrl}', dataType: 'json', delay: 250, data: p => ({ q: p.term,apps: apps,page_view: page_view,field:'${pConfig.field}'  }), processResults: d => ({ results: d.items || d }) }
+                    ajax: { url: '${ajaxUrl}', dataType: 'json', delay: 250, data: p => ({ q: p.term,apps: apps,page_view: page_view,field:'${pConfig.originalField}'  }), processResults: d => ({ results: d.items || d }) }
                 });
 
                 const initialValue = '${value}';
-                const initialText = '${this.config.data[pConfig.field + '_name'] || ''}';
+                const initialText = '${this.config.data[pConfig.options[2] + '_'+pConfig.options[0]] || ''}';
                 if (initialValue && initialText) {
                     selectEl.append(new Option(initialText, initialValue, true, true)).trigger('change');
                 }
@@ -324,7 +411,7 @@ export default class FormBuilder {
         `;
         return { html, js, css: '' };
     }
-    
+
     _handle_select_manual(context) {
         const { pConfig, value, wrapper, inputInline, customClass } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
@@ -344,7 +431,7 @@ export default class FormBuilder {
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
         let choicesHtml = '';
         if (typeof pConfig.options === 'object' && pConfig.options !== null) {
-             for (const [key, val] of Object.entries(pConfig.options)) {
+            for (const [key, val] of Object.entries(pConfig.options)) {
                 const checked = value == key ? 'checked' : '';
                 choicesHtml += `
                     <div class="form-check form-check-inline">
@@ -362,7 +449,7 @@ export default class FormBuilder {
     _handle_radio_manual(context) { return this._handle_choice_controls(context, 'radio'); }
     _handle_checkbox(context) { return this._handle_choice_controls(context, 'checkbox'); }
     _handle_checkbox_manual(context) { return this._handle_choice_controls(context, 'checkbox'); }
-    
+
     _handle_photos(context) {
         const { pConfig, value, wrapper, inputInline } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
@@ -374,9 +461,9 @@ export default class FormBuilder {
             .photo-upload-btn { background-color: rgba(255,255,255,0.8); border: 1px solid #ccc; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #333; }
             .photo-upload-input { display: none; }
         `;
-        
+
         const imageUrl = value ? value : 'https://placehold.co/300x300/e2e8f0/e2e8f0';
-        
+
         const html = `
             ${wrapper.startDiv}
             <div class="photo-upload-container" id="container_${pConfig.field}${pConfig.numbering}">
@@ -405,7 +492,7 @@ export default class FormBuilder {
         `;
         return { html, js, css };
     }
-    
+
     _handle_file_upload(context) {
         const { pConfig, wrapper } = context;
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
@@ -458,6 +545,6 @@ export default class FormBuilder {
                 }
             });
         `;
-        return { html, js, css:'' };
+        return { html, js, css: '' };
     }
 }
