@@ -282,10 +282,10 @@ class Packages extends Partial
                         }
                     }
                     if (! empty($_SESSION['board_role-' . $page['load']['board']]) and $page['load_section'] != 'admin') {
-                        DB::selectRaw('*, cast(web__list_apps_board__role__akses.nama_menu as int) as id_first_akses_role');
+                        DB::selectRaw('*, cast(web__list_apps_board__role__akses.nama_menu as SIGNED) as id_first_akses_role');
                         DB::table('web__list_apps_board__role__akses');
                         DB::joinRaw("website__template__list on web__list_apps_board__role__akses.id_template = website__template__list.id", 'left');
-                        DB::joinRaw("web__list_apps_menu as first on first.id = cast(web__list_apps_board__role__akses.nama_menu as int)", 'left');
+                        DB::joinRaw("web__list_apps_menu as first on first.id = cast(web__list_apps_board__role__akses.nama_menu as SIGNED)", 'left');
 
                         DB::whereRaw("web__list_apps_board__role__akses.id=" . $_SESSION['board_role-' . $page['load']['board']]);
                         $get = DB::get('all');

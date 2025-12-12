@@ -3511,7 +3511,7 @@ class ApiApp
                 $db_bangunan            = [];
                 $db_bangunan['utama']   = 'inventaris__asset__tanah__bangunan';
                 $db_bangunan['np']      = 'inventaris__asset__tanah__bangunan';
-                $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id as int)', '=', $id_kirim_ke];
+                $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id as SIGNED)', '=', $id_kirim_ke];
                 $get_db_bangunan        = Database::database_coverter($page, $db_bangunan, [], 'all');
                 // print_R();
                 // 'tipe_pemesanan': tipe_pemesanan,
@@ -3620,7 +3620,7 @@ class ApiApp
 		";
             $db2['utama']              = "erp__pos__utama__detail";
             $db2['join'][]             = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__utama__detail.id_inventaris__asset__list"];
-            $db2['join'][]             = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "cast(id_barang_varian as int)", 'left'];
+            $db2['join'][]             = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "cast(id_barang_varian as SIGNED)", 'left'];
             $db2['join'][]             = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
             $db2['order'][]            = ["erp__pos__utama__detail.create_date", " desc "];
             $db2['where'][]            = ["erp__pos__utama__detail.id_erp__pos__group", " = ", $id];
