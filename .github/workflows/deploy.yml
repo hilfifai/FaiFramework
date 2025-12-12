@@ -16,7 +16,7 @@ jobs:
       - name: Upload to Hosting via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6 
         with:
-          server: ftp://195.35.54.46
+          server: 195.35.54.46
           username: u996263040.v2.moesneeds.id
           password: ${{ secrets.FTP_PASS }}
           protocol: ftps
