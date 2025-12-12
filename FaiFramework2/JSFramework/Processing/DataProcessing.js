@@ -34,7 +34,6 @@ export default class DataProcessing extends FaiModule {
 					return (dataFromAPI);;
 				} else {
 					return (dataFromAPI);;
-					// alert(2);
 					// Transaksi IndexedDB
 					/* const writeTx = db.transaction(storeName, "readwrite");
 					 const writeStore = writeTx.objectStore(storeName);

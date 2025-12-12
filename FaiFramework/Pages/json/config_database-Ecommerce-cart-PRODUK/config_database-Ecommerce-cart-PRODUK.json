@@ -68,21 +68,21 @@
         "harga_satuan": "349900"
     },
     "5": {
-        "id_cart": "2510",
-        "image": "https:\/\/api.ethica.id\/\/uploads\/SEPLY\/KASEO\/BESAR\/KASEO 234 PURE BLACK.jpg",
+        "id_cart": "2513",
+        "image": "https:\/\/api.ethica.id\/\/uploads\/SEPLY\/KASEO\/BESAR\/KASEO 260 BLACK ROBE.jpg",
         "max_level": "3",
-        "nama_barang": "EKSIS 275 PURE BLACK",
+        "nama_barang": "TENARA 28 BLACK ROBE",
         "stok": "0",
         "varian_barang": "1",
-        "nama_varian": "KASEO 234 PURE BLACK 5XL",
-        "id_varian_pra_order_1": "129737",
-        "id_varian_pra_order_2": "129735",
-        "id_varian_pra_order_3": "129618",
+        "nama_varian": "KASEO 260 BLACK ROBE M",
+        "id_varian_pra_order_1": "131219",
+        "id_varian_pra_order_2": "130411",
+        "id_varian_pra_order_3": "129628",
         "jumlah": "1",
         "checked": null,
-        "id_produk": "124",
+        "id_produk": "775",
         "id_toko": "4",
-        "harga_satuan": "229900"
+        "harga_satuan": "199900"
     },
     "6": {
         "id_cart": "2242",

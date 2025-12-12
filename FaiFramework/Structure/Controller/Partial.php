@@ -13,6 +13,27 @@ class Partial extends Database
     {
         parent::__construct();
     }
+    public static function uri_segment(){
+        $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+		$basePath = dirname($scriptName);
+
+		if ($basePath && $basePath !== '/' && strpos($requestUri, $basePath) === 0) {
+			$requestUri = substr($requestUri, strlen($basePath));
+		}
+		$requestUri = preg_replace('#/+#', '/', $requestUri);
+		// hilangkan query string
+		$requestUri = explode('?', $requestUri)[0];
+
+		// bersihkan
+		$requestUri = trim($requestUri, '/');
+
+		// ambil segment
+		$segments = array_values(array_filter(explode('/', $requestUri))); // reset index
+		$segments = explode('/', $requestUri);
+		$segments = array_filter($segments); 
+        return array_values($segments);
+    }
     public static function email_send($email, $judul, $pesan)
     {
         $email = htmlspecialchars($email);
