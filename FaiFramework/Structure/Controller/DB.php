@@ -402,7 +402,8 @@ class DB
     public static function statements($query, $statements)
     {
         try {
-            $query = $this->conn->prepare($query);
+            global $conn;
+            $query = $conn->prepare($query);
 
             foreach ($statements as $key => $value) {
                 $param = $statements[$key][0];
@@ -436,7 +437,8 @@ class DB
 
             return $query;
         } catch (\PDOException $e) {
-            $this->error = $e->getMessage();
+            echo '<pre>';
+            echo ("Prepared Query Execution Failed: " . $e->getMessage() . '<BR> FIle' . $e->getFile() . '<br> Line:' . $e->getLine());
 
             return null;
         }
@@ -572,7 +574,7 @@ class DB
         $query .= 'VALUES (' . rtrim(trim($input['values']), ',') . ')';
 
         if (!is_null($statements) && is_array($statements)) {
-            return $this->statements($query, $statements);
+            return DB::statements($query, $statements);
         }
         $query = str_replace('`', '', $query); // Buang backtick dari MySQL-style syntax
         return DB::query($query, 'INSERT', $table);

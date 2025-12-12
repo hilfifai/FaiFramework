@@ -121,7 +121,7 @@ export default class LoginHub extends FaiModule {
                     });
                     if(document.getElementById('template').value!=document.getElementById('base_template').value){
                         window.location.href=this.base_url_BASED;
-                        alert(this.base_url_BASED);
+                        // alert(this.base_url_BASED);
                         document.getElementById('template').value = document.getElementById('base_template').value
                     }
                 } else {

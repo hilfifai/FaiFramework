@@ -4,6 +4,7 @@ import LoginHub from './Hub/LoginHub.js';
 import * as EcommerceHub from './Hub/EcommerceHub.js';
 import ListDataHub from './Hub/ListDataHub.js';
 import * as GeneralHub from './Hub/GeneralHub.js';
+import { setShowAlert } from './Helper/Notification.js';
 
 export class FaiFramework extends FaiModule {
 	constructor() {
@@ -358,3 +359,4 @@ Object.getOwnPropertyNames(Object.getPrototypeOf(loginHub))
 // Optional: Bisa juga expose class-nya kalau butuh
 window.loginHub = loginHub;
 window.fai = this;
+window.setShowAlert = setShowAlert;
