@@ -19,8 +19,10 @@ require_once BASEPATH . '../FaiFramework/Structure/App_class/ChatbotApp.php';
 
 class FaiServer extends CI_Controller
 {
-
-    public function index($all = -1, $function = "", $id_web_apps = "", $param1 = "", $param2 = "", $param3 = "", $param4 = "", $param5 = "")
+    public function index(){
+        MainFaiFramework::route_request();
+    }
+    public function index2($all = -1, $function = "", $id_web_apps = "", $param1 = "", $param2 = "", $param3 = "", $param4 = "", $param5 = "")
     {
         // ini_set('memory_limit', '-1');
         //error_reporting(0);

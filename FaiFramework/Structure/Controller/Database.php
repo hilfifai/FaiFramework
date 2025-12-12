@@ -762,7 +762,7 @@ class Database extends DB
 
 					$check_seq = Database::checking_database($page, "seq_$database_utama");
 					if (!$check_seq->exists_) {
-						DB::select("CREATE SEQUENCE $schemaseq_$database_utama
+						DB::select("CREATE SEQUENCE $schema.seq_$database_utama
 										    START WITH 1
 										    INCREMENT BY 1
 										    NO MINVALUE
@@ -774,7 +774,7 @@ class Database extends DB
 						DB::select($sqlcreate);
 						DB::select("ALTER TABLE ONLY $schema$database_utama
 		    					ADD CONSTRAINT " . $database_utama . "_pkey PRIMARY KEY ($primary_key);");
-						DB::select("ALTER TABLE $schemaseq_$database_utama OWNER TO postgres;");
+						DB::select("ALTER TABLE $schema.seq_$database_utama OWNER TO postgres;");
 						DB::select("ALTER TABLE $schema$database_utama OWNER TO postgres;");
 						/*JANGAN DIHAPUS*/
 						echo '<script> window.location.href="' . $page['route_page'] . '"</script>';
@@ -884,18 +884,18 @@ class Database extends DB
 				if (!in_array((isset($page['load']['database']['create_by']) ? $page['load']['database']['create_by'] : "create_by"), $columns)) {
 
 					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['create_date']) ? $page['load']['database']['create_date'] : "create_date") . " timestamp without time zone;");
-					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['create_by']) ? $page['load']['database']['create_by'] : "create_by") . " numeric DEFAULT NULL::numeric;");
+					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['create_by']) ? $page['load']['database']['create_by'] : "create_by") . " varchar(100) DEFAULT NULL::numeric;");
 				}
 				if (!in_array((isset($page['load']['database']['update_date']) ? $page['load']['database']['update_date'] : "update_date"), $columns)) {
 
 					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['update_date']) ? $page['load']['database']['update_date'] : "update_date") . " timestamp without time zone;");
-					DB::select("ALTER TABLE $schema $database_utama ADD  " . (isset($page['load']['database']['update_by']) ? $page['load']['database']['update_by'] : "update_by") . " numeric DEFAULT NULL::numeric;");
+					DB::select("ALTER TABLE $schema $database_utama ADD  " . (isset($page['load']['database']['update_by']) ? $page['load']['database']['update_by'] : "update_by") . " varchar(100) DEFAULT NULL::numeric;");
 				}
 
 				if (!in_array((isset($page['load']['database']['delete_date']) ? $page['load']['database']['delete_date'] : "delete_date"), $columns)) {
 
 					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['delete_date']) ? $page['load']['database']['delete_date'] : "delete_date") . " timestamp without time zone;");
-					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['delete_by']) ? $page['load']['database']['delete_by'] : "delete_by") . " numeric DEFAULT NULL::numeric;");
+					DB::select("ALTER TABLE $schema$database_utama ADD  " . (isset($page['load']['database']['delete_by']) ? $page['load']['database']['delete_by'] : "delete_by") . " varchar(100) DEFAULT NULL::numeric;");
 				}
 				if (!isset($page['load']['database']['not_faiframework_database'])) {
 					if (!in_array('timezone', $columns)) {

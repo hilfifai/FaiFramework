@@ -1014,7 +1014,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
         // View button
         document.querySelectorAll('[data-action="view"]').forEach(button => {
             button.addEventListener('click', (e) => {
-                
+
                 const soId = e.target.closest('[data-so-id]').dataset.soId;
                 this.viewSoDetail(soId);
             });
@@ -1310,7 +1310,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
         this.filteredSalesOrders.forEach(so => {
             const statusClass = this.getStatusClass(so.status);
             const statusText = this.getStatusText(so.status);
-            const soDate = new Date(so.date).toLocaleDateString('id-ID');
+            const soDate = new Date(so.tanggal).toLocaleDateString('id-ID');
             const typeClass = this.getTypeClass(so.source);
             const typeText = this.getTypeText(so.source);
 
@@ -1318,7 +1318,6 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                         <tr>
                             <td>
                                 <div class="order-id">${so.nomor}</div>
-                                <div class="order-date">${soDate}</div>
                             </td>
                             <td>
                                 <div class="customer-name">${so.nama_lengkap}</div>
@@ -1336,28 +1335,29 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                             <td>
                     <div class="action-buttons" data-so-id="${so.primary_key}">
                         <button class="action-btn btn-view" data-action="view" data-so-id="${so.primary_key}">
-                            <i class="fas fa-eye"></i> Lihat
+                            <i class="fas fa-eye"></i> Edit
                         </button>
-                        ${so.status === 'draft' || so.status === 'pending' ? `
+                        
+                        
                             <button class="action-btn btn-edit" data-action="edit" data-so-id="${so.primary_key}">
-                                <i class="fas fa-edit"></i> Edit
+                                <i class="fas fa-edit"></i> Ubah Status
                             </button>
-                        ` : ''}
+                      
                         ${so.status === 'confirmed' ? `
                             <button class="action-btn btn-process" data-action="process" data-so-id="${so.primary_key}">
                                 <i class="fas fa-cog"></i> Proses
                             </button>
                         ` : ''}
-                        ${so.status === 'processing' ? `
+                       
                             <button class="action-btn btn-ship" data-action="ship" data-so-id="${so.primary_key}">
                                 <i class="fas fa-truck"></i> Kirim
                             </button>
-                        ` : ''}
-                        ${so.status === 'shipped' ? `
+                        
+                        
                             <button class="action-btn btn-complete" data-action="complete" data-so-id="${so.primary_key}">
                                 <i class="fas fa-check"></i> Selesai
                             </button>
-                        ` : ''}
+                       
                         ${so.status !== 'completed' && so.status !== 'cancelled' ? `
                             <button class="action-btn btn-invoice" data-action="print-invoice" data-so-id="${so.primary_key}">
                                 <i class="fas fa-print"></i> Invoice
@@ -1385,12 +1385,10 @@ export default class SalesOrderUI extends OrderSystemBuilder {
 
     // View SO detail
     viewSoDetail(soId) {
-          alert(soId);
-          console.log(this.salesOrders);
+        console.log(this.salesOrders);
         this.currentSo = this.salesOrders.find(so => so.primary_key == soId);
         console.log(this.currentSo);
         if (!this.currentSo) return;
-        alert();
         this.showSoDetail();
         this.populateSoDetail();
     }
@@ -2524,18 +2522,23 @@ export default class SalesOrderUI extends OrderSystemBuilder {
     }
 
     renderRackEntry(item, outgoingId, index, rack = null) {
-       
+
 
         const remainingQuantity = (item.qty_pesan || item.quantity) - this.getProcessedQuantity(item);
         const maxQuantity = rack ? ((item.qty_pesan || item.quantity) - this.getProcessedQuantity(item) + (rack.qty_keluar_out || 0)) : remainingQuantity;
-        alert( rack.id_ruang_simpan_out );
+        const rackData = this.warehouseRacks.find(o => rack.id_ruang_simpan_out == o.id);
+        const rackName = this.warehouseRacks.find(opt => opt.id == rack?.id_ruang_simpan_out)?.name || 'Belum Pilih Rak';
+        console.log(item);
         return `
-    <div class="rack-entry" data-index="${index}">
+    <div class="rack-entry d-block" data-index="${index}">
+    <div class="d-flex">
         <div class="rack-selection">
-            <select class="form-select rack-select" 
+        ${!rack.id_ruang_simpan_out ? `
+            <select class="form-select rack-select rack-select-detail-${item.id}" 
                 data-outgoing-id="${outgoingId}"
                 data-product-id="${item.id_produk_inv || item.id}"
                 data-id_ruang_simpan_out="${rack.id_ruang_simpan_out}"
+                data-breakdown-id="${rack.id}"
                 data-index="${index}">
                 <option value="">Pilih Rak</option>
                 ${this.warehouseRacks.map(opt => `
@@ -2544,19 +2547,23 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                     </option>
                 `).join('')}
             </select>
+            `: rackName}
         </div>
         <div class="quantity-input">
             <input type="number" 
-                class="form-control rack-quantity"
+                class="form-control rack-quantity qty-rack-detail-${item.id}"
                 min="1"
                 max="${maxQuantity}"
                 value="${rack ? rack.qty_keluar_out : ''}"
                 placeholder="Jumlah"
                 data-outgoing-id="${outgoingId}"
-                data-product-id="${item.id_produk_inv || item.id}"
+                data-product-id="${item.id_produk_inv}"
+                data-breakdown-id="${rack.id}"
                 data-index="${index}">
+                
+
         </div>
-        ${index > 0 ? `
+        ${index ? `
             <button class="btn btn-sm btn-outline-danger remove-rack" 
                 data-outgoing-id="${outgoingId}"
                 data-product-id="${item.id_produk_inv || item.id}"
@@ -2564,6 +2571,52 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                 <i class="fas fa-times"></i>
             </button>
         ` : ''}
+       </div>
+            <div class='d-block'>
+             ${rackData.id_api ? (
+                `<div> Status Sync :  <span id="status_sync_cart-${rack.id}">${rack.status_sync_cart || "Belum"}</span> </div>
+                <div> Response Sync :  <span id="response_sync_cart-${rack.id}">${rack.response_sync_cart || "-"}</span> </div>
+                <div> Qty Sync :  <span id="qty_sync-${rack.id}">${rack.temp_qty_sync || "-"}</span> </div>
+                <div class="d-flex gap-2 mt-2">
+                    
+                        <button class="btn btn-sm btn-primary sync-cart" 
+                          id="btn_sync_cart-${rack.id}"
+                            data-outgoing-id="${outgoingId}"
+                            data-breakdown-id="${rack.id}"
+                            data-product-id="${item.id_produk_inv}"
+                            data-index="${index}"
+                            data-status-sync="${rack.status_sync_cart || "Belum"}"
+                            >
+                            Sync Api Cart
+                           </button>
+                        
+                         <button class="btn btn-sm btn-primary resync-cart" 
+                          id="btn_resync_cart-${rack.id}"
+                            data-outgoing-id="${outgoingId}"
+                            data-breakdown-id="${rack.id}"
+                            data-product-id="${item.id_produk_inv}"
+                            data-cart-sync-id="${rack.id_response_sync_cart}"
+                            data-index="${index}"
+                            data-status-sync="${rack.status_sync_cart || "Belum"}"
+                            >
+                            ReSync Api Cart
+                           </button>
+                           <button class="btn btn-sm btn-primary delete-sync-cart" 
+                          id="btn_delete_sync_cart-${rack.id}"
+                            data-outgoing-id="${outgoingId}"
+                            data-breakdown-id="${rack.id}"
+                            data-product-id="${item.id_produk_inv}"
+                            data-cart-sync-id="${rack.id_response_sync_cart}"
+                            data-index="${index}"
+                            data-status-sync="${rack.status_sync_cart || "Belum"}"
+                            >
+                            Delete Sync Cart
+                           </button>
+                       
+                           `
+            ) : ""}
+                </div>
+                </div>
     </div>
     `;
     }
@@ -2586,6 +2639,46 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                 const productId = e.target.dataset.productId;
                 const index = parseInt(e.target.dataset.index);
                 this.removeRack(outgoingId, parseInt(productId), index);
+            });
+        });
+        document.querySelectorAll('.sync-cart').forEach(button => {
+            if (button.dataset.statusSync === "Berhasil") {
+                button.style.display = "none";
+            }
+            button.addEventListener('click', (e) => {
+                const outgoingId = e.target.dataset.outgoingId;
+                const productId = e.target.dataset.productId;
+                const BreakdownId = e.target.dataset.breakdownId;
+
+                const index = parseInt(e.target.dataset.index);
+                this.sync_cart(BreakdownId, outgoingId, parseInt(productId), index);
+            });
+        });
+        document.querySelectorAll('.resync-cart').forEach(button => {
+            if (button.dataset.statusSync !== "Berhasil") {
+                button.style.display = "none";
+            }
+            button.addEventListener('click', (e) => {
+                const outgoingId = e.target.dataset.outgoingId;
+                const productId = e.target.dataset.productId;
+                const BreakdownId = e.target.dataset.breakdownId;
+
+                const index = parseInt(e.target.dataset.index);
+                this.sync_cart(BreakdownId, outgoingId, parseInt(productId), index);
+            });
+        });
+        document.querySelectorAll('.delete-sync-cart').forEach(button => {
+            if (button.dataset.statusSync !== "Berhasil") {
+                button.style.display = "none";
+            }
+            button.addEventListener('click', (e) => {
+                const outgoingId = e.target.dataset.outgoingId;
+                const productId = e.target.dataset.productId;
+                const BreakdownId = e.target.dataset.breakdownId;
+                const cartSyncId = e.target.dataset.cartSyncId;
+
+                const index = parseInt(e.target.dataset.index);
+                this.delete_sync_cart(cartSyncId,BreakdownId, outgoingId, parseInt(productId), index);
             });
         });
 
@@ -2801,6 +2894,73 @@ export default class SalesOrderUI extends OrderSystemBuilder {
 
         // Re-render the outgoing list
         this.renderOutgoingList();
+    }
+    async sync_cart(BreakdownId, outgoingId, productId, index) {
+        const inputEl = document.querySelector(`input[data-breakdown-id="${BreakdownId}"]`);
+
+        const value = inputEl ? inputEl.value : null;
+
+        try {
+            // Kirim data ke server
+            const response = await window.fai.getModule("urlHelper").fetchDataFromApi(
+                window.fai.getModule('base_url') + "api/sync_cart_outgoing", 'POST',
+                {
+                    qty: value
+                    , breakdownId: BreakdownId
+                });
+
+
+            if (response.status) {
+                setShowAlert('Sync telah berhasil ', 'success');
+
+            } else {
+                setShowAlert('Sync cart gagal ', 'error');
+            }
+            $("#status_sync_cart-" + BreakdownId).html("" + response.status ? "Berhasil" : "Gagal" + "");
+            $("#response_sync_cart-" + BreakdownId).html("" + JSON.stringify(response.response) + "");
+            $("#qty_sync-" + BreakdownId).html("" + value + "");
+
+            $('#btn_delete_sync_cart-'+BreakdownId).show();
+            $('#btn_resync_cart-'+BreakdownId).show();
+            $('#btn_sync_cart-'+BreakdownId).hide();
+        } catch (error) {
+            console.error('Error:', error);
+            setShowAlert('Gagal mengirim konfirmasi pembayaran', 'error');
+        }
+    }
+    async delete_sync_cart(cartSyncId,BreakdownId, outgoingId, productId, index) {
+        const inputEl = document.querySelector(`input[data-breakdown-id="${BreakdownId}"]`);
+
+        const value = inputEl ? inputEl.value : null;
+
+        try {
+            // Kirim data ke server
+            const response = await window.fai.getModule("urlHelper").fetchDataFromApi(
+                window.fai.getModule('base_url') + "api/delete_sync_cart_outgoing", 'POST',
+                {
+                    qty: value
+                    , breakdownId: BreakdownId
+                    ,cartSyncId:cartSyncId
+                });
+
+
+            if (response.status) {
+                setShowAlert('Sync telah berhasil ', 'success');
+
+            } else {
+                setShowAlert('Sync cart gagal ', 'error');
+            }
+            $("#status_sync_cart-" + BreakdownId).html("Belum");
+            $("#response_sync_cart-" + BreakdownId).html("" + JSON.stringify({}) + "");
+            $("#qty_sync-" + BreakdownId).html("-");
+            
+            $('#btn_delete_sync_cart-'+BreakdownId).hide();
+            $('#btn_resync_cart-'+BreakdownId).hide();
+            $('#btn_sync_cart-'+BreakdownId).show();
+        } catch (error) {
+            console.error('Error:', error);
+            setShowAlert('Gagal mengirim konfirmasi pembayaran', 'error');
+        }
     }
 
     handleRackSelection(outgoingId, productId, index, rackId) {

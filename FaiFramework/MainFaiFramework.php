@@ -142,24 +142,25 @@ class MainFaiFramework extends Configuration
 	{
 
 		// Parse the request URI
-		$requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-		$scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
-		$basePath = dirname($scriptName);
+		// $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		// $scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+		// $basePath = dirname($scriptName);
 
-		if ($basePath && $basePath !== '/' && strpos($requestUri, $basePath) === 0) {
-			$requestUri = substr($requestUri, strlen($basePath));
-		}
-		$requestUri = preg_replace('#/+#', '/', $requestUri);
-		// hilangkan query string
-		$requestUri = explode('?', $requestUri)[0];
+		// if ($basePath && $basePath !== '/' && strpos($requestUri, $basePath) === 0) {
+		// 	$requestUri = substr($requestUri, strlen($basePath));
+		// }
+		// $requestUri = preg_replace('#/+#', '/', $requestUri);
+		// // hilangkan query string
+		// $requestUri = explode('?', $requestUri)[0];
 
-		// bersihkan
-		$requestUri = trim($requestUri, '/');
+		// // bersihkan
+		// $requestUri = trim($requestUri, '/');
 
-		// ambil segment
-		$segments = array_values(array_filter(explode('/', $requestUri))); // reset index
-		$segments = explode('/', $requestUri);
-		$segments = array_filter($segments); // Remove empty segments
+		// // ambil segment
+		// $segments = array_values(array_filter(explode('/', $requestUri))); // reset index
+		// $segments = explode('/', $requestUri);
+		// $segments = array_filter($segments); 
+		$segments = Partial::uri_segment();
 
 		$type_load = isset($segments[0]) ? $segments[0] : '';
 		$all = isset($segments[1]) ? $segments[1] : -1;
@@ -711,7 +712,7 @@ class MainFaiFramework extends Configuration
 			if ($apps->folder_template) {
 				$apps->folder_template;
 				$pagetemp = $page;
-				$page = ($fai->template_base(str_replace(["-", " "], ["_", "_"], (strtolower($apps->folder_template)))));
+				// $page = ($fai->template_base(str_replace(["-", " "], ["_", "_"], (strtolower($apps->folder_template)))));
 				$page = array_merge_recursive($page, $pagetemp);
 			}
 			$protocol = 'https://';
