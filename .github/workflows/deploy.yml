@@ -20,6 +20,7 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
           protocol: ftps
+          port: 21
           local-dir: ./        # folder lokal yang mau diupload
           server-dir: /public_html/ # folder di hosting
           timeout: 600
