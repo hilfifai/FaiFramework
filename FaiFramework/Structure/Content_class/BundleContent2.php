@@ -8798,7 +8798,7 @@ img {
     $db['np'] = true;
     $db['join'][] = array("web__list_apps_board", "web__list_apps_board.id", "id_board");
     $db['join'][] = array("store__toko", "store__toko.id", "id_single_toko", 'left');
-    $db['join'][] = array("drive__file", "cast(banner_toko as int)", "drive__file.id", 'left');
+    $db['join'][] = array("drive__file", "cast(banner_toko as SIGNED)", "drive__file.id", 'left');
     $db['where'][] = array("web__apps.id", "=", $page['load']['row_web_apps']->primary_key);
 
     $sql = Database::database_coverter($page, $db, array(), 'all');

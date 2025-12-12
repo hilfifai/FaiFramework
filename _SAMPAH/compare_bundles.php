@@ -752,7 +752,7 @@ class DatabaseFunc
         $db['join'][] = ["store__produk", " store__produk.id", "erp__pos__utama__detail.id_produk", "LEFT"];
         $db['join'][] = ["store__toko", " store__toko.id", "store__produk.id_toko", "LEFT"];
         $db['join'][] = ["inventaris__asset__list_query", " inventaris__asset__list.id", "erp__pos__utama__detail.id_inventaris__asset__list", "LEFT"];
-        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as int) = inventaris__asset__list__varian.id", "LEFT"];
+        $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as SIGNED) = inventaris__asset__list__varian.id", "LEFT"];
 
         $db['where'][] = ["qty", ">=", 1];
         $db['where'][] = ["erp__pos__utama__detail.active", "=", 1];
@@ -1154,7 +1154,7 @@ class DatabaseFunc
                             FROM erp__pos__utama__detail GROUP BY id_inventaris__asset__list ) detail ON detail.id_inventaris__asset__list = inventaris__asset__list.id
             JOIN store__produk on inventaris__asset__list.id=store__produk.id_asset
             LEFT JOIN drive__file ON cast(inventaris__asset__list.foto_aset as char) = cast(drive__file.id as char)
-            -- LEFT JOIN drive__file ON ref_external_id=inventaris__asset__list.id AND((ref_database='ltw_inventaris__asset__list') or ref_database='inventaris__asset__list') AND support='Sampul' AND cast(sizes as int)>0
+            -- LEFT JOIN drive__file ON ref_external_id=inventaris__asset__list.id AND((ref_database='ltw_inventaris__asset__list') or ref_database='inventaris__asset__list') AND support='Sampul' AND cast(sizes as SIGNED)>0
             WHERE detail.qty >0 WORKSPACE_SINGLE_TOKO_WHERE| and inventaris__asset__list.active=1
             ORDER BY detail.qty desc,grand_total desc
             LIMIT $limit
@@ -1223,7 +1223,7 @@ class DatabaseFunc
                                             sum( erp__pos__inventory__outgoing_breakdown.qty_keluar_out ) AS qty_out
                                         FROM
                                             erp__pos__inventory_detail
-                                            LEFT JOIN erp__pos__utama__detail ON erp__pos__utama__detail.id = CAST(erp__pos__inventory_detail.id_erp__pos__utama__detail_get as INT)
+                                            LEFT JOIN erp__pos__utama__detail ON erp__pos__utama__detail.id = CAST(erp__pos__inventory_detail.id_erp__pos__utama__detail_get as SIGNED)
                                             LEFT JOIN erp__pos__inventory__outgoing ON erp__pos__inventory_detail.id = erp__pos__inventory__outgoing.id_erp__pos__inventory_detail
                                             LEFT JOIN erp__pos__inventory__outgoing_breakdown ON erp__pos__inventory__outgoing.id = id_erp__pos__inventory__outgoing
                                         GROUP BY

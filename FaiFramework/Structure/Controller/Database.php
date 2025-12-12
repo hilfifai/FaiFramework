@@ -374,7 +374,7 @@ class Database extends DB
 							when ($database_utama.privilege='Public Global') then 1
 							when ($database_utama.privilege='Private Website' and 
 									($database_utama.on_domain='DOMAIN_UTAMA|' or   $database_utama.on_board = ID_BOARD|) and 
-									(select count(*) from apps__privilege where tipe_privilage='pengecualian' and CAST(apps__privilege.database_id AS int) = CAST($database_utama.id AS int) and 'DOMAIN_UTAMA|'=apps__privilege.domain_privilage)=0) then 1
+									(select count(*) from apps__privilege where tipe_privilage='pengecualian' and CAST(apps__privilege.database_id as SIGNED) = CAST($database_utama.id as SIGNED) and 'DOMAIN_UTAMA|'=apps__privilege.domain_privilage)=0) then 1
 							when ($database_utama.privilege='Private Workspace' and  $database_utama.on_board = ID_BOARD| ) then 1
 							when ($database_utama.privilege='Private Panel' and  $database_utama.on_panel = ID_PANEL| )then 1
 							when ($database_utama.privilege='Private Role' and $database_utama.on_role = WORKSPACE_ROLE_UTAMA|) then  1
