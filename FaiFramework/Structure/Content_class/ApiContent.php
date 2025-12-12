@@ -304,15 +304,13 @@ class ApiContent
                 if ($detail['selisih']) {
                     CRUDFunc::crud_insert($fai, $page, $detail, [], 'erp__pos__stok_opname__detail');
                 }
-
             }
         } else {
         }
         return ["total" => $total ?? 0, "list" => $list];
     }
 
-    public static function api_produk_checking($page, $id_produk)
-    {}
+    public static function api_produk_checking($page, $id_produk) {}
 
     public static function send_cart($page, $id_detail_pos, $id_api, $id_from_api, $qty, $id_user = '')
     {
@@ -413,10 +411,10 @@ class ApiContent
             $sqli['response_sync'] =  json_encode($response_cart['response']);
             $sqli['acc_status_sync'] =  "Pending";
             $sqli['response_acc_sync'] =  "";
+            $sqli['temp_qty_sync'] =  $qty;
             $id = CRUDFunc::crud_insert($page['fai'], $page, $sqli, [], 'api_sync');
             $sqli_update['id_sync_api_cart']        = $id;
             CRUDFunc::crud_update($page['fai'], $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail_pos);
-           
         } else {
             $sqli['status_sync_cart']    = "Gagal";
             $sqli['ressponse_sync_cart'] = json_encode($response_cart['response']);
@@ -528,13 +526,12 @@ class ApiContent
         if ($response_cart['status']) {
             $sqli['status_sync_cart'] = "Dihapus";
             CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama__detail", "id_sync_cart", $seq);
-            
         } else {
         }
 
         echo json_encode($response_cart);
     }
-    public static function hapus_cart_outgoing($page, $id_detail,$id_api, $user_id, $seq, $attemp = 0)
+    public static function hapus_cart_outgoing($page, $id_detail, $id_api, $user_id, $seq, $attemp = 0)
     {
         DB::selectRaw('*,api_master__user.id as primary_key');
         DB::table('api_master__user');
@@ -550,9 +547,9 @@ class ApiContent
         $link      = $user_api['row'][0]->$type_link;
         $link      = str_replace('{HTTPS}', 'https', $link);
         $link      = str_replace('{HTTP}', 'http', $link);
-         DB::selectRaw("api_master__link.id as primary_key,api_master__link.*,api_master__list.*");
-       
-         DB::table("api_master__link");
+        DB::selectRaw("api_master__link.id as primary_key,api_master__link.*,api_master__list.*");
+
+        DB::table("api_master__link");
         DB::joinRaw('api_master__list on api_master__list.id = id_api', 'left');
         DB::whereRawPage($page, "id_api=$id_api");
         DB::whereRawPage($page, "id_kategori_api=7");
@@ -582,12 +579,10 @@ class ApiContent
             $id = CRUDFunc::crud_insert($page['fai'], $page, $sqli, [], 'api_sync');
             $sqli_update['id_sync_api_cart']        = $id;
             CRUDFunc::crud_update($page['fai'], $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail);
-           
-           
         } else {
         }
 
-       return ($response_cart);
+        return ($response_cart);
     }
     public static function cancel_order($page, $id_api, $id_detail, $seq, $user_id, $attemp = 0)
     {
@@ -694,14 +689,14 @@ class ApiContent
                 $db['where'][] = ["get_row_id ", "=", "'id'"];
                 $db['where'][] = ["nama_row_search  ", "=", "'kode_ekspedisi'"];
                 $db['where'][] = ["value  ", "=", "'" . strtoupper($detail['kode']) . "'"];
-                $db['where'][] = ["database  ", "=", "'webmaster__ekspedisi'"];
+                $db['where'][] = ["database_refer  ", "=", "'webmaster__ekspedisi'"];
                 $db['where'][] = ["id_api  ", "=", "'$id_api'"];
                 $db['where'][] = ["active  ", "=", "'1'"];
                 $get           = Database::database_coverter($page, $db, [], 'all');
                 if (! $get['num_rows']) {
                     $sqli                    = [];
                     $sqli['id_api']          = $id_api;
-                    $sqli['database']        = "webmaster__ekspedisi";
+                    $sqli['database_refer']        = "webmaster__ekspedisi";
                     $sqli['nama_row_search'] = "kode_ekspedisi";
                     $sqli['get_row_id']      = "id";
                     $sqli['id_from_api']     = $detail['seq'];
@@ -729,7 +724,7 @@ class ApiContent
                 $db['where'][] = ["get_row_id ", "=", "'id'"];
                 $db['where'][] = ["nama_row_search  ", "=", "'nama_service'"];
                 $db['where'][] = ["value  ", "=", "'" . strtoupper($detail['service']) . "'"];
-                $db['where'][] = ["database  ", "=", "'webmaster__ekspedisi__service'"];
+                $db['where'][] = ["database_refer  ", "=", "'webmaster__ekspedisi__service'"];
                 $db['where'][] = ["id_api  ", "=", "'$id_api'"];
                 $db['where'][] = ["active  ", "=", "'1'"];
                 $get           = Database::database_coverter($page, $db, [], 'all');
@@ -756,10 +751,11 @@ class ApiContent
         $db['where'][] = ["get_row_id ", "=", "'$get_row_id'"];
         $db['where'][] = ["nama_row_search  ", "=", "'$row_search'"];
         $db['where'][] = ["UPPER(value)  ", "=", "'" . strtoupper($value) . "'"];
-        $db['where'][] = ["database  ", "=", "'$database'"];
+        $db['where'][] = ["`database_refer`  ", "=", "'$database'"];
         $db['where'][] = ["id_api  ", "=", "'$id_api'"];
         $db['where'][] = ["active  ", "=", "'1'"];
         $get           = Database::database_coverter($page, $db, [], 'all');
+
         if ($get['num_rows']) {
             $get_row_id = $get['row'][0]->id_from_api;
         } else {
@@ -771,7 +767,7 @@ class ApiContent
             $db['where'][] = ["get_row_id ", "=", "'$get_row_id'"];
             $db['where'][] = ["nama_row_search  ", "=", "'$row_search'"];
             $db['where'][] = ["UPPER(value)  ", "=", "'" . strtoupper($value) . "'"];
-            $db['where'][] = ["database  ", "=", "'$database'"];
+            $db['where'][] = ["`database_refer`  ", "=", "'$database'"];
             $db['where'][] = ["id_api  ", "=", "'$id_api'"];
             $db['where'][] = ["active  ", "=", "'1'"];
             $get           = Database::database_coverter($page, $db, [], 'all');
@@ -783,17 +779,17 @@ class ApiContent
         }
         return $get_row_id;
     }
-    
+
     public static function get_list_ethica_order_preorder($page)
     {
         $search         = Partial::input('search');
-        $return['data'] = (array) ApiContent::get_list_order($page, 10, 2,$search, 'data');
+        $return['data'] = (array) ApiContent::get_list_order($page, 10, 2, $search, 'data');
         return $return;
     }
     public static function get_list_ethica_order($page)
     {
         $search         = Partial::input('search');
-        $return['data'] = (array) ApiContent::get_list_order($page, 7, 1,$search, 'data');
+        $return['data'] = (array) ApiContent::get_list_order($page, 7, 1, $search, 'data');
         return $return;
     }
     public static function get_list_order($page, $id_sync, $id_api)
@@ -844,7 +840,7 @@ class ApiContent
                 left join view_inventaris_list on view_inventaris_list.id = id_inventaris__asset__list 
                 WHERE 
                         erp__pos__utama.id = erp__pos__utama__detail.id_erp__pos__utama
-                and view_inventaris_list.id_api = $id_api)",">","0"];
+                and view_inventaris_list.id_api = $id_api)", ">", "0"];
         $get  = Database::database_coverter($page, $db, [], 'all');
         $no   = 0;
         $data = [];
@@ -882,16 +878,35 @@ class ApiContent
                     , inventaris__asset__list__varian.id_from_api_varian
                     , inventaris__asset__list__varian.nama_varian
                     , inventaris__asset__list__varian.berat_varian
-                    ,ressponse_sync_cart
-                    ,qty_pesanan
-                    ,id_sync_cart
-                    ,erp__pos__utama__detail.berat_total
+                    ,
                     ,erp__pos__utama__detail.berat_satuan
                     ";
-                $db['utama']   = "erp__pos__utama__detail";
-                $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "id_inventaris__asset__list"];
-                $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian and inventaris__asset__list__varian.id_inventaris__asset__list = inventaris__asset__list.id ", 'left'];
-                $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+                if ($row->create_date > '2025-12-13 00:00:00') {
+                    $db['select'][] = "api_sync.esponse_sync as ressponse_sync_cart
+                    ,api_sync.temp_qty_sync as qty_pesanan
+                    ,id_response_sync as id_sync_cart
+                    ,(erp__pos__utama__detail.berat_satuan * temp_qty_sync) as berat_total";
+
+                    $db['utama'] = ('erp__pos__inventory__outgoing_breakdown');
+                    
+                    $db['join'][] = ["api_sync", "id_sync_api_cart", "api_sync.id", "left"];
+                    $db['join'][]  = ["erp__pos__inventory__outgoing", " erp__pos__inventory__outgoing.id ", "erp__pos__inventory__outgoing_breakdown.id_erp__pos__inventory__outgoing", 'left'];
+                    $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__inventory__outgoing.id_barang_keluar"];
+                    $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "erp__pos__inventory__outgoing.id_barang_keluar_varian", 'left'];
+                    $db['join'][] = ["erp__pos__inventory_detail", "erp__pos__inventory_detail.id", "erp__pos__inventory__outgoing.id_erp__pos__inventory_detail", 'left'];
+                    $db['join'][] = ["erp__pos__utama__detail", "erp__pos__utama__detail.id", "erp__pos__inventory_detail.erp__pos__utama__detail_id", 'left'];
+                } else {
+                    $db['select'][] = "ressponse_sync_cart
+                    ,qty_pesanan
+                    ,id_sync_cart
+                    ,erp__pos__utama__detail.berat_total";
+
+
+                    $db['utama']   = "erp__pos__utama__detail";
+                    $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "id_inventaris__asset__list"];
+                    $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian and inventaris__asset__list__varian.id_inventaris__asset__list = inventaris__asset__list.id ", 'left'];
+                    $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+                }
                 $db['where'][] = ["erp__pos__utama__detail.id_erp__pos__utama", "=", "$row->primary_key"];
                 $db['where'][] = ["erp__pos__utama__detail.active", "=", "1"];
                 $get2          = Database::database_coverter($page, $db, [], 'all');
@@ -955,7 +970,8 @@ class ApiContent
                 $data['kecamatan']               = $row->kecamatan;
                 $data['kelurahan']               = $row->kelurahan;
                 $data['ongkos_kirim']            = $row->ongkir;
-                $data['ekspedisi_seq']           = ApiContent::search_data_api($page, 1, $paket[0], 'webmaster__ekspedisi', 'kode_ekspedisi', 'id', 'ethica_sync_data_ekspedisi');
+
+                $data['ekspedisi_seq']           = ApiContent::search_data_api($page, 1, (!empty($paket[0]) ? $paket[0] : 'LAIN-LAIN'), 'webmaster__ekspedisi', 'kode_ekspedisi', 'id', 'ethica_sync_data_ekspedisi');
                 $data['ekspedisi']               = $paket[0];
                 $data['service']                 = $paket[1];
                 $data['kode_booking']            = $row->kode_booking;
@@ -965,7 +981,7 @@ class ApiContent
                 $data['alamat_pengirim_lengkap'] = $row->alamat_asal;
                 $data['alamat_pengirim']         = $data['nama_pengirim'] . '<br>' . $row->alamat_asal . ($row->no_bangunan_asal ? "No. " . $row->no_bangunan_asal : "") . ' Kel:' . $row->kelurahan_asal . ' Kec:' . $row->kecamatan_asal . ', ' . $row->provinsi_asal . ' ' . $row->kota_asal . ', ' . $row->postal_code_asal . ($row->patokan_asal ? "(Patokan: " . $row->patokan_asal . ")" : "") . '<BR>No Hp:' . $data['no_hp_pengirim'];
                 $data['alamat_kirim']            = "Kepada<br>Yth:" . $data['nama'] .
-                "<br>Alamat : " . $data['alamat'] . ($row->no_bangunan_tujuan ? "No. " . $row->no_bangunan_tujuan : "") . ' Kel:' . $data['kelurahan'] . ' Kec:' . $data['kecamatan'] . ', ' . $data['provinsi'] . ' ' . $data['kota'] . ', ' . $row->postal_code . ($row->patokan_tujuan ? "(Patokan: " . $row->patokan_tujuan . ")" : "") . "<BR>No. HP :" . $data['no_hp'];
+                    "<br>Alamat : " . $data['alamat'] . ($row->no_bangunan_tujuan ? "No. " . $row->no_bangunan_tujuan : "") . ' Kel:' . $data['kelurahan'] . ' Kec:' . $data['kecamatan'] . ', ' . $data['provinsi'] . ' ' . $data['kota'] . ', ' . $row->postal_code . ($row->patokan_tujuan ? "(Patokan: " . $row->patokan_tujuan . ")" : "") . "<BR>No. HP :" . $data['no_hp'];
                 $page['route_type'] = "costum_link"; //
                 $text               = "Sync Order";
                 $no++;
@@ -1088,7 +1104,7 @@ class ApiContent
                     $db_bangunan            = [];
                     $db_bangunan['utama']   = 'inventaris__asset__tanah__bangunan';
                     $db_bangunan['np']      = 'inventaris__asset__tanah__bangunan';
-                    $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id_toko as INT)', '=', $page['load']['workspace']['id_single_toko']];
+                    $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id_toko as SIGNED)', '=', $page['load']['workspace']['id_single_toko']];
                     $get_db_bangunan        = Database::database_coverter($page, $db_bangunan, [], 'all');
                     if ($get_db_bangunan['num_rows'] > 0) {
                         foreach ($get_db_bangunan['row'] as $key => $value) {
@@ -1116,17 +1132,17 @@ class ApiContent
                 $detail .= "
                 <h4> Data Ekspedisi</h4>
                ongkos-kirim:" . $data['ongkos_kirim'] .
-                "<br>ekspedisi-seq:" . $data['ekspedisi_seq'] .
-                "<br>ekspedisi:" . $data['ekspedisi'] .
-                "<br>service:" . $data['service'] .
-                "<br>kode_booking:" . $data['kode_booking'] .
-                "<br>no_resi:" . $data['no_resi'] .
+                    "<br>ekspedisi-seq:" . $data['ekspedisi_seq'] .
+                    "<br>ekspedisi:" . $data['ekspedisi'] .
+                    "<br>service:" . $data['service'] .
+                    "<br>kode_booking:" . $data['kode_booking'] .
+                    "<br>no_resi:" . $data['no_resi'] .
 
-                "
+                    "
                     <h4> Data Pesanan</h4>
                     is-selesai-chat:F" .
-                "<br>tipe-apps:W" .
-                "<br>no-eksternal:" . $row->no_purchose_order;
+                    "<br>tipe-apps:W" .
+                    "<br>no-eksternal:" . $row->no_purchose_order;
                 $aksi = "";
                 if ($row->status_acc_sync_pesanan == 'Berhasil') {
 
@@ -1191,7 +1207,7 @@ class ApiContent
                                                 <option value="">Pilih</option>
                                             ';
                         $db_bangunan['utama']   = 'inventaris__asset__tanah__bangunan';
-                        $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id_toko as int)', '=', $page['load']['workspace']['id_single_toko']];
+                        $db_bangunan['where'][] = ['cast(inventaris__asset__tanah__bangunan.id_toko as SIGNED)', '=', $page['load']['workspace']['id_single_toko']];
                         $get_db_bangunan        = Database::database_coverter($page, $db_bangunan, [], 'all');
                         if ($get_db_bangunan['num_rows'] > 0) {
                             foreach ($get_db_bangunan['row'] as $key => $value) {
@@ -2002,7 +2018,7 @@ class ApiContent
             $Get = $detail[$id . $id_api]['api_master__sync'];
         }
 
-//        $id_api = $Get['row'][0]->id_api;
+        //        $id_api = $Get['row'][0]->id_api;
         if (! isset($detail[$id . $id_api]['user_api'])) {
             DB::selectRaw('*,api_master__user.id as primary_key');
             DB::table('api_master__user');
@@ -2451,7 +2467,6 @@ class ApiContent
                         } else {
                             DB::whereRaw("$key_varian=$value_varian");
                         }
-
                     }
                     $getAda = DB::get('all');
                     if (! $getAda['num_rows']) {
@@ -2482,7 +2497,6 @@ class ApiContent
         } else {
             return $dataReturn;
         }
-
     }
     public static function ethica_sarimbit($page, $id, $search, $return = '')
     {
@@ -2501,7 +2515,7 @@ class ApiContent
         $page['db']['np'] = true;
         $fai              = new MainFaiFramework();
         $nomor            = 0;
-         DB::table('api_master__sync');
+        DB::table('api_master__sync');
         DB::joinRaw('api_master__link on api_master__link.id = id_link');
 
         DB::whereRawPage($page, "api_master__sync.id=$id");
@@ -2643,7 +2657,6 @@ class ApiContent
                         } else {
                             DB::whereRaw("$key_varian=$value_varian");
                         }
-
                     }
                     $getAda = DB::get('all');
                     if (! $getAda['num_rows']) {
@@ -2659,7 +2672,7 @@ class ApiContent
                     DB::whereRawPage($page, 'store__produk.id_toko=WORKSPACE_SINGLE_TOKO|');
                     $get = DB::get('all');
                     $return .=
-                    "<tr>
+                        "<tr>
                             <td>$nomor</td>
 
                             <td>" . $key . "</td>
@@ -2686,7 +2699,6 @@ class ApiContent
             if ($count) {
                 $return .= '<button type="button" class="btn btn-primary" onclick="cari_sync(' . ((int) $start + $count) . ')">Next</button>';
             }
-
         }
         $return .= '</div>';
         $return .= '
@@ -2812,14 +2824,14 @@ class ApiContent
                 $cust_seq = $get_content['row'][0]->content;
             }
         }
-        
+
         // $stok_api = ApiContent::$function($page, $row->id_sync_master_varian_asset, $id_api, $row, ($stok_api['detail'] ?? []));
 
         $start            = Partial::input('offset') ? Partial::input('offset') : 0;
         $row              = (object) [];
         $row->nama_barang = $search;
         $get_data         = ApiContent::$function($page, $id, $id_api, $row, ($stok_api['detail'] ?? []))['response']['response']['data'];
-       
+
         $page['db']['np'] = true;
         $fai              = new MainFaiFramework();
         $dataReturn       = [];
@@ -3731,7 +3743,7 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
-        
+
         $start            = Partial::input('offset') ? Partial::input('offset') : 0;
         $count            = count($data);
         if ($start) {
@@ -3986,7 +3998,7 @@ class ApiContent
 
         $return .= '</table>';
         $return .= '<div class="card-footer">';
-        
+
         $start            = Partial::input('offset') ? Partial::input('offset') : 0;
         $count            = count($data);
         if ($start) {

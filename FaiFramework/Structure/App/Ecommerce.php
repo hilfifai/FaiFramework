@@ -854,9 +854,9 @@ class Ecommerce
 		// $page['config']['database']['SAMPUL']['where'][] = array("support", '=', "'Sampul'");
 		// $page['config']['database']['SAMPUL']['where'][] = array("store__produk.id", '=', 'LOAD_ID|');
 		if (!empty($get['row'][0]->foto_aset_inventaris__asset__list))
-			$page['config']['database']['SAMPUL']['where'][] = array("CAST(id AS int)", '=', $get['row'][0]->foto_aset_inventaris__asset__list);
+			$page['config']['database']['SAMPUL']['where'][] = array("CAST(id as SIGNED)", '=', $get['row'][0]->foto_aset_inventaris__asset__list);
 		else {
-			$page['config']['database']['SAMPUL']['where'][] = array("CAST(id AS int)", '=', -1);
+			$page['config']['database']['SAMPUL']['where'][] = array("CAST(id as SIGNED)", '=', -1);
 		}
 		// $page['config']['database']['SAMPUL']['where'][] = array("sizes::int", '>', '0');
 
@@ -883,7 +883,7 @@ class Ecommerce
 		// $page['config']['database']['TUMB']['where'][] = array("support",'=',"'Sampul'");
 		// $page['config']['database']['IMGALL']['where'][] = array("sizes::int", '>', '0');
 		if ($page['section'] != "generate") {
-			$page['config']['database']['IMGALL']['where'][] = array("CAST(id AS int)", ' in ', "(" .  $get['row'][0]->foto_aset_inventaris__asset__list . $get['row'][0]->foto_inventaris__asset__list . ")");
+			$page['config']['database']['IMGALL']['where'][] = array("CAST(id as SIGNED)", ' in ', "(" .  $get['row'][0]->foto_aset_inventaris__asset__list . $get['row'][0]->foto_inventaris__asset__list . ")");
 		} else {
 			$get = [];
 			$get['row'][0] = (object)[];
@@ -1662,7 +1662,7 @@ class Ecommerce
 			$erp_utama['id_kirim_dari'] = $fai->input('alamat_pengirim');
 			$db_bangunan = [];
 			$db_bangunan['utama'] = 'inventaris__asset__tanah__bangunan';
-			$db_bangunan['where'][] = array('cast(inventaris__asset__tanah__bangunan.id as int)', '=', $fai->input('alamat_pengirim'));
+			$db_bangunan['where'][] = array('cast(inventaris__asset__tanah__bangunan.id as SIGNED)', '=', $fai->input('alamat_pengirim'));
 			$get_db_bangunan = Database::database_coverter($page, $db_bangunan, [], 'all');
 			$erp_do['id_bangunan_asal'] = $fai->input('alamat_pengirim');
 			$erp_do['id_provinsi_asal'] = $get_db_bangunan['row'][0]->id_provinsi;
@@ -1689,7 +1689,7 @@ class Ecommerce
 			$erp_utama['id_kirim_ke'] = $fai->input('alamat_penerima');
 			$db_bangunan = [];
 			$db_bangunan['utama'] = 'inventaris__asset__tanah__bangunan';
-			$db_bangunan['where'][] = array('cast(inventaris__asset__tanah__bangunan.id as int)', '=', $fai->input('alamat_penerima'));
+			$db_bangunan['where'][] = array('cast(inventaris__asset__tanah__bangunan.id as SIGNED)', '=', $fai->input('alamat_penerima'));
 			$get_db_bangunan = Database::database_coverter($page, $db_bangunan, [], 'all');
 			$erp_do['id_bangunan_tujuan'] = $fai->input('alamat_penerima');
 			if ($get_db_bangunan['row'][0]->id_provinsi)

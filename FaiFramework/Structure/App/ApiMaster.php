@@ -191,7 +191,7 @@ class ApiMaster
         $array = array(
             array(null, "Api", "select", array("api_master__list", null, "nama_api_master")),
             array(null, "jenis_data", "text"),
-            array(null, "database", "text"),
+            array(null, "database_refer", "text"),
             array(null, "nama_row_search", "text"),
             array(null, "get_row_id", "text"),
             array(null, "value", "text"),
