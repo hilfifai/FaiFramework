@@ -1080,7 +1080,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             <p class="text-muted">Kelola pembayaran dan buat kontrabon dengan mudah</p>
         </div>
         
-        <div id="alertContainer"></div>
+        
         
         <!-- Tampilan akan diisi oleh JavaScript -->
     </div>
@@ -3462,7 +3462,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 viewElement.innerHTML = this.renderEditReceivingForm(item, receivingItem);
             }
         } else {
-            alert("??");
+           //??
         }
     }
 
@@ -8929,21 +8929,7 @@ const additionalCSS = `
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        .alert {
-            padding: 12px 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+        
         #contrabonPreview {
             margin-top: 20px;
             border: 1px solid #ddd;

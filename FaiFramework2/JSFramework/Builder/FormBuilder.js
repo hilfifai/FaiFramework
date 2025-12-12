@@ -98,7 +98,6 @@ export default class FormBuilder {
 
         // Handle select/select-relation field modification
         if (['select', 'select-relation'].includes(pConfig.type)) {
-            alert(1);
             let fieldTemp = pConfig.field;
             // Remove suffixes
             if (fieldTemp.endsWith('_seq')) {

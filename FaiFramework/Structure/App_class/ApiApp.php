@@ -108,6 +108,155 @@ class ApiApp
         echo json_encode($data);
         die;
     }
+    public static function sync_cart_outgoing($page,$bodyRaw=[])
+    {
+        try {
+            $fai = new MainFaiFramework();
+            $headers = getallheaders();
+
+            // $decoded = base64_decode($headers['apps']);
+            // $data    = json_decode($decoded, true);
+            // $method  = $_SERVER['REQUEST_METHOD'];
+            header('Content-Type: application/json');
+            $body = json_decode(file_get_contents("php://input"), true);
+            if(count($bodyRaw)){
+                $body = $bodyRaw;
+            }
+            CRUDFunc::crud_update($fai, $page, ["qty_keluar_out" => $body['qty']], [], [], [], 'erp__pos__inventory__outgoing_breakdown', 'id', $body['breakdownId']);
+            $db['select'][] = "
+             inventaris__asset__list.nama_barang
+		, inventaris__asset__list.id as id_asset
+		, inventaris__asset__list__varian.id as id_varian
+		, inventaris__asset__list.varian_barang
+		, inventaris__asset__list.asal_barang_dari
+		, inventaris__asset__list.id_api
+		, inventaris__asset__list.id_sync
+		, inventaris__asset__list.id_from_api
+		, inventaris__asset__list__varian.asal_from_data_varian
+		, inventaris__asset__list__varian.id_api_varian
+		, inventaris__asset__list__varian.id_sync_varian
+		, inventaris__asset__list__varian.id_from_api_varian
+		, inventaris__asset__list__varian.nama_varian
+        , erp__pos__utama.id_apps_user
+        ,erp__pos__inventory__outgoing_breakdown.id as id_detail
+        ,erp__pos__inventory__outgoing_breakdown.qty_keluar_out
+        ";
+            $db['utama'] = ('erp__pos__inventory__outgoing_breakdown');
+            $db['join'][]  = ["erp__pos__inventory__outgoing", " erp__pos__inventory__outgoing.id ", "erp__pos__inventory__outgoing_breakdown.id_erp__pos__inventory__outgoing", 'left'];
+            $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__inventory__outgoing.id_barang_keluar"];
+            $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "erp__pos__inventory__outgoing.id_barang_keluar_varian", 'left'];
+            $db['join'][] = ["erp__pos__inventory_detail", "erp__pos__inventory_detail.id", "erp__pos__inventory__outgoing.id_erp__pos__inventory_detail", 'left'];
+            $db['join'][] = ["erp__pos__utama__detail", "erp__pos__utama__detail.id", "erp__pos__inventory_detail.erp__pos__utama__detail_id", 'left'];
+            $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+            $db['where'][] = ["erp__pos__inventory__outgoing_breakdown.id", "=", $body['breakdownId']];
+            $db["non_add_select"] = true;
+            $utama = Database::database_coverter($page, $db, [], 'all');
+            $row = $utama['row'][0];
+
+             
+            // $id_barang_keluar =  $utama['row'][0]->id_barang_keluar;
+            // $id_barang_keluar_varian =  $utama['row'][0]->id_barang_keluar_varian;
+            // $id_produk_keluar =  $utama['row'][0]->id_produk_keluar;
+            // $id_produk_varian_keluar =  $utama['row'][0]->id_produk_varian_keluar;
+            
+            if (($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') or ($row->asal_barang_dari == 'Api')) {
+                $a = "";
+
+                if ($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') {
+                    $response = ApiContent::send_cart_outgoing(
+                        $page,
+                        $row->id_detail,
+                        $row->id_api_varian,
+                        $row->id_from_api_varian,
+                        $row->qty_keluar_out,
+                        $row->id_apps_user
+                    );
+                } else {
+                    $response = ApiContent::send_cart_outgoing(
+                        $page,
+                        $row->id_detail,
+                        $row->id_api,
+                        $row->id_from_api,
+                        $row->qty_keluar_out,
+                        $row->id_apps_user
+                    );
+                }
+            }
+            if(!count($bodyRaw)){
+            echo json_encode($response);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'Unsupported method']);
+        }
+    }
+    public static function delete_sync_cart_outgoing($page,$bodyRaw=[])
+    {
+        try {
+            $fai = new MainFaiFramework();
+            $headers = getallheaders();
+
+            // $decoded = base64_decode($headers['apps']);
+            // $data    = json_decode($decoded, true);
+            // $method  = $_SERVER['REQUEST_METHOD'];
+            header('Content-Type: application/json');
+            $body = json_decode(file_get_contents("php://input"), true);
+            if(count($bodyRaw)){
+                $body = $bodyRaw;
+            }
+            CRUDFunc::crud_update($fai, $page, ["qty_keluar_out" => $body['qty']], [], [], [], 'erp__pos__inventory__outgoing_breakdown', 'id', $body['breakdownId']);
+            $db['select'][] = "
+             inventaris__asset__list.nama_barang
+		, inventaris__asset__list.id as id_asset
+		, inventaris__asset__list__varian.id as id_varian
+		, inventaris__asset__list.varian_barang
+		, inventaris__asset__list.asal_barang_dari
+		, inventaris__asset__list.id_api
+		, inventaris__asset__list.id_sync
+		, inventaris__asset__list.id_from_api
+		, inventaris__asset__list__varian.asal_from_data_varian
+		, inventaris__asset__list__varian.id_api_varian
+		, inventaris__asset__list__varian.id_sync_varian
+		, inventaris__asset__list__varian.id_from_api_varian
+		, inventaris__asset__list__varian.nama_varian
+        , erp__pos__utama.id_apps_user
+        ,erp__pos__inventory__outgoing_breakdown.id as id_detail
+        ,erp__pos__inventory__outgoing_breakdown.qty_keluar_out
+        ";
+            $db['utama'] = ('erp__pos__inventory__outgoing_breakdown');
+            $db['join'][]  = ["erp__pos__inventory__outgoing", " erp__pos__inventory__outgoing.id ", "erp__pos__inventory__outgoing_breakdown.id_erp__pos__inventory__outgoing", 'left'];
+            $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__inventory__outgoing.id_barang_keluar"];
+            $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "erp__pos__inventory__outgoing.id_barang_keluar_varian", 'left'];
+            $db['join'][] = ["erp__pos__inventory_detail", "erp__pos__inventory_detail.id", "erp__pos__inventory__outgoing.id_erp__pos__inventory_detail", 'left'];
+            $db['join'][] = ["erp__pos__utama__detail", "erp__pos__utama__detail.id", "erp__pos__inventory_detail.erp__pos__utama__detail_id", 'left'];
+            $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+            $db['where'][] = ["erp__pos__inventory__outgoing_breakdown.id", "=", $body['breakdownId']];
+            $db["non_add_select"] = true;
+            $utama = Database::database_coverter($page, $db, [], 'all');
+            $row = $utama['row'][0];
+
+           
+            // $id_barang_keluar =  $utama['row'][0]->id_barang_keluar;
+            // $id_barang_keluar_varian =  $utama['row'][0]->id_barang_keluar_varian;
+            // $id_produk_keluar =  $utama['row'][0]->id_produk_keluar;
+            // $id_produk_varian_keluar =  $utama['row'][0]->id_produk_varian_keluar;
+            
+            if (($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') or ($row->asal_barang_dari == 'Api')) {
+                $a = "";
+
+                if ($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') {
+                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail,$row->id_api_varian, $row->id_apps_user, $body['cartSyncId']);
+                } else {
+                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail,$row->id_api, $row->id_apps_user, $body['cartSyncId']);
+                }
+            }
+            if(!count($bodyRaw)){
+            echo json_encode($response);
+            }
+            die;
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'Unsupported method']);
+        }
+    }
     public static function get_pending_order($page)
     {
         header("Access-Control-Allow-Origin: http://localhost:8080"); // Ganti dengan origin frontend
@@ -582,11 +731,12 @@ class ApiApp
                             *,inventaris__asset__tanah__gudang__ruang_bangun.id
                             , concat(inventaris__asset__tanah__gudang.nama_gudang
                             ,' -  ',inventaris__asset__tanah__gudang__ruang_bangun.nama_ruang_simpan ) as name
-
+                            ,api_master__list.id as id_api
                     ";
                     $db['np']      = "t";
                     $db['utama']   = "inventaris__asset__tanah__gudang__ruang_bangun";
                     $db['join'][]  = ["inventaris__asset__tanah__gudang", " inventaris__asset__tanah__gudang.id", "id_inventaris__asset__tanah__gudang", "LEFT"];
+                    $db['join'][]  = ["api_master__list", " api_master__list.id_ruang_simpan", "inventaris__asset__tanah__gudang__ruang_bangun.id", "LEFT"];
                     $db['where'][] = ["inventaris__asset__tanah__gudang__ruang_bangun.active", "=", 1];
                     $db['where'][] = ["inventaris__asset__tanah__gudang.active", "=", 1];
 
@@ -683,7 +833,7 @@ class ApiApp
                     $db['join'][] = ["inventaris__asset__list__varian", " inventaris__asset__list.id", "inventaris__asset__list__varian.id_inventaris__asset__list and cast(id_barang_varian as signed) = inventaris__asset__list__varian.id", "LEFT"];
 
                     $db['where'][] = ["qty", ">=", 1];
-                   if ($page['database_provider'] == 'mysql') {
+                    if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
@@ -794,7 +944,7 @@ class ApiApp
             'tipe_group'   => "Pembelian Barang",
         ];
         print_R($data);
-       echo $insert_id = CRUDFunc::crud_insert(new MainFaiFramework(), $page, $data, [], "erp__pos__group", []);
+        echo $insert_id = CRUDFunc::crud_insert(new MainFaiFramework(), $page, $data, [], "erp__pos__group", []);
     }
     public static function purchase_orders($page)
     {
@@ -835,7 +985,7 @@ class ApiApp
                         $detail['berat_total']                = $detail['qty'] * $items['variant_detail']['berat_varian'];
                         $detail['total_harga']                = $detail['qty'] * $detail['harga_penjualan'];
                         $detail['tipe_diskon']                = 'Presentase';
-                      
+
                         CRUDFunc::crud_insert($fai, $page, $detail, [], 'erp__pos__utama__detail');
                     }
                     $row = DatabaseFunc::purchase_order($page, $id_group_pemesanan);
@@ -950,7 +1100,7 @@ class ApiApp
                     $db['join'][]         = ["inventaris__asset__list", "inventaris__asset__list.id", "id_asset"];
                     $db['join'][]         = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_asset_varian", 'left'];
 
-                      if ($page['database_provider'] == 'mysql') {
+                    if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
@@ -1078,7 +1228,7 @@ class ApiApp
                     $db['np']    = "t";
                     $db['utama'] = "erp__pos__delivery_order__detail";
 
-                     if ($page['database_provider'] == 'mysql') {
+                    if ($page['database_provider'] == 'mysql') {
 
                         $dbp      = $db;
                         $getquery = Database::database_coverter($page, $dbp, [], 'source');
@@ -1303,12 +1453,18 @@ class ApiApp
                 case 'GET':
 
                     $dbKonfir['select'][] = "
-		*
+                    erp__pos__inventory__outgoing_breakdown.*,
+                    api_sync.status_sync as status_sync_cart,
+                    api_sync.id_response_sync as id_response_sync_cart,
+                    api_sync.response_sync as response_sync_cart,
+                    nomor_sync as nomor_sync_sync_cart
 
-        ";
+                    ";
                     $dbKonfir['as']    = "t";
                     $dbKonfir['np']    = "t";
                     $dbKonfir['utama'] = "erp__pos__inventory__outgoing_breakdown";
+                    $dbKonfir['join'][] = ["api_sync", "id_sync_api_cart", "api_sync.id", "left"];
+
 
                     if ($page['database_provider'] == 'mysql') {
 
@@ -3659,7 +3815,10 @@ class ApiApp
                                         }
                                         $out_break['qty_keluar_out'] = $float;
                                         $id_breakdown                = CRUDFunc::crud_insert(new MainFaiFramework(), $page, $out_break, [], "erp__pos__inventory__outgoing_breakdown", []);
-
+                                        ApiApp::sync_cart_outgoing($page, [
+                                            "breakdownId" => $id_breakdown,
+                                            "qty" => $float,
+                                        ]);
                                         $update_stok['stok_available'] = $rs->stok_available - $float;
                                         // $update_stok['stok_reserved']  = $rs->stok_reserved + $float;
                                         CRUDFunc::crud_update(new MainFaiFramework(), $page, $update_stok, [], [], [], 'inventaris__storage__data', 'id', $rs->id);

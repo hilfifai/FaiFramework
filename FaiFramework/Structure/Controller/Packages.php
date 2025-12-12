@@ -3418,11 +3418,11 @@ class Packages extends Partial
                             $value_select = $option[2];
 
                             // $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
-                            $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
-                            foreach ($rowoption as $dataoption) {
-                                $option_data[$dataoption->primary_key] = $dataoption->$value_select;
-                            }
-                            $sqli[$field] = array_search($sheetData[$j][$fai->toAlpha($i)], $option_data);
+                            // $rowoption = $fai->database_coverter($page, $database_select, $key_select, $select_select, $where_select, $join_select, [], $page['request'], $selectRaw_select, $whereRaw_select);
+                            // foreach ($rowoption as $dataoption) {
+                            //     $option_data[$dataoption->primary_key] = $dataoption->$value_select;
+                            // }
+                            // $sqli[$field] = array_search($sheetData[$j][$fai->toAlpha($i)], $option_data);
                         } else {
 
                             $sqli[$field] = $sheetData[$j][$fai->toAlpha($i)];
@@ -4012,9 +4012,10 @@ class Packages extends Partial
                     $domain = $_SERVER['HTTP_HOST'];
                 }
 
-                $ci     = &get_instance();
                 $db_get = DB::get_clear();
-                $page   = $fai->LoadApps($page, $domain, ($ci->uri->segment(2) ? $ci->uri->segment(2) : -1), 'page');
+                $segment = Partial::uri_segment();
+
+                $page   = $fai->LoadApps($page, $domain, ($segment[2] ? $segment[2] : -1), 'page');
 
                 DB::set_db($db_get);
             }

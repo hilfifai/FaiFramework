@@ -362,6 +362,69 @@ class ApiContent
 
         return $response_cart;
     }
+    public static function send_cart_outgoing($page, $id_detail_pos, $id_api, $id_from_api, $qty, $id_user = '')
+    {
+        //id_detail_pos merupakan id detail yang ada di erp_utama_detail
+        DB::selectRaw('*,api_master__user.id as primary_key');
+        DB::table('api_master__user');
+        DB::joinRaw('api_master__list__versi on api_master__list__versi.id = id_versi', 'left');
+        // 
+        DB::whereRawPage($page, "id_web__list_apps_board=ID_BOARD|");
+        DB::whereRawPage($page, "id_api=$id_api");
+        DB::whereRawPage($page, "api_master__user.active=1");
+        DB::whereRawPage($page, "api_master__list__versi.active=1");
+        $user_api = DB::get('all');
+
+        $type_link = "link_" . $user_api['row'][0]->penggunaan_link;
+        $link      = $user_api['row'][0]->$type_link;
+        $link      = str_replace('{HTTPS}', 'https', $link);
+        $link      = str_replace('{HTTP}', 'http', $link);
+        DB::selectRaw("api_master__link.id as primary_key,api_master__link.*,api_master__list.*");
+        DB::table("api_master__link");
+        DB::joinRaw('api_master__list on api_master__list.id = id_api', 'left');
+        DB::whereRawPage($page, "id_api=$id_api");
+        DB::whereRawPage($page, "id_kategori_api=2");
+        $user_api_endpoint = DB::get('all');
+
+        $link_endpoint = $user_api_endpoint['row'][0]->link_endpoint;
+        $nama_class    = $user_api_endpoint['row'][0]->nama_class;
+        // echo $link . '/' . $link_endpoint;
+        //$response_cart = $nama_class::send_cart($page, $user_api, $link . '/' . $link_endpoint, $id_from_api, $qty, $id_user);
+        $response_cart = [
+            "status" => true,
+            "id_cart" => "123456",
+            "nomor_cart" => "OUT-2024-0001",
+            "response" => []
+
+        ];
+        if ($response_cart['status']) {
+
+            // $sqli['id_sync_cart']        = $response_cart['id_cart'];
+            // $sqli['status_sync_cart']    = "Berhasil";
+            // $sqli['ressponse_sync_cart'] = json_encode($response_cart['response']);
+            $sqli['database_refer'] = "erp__pos__inventory__outgoing_breakdown";
+            $sqli['id_refer'] =  $id_detail_pos;
+            $sqli['id_api'] =  $id_api;
+            $sqli['id_api_sync_link'] =  $user_api_endpoint['row'][0]->primary_key;
+            $sqli['type_sync'] = "Cart Outgoing";
+            $sqli['status_sync'] = "Berhasil";
+            $sqli['id_response_sync'] =  $response_cart['id_cart'];
+            $sqli['nomor_sync'] =  $response_cart['nomor_cart'];
+            $sqli['response_sync'] =  json_encode($response_cart['response']);
+            $sqli['acc_status_sync'] =  "Pending";
+            $sqli['response_acc_sync'] =  "";
+            $id = CRUDFunc::crud_insert($page['fai'], $page, $sqli, [], 'api_sync');
+            $sqli_update['id_sync_api_cart']        = $id;
+            CRUDFunc::crud_update($page['fai'], $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail_pos);
+           
+        } else {
+            $sqli['status_sync_cart']    = "Gagal";
+            $sqli['ressponse_sync_cart'] = json_encode($response_cart['response']);
+            // CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama__detail", "id", $id_detail_pos);
+        }
+
+        return $response_cart;
+    }
     public static function send_order($page, $id_api, $id_order)
     {
         DB::selectRaw('*,api_master__user.id as primary_key');
@@ -465,16 +528,66 @@ class ApiContent
         if ($response_cart['status']) {
             $sqli['status_sync_cart'] = "Dihapus";
             CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama__detail", "id_sync_cart", $seq);
-            echo '<script type="text/javascript">
-                setTimeout(function() {
-                    console.log("This message is delayed by 1 second.");
-                    window.history.back();
-                }, 2000);
-            </script>';
+            
         } else {
         }
 
         echo json_encode($response_cart);
+    }
+    public static function hapus_cart_outgoing($page, $id_detail,$id_api, $user_id, $seq, $attemp = 0)
+    {
+        DB::selectRaw('*,api_master__user.id as primary_key');
+        DB::table('api_master__user');
+        DB::joinRaw('api_master__list__versi on api_master__list__versi.id = id_versi', 'left');
+        // 
+        DB::whereRawPage($page, "id_web__list_apps_board=ID_BOARD|");
+        DB::whereRawPage($page, "id_api=$id_api");
+        DB::whereRawPage($page, "api_master__user.active=1");
+        DB::whereRawPage($page, "api_master__list__versi.active=1");
+        $user_api = DB::get('all');
+
+        $type_link = "link_" . $user_api['row'][0]->penggunaan_link;
+        $link      = $user_api['row'][0]->$type_link;
+        $link      = str_replace('{HTTPS}', 'https', $link);
+        $link      = str_replace('{HTTP}', 'http', $link);
+         DB::selectRaw("api_master__link.id as primary_key,api_master__link.*,api_master__list.*");
+       
+         DB::table("api_master__link");
+        DB::joinRaw('api_master__list on api_master__list.id = id_api', 'left');
+        DB::whereRawPage($page, "id_api=$id_api");
+        DB::whereRawPage($page, "id_kategori_api=7");
+        $user_api_endpoint = DB::get('all');
+
+        $link_endpoint = $user_api_endpoint['row'][0]->link_endpoint;
+        $nama_class    = $user_api_endpoint['row'][0]->nama_class;
+
+        //$response_cart = $nama_class::hapus_cart($page, $user_api, $link . '/' . $link_endpoint, $user_id, $seq);
+        $response_cart = [
+            "status" => true,
+            "response" => []
+
+        ];
+        if ($response_cart['status']) {
+            $sqli['database_refer'] = "erp__pos__inventory__outgoing_breakdown";
+            $sqli['id_refer'] =  $id_detail;
+            $sqli['id_api'] =  $id_api;
+            $sqli['id_api_sync_link'] =  $user_api_endpoint['row'][0]->primary_key;
+            $sqli['type_sync'] = "Delete Cart Outgoing";
+            $sqli['status_sync'] = "Belum";
+            $sqli['id_response_sync'] =  $seq;
+            $sqli['nomor_sync'] =  "";
+            $sqli['response_sync'] =  json_encode($response_cart['response']);
+            $sqli['acc_status_sync'] =  "Pending";
+            $sqli['response_acc_sync'] =  "";
+            $id = CRUDFunc::crud_insert($page['fai'], $page, $sqli, [], 'api_sync');
+            $sqli_update['id_sync_api_cart']        = $id;
+            CRUDFunc::crud_update($page['fai'], $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail);
+           
+           
+        } else {
+        }
+
+       return ($response_cart);
     }
     public static function cancel_order($page, $id_api, $id_detail, $seq, $user_id, $attemp = 0)
     {

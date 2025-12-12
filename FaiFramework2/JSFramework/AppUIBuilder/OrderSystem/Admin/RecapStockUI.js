@@ -864,7 +864,6 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
                 
                 this.currentTab = tab.dataset.tab;
-                alert(this.currentTab);
                 // Render appropriate table
                 switch(this.currentTab) {
                     case 'all':

@@ -2053,7 +2053,6 @@ export async function proses_checkout_cek_stok(confirm = 0) {
         });
       },
       success:  function (responseData) {
-        alert("berhasil");
         Swal.close();
         if (responseData.status == 1) {
 
@@ -2122,7 +2121,6 @@ export async function js_cek_harga(id_cart) {
     }
 
   };
-  alert(qty_cart);
   if (qty_cart) {
     let formatQty = await formatRupiah(qty_cart, '');
     let formatSubtotal = await formatRupiah(subtotal_cart);
