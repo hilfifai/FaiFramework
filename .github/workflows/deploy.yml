@@ -17,7 +17,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.SSH_KEY_FULL }}
+          key: ${{ secrets.SSH_KEY_FULL2 }}
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd public_html
