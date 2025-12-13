@@ -186,7 +186,7 @@ export default class DataProcessing extends FaiModule {
 					},
 					limit: 2
 				};*/
-			const response = await fetch(this.getModule("base_url") + 'api/json/' + db, {
+			const response = await fetch(this.getModule("base_url") + 'api/json', {
 				headers: {
 					'Authorization': `Bearer ${token}`
 				},
