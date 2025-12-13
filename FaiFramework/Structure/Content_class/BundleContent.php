@@ -2474,8 +2474,7 @@ class BundleContent
             $return .= $template_card['row_start'];
             foreach ($get_new['row'] as $bs) {
                 $get_data_harga = EcommerceApp::get_data_harga($page, '', '', 'min_max', $bs->id_produk);
-                // ob_start();
-                // print_r($bs);
+                
                 $temp_template = $template_card['html'];
                 $temp_template = str_replace('<CARD-LINK></CARD-LINK>', Partial::link_direct($page, $page['load']['link_route'], ["Ecommerce", "detail", 'view_layout', $bs->id_produk, '-1', '-1', $page['load']['board']], 'menu', 'just_link'), $temp_template);
                 $temp_template = str_replace('<IMG-SRC></IMG-SRC>', Partial::url_file($bs), $temp_template);
@@ -2493,8 +2492,7 @@ class BundleContent
             // echo $get_best_seller['query'];
             foreach ($get_best_seller['row'] as $bs) {
                 $get_data_harga = EcommerceApp::get_data_harga($page, '', '', 'min_max', $bs->id_produk);
-                // ob_start();
-                // print_r($bs);
+               
                 $temp_template = $template_card['html'];
                 $temp_template = str_replace('<CARD-LINK></CARD-LINK>', Partial::link_direct($page, $page['load']['link_route'], ["Ecommerce", "detail", 'view_layout', $bs->id_produk, '-1', '-1', $page['load']['board']], 'menu', 'just_link'), $temp_template);
                 $temp_template = str_replace('<IMG-SRC></IMG-SRC>', Partial::url_file($bs), $temp_template);

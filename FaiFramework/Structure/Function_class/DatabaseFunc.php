@@ -179,6 +179,34 @@ class DatabaseFunc
         $config['apps_user']['db']   = "";
         return $page;
     }
+    public static function provinsi($page)
+    {
+        // $config['apps_user']['db'] = "";
+        $db['select'][]     = "provinsi_id as primary_key, provinsi";
+        $db['non_add_select'] = true;
+        $db['utama']       = "webmaster__wilayah__provinsi";
+        if(Partial::input('q')){
+            $db['where'][]     = ["provinsi", " like ", "'%" . Partial::input('q') . "%'"];
+        }
+        $db['order'][]     = ["provinsi", "asc"];
+        $get_provinsi     = Database::database_coverter($page, $db, [], 'all');
+        return $get_provinsi;
+    }
+    public static function kota($page)
+    {
+        // $config['apps_user']['db'] = "";
+        $db['select'][]     = "concat(type,' ', kota_name) as kota, provinsi_id";
+        $db['utama']       = "webmaster__wilayah__kabupaten";
+        if(Partial::input('q')){
+            $db['where'][]     = ["concat(type,' ', kota_name)", " like ", "'%" . Partial::input('q') . "%'"];
+        }
+        if(Partial::input('provinsi_id')){
+            $db['where'][]     = ["provinsi_id", "=", Partial::input('provinsi_id')];
+        }
+        $db['order'][]     = ["concat(type,' ', kota_name)", "desc"];
+        $get_provinsi     = Database::database_coverter($page, $db, [], 'all');
+        return $get_provinsi;
+    }
     public static function search_navbar_func($page)
     {
         //moesneed.id
@@ -213,7 +241,7 @@ class DatabaseFunc
         $page['search_navbar'] = $config;
         return $page;
     }
-    public static function checkout($page, $json_fe = 1, $limit = 100, $body = [])
+    public static function checkout($page, $json_fe = 1, $limit = 100, $body = [], $offset = 0)
     {
         DB::connection($page);
 
@@ -465,9 +493,19 @@ class DatabaseFunc
                 $return[$g->primary_key]['on_panel']      = $g->on_panel;
                 $return[$g->primary_key]['on_board']      = $g->on_board;
                 $return[$g->primary_key]['utama']         = $g_temp;
-                $return[$g->primary_key]['list_toko']     = $g->list_toko;
-                $return[$g->primary_key]['list_produk']   = $g->list_produk;
-                $return[$g->primary_key]['list_bangunan'] = $g->list_bangunan;
+                $return[$g->primary_key]['list_toko']     = json_decode(
+                    $g->list_toko,
+                    true
+                );
+                
+                $return[$g->primary_key]['list_produk']   = json_decode(
+                    $g->list_produk,
+                    true
+                );
+                $return[$g->primary_key]['list_bangunan'] = json_decode(
+                    $g->list_bangunan,
+                    true
+                );
                 // $return[$g->primary_key]['list_payment'] = $g->list_payment;
                 // $return[$g->primary_key]['list_voucher'] = $g->list_voucher;
             }
@@ -513,7 +551,7 @@ class DatabaseFunc
                 "not_where_active" => "",
                 "select"           => [
                     $page['database_provider'] == 'postgres' ? "id_erp__pos__inventory__receive,json_agg(row_to_json(t)) as breakdown" :
-                    "id_erp__pos__inventory__receive,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as breakdown",
+                        "id_erp__pos__inventory__receive,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as breakdown",
                 ],
                 "utama_query"      => $dbKonfir,
                 "group"            => [
@@ -584,7 +622,7 @@ class DatabaseFunc
                 "not_where_active" => "",
                 "select"           => [
                     $page['database_provider'] == 'postgres' ? "id_erp__pos__inventory,json_agg(row_to_json(t)) as items" :
-                    "id_erp__pos__inventory,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as items",
+                        "id_erp__pos__inventory,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as items",
                 ],
                 "utama_query"      => $db,
                 "group"            => [
@@ -815,7 +853,7 @@ class DatabaseFunc
         $row = Database::database_coverter($page, $dbGroup, [], 'all');
         return $row;
     }
-    public static function all_produk($data,$page, $json_fe = 1, $limit = 100, $body=[])
+    public static function all_produk($data, $page, $json_fe = 1, $limit = 100, $body = [])
     {
         ini_set('memory_limit', '2024M');
         // $db_produk['select'][] = "
@@ -879,9 +917,15 @@ class DatabaseFunc
         // $produk          = Database::database_coverter($page, $db_produk, [], 'all');
         // echo '<pre>';echo $produk['query'];die;
         $stok = 0;
+       
         if ($json_fe) {
             $return = [];
-            foreach ($data['row'] as $row) {
+            foreach ($data['row'] as $baris) {
+                $db = [];
+                $db['utama'] = 'view_produk_detail';
+                $db['where'][] = [$db['utama'] . ".primary_key", "=", $baris->primary_key];
+                $get_produk = Database::database_coverter($page, $db, [], 'all');
+                $row = $get_produk['row'][0];
                 $stok                                          = $row->stok_available ?? 0;
                 $return[$row->primary_key]['id']               = $row->primary_key;
                 $return[$row->primary_key]['nama_barang']      = $row->nama_barang;
@@ -1092,7 +1136,7 @@ class DatabaseFunc
             $return = $data['row'];
         }
 
-        return ["row"=>$return,"num_rows_non_limit"=>$data['num_rows_non_limit']];
+        return ["row" => $return, "num_rows_non_limit" => $data['num_rows_non_limit']];
     }
     public static function new_produk_last($page, $limit)
     {

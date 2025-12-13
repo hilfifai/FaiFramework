@@ -51,7 +51,6 @@ class ApiContent
         $db['utama']          = "inventaris__asset__list";
         $db['non_add_select'] = "inventaris__asset__list";
         $get_all              = Database::database_coverter($page, $db, [], 'all');
-        // print_R();
 
         $total = 0;
         $list  = [];
@@ -206,7 +205,6 @@ class ApiContent
         }
         $db['utama'] = "inventaris__asset__list";
         $get_all     = Database::database_coverter($page, $db, [], 'all');
-        // print_R();
         $total = 0;
         $list  = [];
 
@@ -803,7 +801,7 @@ class ApiContent
         keluarahan_asal.urban as kelurahan_asal,kecamatan_asal.subdistrict_name as kecamatan_asal ,keluarahan_asal.postal_code as postal_code_asal,
 
         erp__pos__utama.id as primary_key
-		,erp__pos__utama.create_date,erp__pos__delivery_order.*,nama_lengkap,store__toko.nama_toko,erp__pos__delivery_order.id as id_do";
+		,erp__pos__utama.create_date,erp__pos__group.tanggal,erp__pos__delivery_order.*,nama_lengkap,store__toko.nama_toko,erp__pos__delivery_order.id as id_do";
         $db['np']     = "erp__pos__utama";
         $db['utama']  = "erp__pos__utama";
         $db['join'][] = ["erp__pos__group", "erp__pos__group.id", "erp__pos__utama.id_erp__pos__group"];
@@ -878,11 +876,11 @@ class ApiContent
                     , inventaris__asset__list__varian.id_from_api_varian
                     , inventaris__asset__list__varian.nama_varian
                     , inventaris__asset__list__varian.berat_varian
-                    ,
+                    
                     ,erp__pos__utama__detail.berat_satuan
                     ";
-                if ($row->create_date > '2025-12-13 00:00:00') {
-                    $db['select'][] = "api_sync.esponse_sync as ressponse_sync_cart
+                if ($row->tanggal > '2025-12-12 00:00:00') {
+                    $db['select'][] = "api_sync.response_sync as ressponse_sync_cart
                     ,api_sync.temp_qty_sync as qty_pesanan
                     ,id_response_sync as id_sync_cart
                     ,(erp__pos__utama__detail.berat_satuan * temp_qty_sync) as berat_total";
@@ -895,6 +893,10 @@ class ApiContent
                     $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "erp__pos__inventory__outgoing.id_barang_keluar_varian", 'left'];
                     $db['join'][] = ["erp__pos__inventory_detail", "erp__pos__inventory_detail.id", "erp__pos__inventory__outgoing.id_erp__pos__inventory_detail", 'left'];
                     $db['join'][] = ["erp__pos__utama__detail", "erp__pos__utama__detail.id", "erp__pos__inventory_detail.erp__pos__utama__detail_id", 'left'];
+                    $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+                    $db['where'][] = ["erp__pos__inventory__outgoing_breakdown.active", "=", "1"];
+                    $db['where'][] = ["api_master__list.id", "=", "$id_api"];
+                    $db['join'][] = ["api_master__list", "api_master__list.id_ruang_simpan", "erp__pos__inventory__outgoing_breakdown.id_ruang_simpan_out"];
                 } else {
                     $db['select'][] = "ressponse_sync_cart
                     ,qty_pesanan
@@ -2071,7 +2073,6 @@ class ApiContent
                     foreach ($artikel['list_warna'] as $keya => $warna) {
                         foreach ($warna['list_ukuran'] as $keyw => $ukuran) {
                             $true = true;
-                            // print_R($ukuran);
                             if ($true and $ukuran['nama'] == $varian->nama_barang) {
                                 $true = false;
                                 // echo $varian->nama_barang;
@@ -3036,8 +3037,7 @@ class ApiContent
                 DB::whereRaw('is_master=0');
                 DB::whereRawPage($page, 'store__produk.id_toko=WORKSPACE_SINGLE_TOKO|');
                 $get = DB::get('all');
-                // echo '<pre>';
-                // print_R($get);
+              
                 $dataReturn[] = [
                     "nama_artikel" => $get_data[$key]['artikel'],
                     "stok"         => $stok,
@@ -3332,8 +3332,7 @@ class ApiContent
             DB::whereRaw('is_master=0');
             DB::whereRawPage($page, 'store__produk.id_toko=WORKSPACE_SINGLE_TOKO|');
             $get = DB::get('all');
-            // echo '<pre>';
-            // print_R($get);
+           
             $dataReturn[] = [
                 "nama_artikel" => $get_data[$key]['artikel'],
                 "stok"         => $stok,

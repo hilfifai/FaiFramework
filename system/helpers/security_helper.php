@@ -157,9 +157,7 @@ if ( ! function_exists('de'))
 		$split_en   = str_split($lines[array_search(explode('H', $string)[0], explode('H', $lines[0]))], $length);
 		$alphabetic = $char;
 		$decrypt    = "";
-		//print_r($split_en);
 
-		//print_r($de);
 		for ($x = 0; $x < count($split_text); $x++) {
 			$de = $alphabetic[array_search($split_text[$x], $split_en)];
 			if (isset($de)) {

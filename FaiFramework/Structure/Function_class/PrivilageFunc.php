@@ -70,7 +70,6 @@ class PrivilageFunc
                     if (isset($get_awal['sub_kategori'])) {
 
                         $sub_kategori = $get_awal['sub_kategori'];
-                        // print_R($sub_kategori);
                         foreach ($sub_kategori as $ks => $vss) {
                             $nama = "";
                             $ks = $ks ? ucwords($ks) : "";
@@ -111,7 +110,6 @@ class PrivilageFunc
                     if (isset($get_akhir['sub_kategori'])) {
 
                         $sub_kategori = $get_akhir['sub_kategori'];
-                        // print_R($sub_kategori);
                         foreach ($sub_kategori as $ks => $vss) {
                             $nama = "";
                             $ks = $ks ? ucwords($ks) : "";

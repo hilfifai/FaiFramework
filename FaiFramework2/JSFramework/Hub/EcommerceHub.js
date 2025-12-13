@@ -196,7 +196,164 @@ export async function tambah_produk_preorder(button, last_id_utama) {
   });
 
 }
+export async function proses_daftar_mitra(confirm = 0) {
 
+  const isLoggedIn = await window.fai.getModule('loginHelper').checkLoginStatus();
+
+  if (isLoggedIn) {
+    let send_cart_proses = [];
+    $('.radio-pembayaran').each(function () {
+      if ($(this).is(':checked')) {
+        let harga = parseFloat($('#satuan-harga-val' + this.value).val());
+        let qty = parseFloat($('#set_qty-' + this.value).val());
+       let  stok = parseFloat($('#stok-val' + this.value).val());
+        send_cart_proses.push({
+          id_cart: this.value,
+          qty: qty
+        });
+
+      }
+
+    });
+    var nama_lengkap = $('input[name="nama_lengkap"]').val().trim();
+    var no_wa = $('input[name="no_wa"]').val().trim();
+    var nama_toko = $('input[name="nama_toko"]').val().trim();
+    // Cek apakah ada radio button 'metode' yang dipilih
+    var metode_dipilih = $('input[name="metode"]:checked').val(); 
+
+    // --- 2. LOGIKA VALIDASI (Kecuali Link Marketplace) ---
+    
+    // Cek Nama Lengkap
+    if (!nama_lengkap) {
+        alert("Nama Lengkap wajib diisi!");
+        $('input[name="nama_lengkap"]').focus();
+        return; // Stop proses
+    }
+
+    // Cek No Whatsapp
+    if (!no_wa) {
+        alert("Nomor Whatsapp wajib diisi!");
+        $('input[name="no_wa"]').focus();
+        return; 
+    }
+
+    // Cek Nama Toko
+    if (!nama_toko) {
+        alert("Nama Toko wajib diisi!");
+        $('input[name="nama_toko"]').focus();
+        return; 
+    }
+
+    // Cek Pilihan Kemitraan (Radio Button)
+    if (!metode_dipilih) {
+        alert("Silakan pilih jenis Kemitraan (Reseller atau Agen)!");
+        return; 
+    }
+    if (!$('#id-mitra').val()) {
+      alert('Anda belum memilih jenis mitra');
+    } else {
+      /*const form = document.querySelector("#FormMitra");
+const formData = new FormData(form);
+formData.append("id_user", isLoggedIn.userId);
+formData.append("confirm", confirm);
+formData.append("total_pembayaran", $('#val_total_pembayaran').val());
+formData.append("id_mitra", $('#id-mitra').val());
+*/
+      const form = $("#FormMitra");
+      if (!form.length) {
+        console.error("Form dengan ID #FormMitra tidak ditemukan!");
+        return;
+      }
+      const formData = form.serialize();
+
+      // Tambahkan data tambahan
+      const additionalData = {
+        id_user: isLoggedIn.userId,
+        confirm: confirm,
+        total_pembayaran: $('#val_total_pembayaran').val(),
+        id_mitra: $('#id-mitra').val()
+      };
+
+      // Gabungkan dengan data form
+      const finalData = formData + '&' + $.param(additionalData);
+      const formData2 = $("#FormMitra").serializeArray();
+
+      // Tambahkan field tambahan
+      formData2.push(
+        { name: 'id_user', value: isLoggedIn.userId },
+        { name: 'confirm', value: confirm },
+        { name: 'total_pembayaran', value: $('#val_total_pembayaran').val() },
+        { name: 'id_mitra', value: $('#id-mitra').val() },
+        { name: 'domain', value: window.fai.getModule('domain') }
+      );
+      $.ajax({
+
+        type: "post",
+        dataType: "html",
+        data: formData2,
+        url: window.fai.getModule('base_url') + "api/proses_daftar_mitra",
+        dataType: "json",
+        beforeSend: function () {
+          // $("#summary").html("Tunggu Sebentar"); // Menampilkan indikator loading
+          Swal.fire({
+            title: 'Sedang memproses...',
+            text: 'Mohon tunggu sebentar. ',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            showCloseButton: true,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+        },
+        success: function (responseData) {
+          Swal.close();
+          if (responseData.status == 1) {
+
+            const data = [{
+              object: 'foreach_1_row'
+            }];
+            let type;
+            if (!$('#val_total_pembayaran').val()) {
+              type = {
+                0: "Mitra",
+                1: "berhasil",
+                2: "view_layout",
+                3: responseData.id,
+              };
+            } else {
+
+              type = {
+                0: "Ecommerce",
+                1: "payment",
+                2: "view_layout",
+                3: responseData.id,
+              };
+            }
+
+            const encoded = btoa(JSON.stringify(type));
+            const enPage = encodeDataForHref(data);;;
+            // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
+            link_direct(enPage, encoded);
+
+          } else if (responseData.status == 0) {
+            swal("Gagal!", responseData.keterangan, "error");
+            // }
+          } else
+            swal("Gagal!",
+              "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!", "error"
+            );
+
+
+        }
+      });
+    }
+  } else {
+    console.log("Belum login");
+    open_login();
+  }
+
+}
 export async function tambah_produk(button, last_id_utama) {
 
   const parent = button.parentNode;
@@ -581,16 +738,17 @@ export async function initialize_checkout() {
   const search = {
     id_search: page.view.load.load_page_id
   };
-  console.log("page", page);
-  console.log("id_search", search);
 
-  const allData = await window.fai.getModule('CoreDatabase').getAllFromStore({
-    utama: storeName
-  }, storeName, search);
-
-  console.log(allData);
+  // const allData = await window.fai.getModule('CoreDatabase').getAllFromStore({
+  //   utama: storeName
+  // }, storeName, search);
+  const allDataRaw = await window.fai.getModule("urlHelper").fetchDataFromApi(
+    window.fai.getModule('base_url') + "api/database_func", 'POST',
+    { "db": "checkout", "search": { "id_search": page.view.load.load_page_id } });
+  const allData = allDataRaw[page.view.load.load_page_id];
+  console.log("allData", allData);
   // console.log("DAta Checkout", allData[29]);
-  const list_bangunan = JSON.parse(allData.list_bangunan);
+  const list_bangunan = (allData.list_bangunan);
   console.log("list_bangunan", list_bangunan);
   const isLoggedIn = await window.fai.getModule('loginHelper').checkLoginStatus();
   console.log(window.fai.getModule('versionContent'));
@@ -1005,8 +1163,8 @@ export async function initialize_checkout() {
                 `);
 
   }
-  const list_toko = JSON.parse(allData.list_toko);
-  const list_produk = JSON.parse(allData.list_produk);
+  const list_toko = (allData.list_toko);
+  const list_produk = (allData.list_produk);
   console.log("list_toko", list_toko);
   let content_toko = "";
   let total_qty = 0;
@@ -1146,6 +1304,16 @@ export async function initialize_checkout() {
                 </div>
                 </div>`;
   $('.sticky-top').html(summary);
+  const btn = document.getElementById('tambahAlamatPenerima');
+
+  if (!btn) {
+    console.warn('Button tambahAlamatPenerima tidak ditemukan');
+    return;
+  }
+
+  btn.addEventListener('click', tambah_alamat_penerima_dom);
+
+
 
 }
 
@@ -1367,109 +1535,109 @@ export async function proses_cek_bayar(confirm = 0) {
       status_push = false;
     }
   });
-  if(!status_push){
-       Swal.fire("Gagal!",
-              "Terdapat Field yang kosong!",
-              "error");
-  }else
-  if (isLoggedIn) {
-    $.ajax({
+  if (!status_push) {
+    Swal.fire("Gagal!",
+      "Terdapat Field yang kosong!",
+      "error");
+  } else
+    if (isLoggedIn) {
+      $.ajax({
 
-      type: "post",
-      dataType: "html",
-      data: formData,
-      contentType: false,
-      processData: false,
-      url: window.fai.getModule('base_url') + "api/proses_cek_bayar",
-      dataType: "json",
-      beforeSend: function () {
-        // $("#summary").html("Tunggu Sebentar"); // Menampilkan indikator loading
-        Swal.fire({
-          title: 'Sedang memproses...',
-          text: 'Mohon tunggu sebentar. ',
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          showCloseButton: true,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-      },
-      success: function (responseData) {
-
-        Swal.close();
-        if (responseData.status == 1) {
-
-
+        type: "post",
+        dataType: "html",
+        data: formData,
+        contentType: false,
+        processData: false,
+        url: window.fai.getModule('base_url') + "api/proses_cek_bayar",
+        dataType: "json",
+        beforeSend: function () {
+          // $("#summary").html("Tunggu Sebentar"); // Menampilkan indikator loading
           Swal.fire({
-            icon: 'success',
-            title: 'Sukses!',
-            text: 'Sukses memproses pembayaran!',
+            title: 'Sedang memproses...',
+            text: 'Mohon tunggu sebentar. ',
+            allowOutsideClick: false,
             showConfirmButton: false,
-            timer: 1500
+            showCloseButton: true,
+            didOpen: () => {
+              Swal.showLoading();
+            }
           });
+        },
+        success: function (responseData) {
 
-          const data = [{
-            object: 'foreach_1_row'
-          }];
-          const type = {
-            0: "Ecommerce",
-            1: "sukses_bayar",
-            2: "view_layout",
-            3: checkout_id,
-          };
-          console.log(type);
-          const encoded = btoa(JSON.stringify(type));
-          // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
-          link_direct(encoded);
-        } else if (responseData.status == 0) {
-          // swal("Gagal!", responseData.keterangan, "error");
-          if (responseData.send_order[0].response.status === undefined) {
+          Swal.close();
+          if (responseData.status == 1) {
 
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses!',
+              text: 'Sukses memproses pembayaran!',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            const data = [{
+              object: 'foreach_1_row'
+            }];
+            const type = {
+              0: "Ecommerce",
+              1: "sukses_bayar",
+              2: "view_layout",
+              3: checkout_id,
+            };
+            console.log(type);
+            const encoded = btoa(JSON.stringify(type));
+            // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
+            link_direct(encoded);
+          } else if (responseData.status == 0) {
+            // swal("Gagal!", responseData.keterangan, "error");
+            if (responseData.send_order[0].response.status === undefined) {
+
+
+              Swal.fire("Gagal!",
+                "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
+                "error");
+            } else {
+              if (responseData.send_order[0].response.status == 'keranjang tidak ditemukan') {
+                Swal.fire("Gagal!",
+                  responseData.send_order[0].response.status + ", lakukan order ulang karena cart lebih dari 1 hari/jam 12 malam",
+                  "error");
+              } else {
+
+                Swal.fire("Gagal!",
+                  responseData.send_order[0].response.status + "",
+                  "error");
+              }
+            }
+            // }
+          } else {
 
             Swal.fire("Gagal!",
               "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
               "error");
-          } else {
-            if (responseData.send_order[0].response.status == 'keranjang tidak ditemukan') {
-              Swal.fire("Gagal!",
-                responseData.send_order[0].response.status + ", lakukan order ulang karena cart lebih dari 1 hari/jam 12 malam",
-                "error");
-            } else {
-
-              Swal.fire("Gagal!",
-                responseData.send_order[0].response.status + "",
-                "error");
-            }
           }
-          // }
-        } else {
 
-          Swal.fire("Gagal!",
-            "Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!",
-            "error");
+
+        },
+
+
+        error: function () {
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal!',
+            text: 'Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+
         }
-
-
-      },
-
-
-      error: function () {
-        Swal.close();
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal!',
-          text: 'Terdapat Kesalahan Teknis Silahkan Hubungi Costumer Service!',
-          showConfirmButton: false,
-          timer: 1500
-        });
-
-      }
-    });
-  } else {
-    console.log("Belum login");
-    open_login();
-  }
+      });
+    } else {
+      console.log("Belum login");
+      open_login();
+    }
 }
 export async function proses_payment(confirm = 0) {
 
@@ -1974,11 +2142,175 @@ export async function submit_tambah_toko_dropship() {
   }
 }
 
+export async function tambah_alamat_penerima_dom() {
+
+
+
+  // $("#alamat-penerima-container").show();
+}
+
 export async function tambah_alamat_penerima() {
+  // var bodyChildren = document.body.children;
 
-  document.body.classList.add("blurred");
-  $("#alamat-penerima-container").show();
+  //   // 2. Iterasi dan tambahkan class 'blurred' ke semua kecuali 'login-container'
+  //   for (var i = 0; i < bodyChildren.length; i++) {
+  //       var element = bodyChildren[i];
 
+  //       // Periksa apakah elemen tersebut adalah login-container (menggunakan ID atau class)
+  //       if (element.id !== 'alamat-penerima-container' && !element.classList.contains('login-container')) {
+  //           element.classList.add('blurred');
+  //       }
+  //   }
+
+
+
+  //   $('#penerima-provinsi').select2({
+  //     placeholder: 'Placeholder Baru',
+  //     // ... opsi baru lainnya
+  // });
+  //   $(document).ready(function() {
+  //   $('#penerima-provinsi').html('<option value="">Pilih Provinsi</option>');
+  //   const selectEl = $('#penerima-provinsi');
+  //   const apps = '${apps}';
+  //   const page_view = '${page_view}';
+  //   selectEl.select2({
+  //     placeholder: 'Pilih Provinsi',
+  //     allowClear: true,
+  //     ajax: { url: window.fai.getModule('base_url') + "api/select2_db_manual", dataType: 'json', delay: 250, data: p => 
+  //       ({ q: p.term,  field: 'provinsi',db: 'provinsi' }), 
+  //       processResults: d => ({ results: d.items || d }) }
+  //   });
+
+  //   // const initialValue = '${value}';
+  //   // const initialText = '${this.config.data[pConfig.options[2] + '_'+pConfig.options[0]] || ''}';
+  //   // if (initialValue && initialText) {
+  //   //   selectEl.append(new Option(initialText, initialValue, true, true)).trigger('change');
+  //   // }
+  //   $("#alamat-penerima-container").show();
+  // });
+  document.getElementById('alamat-penerima-container').style.display = 'block';
+
+  // // kasih delay 1 tick supaya DOM ready
+  setTimeout(() => {
+    initSelectAlamat();
+  }, 0);
+
+}
+function initSelectAlamat() {
+  // pastikan element ada
+  const el = document.getElementById('penerima-provinsi');
+  if (!el) {
+    console.error('Element penerima-provinsi belum ada');
+    return;
+  }
+
+  const baseUrl = window.fai.getModule('base_url');
+
+  // 1. Inisialisasi Provinsi
+  const provinsiSelect = window.fai.selectSearch('penerima-provinsi', {
+    placeholder: 'Pilih Provinsi...',
+    searchable: true,
+    multiple: false,
+    api: {
+      url: baseUrl + "api/select2_db_manual",
+      limit: 10,
+      field: 'provinsi',
+      db: 'provinsi',
+      searchParam: 'q',
+      mapResponse: function (response) {
+        console.log('API response provinsi:', response);
+        return response.map(item => ({
+          id: item.id,
+          text: item.text
+        }));
+      }
+    },
+    onChange: function (value, text, instance) {
+      console.log('Provinsi dipilih:', value, text);
+      updateKotaOptions(value, text);
+    }
+  });
+
+  // 2. Inisialisasi Kota (awalnya disabled)
+  const kotaSelect = window.fai.selectSearch('penerima-kota', {
+    placeholder: 'Pilih Kota/Kabupaten...',
+    searchable: true,
+    multiple: false,
+    disabled: true, // Awalnya disabled
+    api: {
+      url: baseUrl + "api/select2_db_manual",
+      limit: 10,
+      field: 'kota',
+      db: 'kota',
+      searchParam: 'q',
+      params: {
+        // Awalnya kosong, nanti diisi dengan provinsi_id
+      },
+      mapResponse: function (response) {
+        console.log('API response kota:', response);
+        return response.map(item => ({
+          id: item.id,
+          text: item.text
+        }));
+      }
+    },
+    onChange: function (value, text, instance) {
+      console.log('Kota dipilih:', value, text);
+      // Bisa ditambahkan logic untuk update kecamatan jika ada
+    }
+  });
+
+  // Simpan instance untuk akses nanti
+  window.linkedSelects = {
+    provinsi: provinsiSelect,
+    kota: kotaSelect
+  };
+}
+function updateKotaOptions(provinsiId, provinsiName) {
+  const kotaInstance = window.linkedSelects?.kota;
+  const baseUrl = window.fai.getModule('base_url');
+
+  if (!kotaInstance || !provinsiId) {
+    console.error('Instance kota tidak ditemukan atau provinsiId kosong');
+    return;
+  }
+
+  console.log('Updating kota untuk provinsi:', provinsiId, provinsiName);
+
+  // 1. Enable dropdown kota
+  kotaInstance.enable();
+
+  // 2. Update placeholder untuk menampilkan provinsi yang dipilih
+  kotaInstance.options.placeholder = `Pilih Kota/Kabupaten di ${provinsiName}...`;
+
+  // 3. Update API URL atau params untuk filter berdasarkan provinsi
+  // Cara 1: Tambahkan parameter provinsi_id ke API
+  kotaInstance.options.api.params = {
+    provinsi_id: provinsiId
+  };
+
+  // Atau Cara 2: Update URL dengan parameter
+  // kotaInstance.options.api.url = baseUrl + `api/select2_db_manual?field=kota&db=kota&provinsi_id=${provinsiId}`;
+
+  // 4. Clear nilai sebelumnya
+  kotaInstance.clear();
+
+  // 5. Update display placeholder
+  const placeholderEl = kotaInstance.selectBox?.querySelector('.select-search-placeholder');
+  if (placeholderEl) {
+    placeholderEl.textContent = kotaInstance.options.placeholder;
+    placeholderEl.classList.remove('has-value');
+  }
+
+  // 6. Fetch data kota untuk provinsi ini
+  kotaInstance.fetchInitialData();
+
+  // 7. Buka dropdown kota (opsional)
+  setTimeout(() => {
+    if (!kotaInstance.isOpen) {
+      kotaInstance.openDropdown();
+    }
+  }, 300);
 }
 export async function tambah_toko_dropship() {
 
@@ -2052,7 +2384,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
           }
         });
       },
-      success:  function (responseData) {
+      success: function (responseData) {
         Swal.close();
         if (responseData.status == 1) {
 
@@ -2066,7 +2398,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
             3: responseData.id,
           };
           console.log(type);
-          const encoded =  btoa(JSON.stringify(type));
+          const encoded = btoa(JSON.stringify(type));
           // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
           link_direct(encoded);
 
@@ -2399,9 +2731,11 @@ export async function prosessearchdata(index) {
     const queryBody = {
       db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
+      select:["primary_key"],
+        group:["primary_key"],
       limit: getalldata.data.itemsPerPage[index], // atau batas yang Anda inginkan
       offset: 0,
-      function : 'all_produk'
+      function: 'all_produk'
     };
     data_produk = await loadJSON('view_produk_detail', queryBody);
 
