@@ -52,6 +52,7 @@ require_once(__DIR__ . '/Structure/Content_class/MenuContent.php');
 require_once(__DIR__ . '/Structure/Content_class/MenuListContent.php');
 require_once(__DIR__ . '/Structure/Content_class/IndexedDBContent.php');
 
+require_once(__DIR__ . '/Structure/Function_class/Helper.php');
 require_once(__DIR__ . '/Structure/Function_class/CRUDFunc.php');
 require_once(__DIR__ . '/Structure/Function_class/CardFunc.php');
 require_once(__DIR__ . '/Structure/Function_class/FileFunc.php');

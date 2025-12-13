@@ -768,8 +768,6 @@ class Configuration extends Pages
 						$page['view_layout'][] = array($tag->tipe, $tag->col_row, $content_array);
 					}
 				}
-				// echo '<pre>';
-				// print_R($page['view_layout']);
 
 				if (($collect_refer)) {
 					DB::table('website__bundles__database');
@@ -1208,7 +1206,6 @@ class Configuration extends Pages
 		if ($bundle_row->tipe_header)
 			$array['tipe_header'] = $bundle_row->tipe_header;
 		if ($bundle_row->id_if) {
-			print_R($bundle_row);
 			$array['row'] = $bundle_row->row_if;
 			DB::table('website__bundles__master__if__content');
 			DB::whereRaw('id_website__bundles__master__if=' . $bundle_row->id_if);

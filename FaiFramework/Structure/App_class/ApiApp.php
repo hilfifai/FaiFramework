@@ -108,7 +108,7 @@ class ApiApp
         echo json_encode($data);
         die;
     }
-    public static function sync_cart_outgoing($page,$bodyRaw=[])
+    public static function sync_cart_outgoing($page, $bodyRaw = [])
     {
         try {
             $fai = new MainFaiFramework();
@@ -119,7 +119,7 @@ class ApiApp
             // $method  = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            if(count($bodyRaw)){
+            if (count($bodyRaw)) {
                 $body = $bodyRaw;
             }
             CRUDFunc::crud_update($fai, $page, ["qty_keluar_out" => $body['qty']], [], [], [], 'erp__pos__inventory__outgoing_breakdown', 'id', $body['breakdownId']);
@@ -153,12 +153,12 @@ class ApiApp
             $utama = Database::database_coverter($page, $db, [], 'all');
             $row = $utama['row'][0];
 
-             
+
             // $id_barang_keluar =  $utama['row'][0]->id_barang_keluar;
             // $id_barang_keluar_varian =  $utama['row'][0]->id_barang_keluar_varian;
             // $id_produk_keluar =  $utama['row'][0]->id_produk_keluar;
             // $id_produk_varian_keluar =  $utama['row'][0]->id_produk_varian_keluar;
-            
+
             if (($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') or ($row->asal_barang_dari == 'Api')) {
                 $a = "";
 
@@ -182,14 +182,14 @@ class ApiApp
                     );
                 }
             }
-            if(!count($bodyRaw)){
-            echo json_encode($response);
+            if (!count($bodyRaw)) {
+                echo json_encode($response);
             }
         } catch (Exception $e) {
             echo json_encode(['error' => 'Unsupported method']);
         }
     }
-    public static function delete_sync_cart_outgoing($page,$bodyRaw=[])
+    public static function delete_sync_cart_outgoing($page, $bodyRaw = [])
     {
         try {
             $fai = new MainFaiFramework();
@@ -200,7 +200,7 @@ class ApiApp
             // $method  = $_SERVER['REQUEST_METHOD'];
             header('Content-Type: application/json');
             $body = json_decode(file_get_contents("php://input"), true);
-            if(count($bodyRaw)){
+            if (count($bodyRaw)) {
                 $body = $bodyRaw;
             }
             CRUDFunc::crud_update($fai, $page, ["qty_keluar_out" => $body['qty']], [], [], [], 'erp__pos__inventory__outgoing_breakdown', 'id', $body['breakdownId']);
@@ -234,23 +234,23 @@ class ApiApp
             $utama = Database::database_coverter($page, $db, [], 'all');
             $row = $utama['row'][0];
 
-           
+
             // $id_barang_keluar =  $utama['row'][0]->id_barang_keluar;
             // $id_barang_keluar_varian =  $utama['row'][0]->id_barang_keluar_varian;
             // $id_produk_keluar =  $utama['row'][0]->id_produk_keluar;
             // $id_produk_varian_keluar =  $utama['row'][0]->id_produk_varian_keluar;
-            
+
             if (($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') or ($row->asal_barang_dari == 'Api')) {
                 $a = "";
 
                 if ($row->varian_barang == 1 and $row->asal_from_data_varian == 'Api') {
-                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail,$row->id_api_varian, $row->id_apps_user, $body['cartSyncId']);
+                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail, $row->id_api_varian, $row->id_apps_user, $body['cartSyncId']);
                 } else {
-                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail,$row->id_api, $row->id_apps_user, $body['cartSyncId']);
+                    $response = ApiContent::hapus_cart_outgoing($page, $row->id_detail, $row->id_api, $row->id_apps_user, $body['cartSyncId']);
                 }
             }
-            if(!count($bodyRaw)){
-            echo json_encode($response);
+            if (!count($bodyRaw)) {
+                echo json_encode($response);
             }
             die;
         } catch (Exception $e) {
@@ -308,6 +308,26 @@ class ApiApp
         DB::update("apps_device__transaksi", ["status_generate" => "1"], [["id_apps_device", "=", "$id_device"], ["id", "=", "$primary_key"]], 'Where Array');
         echo json_encode(["status" => 1]);
     }
+    public static function database_func($page)
+    {
+        header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($input)) {
+            $input = [];
+        }
+
+        $db_name = $input['db'] ?? 'all_produk';
+
+        $limit = $input['limit'] ?? 10;
+        $offset = $input['offset'] ?? 0;
+        $response = DatabaseFunc::$db_name($page, $limit, 1, $input, $offset);
+
+        echo json_encode($response);
+    }
     public static function json($page)
     {
         header('Content-Type: application/json');
@@ -326,8 +346,11 @@ class ApiApp
             $where = [];
         }
         $limit = $input['limit'] ?? 10;
+        $limit = $input['limit_function'] ?? $input['limit'];
         $offset = $input['offset'] ?? 0;
         $orderBy = $input['orderBy'] ?? [];
+        $group = $input['group'] ?? [];
+        $select = $input['select'] ?? [];
         if (!is_array($orderBy)) {
             $orderBy = [];
         }
@@ -337,7 +360,17 @@ class ApiApp
 
         // Reset for main query
         DB::table($db_name);
-        DB::selectRaw('*');
+
+        if (!empty($select)) {
+            foreach ($select as $condition) {
+                DB::selectRaw($condition);
+            }
+        } else {
+            DB::selectRaw('*');
+        }
+        if (!empty($group)) {
+                DB::groupByRaw($page,$group);
+        }
         // Reapply where
         if (!empty($where)) {
             foreach ($where as $condition) {
@@ -363,10 +396,12 @@ class ApiApp
         if (!empty($orderBy)) {
 
             DB::orderRaw($page, ($orderBy['field'] . " " . $orderBy['direction'] ?? 'ASC'));
+             DB::selectRaw($orderBy['field']);
+              DB::groupByRaw($page,[$orderBy['field']]);
         }
 
         // Apply limit and offset
-        DB::limitRaw($page, $limit, $offset);
+        DB::limitRaw($page, $offset, $limit);
 
         $result = DB::get('all');
         if ($input['function']) {
@@ -578,6 +613,24 @@ class ApiApp
                 }
             }
             echo json_encode([]);
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'Unsupported method']);
+        }
+    }
+    public static function select2_db_manual($page)
+    {
+        try {
+            $fai      = new MainFaiFramework();
+            $db_name = Partial::input('db');
+
+            $db = DatabaseFunc::$db_name($page);
+            $fields   = Partial::input('field');
+            $row = Database::database_coverter($page, $db, [], 'all');
+            $return                                                   = [];
+            foreach ($row['row'] as $data) {
+                $return[] = ["id" => $data->primary_key, "text" => $data->$fields];
+            }
+            echo json_encode($return);
         } catch (Exception $e) {
             echo json_encode(['error' => 'Unsupported method']);
         }
@@ -2067,8 +2120,7 @@ class ApiApp
             } else {
                 // Default mode: check if generation needed
                 $needs_generation = self::check_generation_needed($page, $db_to_json);
-
-                if ($needs_generation) {
+                if (!$needs_generation) {
                     $_POST['db'] = $db_to_json;
 
                     $get_data = self::get_db_data($page, $body, $db_to_json);
@@ -2095,8 +2147,7 @@ class ApiApp
      */
     private static function get_db_data($page, $body, $db_to_json)
     {
-        $bundle_tables = ["checkout", "allproduk", "all_produk"];
-
+        $bundle_tables = ["checkout",  "allproduk", "all_produk"];
         if (in_array($db_to_json, $bundle_tables)) {
             return ApiApp::db_json_bundle($page, $body);
         } else {
@@ -2197,7 +2248,6 @@ class ApiApp
 
         //     $stmt->fetch();
         // --- CONTOH PAKAI ---
-
         if ($page['database_provider'] == 'mysql') {
 
             try {
@@ -2336,7 +2386,7 @@ class ApiApp
                     $current_json[$row->id] = $row;
                 }
 
-                $jsonDataEn = json_encode($jsonData);
+                $jsonDataEn = json_encode($jsonData, JSON_THROW_ON_ERROR);
 
                 if (! $is_ada) {
 
@@ -2939,8 +2989,8 @@ class ApiApp
             $offset = $rowAkhir + 1;
             $batchNumber++;
         }
-
-        file_put_contents('FaiFramework/Pages/json/' . $db_to_json . '/' . $db_to_json . '.json', json_encode($current_json, JSON_PRETTY_PRINT));
+        // print_R($all_json);
+        //file_put_contents('FaiFramework/Pages/json/' . $db_to_json . '/' . $db_to_json . '.json', json_encode($current_json, JSON_PRETTY_PRINT));
         return $all_json;
     }
 

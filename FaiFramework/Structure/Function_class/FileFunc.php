@@ -82,7 +82,6 @@ class FileFunc
                 $uploadData[$i]['id_drive_folder'] = $id_folder;
                 $uploadData[$i]['input_name'] = $field_name;
                 $uploadData[$i]['id_drive'] = $panel['id_database_panel'];
-                //print_r($fileData);
                 $uploadData[$i][(isset($page['load']['database']['create_date']) ? $page['load']['database']['create_date'] : "create_date")] = date('Y-m-d H:i:s');
                 $uploadData[$i][(isset($page['load']['database']['create_by']) ? $page['load']['database']['create_by'] : "create_by")] = $idUser;
                 if ($uploadData[$i]['sizes']) {
@@ -147,7 +146,6 @@ class FileFunc
             $uploadData[$i]['id_drive_folder'] = $id_folder;
             $uploadData[$i]['id_drive'] = $panel['id_database_panel'];
             $uploadData[$i]['input_name'] = $input_name;
-            //print_r($fileData);
             $uploadData[$i][(isset($page['load']['database']['create_date']) ? $page['load']['database']['create_date'] : "create_date")] = date('Y-m-d H:i:s');
             $uploadData[$i][(isset($page['load']['database']['create_by']) ? $page['load']['database']['create_by'] : "create_by")] = $idUser;
             CRUDFunc::crud_insert(false, $page, $uploadData[$i], [], 'drive__file', []);

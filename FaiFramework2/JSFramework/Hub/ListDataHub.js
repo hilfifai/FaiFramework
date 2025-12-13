@@ -57,13 +57,13 @@ export default class ListDataHub extends FaiModule {
   async show_produk(jobCard, json, index) {
     const raw = decodeURIComponent(escape(atob(json)));
     const parsed = JSON.parse(raw);
-    console.log("show_produk",parsed);
+    console.log("show_produk", parsed);
     const wrapper = document.querySelector("#wrapper-job-" + index);
     const number = Math.floor(Math.random() * 10);
     const url = `https://unsplash.it/640/425?image=${number}`;
-    
+
     $('.job-explain').show();
-   
+
     wrapper.querySelector(
       ".job-explain-content .job-card-title"
     ).textContent = parsed.nama_barang;
@@ -119,12 +119,59 @@ export default class ListDataHub extends FaiModule {
     const endIndex = page * this.getModule('data_produk_itemsPerPage')[index];
 
     console.log("this.getModule('data_produk_itemsPerPage')", this.getModule('data_produk_itemsPerPage'));
+    let storage_produk = this.getModule('data_produk');
+    if (startIndex !== 0) {
+      
+      let wrapper = document.querySelector("#wrapper-job-" + index);
+      const searchInput = document.querySelector('#search-' + index);
+      const query = searchInput.value.trim();
+      const dataSearc = wrapper.dataset.search;
+      const objSearch = JSON.parse(atob(dataSearc));
+      const fieldsToSearch = objSearch;
+      let whereClause = [];
+      if(query){
+
+        whereClause.push({
+          fields: fieldsToSearch,
+          operator: 'like_or_fields',
+          value: `%${query}%`
+        });
+      }
+        const queryBody = {
+        db: 'view_produk_detail', // atau nama db dinamis Anda
+        where: whereClause,
+        select:["primary_key"],
+        group:["primary_key"],
+        limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
+        offset: startIndex,
+        function: 'all_produk'
+      };
+      let data_baru = await window.fai.getModule('Data').loadJSON('all_produk', queryBody);
+      console.log("data_baru", data_baru);
+      // 2. Ambil referensi ke penyimpanan data global
+      storage_produk[index] = data_baru
+
+      // 3. Validasi: Pastikan index tersebut ada dan berupa array
+      // if (!Array.isArray(storage_produk[index])) {
+      //   storage_produk[index] = []; // Buat array kosong jika belum ada
+      // }
+
+      // // 4. Masukkan data
+      // if (Array.isArray(data_baru)) {
+      //   // KASUS A: Jika data_baru adalah Array (banyak item)
+      //   // Gunakan '...' (spread operator) untuk menggabungkan isi array
+      //   storage_produk[index].push(...data_baru);
+      // } else {
+      //   // KASUS B: Jika data_baru hanya 1 Object
+      //   storage_produk[index].push(data_baru);
+      // };
+    }
     let data = (this.getModule('data_produk')[index]);
-    const arrayProduk = Object.values(data); // jadi array
+    const arrayProduk = Object.values(storage_produk[index]); // jadi array
     console.log("arrayProduk", arrayProduk);
     console.log("startIndex", startIndex);
     console.log("endIndex", endIndex);
-    return arrayProduk.slice(startIndex, endIndex);
+    return arrayProduk;
   }
 
   async load_more(index) {
@@ -203,13 +250,15 @@ export default class ListDataHub extends FaiModule {
     const queryBody = {
       db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
+       select:["primary_key"],
+        group:["primary_key"],
       limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
       offset: 0,
-      function : 'all_produk'
+      function: 'all_produk'
     };
     data_produk = await window.fai.getModule('Data').loadJSON('all_produk', queryBody);
 
-    console.log(data_produk);
+
     window.fai.getModule('data_produk')[index] = data_produk;
 
 
@@ -414,9 +463,7 @@ export default class ListDataHub extends FaiModule {
   }
   async appendData(index, page) {
 
-    console.log('appendData', index);
     const paginateddata = await this.loadMoredata(index, page);
-    console.log('paginateddata', paginateddata);
     const listContainer = document.getElementById("content-" + index);
     const transformArray = (inputArray) => {
       const [key, value] = inputArray;
@@ -431,10 +478,8 @@ export default class ListDataHub extends FaiModule {
     let listItem
     let nomor = 0;
     let contentHtml = this.getModule('data_produk_content')[index];
-    console.log("contentHtml", contentHtml);
     //console.log("paginateddata", paginateddata);
     paginateddata.forEach(item => {
-      console.log("item - data", item);
       nomor++;
       listItem = contentHtml;
 
@@ -451,14 +496,13 @@ export default class ListDataHub extends FaiModule {
               listItem = listItem.replace(`<${key}></${key}>`, item[value_array]);
             }
           } else {
-            console.warn(`Lewati key '${key}' karena tidak iterable`, obj);
+            // console.warn(`Lewati key '${key}' karena tidak iterable`, obj);
           }
         });
 
       }
       listItem = listItem.replace(`<JSON></JSON>`, btoa(unescape(encodeURIComponent(JSON.stringify(
         item)))));
-      console.log("content-" + index, listItem);
       $("#content-" + index).append(listItem);
 
       // owlasync (nomor, nomor2);

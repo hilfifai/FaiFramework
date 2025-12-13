@@ -5,7 +5,7 @@ import * as EcommerceHub from './Hub/EcommerceHub.js';
 import ListDataHub from './Hub/ListDataHub.js';
 import * as GeneralHub from './Hub/GeneralHub.js';
 import { setShowAlert } from './Helper/Notification.js';
-
+import SelectSearch from './Helper/SelectSearch.js';
 export class FaiFramework extends FaiModule {
 	constructor() {
 		super();
@@ -321,7 +321,39 @@ export class FaiFramework extends FaiModule {
 	async produk() {
 
 	}
+initSelectSearch(elementId, options = {}) {
+        try {
+            // Dapatkan SelectSearch manager dari module
+            const selectSearch = this.getModule('SelectSearch');
+            
+            if (!selectSearch || typeof selectSearch.init !== 'function') {
+                console.error('SelectSearch module tidak ditemukan atau tidak valid');
+                return null;
+            }
+            
+            // Gunakan method init dari object manager
+            return selectSearch.init(elementId, options);
+        } catch (error) {
+            console.error('Error initializing SelectSearch:', error);
+            return null;
+        }
+    }
 
+    // Auto init untuk SelectSearch berdasarkan data attributes
+    autoInitSelectSearch() {
+        // Tunggu sedikit untuk memastikan DOM siap
+        setTimeout(() => {
+            const selectSearch = this.getModule('SelectSearch');
+            if (selectSearch && typeof selectSearch.autoInit === 'function') {
+                selectSearch.autoInit();
+            }
+        }, 100);
+    }
+
+    // Helper untuk penggunaan cepat
+    selectSearch(elementId, options) {
+        return this.initSelectSearch(elementId, options);
+    }
 }
 window.GeneralHub = GeneralHub;
 
@@ -360,3 +392,4 @@ Object.getOwnPropertyNames(Object.getPrototypeOf(loginHub))
 window.loginHub = loginHub;
 window.fai = this;
 window.setShowAlert = setShowAlert;
+window.SelectSearch = SelectSearch;

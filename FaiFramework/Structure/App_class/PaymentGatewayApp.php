@@ -120,7 +120,6 @@ class PaymentGatewayApp{
                 }
                 $data['fraud_status'] = $response['fraud_status'];
             }
-            print_r($data); 
             CRUDFunc::crud_insert(false, $page, $data, [], 'payment_api__'.$api, []);
 
             return $va;

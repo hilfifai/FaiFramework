@@ -111,7 +111,7 @@ export default class ContentProcessing extends FaiModule {
                 let bodyReq = {};
                 bodyReq.db = 'view_produk_detail';
                 bodyReq.function = 'all_produk';
-               
+
                 if (item.pagination.limit) {
                     bodyReq.limit_function = item.pagination.limit;
                 }
@@ -130,11 +130,13 @@ export default class ContentProcessing extends FaiModule {
 
                         value: `%${this.getModule('searchData').keyword}%`
                     });
+
                     bodyReq.where = whereClause
                 }
-                 bodyReq.limit = 1000;
-
-               
+                bodyReq.select = ["primary_key"];
+                bodyReq.group = ["primary_key"];
+                bodyReq.limit = 30;
+                console.log('bodyReq', bodyReq);
                 let allData = await this.getModule('Data').loadJSON('view_produk_detail', bodyReq);
                 //allData = Object.entries(Data);
                 //console.log('allData',allData);
@@ -160,11 +162,50 @@ export default class ContentProcessing extends FaiModule {
                 if (item.pagination.page == 'none')
                     is_pagination = false;
                 if (is_pagination) {
-                    temp_content.content.html += '<button id="loadMoreButton" class="btn btn-primary" onclick="load_more(\'' + item.variable + '\')" type="button">Load More</button>';
+                    let itemIndex = item.variable;
+                    temp_content.content.html += `
+                        <button 
+                            id="loadMore_${item.variable}" 
+                            class="btn btn-primary btn-sm mt-2"
+                            onclick="(function() {
+                                const btn = this;
+                                const page = parseInt(btn.dataset.page || '1');
+                                const nextPage = page + 1;
+                                btn.dataset.page = nextPage;
+                                btn.disabled = true;
+                                
+                                
+                                window.fai.getModule('ListDataHub').appendData('${itemIndex}', nextPage)
+                                    .finally(() => {
+                                        btn.disabled = false;
+                                        btn.textContent = 'Load More Page ' + nextPage;
+                                    });
+                            }).call(this)"
+                            data-page="1"
+                        >
+                            Load More
+                        </button>
+                        
+                        <div id="loading_${item.variable}" class="d-none mt-2">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    `;
                 }
-                temp_content.content.html += '<div class="text-center " id="loading"><div class="spinner"></div></div>';
+                temp_content.content.html += `
+                    <div class="text-center mt-2" id="loading_${item.variable}" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    `;
+                // temp_content.content.html += '<div class="text-center " id="loading"><div class="spinner"></div></div>';
 
+                temp_content.content.js += `
+                    <script>
 
+                    </script>
+
+                `;
 
                 //let allData = await getAllFromStore(db, {
                 //    utama: storeName

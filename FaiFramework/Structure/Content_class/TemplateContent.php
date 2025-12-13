@@ -1509,8 +1509,9 @@ as id_group";
                 "refer_db"      => "all_produk",
                 "pagination"    => [
                     "page"     => "none",
-                    "limit"    => 10,
+                    "limit"    => 12,
                     "order_by" => ["create_date", "desc"],
+                    "group_by" => ["create_date"],
                 ],
                 "col"           => "col-md-4 col-sm-4 col-xs-6",
                 "search"        => [
@@ -1630,8 +1631,9 @@ as id_group";
                 "refer_db"      => "all_produk",
                 "pagination"    => [
                     "page"     => "none",
-                    "limit"    => 10,
+                    "limit"    => 12,
                     "order_by" => ["total_jual", "desc"],
+                    "group_by" => ["total_jual"],
                 ],
                 "col"           => "col-md-3 col-sm-4 col-xs-6",
                 "search"        => [

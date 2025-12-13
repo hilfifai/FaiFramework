@@ -241,71 +241,71 @@
 
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Nama Bangunan</span>
-                    <input type="text" name="name" id="penerima-nama" placeholder="Enter your name" class="form-input"
+                    <input type="text" name="name" id="penerima-nama" placeholder="Masukan Nama Bangunan" class="form-input"
                         required />
                 </label>
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Alamat</span>
-                    <input type="email" name="email" id="penerima-alamat" placeholder="Enter your email"
+                    <input type="email" name="email" id="penerima-alamat" placeholder="Masukan Alamat Lengkap"
                         class="form-input" required />
                 </label>
 
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Provinsi</span>
-                    <select type="text" name="provinsi" id="penerima-provinsi" placeholder="Enter your password"
+                    <select type="text" name="provinsi" id="penerima-provinsi" placeholder="Masukan Provinsi"
                         class="form-input" required>
                     </select>
 
                 </label>
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Kota</span>
-                    <select type="text" name="kota" id="penerima-kota" placeholder="Enter your password"
+                    <select type="text" name="kota" id="penerima-kota" placeholder="Masukan Kota"
                         class="form-input" required />
                     </select>
 
                 </label>
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Kecamatan</span>
-                    <input type="text" name="kota" id="penerima-kecamatan" placeholder="Enter your password"
+                    <input type="text" name="kecamatan" id="penerima-kecamatan" placeholder="Masukan Kecamatan"
                         class="form-input" required />
 
                 </label>
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">Kelurahan</span>
-                    <input type="text" name="kota" id="penerima-kelurahan" placeholder="Enter your password"
+                    <input type="text" name="kelurahan" id="penerima-kelurahan" placeholder="Masukan Kelurahan"
                         class="form-input" required />
 
                 </label>
                 <label class="form-label mb-0 mt-0 d-none">
                     <span class="form-label-text">RT</span>
-                    <input type="text" name="kota" id="penerima-rt" placeholder="Enter your password" class="form-input"
+                    <input type="text" name="rt" id="penerima-rt" placeholder="Masukan RT" class="form-input"
                         required />
 
                 </label>
                 <label class="form-label mb-0 mt-0  d-none">
                     <span class="form-label-text">RW</span>
-                    <input type="text" name="kota" id="penerima-rw" placeholder="Enter your password" class="form-input"
+                    <input type="text" name="rw" id="penerima-rw" placeholder="Masukan RW" class="form-input"
                         required />
 
                 </label>
                 <label class="form-label mb-0 mt-0  d-none">
                     <span class="form-label-text">Nomor Bangunan</span>
-                    <input type="text" name="kota" id="penerima-nomor" placeholder="Enter your password"
+                    <input type="text" name="nomor_bangunan" id="penerima-nomor" placeholder="Masukan Nomor Bangunan"
                         class="form-input" required />
 
                 </label>
                 <label class="form-label mb-0 mt-0  d-none">
                     <span class="form-label-text">Patokan</span>
-                    <input type="text" name="kota" id="penerima-patokan" placeholder="Enter your password"
+                    <input type="text" name="patokan" id="penerima-patokan" placeholder="Masukan patokan alamat"
                         class="form-input" required />
 
                 </label>
 
                 <label class="form-label mb-0 mt-0">
                     <span class="form-label-text">No Whatsapp</span>
-                    <div class="phone-input">
+                    <div class="phone-input d-flex align-items-center">
                         <span>+62</span>
-                        <input type="number" name="phone" id="penerima-wa" placeholder="Enter your phone"
+                        <input type="number" name="phone" id="penerima-wa" placeholder="Masukan no whatsapp"
                             class="form-input" required />
                     </div>
                 </label>
