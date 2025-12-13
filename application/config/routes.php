@@ -53,6 +53,7 @@ $route['r/(:any)'] = 'gate/r/$1';
 $route['index/(:any)'] = 'FaiServer/index/$1';
 $route['pages/(:any)'] = 'FaiServer/index/$1';
 $route['api/(:any)'] = 'FaiServer/index/$1';
+$route['api/(:any)/{:any}'] = 'FaiServer/index/$1/$2';
 $route['store/(:any)'] = 'FaiServer/index/$1';
 $route['produk/(:any)'] = 'FaiServer/index/$1';
 $route['json/(:any)'] = 'FaiServer/index/$1';
