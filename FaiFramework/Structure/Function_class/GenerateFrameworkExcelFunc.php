@@ -108,14 +108,12 @@ class GenerateFrameworkExcelFunc
         $i = 0;
 
         echo '<pre>';
-        // print_R($tokens);
         $i = 0;
         $code = "";
         foreach ($tokens as $i => $token) {
 
             echo '<br>';
             echo "Line {$token->line}: {$token->getTokenName()} ('{$token->text}')", PHP_EOL;
-            // print_R($token);
             if ($token->getTokenName() == 'T_OPEN_TAG') {
                 $parse .= '<?php ';
             } else if ($token->getTokenName() == 'T_VARIABLE' and !in_array($token->text, array('$_SESSION', '$_POST', '$_GET'))) {

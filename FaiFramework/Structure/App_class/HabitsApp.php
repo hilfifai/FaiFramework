@@ -533,8 +533,6 @@ class HabitsApp
 		$task        		= $ci->input->post('task_progress');
 		$sub_task_post       = $ci->input->post('task_progres');
 		$id_treatment        = de($ci->input->post('b'));
-		print_r($_POST);
-		$penugasan = '';
 		$i = 0;
 		$sub['nama_sub_task'] = $task[$i];
 		if ($_POST['type'] == 'add') {

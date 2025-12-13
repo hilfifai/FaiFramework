@@ -29,6 +29,8 @@ export default class FaiModule {
 			{ default: ListDataHub },
 			{ default: LoginHub },
 			{ default: OptionTriggrer },
+			{ default: SelectSearchManager },
+			
 		] = await Promise.all([
 			import('./Builder/CrudBuilder.js'),
 			import('./Builder/FormBuilder.js'),
@@ -52,6 +54,7 @@ export default class FaiModule {
 			import('./Hub/ListDataHub.js'),
 			import('./Hub/LoginHub.js'),
 			import('./Handler/OptionTriggrer.js'),
+			import('./Helper/SelectSearch.js'),
 			
 		]);
 
@@ -82,7 +85,8 @@ export default class FaiModule {
 			deviceHelper: new Device(),
 			ListDataHub: new ListDataHub(),
 			loginHub: new LoginHub() ,
-			optionTriggrer: new OptionTriggrer() 
+			optionTriggrer: new OptionTriggrer(), 
+			SelectSearch: new SelectSearchManager, 
 		}; 
 
 		// Inject semua deps

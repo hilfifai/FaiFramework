@@ -946,6 +946,7 @@ class EthicaApi
         $curl    = curl_init();
         $user    = EthicaApi::detail_user($page, $user_api, 1, $user_id);
         $key_api = $user['apikey'];
+        
         //echo $link_endpoint . $seq . '?key=' . $key_api . '&tipe_apps=W';
         if ($user_api['row'][0]->versi == 'Versi 2') {
 
@@ -1014,7 +1015,7 @@ class EthicaApi
     }
     public static function send_order($page, $user_api, $link_endpoint = '', $id_order = "", $attemp = 0)
     {
-
+        $id_api = $user_api['row'][0]->id_api;
         //         $db['select'][] = "
         //         *,webmaster__wilayah__provinsi.provinsi as provinsi,concat(webmaster__wilayah__kabupaten.type,' ',webmaster__wilayah__kabupaten.kota_name) as kota,
         // webmaster__wilayah__postal_code.urban as kelurahan,webmaster__wilayah__kecamatan.subdistrict_name as kecamatan ,erp__pos__utama.id as primary_key
@@ -1075,37 +1076,60 @@ class EthicaApi
                     $paket[1] = 'LAIN - LAIN';
                 }
                 $db             = [];
+                $db             = [];
                 $db['select'][] = "
-        erp__pos__utama.no_purchose_order,
+                    erp__pos__utama.no_purchose_order,
 
-        erp__pos__utama__detail.id as id_detail
-		, erp__pos__utama__detail.status_sync_cart
-		, inventaris__asset__list.nama_barang
-		, inventaris__asset__list.id as id_asset
-		, inventaris__asset__list__varian.id as id_varian
-		, inventaris__asset__list.varian_barang
-		, inventaris__asset__list.asal_barang_dari
-		, inventaris__asset__list.id_api
-		, inventaris__asset__list.id_sync
-		, inventaris__asset__list.id_from_api
-		, inventaris__asset__list__varian.asal_from_data_varian
-		, inventaris__asset__list__varian.id_api_varian
-		, inventaris__asset__list__varian.id_sync_varian
-		, inventaris__asset__list__varian.id_from_api_varian
-		, inventaris__asset__list__varian.nama_varian
-        ,ressponse_sync_cart
-        ,qty_pesanan
-        ,id_sync_cart,
-        erp__pos__utama.id_apps_user
-		";
+                    erp__pos__utama__detail.id as id_detail
+                    , erp__pos__utama__detail.status_sync_cart
+                    , inventaris__asset__list.nama_barang
+                    , inventaris__asset__list.id as id_asset
+                    , inventaris__asset__list__varian.id as id_varian
+                    , inventaris__asset__list.varian_barang
+                    , inventaris__asset__list.asal_barang_dari
+                    , inventaris__asset__list.berat
+                    , inventaris__asset__list.id_api
+                    , inventaris__asset__list.id_sync
+                    , inventaris__asset__list.id_from_api
+                    , inventaris__asset__list__varian.asal_from_data_varian
+                    , inventaris__asset__list__varian.id_api_varian
+                    , inventaris__asset__list__varian.id_sync_varian
+                    , inventaris__asset__list__varian.id_from_api_varian
+                    , inventaris__asset__list__varian.nama_varian
+                    , inventaris__asset__list__varian.berat_varian
+                    
+                    ,erp__pos__utama__detail.berat_satuan
+                    ";
+                if ($row->tanggal > '2025-12-12 00:00:00') {
+                    $db['select'][] = "api_sync.response_sync as ressponse_sync_cart
+                    ,api_sync.temp_qty_sync as qty_pesanan
+                    ,id_response_sync as id_sync_cart
+                    ,(erp__pos__utama__detail.berat_satuan * temp_qty_sync) as berat_total";
 
-                $db['utama']   = "erp__pos__utama__detail";
-                $db['np']      = "erp__pos__utama__detail";
-                $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "id_inventaris__asset__list"];
-                $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian", 'left'];
-                $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
-                $db['where'][] = ["erp__pos__utama__detail.id_erp__pos__utama", "=", "$row->primary_key_erp__pos__utama"];
-                $db['where'][] = ["erp__pos__utama__detail.active", "=", "1"];
+                    $db['utama'] = ('erp__pos__inventory__outgoing_breakdown');
+                    
+                    $db['join'][] = ["api_sync", "id_sync_api_cart", "api_sync.id", "left"];
+                    $db['join'][]  = ["erp__pos__inventory__outgoing", " erp__pos__inventory__outgoing.id ", "erp__pos__inventory__outgoing_breakdown.id_erp__pos__inventory__outgoing", 'left'];
+                    $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__inventory__outgoing.id_barang_keluar"];
+                    $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "erp__pos__inventory__outgoing.id_barang_keluar_varian", 'left'];
+                    $db['join'][] = ["erp__pos__inventory_detail", "erp__pos__inventory_detail.id", "erp__pos__inventory__outgoing.id_erp__pos__inventory_detail", 'left'];
+                    $db['join'][] = ["erp__pos__utama__detail", "erp__pos__utama__detail.id", "erp__pos__inventory_detail.erp__pos__utama__detail_id", 'left'];
+                    $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+                    $db['where'][] = ["erp__pos__inventory__outgoing_breakdown.active", "=", "1"];
+                    $db['where'][] = ["api_master__list.id", "=", "$id_api"];
+                    $db['join'][] = ["api_master__list", "api_master__list.id_ruang_simpan", "erp__pos__inventory__outgoing_breakdown.id_ruang_simpan_out"];
+                } else {
+                    $db['select'][] = "ressponse_sync_cart
+                    ,qty_pesanan
+                    ,id_sync_cart
+                    ,erp__pos__utama__detail.berat_total";
+
+
+                    $db['utama']   = "erp__pos__utama__detail";
+                    $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "id_inventaris__asset__list"];
+                    $db['join'][]  = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian and inventaris__asset__list__varian.id_inventaris__asset__list = inventaris__asset__list.id ", 'left'];
+                    $db['join'][]  = ["erp__pos__utama", "erp__pos__utama.id", "erp__pos__utama__detail.id_erp__pos__utama", 'left'];
+                }
 
                 '<pre>';
                 // print_r($row);die;

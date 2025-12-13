@@ -710,7 +710,6 @@ class Content
 				$value = $option[2];
 				$page['crud']['select_database_costum'][$field]['utama'] = $database;
 				$page['crud']['select_database_costum'][$field]['primary_key'] = $key;
-				// print_r($rowoption['query']);
 				$rowoption = $fai->database_coverter($page, $page['crud']['select_database_costum'][$field], array(), 'all');
 				if ($rowoption['num_rows']) {
 					foreach ($rowoption['row'] as $dataoption) {
@@ -2056,7 +2055,6 @@ class Content
 			$parameter5 = isset($field_function[3][4]) ? Database::string_database($page, $fai, $field_function[3][4]) : null;
 			$parameter6 = isset($field_function[3][5]) ? Database::string_database($page, $fai, $field_function[3][5]) : null;
 			$return_function = $new->$function($page, $page['load']['type'], $page['load']['id'], $parameter1, $parameter2, $parameter3, $parameter4, $parameter5, $parameter6);
-			// print_r($return_functin);
 			if (isset($field_function[4])) {
 				$info = $return_function[$field_function[4]];
 			} else

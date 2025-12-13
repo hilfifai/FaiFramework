@@ -924,7 +924,6 @@ class CRUDFunc
                 if (count($sqlfile)) {
 
                     foreach ($sqlfile as $f => $valueFile) {
-                        print_R($sqlfile);
                         $return_file = '-1';
                         if (isset($_FILES[$sqlfile[$f][5] . $sqlfile[$f][3]])) {
                             if (count($_FILES[$sqlfile[$f][5] . $sqlfile[$f][3]]['name'])) {
@@ -1001,7 +1000,6 @@ class CRUDFunc
                 $last_value = $last_insert_id;
 
                 if (isset($page['crud']['on' . $tipe])) {
-                    print_R($page['crud']['on' . $tipe]);
                     for ($a = 0; $a < count($page['crud']['on' . $tipe]); $a++) {
                         if ($page['crud']['on' . $tipe][$a]['tipe'] == 'insert') {
 
@@ -1071,7 +1069,6 @@ class CRUDFunc
                                 }
                             }
                             $first = (Partial::input("deleteRow" . $database_utama));
-                            print_R($first);
                             $no_sub_kategori = isset($first[0]) ? count($first) : 0;
                             if ($first) {
                                 foreach ($first as $x => $value_x) {

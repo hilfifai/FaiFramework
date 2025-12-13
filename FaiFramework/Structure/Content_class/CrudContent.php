@@ -4682,7 +4682,6 @@ class CrudContent
 		$literasi = -1;
 		$literasi_combine = -1;
 		for ($j = 2; $j <= count($sheetData); $j++) {
-			print_R($sheetData[$j]);
 			$literasi_combine++;
 			$true = true;
 			foreach ($sheetData[$j] as $key_2 => $values_2) {

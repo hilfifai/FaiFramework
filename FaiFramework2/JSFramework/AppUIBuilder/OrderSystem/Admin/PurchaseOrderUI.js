@@ -437,6 +437,8 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                         "operator": "like_or_fields",
                         "value": `%${query}%`
                     }],
+                    select: ["primary_key"],
+                    group: ["primary_key"],
                     "limit": limit,
                     "offset": (page - 1) * limit
                 };
@@ -444,6 +446,8 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 // Tampilkan semua produk (default)
                 payload = {
                     "db": "view_produk_detail", "function": "all_produk",
+                    select: ["primary_key"],
+                    group: ["primary_key"],
                     "limit": limit,
                     "offset": (page - 1) * limit
                 };
@@ -502,7 +506,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     transformProductData(products) {
         console.log(products);
         const productArray = Object.values(products);
-        
+
         return productArray.map(product => {
             // Jika produk punya multiple varian, kita tampilkan semua varian sebagai produk terpisah
             const variants = [];
@@ -1344,14 +1348,14 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     populatePoDetail() {
         let poList;
         if (Array.isArray(this.filteredPurchaseOrders)) {
-        poList = this.filteredPurchaseOrders;
-    } else if (typeof this.filteredPurchaseOrders === "object" && this.filteredPurchaseOrders !== null) {
-        // jika object, convert menjadi array dari values-nya
-        poList = Object.values(this.filteredPurchaseOrders);
-    } else {
-        console.error("filteredPurchaseOrders bukan array atau object:", this.filteredPurchaseOrders);
-        return;
-    }
+            poList = this.filteredPurchaseOrders;
+        } else if (typeof this.filteredPurchaseOrders === "object" && this.filteredPurchaseOrders !== null) {
+            // jika object, convert menjadi array dari values-nya
+            poList = Object.values(this.filteredPurchaseOrders);
+        } else {
+            console.error("filteredPurchaseOrders bukan array atau object:", this.filteredPurchaseOrders);
+            return;
+        }
         const po = poList.find(p => p.id === this.currentPoId);
 
         // PERBAIKAN: Debug lebih detail
@@ -3462,7 +3466,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 viewElement.innerHTML = this.renderEditReceivingForm(item, receivingItem);
             }
         } else {
-           //??
+            //??
         }
     }
 

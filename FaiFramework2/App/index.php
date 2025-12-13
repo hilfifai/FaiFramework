@@ -18,9 +18,394 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link style="<?=  BASEPATH_FAI ?> ?>/FaiFramework/Pages/OrderSystem/style.css">
+    <link style="<?=  base_url() ?>FaiFramework/Pages/OrderSystem/style.css" rel="stylesheet">
+    <link style="<?=  base_url() ?>FaiFramework/Pages/_template/select_search/style.css" rel="stylesheet">
 
     <style>
+        /* SELECT SEARCH CSS */
+.select-search-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.select-search-box {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: white;
+    cursor: pointer;
+    user-select: none;
+    min-height: 48px;
+    position: relative;
+    transition: all 0.2s ease;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.select-search-box:hover {
+    border-color: #9ca3af;
+}
+
+.select-search-box.open {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.select-search-box.disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.select-search-placeholder {
+    color: #9ca3af;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 1.5rem;
+}
+
+.select-search-placeholder.has-value {
+    color: #374151;
+}
+
+.select-search-arrow {
+    color: #6b7280;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.select-search-box.open .select-search-arrow {
+    transform: rotate(180deg);
+}
+
+.select-search-clear {
+    position: absolute;
+    right: 2.5rem;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0.25rem;
+    display: none;
+    z-index: 1;
+}
+
+.select-search-clear:hover {
+    color: #ef4444;
+}
+
+.select-search-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    flex-grow: 1;
+}
+
+.select-search-tag {
+    background-color: #dbeafe;
+    color: #1e40af;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    max-width: 200px;
+}
+
+.select-search-remove-tag {
+    cursor: pointer;
+    font-size: 1.125rem;
+    line-height: 1;
+    padding-left: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-search-remove-tag:hover {
+    color: #dc2626;
+}
+
+.select-search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    z-index: 50;
+    max-height: 300px;
+    overflow: hidden;
+    display: none;
+    margin-top: 0.25rem;
+}
+
+.select-search-dropdown.open {
+    display: block;
+}
+
+.select-search-input {
+    padding: 0.75rem 1rem;
+    border: none;
+    border-bottom: 1px solid #e5e7eb;
+    width: 100%;
+    font-size: 0.875rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.select-search-input:focus {
+    border-bottom-color: #3b82f6;
+}
+
+.select-search-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.select-search-option {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    font-size: 0.875rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.select-search-option:last-child {
+    border-bottom: none;
+}
+
+.select-search-option:hover {
+    background-color: #f3f4f6;
+}
+
+.select-search-option.selected {
+    background-color: #eff6ff;
+    color: #1e40af;
+    font-weight: 500;
+}
+
+.select-search-option.disabled {
+    color: #9ca3af;
+    cursor: not-allowed;
+    background-color: #f9fafb;
+}
+
+.select-search-option.disabled:hover {
+    background-color: #f9fafb;
+}
+
+.select-search-highlight {
+    background-color: #fef3c7;
+    font-weight: 600;
+    padding: 0 1px;
+    border-radius: 2px;
+}
+
+.select-search-loading,
+.select-search-no-results {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.select-search-info {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+    color: #6b7280;
+    background-color: #f9fafb;
+    display: none;
+}
+
+.select-search-info.error {
+    color: #dc2626;
+    background-color: #fee2e2;
+}
+
+.select-search-info.success {
+    color: #059669;
+    background-color: #d1fae5;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .select-search-dropdown {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vw;
+        max-width: 400px;
+        max-height: 70vh;
+    }
+    
+    .select-search-tag {
+        max-width: 150px;
+    }
+}
+/* --- Reset & Base Styles --- */
+.dropdown-container-be3 {
+  position: relative;
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Menghilangkan panah default pada tag <details/summary> --- */
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* --- Avatar Style (Trigger) --- */
+.avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0; /* Border halus */
+  transition: all 0.2s ease;
+}
+
+.avatar img:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2); /* Efek glow saat hover */
+}
+
+/* --- Dropdown Menu Container (UL) --- */
+details ul {
+  position: absolute;
+  top: 100%; /* Posisi tepat di bawah avatar */
+  margin-top: 10px; /* Jarak sedikit dari avatar */
+  right: 0; /* Align ke kanan karena class .right */
+  width: 240px; /* Lebar dropdown */
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f1f1f1;
+  padding: 8px 0;
+  list-style: none;
+  z-index: 1000;
+  
+  /* Animasi Sederhana saat muncul */
+  transform-origin: top right;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Panah kecil (segitiga) di atas box dropdown - Opsional */
+details ul::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 14px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  transform: rotate(45deg);
+  border-left: 1px solid #f1f1f1;
+  border-top: 1px solid #f1f1f1;
+}
+
+/* --- User Info Section (Header Menu) --- */
+details ul li:first-child {
+  padding: 8px 20px 12px 20px;
+  border-bottom: 1px solid #f1f1f1;
+  margin-bottom: 8px;
+  background-color: #fcfcfc; /* Sedikit beda warna */
+  border-radius: 8px 8px 0 0;
+}
+
+details ul li p {
+  margin: 0;
+  line-height: 1.4;
+  color: #2d3748;
+}
+
+/* --- Typography Helpers --- */
+.block {
+  display: block;
+}
+
+.bold {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a202c;
+}
+
+.italic {
+  font-style: italic;
+  font-size: 12px;
+  color: #718096;
+}
+
+/* --- Menu Links --- */
+details ul li a {
+  display: block;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #4a5568;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+details ul li a:hover {
+  background-color: #f7fafc;
+  color: #2b6cb0;
+}
+
+/* --- Divider --- */
+.divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 8px 0;
+}
+
+/* --- Custom Elements (be3 tags) --- */
+be3-nama-lengkap,
+be3-panel {
+  display: inline;
+}
+
+/* --- Keyframes Animation --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+        /* .blurred > * {
+    filter: blur(5px); 
+    transition: filter 0.3s ease; 
+} */
+    .login-container {
+    /* Properti lain untuk elemen */
+    /* ... */
+    
+    /* Syntax: H-offset V-offset Blur-radius Spread-radius Color */
+    box-shadow: 0 8px 30px 6px rgba(0, 0, 0, 0.25);
+}
         table>tbody>tr>td {
             vertical-align: top
         }
@@ -832,7 +1217,7 @@
         var option = {
             pending_order: true
         }
-        await window.fai.init("fai_init", option, "moesneeds.id", 'v1.0.4-alpha45',
+        await window.fai.init("fai_init", option, "moesneeds.id", 'v1.0.4-alpha46',
 
             base_url, base_url_non_index, base_url_object);
         await window.fai.setupFullWebContent();
