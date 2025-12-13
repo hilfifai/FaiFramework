@@ -58,7 +58,7 @@ $route['produk/(:any)'] = 'FaiServer/index/$1';
 $route['json/(:any)'] = 'FaiServer/index/$1';
 $route['get_version_update'] = 'FaiServer/get_version_update';
 $route['version/(:any)'] = 'FaiServer/index/$1';
-$route['app/(:any)'] = 'FaiServer/App/$1';
+$route['app/(:any)'] = 'FaiServer/index/$1';
 $route['app'] = 'FaiServer/index/$1';
 $route['app2'] = 'FaiServer/index/$1';
 $route['app2/(:any)'] = 'FaiServer/index/$1';
@@ -76,11 +76,12 @@ $route['costum/(:any)'] = 'FaiServer/index/$1';
 $route['search'] = 'FaiServer/index/$1';
 $route['myprofile'] = 'FaiServer/index/$1';
 $route['logout'] = 'FaiServer/logout';
+$route['get_generate'] = 'FaiServer/index/$1';
 $route['login'] = 'FaiServer/index/$1';
 $route['daftar'] = 'FaiServer/index/$1';
 $route['registered/(:any)'] = 'FaiServer/index/$1';
 
 
-$route['default_controller'] = 'FaiServer/App';
+$route['default_controller'] = 'FaiServer/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

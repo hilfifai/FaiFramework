@@ -534,7 +534,7 @@ class MainFaiFramework extends Configuration
 
 	public static function app2()
 	{
-		include BASEPATH . 'FaiFramework2/App/index.php';
+		include BASEPATH_FAI . 'FaiFramework2/App/index.php';
 	}
 
 	public static function api($function, $page, $domain)
