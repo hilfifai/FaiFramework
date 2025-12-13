@@ -1,7 +1,6 @@
 <?php
 if( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once(BASEPATH.'../FaiFramework/MainFaiFramework.php');
 function chat_profile($c){
 	global $f;
 	if($c->type == 'tim'){
@@ -25,7 +24,7 @@ function chat_profile($c){
 		$id_reference = '';
 		$database     = 'websmater';
 		$nama         = 'WUI Official CS';
-	}
+	} 
 	else
 	if($c->type == 'periode'){
 		$id_reference = $c->id_to_chat;
@@ -501,7 +500,7 @@ function gabung_chat_room($panel,$id_panel,$who,$jenis=null,$id_to_chat=null,$id
 		
 			
 }
-function buat_chat($panel,$id_panel=null,$anggota,$jenis=null,$id_to_chat=null,$id_organisasi=null){
+function buat_chat($panel,$id_panel=null,$anggota=null,$jenis=null,$id_to_chat=null,$id_organisasi=null){
 	$f = new MainFaiFramework();
 	$ci = &get_instance();
 	$data['panel']=$panel;
