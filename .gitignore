@@ -10,7 +10,8 @@ soft-ui-dashboard/
 *.iso
 *.mp4
 *.psd
-
+.DS_Store
+Thumbs.db
 session_data/
 application/session_data/
 LAST/
@@ -21,3 +22,4 @@ FaiFramework/Pages/json/all_produk/all_produk.json
 LAST/web/dump (17).sql
 Fai-Version-Template-App.json
 FaiFramework/versions/generated_versions/1.0.0-alpha.json
+*.json

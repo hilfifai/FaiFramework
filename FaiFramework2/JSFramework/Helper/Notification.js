@@ -1,4 +1,4 @@
-export function setShowAlert(message, type) {
+export function setShowAlert(message, type='primary') {
     const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
     const alertHtml = `
         <div class="alert ${alertClass} alert-dismissible fade show" role="alert">

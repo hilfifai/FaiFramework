@@ -1081,6 +1081,205 @@ be3-panel {
             background-color: #343a40;
             background-image: linear-gradient(45deg, #343a40, #4b545c);
         }
+        .job-card {
+    background-color: #ffffff;
+    border-radius: 8px; /* Sudut melengkung agar shadow terlihat lebih bagus */
+    /* Shadow Halus */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    
+    /* Transisi agar saat di-hover mulus */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efek saat mouse diarahkan (Hover) - Kartu naik sedikit */
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.wrapper-job {
+  background-color: #fff !important;
+}
+.job {
+    background-color: #fff !important;
+    padding: 5px;
+}
+/* Container Utama */
+.search-menu {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+    /* Shadow yang lembut dan lebar */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 
+                0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Mengatur input & select agar border-nya lebih tipis supaya shadow container lebih menonjol */
+.search-box, 
+.search-job select {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+/* Efek Focus saat mengetik */
+.search-box:focus, 
+.search-job select:focus {
+}
+
+/* Layout Responsif (Agar input & select sejajar) */
+.search-bar, .search-job {
+    flex: 1; /* Membagi lebar sama rata */
+}
+/* --- Base Style --- */
+#loadMore_data_produk {
+    /* Layout & Ukuran */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 14px 24px;
+    margin-top: 20px;
+    
+    /* Typography */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 700; /* Sedikit lebih tebal agar terbaca di background terang */
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    
+    /* WARNA TEKS: Putih agar kontras dengan oranye pekat */
+    color: #ffffff; 
+    /* Opsional: Jika ingin teks hitam karena background terlalu terang, ganti jadi: color: #333; */
+
+    /* BACKGROUND: Gradasi Kuning ke Oranye */
+    background: linear-gradient(135deg, #ffc107 0%, #ff6f00 100%); 
+    
+    /* Border & Shape */
+    border: none;
+    border-radius: 50px; 
+    cursor: pointer;
+    
+    /* SHADOW: Bernuansa oranye */
+    box-shadow: 0 4px 10px rgba(255, 111, 0, 0.3);
+    
+    /* Transisi */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Hover State (Saat mouse di atas) --- */
+#loadMore_data_produk:hover {
+    transform: translateY(-2px); 
+    /* Membuat warna lebih cerah/kuning saat dihover */
+    background: linear-gradient(135deg, #ffca28 0%, #ff8f00 100%); 
+    /* Shadow melebar dan lebih glowing */
+    box-shadow: 0 8px 20px rgba(255, 111, 0, 0.4); 
+}
+
+/* --- Active State (Saat diklik) --- */
+#loadMore_data_produk:active {
+    transform: translateY(1px); 
+    box-shadow: 0 2px 4px rgba(255, 111, 0, 0.3);
+}
+
+/* --- Disabled State (Saat Loading) --- */
+/* Penting: Tetap abu-abu agar user tahu tombol sedang tidak bisa diklik */
+#loadMore_data_produk:disabled {
+    background: #e2e8f0; 
+    color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    border: 1px solid #cbd5e1;
+}
+
+/* --- Ikon Panah (Opsional) --- */
+#loadMore_data_produk:not(:disabled)::after {
+    content: "↓";
+    margin-left: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: transform 0.3s;
+}
+
+#loadMore_data_produk:hover::after {
+    transform: translateY(3px);
+}
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+.pagination-left {
+  font-size: 14px;
+  color: #666;
+}
+
+.pagination-left select {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.pagination-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+.pagination-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #666;
+}
     </style>
 </head>
 

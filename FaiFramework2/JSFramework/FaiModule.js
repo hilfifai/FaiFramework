@@ -30,6 +30,7 @@ export default class FaiModule {
 			{ default: LoginHub },
 			{ default: OptionTriggrer },
 			{ default: SelectSearchManager },
+			{ default: Pagination },
 			
 		] = await Promise.all([
 			import('./Builder/CrudBuilder.js'),
@@ -55,6 +56,7 @@ export default class FaiModule {
 			import('./Hub/LoginHub.js'),
 			import('./Handler/OptionTriggrer.js'),
 			import('./Helper/SelectSearch.js'),
+			import('./Helper/Pagination.js'),
 			
 		]);
 
@@ -87,6 +89,7 @@ export default class FaiModule {
 			loginHub: new LoginHub() ,
 			optionTriggrer: new OptionTriggrer(), 
 			SelectSearch: new SelectSearchManager, 
+			Pagination: new Pagination(), 
 		}; 
 
 		// Inject semua deps

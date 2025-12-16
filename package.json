@@ -5,7 +5,8 @@
   "main": "index_standalone.php",
   "scripts": {
     "start": "cp .env.production .env && php -S localhost:8000 router.php",
-    "dev": "cp .env.development .env && php -S localhost:8000 router.php"
+    "dev": "cp .env.development .env && php -S localhost:8000 router.php",
+    "testmode": "php -S localhost:8001 TestSpreadhseetApi/index.php"
   },
   "keywords": ["php", "framework", "web", "javascript"],
   "author": "",

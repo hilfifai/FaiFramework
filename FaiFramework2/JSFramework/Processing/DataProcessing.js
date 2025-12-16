@@ -159,7 +159,7 @@ export default class DataProcessing extends FaiModule {
 			throw err;
 		}
 	}
-	async loadJSON(db = 'inventaris__asset__master__kategori_toko', queryBody = {}) {
+	async loadJSON(db = 'inventaris__asset__master__kategori_toko', queryBody = {},getAll = false) {
 		try {
 			const now = new Date();
 			const year = now.getUTCFullYear();
@@ -168,24 +168,7 @@ export default class DataProcessing extends FaiModule {
 			const hour = String(now.getUTCHours()).padStart(2, '0');
 
 			const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-			/*
-				
-				//let queryBody = {};
-				/*let queryBody = {
-					db: 'db1',
-					where: [
-						{
-							field: 'city',
-							operator: '=',
-							value: 'Jakarta'
-						}
-					],
-					orderBy: {
-						field: 'age',
-						direction: 'desc'
-					},
-					limit: 2
-				};*/
+			
 			const response = await fetch(this.getModule("base_url") + 'api/json', {
 				headers: {
 					'Authorization': `Bearer ${token}`
@@ -202,6 +185,9 @@ export default class DataProcessing extends FaiModule {
 				body: JSON.stringify(queryBody)
 			});
 			const originalData = await response.json();
+			if (getAll) {
+				return originalData;
+			}
 			return originalData.data;
 		} catch (error) {
 			console.error('Error loading data:', error);

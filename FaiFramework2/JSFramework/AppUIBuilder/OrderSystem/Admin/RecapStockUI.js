@@ -6,13 +6,13 @@ export default class RecapStockUI extends OrderSystemBuilder {
         this.products = [];
         this.filteredProducts = [];
         this.currentTab = 'all';
-        
+
         // Data arrays
         this.stockOpnameData = [];
         this.outgoingData = [];
         this.receivingData = [];
         this.warehouseRackData = [];
-        
+
         // DOM Elements
         this.stockTableBody = null;
         this.lowStockTableBody = null;
@@ -27,7 +27,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
         this.rakTableBody = null;
         this.historyTableBody = null;
         this.detailHistoryTableBody = null;
-        
+
         this.adjustStockModal = null;
         this.detailModal = null;
         this.adjustStockForm = null;
@@ -36,6 +36,17 @@ export default class RecapStockUI extends OrderSystemBuilder {
         this.quickOrderBtn = null;
         this.quickReportBtn = null;
         this.closeModalBtns = null;
+
+        // Current filter values
+        this.currentSearch = '';
+        this.currentGudang = '';
+        this.currentLocation = '';
+        this.currentLimit = 10;
+        this.currentOffset = 0;
+        this.currentPage = 1;
+
+        // Debounce timeout
+        this.searchTimeout = null;
     }
 
     async init() {
@@ -43,9 +54,9 @@ export default class RecapStockUI extends OrderSystemBuilder {
         this.render();
         this.initializeDOMElements();
         this.renderStockTable();
-        this.updateStats();
         this.populateAdjustProductSelect();
         this.setupEventListeners();
+        this.filterProducts();
     }
 
     // Initialize DOM Elements after render
@@ -63,7 +74,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
         this.rakTableBody = document.getElementById('rakTableBody');
         this.historyTableBody = document.getElementById('historyTableBody');
         this.detailHistoryTableBody = document.getElementById('detailHistoryTableBody');
-        
+
         this.adjustStockModal = document.getElementById('adjustStockModal');
         this.detailModal = document.getElementById('detailModal');
         this.adjustStockForm = document.getElementById('adjustStockForm');
@@ -79,22 +90,20 @@ export default class RecapStockUI extends OrderSystemBuilder {
         try {
             // Simulate API calls - in a real app, you would use fetch or axios
             // For demonstration, we'll use the provided data
-            this.orderSystemJson = await this.loadData(["stok_opname","outgoings","receivings","warehouse_racks"]);
+            this.orderSystemJson = await this.loadData(["warehouse_racks"]);
             // Process stock opname data
-            this.stockOpnameData = this.orderSystemJson.stok_opname;
+            // this.stockOpnameData = this.orderSystemJson.stok_opname;
 
-            // Process outgoing data
-            this.outgoingData =  this.orderSystemJson.outgoings;;
+            // // Process outgoing data
+            // this.outgoingData =  this.orderSystemJson.outgoings;;
 
-            // Process receiving data
-            this.receivingData = this.orderSystemJson.receivings;;
+            // // Process receiving data
+            // this.receivingData = this.orderSystemJson.receivings;;
 
-            // Process warehouse rack data
-            this.warehouseRackData = this.orderSystemJson.warehouse_racks;
-
-            // Process all data to create products array
-            this.products = this.processDataToProducts(this.stockOpnameData, this.outgoingData, this.receivingData, this.warehouseRackData);
-            this.filteredProducts = [...this.products];
+            // // Process warehouse rack data
+            this.warehouseRackData = this.orderSystemJson.warehouseRacks;
+            console.log("this.warehouseRackData", this.warehouseRackData);
+            // Products will be loaded in filterProducts
 
         } catch (error) {
             console.error('Error loading data from API:', error);
@@ -102,170 +111,75 @@ export default class RecapStockUI extends OrderSystemBuilder {
         }
     }
 
-   
+
     // Process API data to create products array
-    processDataToProducts(stockOpnameData, outgoingData, receivingData, warehouseRackData) {
-        const products = [];
-        console.log("stockOpnameData",stockOpnameData);
-        console.log("outgoingData",outgoingData);
-        console.log("receivingData",receivingData);
-        console.log("warehouseRackData",warehouseRackData);
-        // Process stock opname data
-        stockOpnameData.forEach(stockOpname => {
-            if (stockOpname.detail && Array.isArray(stockOpname.detail)) {
-                stockOpname.detail.forEach(item => {
-                    // Find if product already exists
-                    let existingProduct = this.products.find(p => 
-                        p.id_asset === item.id_asset && 
-                        p.id_varian === item.id_varian
-                    );
-                    
-                    if (!existingProduct) {
-                        // Create new product
-                        const product = {
-                            id: this.products.length + 1,
-                            id_asset: item.id_asset,
-                            id_varian: item.id_varian,
-                            name: item.nama_barang,
-                            sku: item.id_from_api ? `API-${item.id_from_api}` : `ASSET-${item.id_asset}`,
-                            category: "pakaian", // Default category
-                            currentStock: item.data_real || 0,
-                            minStock: 5, // Default minimum stock
-                            maxStock: 50, // Default maximum stock
-                            location: this.getWarehouseName(stockOpname.id_gudang_stok_opname, warehouseRackData),
-                            cost: 0, // Default cost
-                            price: 0, // Default price
-                            trend: "neutral", // Default trend
-                            trendValue: 0, // Default trend value
-                            lastMovement: stockOpname.tanggal_stok_opname,
-                            status: this.getStockStatus(item.data_real || 0, 5, 50),
-                            nama_varian: item.nama_varian,
-                            id_from_api: item.id_from_api,
-                            id_from_api_varian: item.id_from_api_varian,
-                            id_produk: item.id_produk_inv,
-                            id_produk_varian: item.id_produk_varian_inv
-                        };
-                        
-                        products.push(product);
-                    } else {
-                        // Update existing product
-                        existingProduct.currentStock = item.data_real || 0;
-                        existingProduct.lastMovement = stockOpname.tanggal_stok_opname;
-                        existingProduct.status = this.getStockStatus(item.data_real || 0, existingProduct.minStock, existingProduct.maxStock);
-                    }
-                });
-            }
-        });
-        outgoingData.forEach(outgoing => {
-                if (outgoing.items && Array.isArray(outgoing.items)) {
-                    outgoing.items.forEach(item => {
-                        // Find if product already exists
-                        let existingProduct = this.products.find(p => 
-                            p.id_asset === item.id_asset && 
-                            p.id_varian === item.id_varian
-                        );
-                        
-                        if (!existingProduct) {
-                            // Create new product
-                            const product = {
-                                id: this.products.length + 1,
-                                id_asset: item.id_asset,
-                                id_varian: item.id_varian,
-                                name: item.nama_barang || "Unknown Product",
-                                sku: item.id_from_api_varian ? `API-${item.id_from_api_varian}` : `ASSET-${item.id_asset}`,
-                                category: "pakaian", // Default category
-                                currentStock: 0, // Default stock
-                                minStock: 5, // Default minimum stock
-                                maxStock: 50, // Default maximum stock
-                                location: this.getWarehouseName(item.breakdown && item.breakdown[0] ? item.breakdown[0].id_gudang_out : null, warehouseRackData),
-                                cost: 0, // Default cost
-                                price: 0, // Default price
-                                trend: "neutral", // Default trend
-                                trendValue: 0, // Default trend value
-                                lastMovement: outgoing.tanggal_outgoing,
-                                status: "out", // Default status
-                                nama_varian: item.nama_varian,
-                                id_from_api: item.id_from_api,
-                                id_from_api_varian: item.id_from_api_varian,
-                                id_produk: item.id_produk_inv,
-                                id_produk_varian: item.id_produk_varian_inv
-                            };
-                            
-                            products.push(product);
-                        }
-                    });
-                }
+    async processDataToProducts(params = {}) {
+        let whereClause = [];
+        if (params.search) {
+
+            whereClause.push({
+                fields: ['nama_varian',"nama_barang"],
+                operator: 'like_or_fields',
+                value: `%${params.search}%`
             });
-            
-            // Process receiving data
-            receivingData.forEach(receiving => {
-                if (receiving.items && Array.isArray(receiving.items)) {
-                    receiving.items.forEach(item => {
-                        // Find if product already exists
-                        let existingProduct = this.products.find(p => 
-                            p.id_asset === item.id_asset && 
-                            p.id_varian === item.id_varian
-                        );
-                        
-                        if (!existingProduct) {
-                            // Create new product
-                            const product = {
-                                id: this.products.length + 1,
-                                id_asset: item.id_asset,
-                                id_varian: item.id_varian,
-                                name: item.nama_barang || "Unknown Product",
-                                sku: item.id_from_api_varian ? `API-${item.id_from_api_varian}` : `ASSET-${item.id_asset}`,
-                                category: "pakaian", // Default category
-                                currentStock: item.qty_pesan || 0,
-                                minStock: 5, // Default minimum stock
-                                maxStock: 50, // Default maximum stock
-                                location: "Unknown", // Default location
-                                cost: 0, // Default cost
-                                price: 0, // Default price
-                                trend: "up", // Default trend
-                                trendValue: item.qty_pesan || 0,
-                                lastMovement: receiving.tanggal_diterima,
-                                status: this.getStockStatus(item.qty_pesan || 0, 5, 50),
-                                nama_varian: item.nama_varian,
-                                id_from_api: item.id_from_api,
-                                id_from_api_varian: item.id_from_api_varian,
-                                id_produk: item.id_produk_inv,
-                                id_produk_varian: item.id_produk_varian_inv
-                            };
-                            
-                            products.push(product);
-                        } else {
-                            // Update existing product
-                            existingProduct.currentStock += item.qty_pesan || 0;
-                            existingProduct.lastMovement = receiving.tanggal_diterima;
-                            existingProduct.status =this.getStockStatus(existingProduct.currentStock, existingProduct.minStock, existingProduct.maxStock);
-                            existingProduct.trend = "up";
-                            existingProduct.trendValue = item.qty_pesan || 0;
-                        }
-                    });
-                }
+           
+        }
+        if (params.gudang) {
+            whereClause.push({
+                fields: 'nama_gudang',
+                operator: '=',
+                value: params.gudang
             });
-            
-        // Process other data sources...
-        console.log(this.products);
-        return products;
+        }
+        if (params.location) {
+            whereClause.push({
+                fields: 'nama_ruang_simpan',
+                operator: '=',
+                value: params.location
+            });
+        }
+        const queryBody = {
+            db: 'view_all_produk_stok_per_gudang',
+            limit: params.limit || 10,
+            where: whereClause,
+            offset: params.offset || 0,
+            search: params.search || '',
+            gudang: params.gudang || '',
+            location: params.location || ''
+        };
+        let data_produk = await window.fai.getModule('Data').loadJSON('view_all_produk_stok_per_gudang', queryBody, true);
+        this.paginationProduct = data_produk;
+        this.initPagination();
+        return data_produk.data;
     }
- render() {
-        let HTML = `  
+    render() {
+        let gudangOptions = '<option value="">Semua Gudang</option>';
+        let locationOptions = '<option value="">Semua Lokasi</option>';
+        let adjustLocationOptions = '<option value="">Pilih Lokasi</option>';
+        if (this.warehouseRackData) {
+            let gudangs = [...new Set(this.warehouseRackData.map(r => r.nama_gudang))];
+            gudangs.forEach(g => {
+                gudangOptions += `<option value="${g}">${g}</option>`;
+            });
+            this.warehouseRackData.forEach(rack => {
+                locationOptions += `<option value="${rack.nama_ruang_simpan}">${rack.nama_ruang_simpan}</option>`;
+                adjustLocationOptions += `<option value="${rack.nama_ruang_simpan}">${rack.nama_ruang_simpan}</option>`;
+            });
+        }
+
+        let HTML = `
         <div class="admin-container d-block" >
             <div class="admin-content">
                 <div class="admin-header">
                     <h2 class="admin-title">Rekapitulasi Stok Barang</h2>
                     <div class="admin-actions">
                         <button class="btn btn-primary" id="generateReportBtn">
-                            <i class="fas fa-file-pdf"></i> Generate Report
+                            <i class="fas fa-file-pdf"></i> Generate Stok
                         </button>
                         <button class="btn btn-success" id="exportExcelBtn">
                             <i class="fas fa-file-excel"></i> Export Excel
                         </button>
-                        <button class="btn btn-info" id="refreshBtn">
-                            <i class="fas fa-sync-alt"></i> Refresh
-                        </button>
+                        
                     </div>
                 </div>
                 
@@ -275,32 +189,17 @@ export default class RecapStockUI extends OrderSystemBuilder {
                             <label class="filter-label">Cari Produk</label>
                             <input type="text" class="filter-input" id="searchProduct" placeholder="Nama atau SKU produk">
                         </div>
+                        
                         <div class="filter-group">
-                            <label class="filter-label">Kategori</label>
-                            <select class="filter-select" id="categoryFilter">
-                                <option value="">Semua Kategori</option>
-                                <option value="elektronik">Elektronik</option>
-                                <option value="aksesoris">Aksesoris</option>
-                                <option value="perabotan">Perabotan</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <label class="filter-label">Status Stok</label>
-                            <select class="filter-select" id="stockStatusFilter">
-                                <option value="">Semua Status</option>
-                                <option value="low">Rendah</option>
-                                <option value="medium">Sedang</option>
-                                <option value="good">Baik</option>
-                                <option value="out">Habis</option>
+                            <label class="filter-label">Gudang</label>
+                            <select class="filter-select" id="gudangFilter">
+                                ${gudangOptions}
                             </select>
                         </div>
                         <div class="filter-group">
                             <label class="filter-label">Lokasi</label>
                             <select class="filter-select" id="locationFilter">
-                                <option value="">Semua Lokasi</option>
-                                <option value="gudang-utama">Gudang Utama</option>
-                                <option value="gudang-cabang">Gudang Cabang</option>
-                                <option value="toko">Toko</option>
+                                ${locationOptions}
                             </select>
                         </div>
                     </div>
@@ -329,7 +228,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                     </div>
                 </div>
                 
-                <div class="dashboard-grid">
+                <div class="dashboard-grid d-none">
                     <div class="chart-container">
                         <div class="chart-title">Trend Stok 30 Hari Terakhir</div>
                         <div class="chart-placeholder">
@@ -375,17 +274,15 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 
                 <div class="tabs">
                     <div class="tab active" data-tab="all">Semua Stok</div>
-                    <div class="tab" data-tab="low">Stok Rendah</div>
-                    <div class="tab" data-tab="out">Stok Habis</div>
-                    <div class="tab" data-tab="movement">Pergerakan Stok</div>
-                    <div class="tab" data-tab="nama-barang">Berdasarkan Nama Barang</div>
-                    <div class="tab" data-tab="nama-varian">Berdasarkan Nama Varian</div>
+                    
+                    <div class="tab " data-tab="nama-barang">Berdasarkan Nama Barang</div>
+                    <div class="tab d-none" data-tab="nama-varian" >Berdasarkan Nama Varian</div>
                     <div class="tab" data-tab="id-produk">Berdasarkan ID Produk</div>
                     <div class="tab" data-tab="id-produk-varian">Berdasarkan ID Produk Varian</div>
-                    <div class="tab" data-tab="id-api">Berdasarkan ID API</div>
+                    <div class="tab d-none" data-tab="id-api">Berdasarkan ID API</div>
                     <div class="tab" data-tab="gudang">Berdasarkan Gudang</div>
                     <div class="tab" data-tab="rak">Berdasarkan Rak</div>
-                    <div class="tab" data-tab="history">History</div>
+                    <div class="tab d-none" data-tab="history">History</div>
                 </div>
                 
                 <div id="tab-all" class="tab-content active">
@@ -676,8 +573,9 @@ export default class RecapStockUI extends OrderSystemBuilder {
                             </tbody>
                         </table>
                     </div>
-                
+             
             </div>
+            <div id="pagination-container"></div>
         </div>
         
         <!-- Modal Detail View -->
@@ -771,10 +669,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         <div class="form-group">
                             <label class="form-label">Lokasi</label>
                             <select class="form-select" id="adjustLocation" required>
-                                <option value="">Pilih Lokasi</option>
-                                <option value="gudang-utama">Gudang Utama</option>
-                                <option value="gudang-cabang">Gudang Cabang</option>
-                                <option value="toko">Toko</option>
+                                ${adjustLocationOptions}
                             </select>
                         </div>
                         
@@ -816,10 +711,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
                     </form>
                 </div>
             </div>
+               
         </div>
         
         <div class="footer">
-            <p>Recap Stock Management System &copy; 2023 - Toko Elektronik Maju Jaya</p>
+            <p>Recap Stock Management System </p>
         </div>
     </div>
 `;
@@ -835,7 +731,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     }
 
     // Get stock status based on current stock, min stock, and max stock
-   getStockStatus(currentStock, minStock, maxStock) {
+    getStockStatus(currentStock, minStock, maxStock) {
         if (currentStock === 0) return "out";
         if (currentStock < minStock) return "low";
         if (currentStock < maxStock * 0.7) return "medium";
@@ -845,27 +741,29 @@ export default class RecapStockUI extends OrderSystemBuilder {
     // Setup event listeners
     setupEventListeners() {
         // Filter events
-        document.getElementById('searchProduct').addEventListener('input', () => this.filterProducts());
-        document.getElementById('categoryFilter').addEventListener('change', () => this.filterProducts());
-        document.getElementById('stockStatusFilter').addEventListener('change', () => this.filterProducts());
+        document.getElementById('searchProduct').addEventListener('input', () => {
+            clearTimeout(this.searchTimeout);
+            this.searchTimeout = setTimeout(() => this.filterProducts(), 500);
+        });
+        document.getElementById('gudangFilter').addEventListener('change', () => this.updateLocationOptions());
         document.getElementById('locationFilter').addEventListener('change', () => this.filterProducts());
         document.getElementById('periodFilter').addEventListener('change', () => this.renderMovementTable());
         document.getElementById('movementTypeFilter').addEventListener('change', () => this.renderMovementTable());
         document.getElementById('historyPeriodFilter').addEventListener('change', () => this.renderHistoryTable());
         document.getElementById('historyTypeFilter').addEventListener('change', () => this.renderHistoryTable());
-        
+
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                
+
                 tab.classList.add('active');
                 document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
-                
+
                 this.currentTab = tab.dataset.tab;
                 // Render appropriate table
-                switch(this.currentTab) {
+                switch (this.currentTab) {
                     case 'all':
                         this.renderStockTable();
                         break;
@@ -905,24 +803,26 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 }
             });
         });
-        
+
+
+
         // Quick actions
         this.quickAdjustBtn.addEventListener('click', () => {
             this.adjustStockModal.style.display = 'block';
         });
-        
+
         this.quickTransferBtn.addEventListener('click', () => {
             alert('Fitur Transfer Stok akan dibuka');
         });
-        
+
         this.quickOrderBtn.addEventListener('click', () => {
             alert('Fitur Pesan Stok akan dibuka');
         });
-        
+
         this.quickReportBtn.addEventListener('click', () => {
             alert('Fitur Laporan Cepat akan dibuka');
         });
-        
+
         // Modal events
         this.closeModalBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -930,13 +830,13 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 this.detailModal.style.display = 'none';
             });
         });
-        
+
         // Adjust stock form
         this.adjustStockForm.addEventListener('submit', (e) => this.handleAdjustStock(e));
-        
+
         // Real-time calculation for adjustment
         document.getElementById('adjustPhysicalStock').addEventListener('input', () => this.calculateDifference());
-        
+
         // Close modal when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === this.adjustStockModal) {
@@ -946,27 +846,29 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 this.detailModal.style.display = 'none';
             }
         });
-        
+
         // Action buttons
-        document.getElementById('generateReportBtn').addEventListener('click', () => this.generateReport());
+        // document.getElementById('generateReportBtn').addEventListener('click', () => this.generateReport());
         document.getElementById('exportExcelBtn').addEventListener('click', () => this.exportExcel());
-        document.getElementById('refreshBtn').addEventListener('click', () => this.refreshData());
+        // document.getElementById('refreshBtn').addEventListener('click', () => this.refreshData());
+
     }
 
     // Render main stock table
     renderStockTable() {
         let tableHTML = '';
-        
+
         this.filteredProducts.forEach(product => {
             const statusClass = this.getStatusClass(product.status);
             const statusText = this.getStatusText(product.status);
-            const trendClass = this.getTrendClass(product.trend);
-            const trendIcon = this.getTrendIcon(product.trend);
-            
+            const trend = this.getTrend(product.total_terjual_varian);
+            const trendClass = this.getTrendClass(trend);
+            const trendIcon = this.getTrendIcon(trend);
+
             // Calculate stock percentage for bar
-            const stockPercentage = (product.currentStock / product.maxStock) * 100;
+            const stockPercentage = (product.stok_available / product.maxStock) * 100;
             const barClass = this.getBarClass(stockPercentage);
-            
+
             tableHTML += `
                 <tr>
                     <td>
@@ -975,19 +877,19 @@ export default class RecapStockUI extends OrderSystemBuilder {
                                 <i class="fas fa-box"></i>
                             </div>
                             <div class="product-info">
-                                <div class="product-name">${product.name}</div>
-                                <div class="product-sku">${product.category}</div>
+                                <div class="product-name">${product.nama_barang}</div>
+                                <div class="product-sku">${product.nama_varian}</div>
                             </div>
                         </div>
                     </td>
-                    <td>${product.sku}</td>
-                    <td>${product.location}</td>
+                    <td>${product.barcode_varian}</td>
+                    <td>${product.nama_ruang_simpan}</td>
                     <td>
                         <div class="stock-level">
                             <div class="stock-bar">
                                 <div class="stock-fill ${barClass}"></div>
                             </div>
-                            <div class="stock-value">${product.currentStock}</div>
+                            <div class="stock-value">${product.stok_available}</div>
                         </div>
                     </td>
                     <td>
@@ -995,7 +897,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                     </td>
                     <td>
                         <span class="${trendClass}">
-                            <i class="fas ${trendIcon}"></i> ${product.trendValue}
+                            <i class="fas ${trendIcon}"></i> ${product.total_terjual_varian}
                         </span>
                     </td>
                     <td>
@@ -1014,7 +916,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 </tr>
             `;
         });
-        
+
         this.stockTableBody.innerHTML = tableHTML;
     }
 
@@ -1022,10 +924,10 @@ export default class RecapStockUI extends OrderSystemBuilder {
     renderLowStockTable() {
         const lowStockProducts = this.products.filter(p => p.status === 'low' || p.status === 'out');
         let tableHTML = '';
-        
+
         lowStockProducts.forEach(product => {
-            const shortage = product.minStock - product.currentStock;
-            
+            const shortage = product.minStock - product.stok_available;
+
             tableHTML += `
                 <tr>
                     <td>
@@ -1034,13 +936,13 @@ export default class RecapStockUI extends OrderSystemBuilder {
                                 <i class="fas fa-box"></i>
                             </div>
                             <div class="product-info">
-                                <div class="product-name">${product.name}</div>
+                                <div class="product-name">${product.nama_barang}</div>
                                 <div class="product-sku">${product.sku}</div>
                             </div>
                         </div>
                     </td>
                     <td>${product.sku}</td>
-                    <td>${product.currentStock}</td>
+                    <td>${product.stok_available}</td>
                     <td>${product.minStock}</td>
                     <td>${shortage > 0 ? shortage : 0}</td>
                     <td>
@@ -1059,81 +961,86 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 </tr>
             `;
         });
-        
+
         this.lowStockTableBody.innerHTML = tableHTML;
     }
 
     // Update statistics
-    updateStats() {
-        const totalProducts = this.products.length;
-        const goodStock = this.products.filter(p => p.status === 'good').length;
-        const mediumStock = this.products.filter(p => p.status === 'medium').length;
-        const lowStock = this.products.filter(p => p.status === 'low').length;
-        const outStock = this.products.filter(p => p.status === 'out').length;
-        
-        // Calculate changes (simulated)
-        const totalChange = Math.floor(Math.random() * 10) - 2;
-        const goodChange = Math.floor(Math.random() * 15) - 5;
-        const mediumChange = Math.floor(Math.random() * 10) - 8;
-        const lowChange = Math.floor(Math.random() * 10) - 5;
-        
-        document.getElementById('totalProducts').textContent = totalProducts;
-        document.getElementById('goodStock').textContent = goodStock;
-        document.getElementById('mediumStock').textContent = mediumStock;
-        document.getElementById('lowStock').textContent = lowStock + outStock;
-        
-        document.getElementById('totalChange').textContent = `${totalChange >= 0 ? '+' : ''}${totalChange}% dari bulan lalu`;
-        document.getElementById('goodChange').textContent = `${goodChange >= 0 ? '+' : ''}${goodChange}%`;
-        document.getElementById('mediumChange').textContent = `${mediumChange >= 0 ? '+' : ''}${mediumChange}%`;
-        document.getElementById('lowChange').textContent = `${lowChange >= 0 ? '+' : ''}${lowChange}%`;
-        
-        // Update change colors
-        document.getElementById('totalChange').className = `stat-change ${totalChange >= 0 ? 'positive' : 'negative'}`;
-        document.getElementById('goodChange').className = `stat-change ${goodChange >= 0 ? 'positive' : 'negative'}`;
-        document.getElementById('mediumChange').className = `stat-change ${mediumChange >= 0 ? 'positive' : 'negative'}`;
-        document.getElementById('lowChange').className = `stat-change ${lowChange >= 0 ? 'positive' : 'negative'}`;
-    }
+   
 
     // Filter products
-    filterProducts() {
-        const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
-        const categoryFilter = document.getElementById('categoryFilter').value;
-        const statusFilter = document.getElementById('stockStatusFilter').value;
-        const locationFilter = document.getElementById('locationFilter').value;
-        
-        this.filteredProducts = this.products.filter(product => {
-            const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
-                                 product.sku.toLowerCase().includes(searchTerm);
-            
-            const matchesCategory = !categoryFilter || product.category === categoryFilter;
-            const matchesStatus = !statusFilter || product.status === statusFilter;
-            const matchesLocation = !locationFilter || product.location === locationFilter;
-            
-            return matchesSearch && matchesCategory && matchesStatus && matchesLocation;
-        });
-        
+    async filterProducts() {
+        this.currentSearch = document.getElementById('searchProduct').value.toLowerCase();
+        this.currentGudang = document.getElementById('gudangFilter').value;
+        this.currentLocation = document.getElementById('locationFilter').value;
+
+        const params = {
+            search: this.currentSearch,
+            gudang: this.currentGudang,
+            location: this.currentLocation,
+            limit: this.currentLimit,
+            offset: this.currentOffset
+        };
+
+        this.products = await this.processDataToProducts(params);
+        this.filteredProducts = [...this.products];
         this.renderStockTable();
+        this.updateStats();
+        // this.initPagination();
+    }
+
+    // Update location options based on selected gudang
+    updateLocationOptions() {
+        const selectedGudang = document.getElementById('gudangFilter').value;
+        let locationOptions = '<option value="">Semua Lokasi</option>';
+        let filteredRacks = selectedGudang ? this.warehouseRackData.filter(r => r.nama_gudang === selectedGudang) : this.warehouseRackData;
+        filteredRacks.forEach(rack => {
+            locationOptions += `<option value="${rack.nama_ruang_simpan}">${rack.nama_ruang_simpan}</option>`;
+        });
+        document.getElementById('locationFilter').innerHTML = locationOptions;
+        this.filterProducts();
+    }
+
+    // Initialize pagination
+    initPagination() {
+
+        this.pagination = window.fai.getModule('Pagination').init({
+            container: 'pagination-container',
+            totalItems: this.paginationProduct.total,
+            pageSize: this.currentLimit,
+            currentPage: this.currentPage,
+            onPageChange: (info) => {
+                this.currentOffset = (info.currentPage - 1) * this.currentLimit;
+                this.currentPage = info.currentPage;
+                this.filterProducts();
+            },
+            onPageSizeChange: (newSize) => {
+                this.currentLimit = newSize.limit;
+                this.currentOffset = 0;
+                this.filterProducts();
+            }
+        });
     }
 
     // Populate adjust product select
     populateAdjustProductSelect() {
         const select = document.getElementById('adjustProduct');
         let optionsHTML = '<option value="">Pilih Produk</option>';
-        
+
         this.products.forEach(product => {
-            optionsHTML += `<option value="${product.id}">${product.name} (${product.sku})</option>`;
+            optionsHTML += `<option value="${product.id}">${product.nama_barang} (${product.sku})</option>`;
         });
-        
+
         select.innerHTML = optionsHTML;
-        
+
         // Add event listener to update system stock when product is selected
         select.addEventListener('change', (e) => {
             const productId = e.target.value;
             const product = this.products.find(p => p.id == productId);
-            
+
             if (product) {
-                document.getElementById('adjustSystemStock').value = product.currentStock;
-                document.getElementById('adjustPhysicalStock').value = product.currentStock;
+                document.getElementById('adjustSystemStock').value = product.stok_available;
+                document.getElementById('adjustPhysicalStock').value = product.stok_available;
                 this.calculateDifference();
             }
         });
@@ -1144,40 +1051,40 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const systemStock = parseInt(document.getElementById('adjustSystemStock').value) || 0;
         const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value) || 0;
         const difference = physicalStock - systemStock;
-        
+
         document.getElementById('adjustDifference').value = difference;
     }
 
     // Handle adjust stock form submission
     handleAdjustStock(e) {
         e.preventDefault();
-        
+
         const productId = document.getElementById('adjustProduct').value;
         const location = document.getElementById('adjustLocation').value;
         const systemStock = parseInt(document.getElementById('adjustSystemStock').value);
         const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value);
         const reason = document.getElementById('adjustReason').value;
         const notes = document.getElementById('adjustNotes').value;
-        
+
         if (!productId || !location || !reason) {
             alert('Harap isi semua field yang wajib diisi!');
             return;
         }
-        
+
         // Find product
         const product = this.products.find(p => p.id == productId);
         if (!product) {
             alert('Produk tidak ditemukan!');
             return;
         }
-        
+
         // Update product stock
         const difference = physicalStock - systemStock;
-        product.currentStock = physicalStock;
-        
+        product.stok_available = physicalStock;
+
         // Update product status based on new stock level
-        const stockPercentage = (product.currentStock / product.maxStock) * 100;
-        if (product.currentStock === 0) {
+        const stockPercentage = (product.stok_available / product.maxStock) * 100;
+        if (product.stok_available === 0) {
             product.status = 'out';
         } else if (stockPercentage < 30) {
             product.status = 'low';
@@ -1186,14 +1093,14 @@ export default class RecapStockUI extends OrderSystemBuilder {
         } else {
             product.status = 'good';
         }
-        
+
         // Update UI
         this.renderStockTable();
         this.updateStats();
         this.adjustStockModal.style.display = 'none';
         this.adjustStockForm.reset();
-        
-        alert(`Stok ${product.name} berhasil dikoreksi!`);
+
+        alert(`Stok ${product.nama_barang} berhasil dikoreksi!`);
     }
 
     // View product detail
@@ -1201,18 +1108,18 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const product = this.products.find(p => p.id === productId);
         if (product) {
             // Update modal content
-            document.getElementById('detailProductName').textContent = product.name;
+            document.getElementById('detailProductName').textContent = product.nama_barang;
             document.getElementById('detailProductStatus').textContent = this.getStatusText(product.status);
             document.getElementById('detailProductStatus').className = `status-badge ${this.getStatusClass(product.status)}`;
             document.getElementById('detailSKU').textContent = product.sku;
-            document.getElementById('detailCurrentStock').textContent = product.currentStock;
+            document.getElementById('detailCurrentStock').textContent = product.stok_available;
             document.getElementById('detailMinStock').textContent = product.minStock;
             document.getElementById('detailMaxStock').textContent = product.maxStock;
-            document.getElementById('detailLocation').textContent = product.location;
+            document.getElementById('detailLocation').textContent = product.nama_ruang_simpan;
             document.getElementById('detailCategory').textContent = product.category;
             document.getElementById('detailProductId').textContent = product.id_produk || '-';
             document.getElementById('detailVariantId').textContent = product.id_varian || '-';
-            
+
             // Show modal
             this.detailModal.style.display = 'block';
         }
@@ -1223,11 +1130,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const product = this.products.find(p => p.id === productId);
         if (product) {
             document.getElementById('adjustProduct').value = product.id;
-            document.getElementById('adjustSystemStock').value = product.currentStock;
-            document.getElementById('adjustPhysicalStock').value = product.currentStock;
-            document.getElementById('adjustLocation').value = product.location;
+            document.getElementById('adjustSystemStock').value = product.stok_available;
+            document.getElementById('adjustPhysicalStock').value = product.stok_available;
+            document.getElementById('adjustLocation').value = product.nama_ruang_simpan;
             this.calculateDifference();
-            
+
             this.adjustStockModal.style.display = 'block';
         }
     }
@@ -1236,7 +1143,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     transferProductStock(productId) {
         const product = this.products.find(p => p.id === productId);
         if (product) {
-            alert(`Transfer stok untuk ${product.name} akan dilakukan`);
+            alert(`Transfer stok untuk ${product.nama_barang} akan dilakukan`);
             // In a real app, this would open a transfer modal
         }
     }
@@ -1245,9 +1152,9 @@ export default class RecapStockUI extends OrderSystemBuilder {
     orderProductStock(productId) {
         const product = this.products.find(p => p.id === productId);
         if (product) {
-            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.name}:`, product.minStock - product.currentStock);
+            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.stok_available);
             if (quantity && quantity > 0) {
-                alert(`PO untuk ${quantity} ${product.name} akan dibuat`);
+                alert(`PO untuk ${quantity} ${product.nama_barang} akan dibuat`);
                 // In a real app, this would create a purchase order
             }
         }
@@ -1260,9 +1167,89 @@ export default class RecapStockUI extends OrderSystemBuilder {
     }
 
     // Export to Excel
-    exportExcel() {
-        alert('Data stok akan diexport ke format Excel');
-        // In a real app, this would export to Excel
+    async exportExcel() {
+        const queryBody = {
+            db: 'view_all_produk_stok_per_gudang',
+            isExcel: true,
+            where: this.buildWhereClause(),
+            select:["nama_gudang",
+"nama_ruang_simpan",
+"nama_barang",
+"deskripsi_barang",
+"barcode",
+"foto_aset",
+"nama_toko",
+"deskripsi_all_produk",
+"nama_varian",
+"sku_index_varian",
+"foto_aset_varian",
+"nama_tipe_tipe1",
+"nama_tipe_tipe2",
+"nama_tipe_tipe3",
+"nama_list_tipe_varian_varian1",
+"nama_list_tipe_varian_varian",
+"nama_list_tipe_varian_varian3",
+"berat_varian",
+"berat",
+"barcode_varian",
+"harga_pokok_penjualan_varian",
+"harga_pokok",
+"total_terjual_varian",
+"stok_available"]
+        };
+        try {
+            const response = await fetch('/api/json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(queryBody),
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'export_' + new Date().toISOString().slice(0, 19).replace(/:/g, '') + '.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } else {
+                alert('Failed to export Excel');
+            }
+        } catch (error) {
+            console.error('Error exporting Excel:', error);
+            alert('Error exporting Excel');
+        }
+    }
+
+    // Build where clause for API
+    buildWhereClause() {
+        let whereClause = [];
+        if (this.currentSearch) {
+            whereClause.push({
+                fields: ['nama_varian', "nama_barang"],
+                operator: 'like_or_fields',
+                value: `%${this.currentSearch}%`
+            });
+        }
+        if (this.currentGudang) {
+            whereClause.push({
+                fields: 'nama_gudang',
+                operator: '=',
+                value: this.currentGudang
+            });
+        }
+        if (this.currentLocation) {
+            whereClause.push({
+                fields: 'nama_ruang_simpan',
+                operator: '=',
+                value: this.currentLocation
+            });
+        }
+        return whereClause;
     }
 
     // Refresh data
@@ -1283,11 +1270,12 @@ export default class RecapStockUI extends OrderSystemBuilder {
             'low': 'status-low',
             'out': 'status-out'
         };
-        
+
         return statusClasses[status] || 'status-medium';
     }
 
     // Get status text
+
     getStatusText(status) {
         const statusTexts = {
             'good': 'Baik',
@@ -1295,10 +1283,26 @@ export default class RecapStockUI extends OrderSystemBuilder {
             'low': 'Rendah',
             'out': 'Habis'
         };
-        
+
         return statusTexts[status] || 'Sedang';
     }
+    getTrend(status) {
+        const trendClasses = {
+            'up': 'trend-up',
+            'down': 'trend-down',
+            'neutral': 'trend-neutral'
+        };
+        if (status > 0) {
+            return 'up';
+        } else
+            if (status == 0) {
+                return 'neutral';
+            } else {
+                return 'down';
+            }
 
+        return trendClasses[trend] || 'trend-neutral';
+    }
     // Get trend class
     getTrendClass(trend) {
         const trendClasses = {
@@ -1306,7 +1310,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             'down': 'trend-down',
             'neutral': 'trend-neutral'
         };
-        
+
         return trendClasses[trend] || 'trend-neutral';
     }
 
@@ -1317,7 +1321,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             'down': 'fa-arrow-down',
             'neutral': 'fa-minus'
         };
-        
+
         return trendIcons[trend] || 'fa-minus';
     }
 
@@ -1331,15 +1335,15 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
     // Placeholder methods for other table renders
     renderOutStockTable() {
-		const outStockProducts = this.products.filter(p => p.status === 'out');
-            let tableHTML = '';
-            
-            outStockProducts.forEach(product => {
-                const lastDate = new Date(product.lastMovement);
-                const today = new Date();
-                const daysOut = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
-                
-                tableHTML += `
+        const outStockProducts = this.products.filter(p => p.status === 'out');
+        let tableHTML = '';
+
+        outStockProducts.forEach(product => {
+            const lastDate = new Date(product.lastMovement);
+            const today = new Date();
+            const daysOut = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+            tableHTML += `
                     <tr>
                         <td>
                             <div class="product-cell">
@@ -1347,7 +1351,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                                     <i class="fas fa-box"></i>
                                 </div>
                                 <div class="product-info">
-                                    <div class="product-name">${product.name}</div>
+                                    <div class="product-name">${product.nama_barang}</div>
                                     <div class="product-sku">${product.sku}</div>
                                 </div>
                             </div>
@@ -1367,7 +1371,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr>
                 `;
-            });
+        });
         // Implementation for out of stock table
         this.outStockTableBody.innerHTML = tableHTML
     }
@@ -1378,55 +1382,73 @@ export default class RecapStockUI extends OrderSystemBuilder {
     }
 
     renderNamaBarangTable() {
-        // Implementation for nama barang table
-		const groupedProducts = {};
-            this.products.forEach(product => {
-                if (!groupedProducts[product.name]) {
-                    groupedProducts[product.name] = [];
-                }
-                groupedProducts[product.name].push(product);
-            });
-            console.log(this.products);
-            console.log(groupedProducts); 
-            let tableHTML = '';
-            
-            Object.keys(groupedProducts).forEach(namaBarang => {
-                const productsInGroup = groupedProducts[namaBarang];
-                const totalStock = productsInGroup.reduce((sum, product) => sum + product.currentStock, 0);
-                const status =this.getStockStatus(totalStock, 5, 50); // Using default min/max
-                
-                tableHTML += `
-                    <tr>
-                        <td>${namaBarang}</td>
-                        <td>${productsInGroup.length}</td>
-                        <td>${totalStock}</td>
-                        <td>
-                            <span class="status-badge ${this.getStatusClass(status)}">${this.getStatusText(status)}</span>
-                        </td>
-                        <td>
-                            <button class="action-btn btn-detail" onclick="viewProductsByNamaBarang('${namaBarang}')">
-                                <i class="fas fa-eye"></i> Lihat Detail
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            console.log(tableHTML);
-        document.getElementById('namaBarangTableBody').innerHTML = tableHTML;
-    }
+    const groupedProducts = {};
+
+    this.products.forEach(product => {
+        if (!groupedProducts[product.nama_barang]) {
+            groupedProducts[product.nama_barang] = {};
+        }
+
+        const varianKey = product.nama_varian;
+
+        if (!groupedProducts[product.nama_barang][varianKey]) {
+            groupedProducts[product.nama_barang][varianKey] = {
+                ...product,
+                stok_available: parseFloat(product.stok_available)
+            };
+        } else {
+            groupedProducts[product.nama_barang][varianKey].stok_available += parseFloat(product.stok_available);
+        }
+    });
+
+    let tableHTML = '';
+
+    Object.keys(groupedProducts).forEach(namaBarang => {
+        const uniqueVariants = Object.values(groupedProducts[namaBarang]);
+
+        const totalStock = uniqueVariants.reduce(
+            (sum, product) => sum + product.stok_available,
+            0
+        );
+
+        const status = this.getStockStatus(totalStock, 5, 50);
+
+        tableHTML += `
+            <tr>
+                <td>${namaBarang}</td>
+                <td>${uniqueVariants.length}</td>
+                <td>${totalStock}</td>
+                <td>
+                    <span class="status-badge ${this.getStatusClass(status)}">
+                        ${this.getStatusText(status)}
+                    </span>
+                </td>
+                <td>
+                    <button class="action-btn btn-detail"
+                        onclick="viewProductsByNamaBarang('${namaBarang}')">
+                        <i class="fas fa-eye"></i> Lihat Detail
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById('namaBarangTableBody').innerHTML = tableHTML;
+}
+
 
     renderNamaVarianTable() {
         // Implementation for nama varian table
-		const productsWithVarian = this.products.filter(p => p.nama_varian);
-            
-            let tableHTML = '';
-            
-            productsWithVarian.forEach(product => {
-                tableHTML += `
+        const productsWithVarian = this.products.filter(p => p.nama_varian);
+
+        let tableHTML = '';
+
+        productsWithVarian.forEach(product => {
+            tableHTML += `
                     <tr>
                         <td>${product.nama_varian}</td>
-                        <td>${product.name}</td>
-                        <td>${product.currentStock}</td>
+                        <td>${product.nama_barang}</td>
+                        <td>${product.stok_available}</td>
                         <td>
                             <span class="status-badge ${this.getStatusClass(product.status)}">${this.getStatusText(product.status)}</span>
                         </td>
@@ -1437,33 +1459,33 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr>
                 `;
-            });
-            
+        });
+
         this.namaVarianTableBody.innerHTML = tableHTML;
     }
 
     renderIdProdukTable() {
         // Implementation for ID produk table
-		const groupedProducts = {};
-            this.products.forEach(product => {
-                if (product.id_produk) {
-                    if (!groupedProducts[product.id_produk]) {
-                        groupedProducts[product.id_produk] = [];
-                    }
-                    groupedProducts[product.id_produk].push(product);
+        const groupedProducts = {};
+        this.products.forEach(product => {
+            if (product.id) {
+                if (!groupedProducts[product.id]) {
+                    groupedProducts[product.id] = [];
                 }
-            });
-            
-            let tableHTML = '';
-            
-            Object.keys(groupedProducts).forEach(idProduk => {
-                const productsInGroup = groupedProducts[idProduk];
-                const totalStock = productsInGroup.reduce((sum, product) => sum + product.currentStock, 0);
-                
-                tableHTML += `
+                groupedProducts[product.id].push(product);
+            }
+        });
+
+        let tableHTML = '';
+
+        Object.keys(groupedProducts).forEach(idProduk => {
+            const productsInGroup = groupedProducts[idProduk];
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+
+            tableHTML += `
                     <tr>
                         <td>${idProduk}</td>
-                        <td>${productsInGroup[0].name}</td>
+                        <td>${productsInGroup[0].nama_barang}</td>
                         <td>${productsInGroup.length}</td>
                         <td>${totalStock}</td>
                         <td>
@@ -1471,24 +1493,26 @@ export default class RecapStockUI extends OrderSystemBuilder {
                                 <i class="fas fa-eye"></i> Lihat Detail
                             </button>
                         </td>
-                    </tr>
+                    </tr> 
+
+                    
                 `;
-            });
+        });
         this.idProdukTableBody.innerHTML = tableHTML;
     }
 
     renderIdProdukVarianTable() {
-		const productsWithIdProdukVarian = this.products.filter(p => p.id_produk_varian);
-            
-            let tableHTML = '';
-            
-            productsWithIdProdukVarian.forEach(product => {
-                tableHTML += `
+        const productsWithIdProdukVarian = this.products.filter(p => p.id_produk_varian);
+
+        let tableHTML = '';
+
+        productsWithIdProdukVarian.forEach(product => {
+            tableHTML += `
                     <tr>
                         <td>${product.id_produk_varian}</td>
-                        <td>${product.name}</td>
+                        <td>${product.nama_barang}</td>
                         <td>${product.nama_varian || '-'}</td>
-                        <td>${product.currentStock}</td>
+                        <td>${product.stok_available}</td>
                         <td>
                             <button class="action-btn btn-detail" onclick="viewProductDetail(${product.id})">
                                 <i class="fas fa-eye"></i> Detail
@@ -1496,25 +1520,25 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr>
                 `;
-            });
+        });
         // Implementation for ID produk varian table
         this.idProdukVarianTableBody.innerHTML = tableHTML;
     }
 
     renderIdApiTable() {
-		const productsWithIdApi = this.products.filter(p => p.id_from_api || p.id_from_api_varian);
-            
-            let tableHTML = '';
-            
-            productsWithIdApi.forEach(product => {
-                const idApi = product.id_from_api_varian || product.id_from_api;
-                
-                tableHTML += `
+        const productsWithIdApi = this.products.filter(p => p.id_api || p.id_api_varian);
+
+        let tableHTML = '';
+
+        productsWithIdApi.forEach(product => {
+            const idApi = product.id_from_api_varian || product.id_from_api;
+
+            tableHTML += `
                     <tr>
                         <td>${idApi}</td>
-                        <td>${product.name}</td>
+                        <td>${product.nama_barang}</td>
                         <td>${product.nama_varian || '-'}</td>
-                        <td>${product.currentStock}</td>
+                        <td>${product.stok_available}</td>
                         <td>
                             <button class="action-btn btn-detail" onclick="viewProductDetail(${product.id})">
                                 <i class="fas fa-eye"></i> Detail
@@ -1522,29 +1546,29 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr>
                 `;
-            });
+        });
         // Implementation for ID API table
         this.idApiTableBody.innerHTML = tableHTML;
     }
 
     renderGudangTable() {
         // Implementation for gudang table
-		const groupedProducts = {};
-            this.products.forEach(product => {
-                if (!groupedProducts[product.location]) {
-                    groupedProducts[product.location] = [];
-                }
-                groupedProducts[product.location].push(product);
-            });
-            
-            let tableHTML = '';
-            
-            Object.keys(groupedProducts).forEach(location => {
-                const productsInGroup = groupedProducts[location];
-                const totalStock = productsInGroup.reduce((sum, product) => sum + product.currentStock, 0);
-                const status =this.getStockStatus(totalStock, 5, 50); // Using default min/max
-                
-                tableHTML += `
+        const groupedProducts = {};
+        this.products.forEach(product => {
+            if (!groupedProducts[product.nama_gudang]) {
+                groupedProducts[product.nama_gudang] = [];
+            }
+            groupedProducts[product.nama_gudang].push(product);
+        });
+
+        let tableHTML = '';
+
+        Object.keys(groupedProducts).forEach(location => {
+            const productsInGroup = groupedProducts[location];
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+            const status = this.getStockStatus(totalStock, 5, 50); // Using default min/max
+
+            tableHTML += `
                     <tr>
                         <td>${location}</td>
                         <td>${productsInGroup.length}</td>
@@ -1559,310 +1583,333 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr>
                 `;
-            });
+        });
         this.gudangTableBody.innerHTML = tableHTML;
     }
 
     renderRakTable() {
-		rakTableBody.innerHTML = `
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 20px;">
-                        <i class="fas fa-info-circle" style="font-size: 24px; margin-bottom: 10px; display: block; color: var(--secondary);"></i>
-                        <p>Data rak akan ditampilkan di sini</p>
-                    </td>
-                </tr>
-            `;
-        // Implementation for rak table
-        this.rakTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center;">Data berdasarkan rak akan ditampilkan di sini</td></tr>`;
-    }
+        const groupedProducts = {};
+        this.products.forEach(product => {
+            if (!groupedProducts[product.nama_ruang_simpan]) {
+                groupedProducts[product.nama_ruang_simpan] = [];
+            }
+            groupedProducts[product.nama_ruang_simpan].push(product);
+        });
+
+        let tableHTML = '';
+
+        Object.keys(groupedProducts).forEach(location => {
+            const productsInGroup = groupedProducts[location];
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+            const status = this.getStockStatus(totalStock, 5, 50); // Using default min/max
+
+            tableHTML += `
+                    <tr>
+                        <td>${location}</td>
+                        <td>${productsInGroup.length}</td>
+                        <td>${totalStock}</td>
+                        <td>
+                            <span class="status-badge ${this.getStatusClass(status)}">${this.getStatusText(status)}</span>
+                        </td>
+                        <td>
+                           <!-- <button class="action-btn btn-detail" onclick="this.viewProductsByLocation('${location}')">
+                                <i class="fas fa-eye"></i> Lihat Detail
+                            </button>-->
+                        </td>
+                    </tr>
+                `;
+        });
+        this.rakTableBody.innerHTML = tableHTML;
+        }
 
     renderHistoryTable() {
         // Implementation for history table
         this.historyTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Data history akan ditampilkan di sini</td></tr>`;
     }
-	 updateStats() {
-            const totalProducts = this.products.length;
-            const goodStock = this.products.filter(p => p.status === 'good').length;
-            const mediumStock = this.products.filter(p => p.status === 'medium').length;
-            const lowStock = this.products.filter(p => p.status === 'low').length;
-            const outStock = this.products.filter(p => p.status === 'out').length;
-            
-            // Calculate changes (simulated)
-            const totalChange = Math.floor(Math.random() * 10) - 2;
-            const goodChange = Math.floor(Math.random() * 15) - 5;
-            const mediumChange = Math.floor(Math.random() * 10) - 8;
-            const lowChange = Math.floor(Math.random() * 10) - 5;
-            
-            document.getElementById('totalProducts').textContent = totalProducts;
-            document.getElementById('goodStock').textContent = goodStock;
-            document.getElementById('mediumStock').textContent = mediumStock;
-            document.getElementById('lowStock').textContent = lowStock + outStock;
-            
-            document.getElementById('totalChange').textContent = `${totalChange >= 0 ? '+' : ''}${totalChange}% dari bulan lalu`;
-            document.getElementById('goodChange').textContent = `${goodChange >= 0 ? '+' : ''}${goodChange}%`;
-            document.getElementById('mediumChange').textContent = `${mediumChange >= 0 ? '+' : ''}${mediumChange}%`;
-            document.getElementById('lowChange').textContent = `${lowChange >= 0 ? '+' : ''}${lowChange}%`;
-            
-            // Update change colors
-            document.getElementById('totalChange').className = `stat-change ${totalChange >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('goodChange').className = `stat-change ${goodChange >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('mediumChange').className = `stat-change ${mediumChange >= 0 ? 'positive' : 'negative'}`;
-            document.getElementById('lowChange').className = `stat-change ${lowChange >= 0 ? 'positive' : 'negative'}`;
-        }
+     updateStats() {
+        const totalProducts = this.paginationProduct.total;
+       
+        const goodStock = this.products.filter(p => p.stok_available >= 50).length;
+        const mediumStock = this.products.filter(p => p.stok_available >= 11 && p.stok_available <= 49).length;
+        const lowStock = this.products.filter(p => p.stok_available >= 1 && p.stok_available <= 10 ).length;
+        const outStock = this.products.filter(p => p.stok_available <= 0).length;
 
-        // Filter products
-         filterProducts() {
-            const searchTerm = document.getElementById('searchProduct').value.toLowerCase();
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            const statusFilter = document.getElementById('stockStatusFilter').value;
-            const locationFilter = document.getElementById('locationFilter').value;
-            
-            filteredProducts = this.products.filter(product => {
-                const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
-                                     product.sku.toLowerCase().includes(searchTerm);
-                
-                const matchesCategory = !categoryFilter || product.category === categoryFilter;
-                const matchesStatus = !statusFilter || product.status === statusFilter;
-                const matchesLocation = !locationFilter || product.location === locationFilter;
-                
-                return matchesSearch && matchesCategory && matchesStatus && matchesLocation;
-            });
-            
-            renderStockTable();
-        }
+        // Calculate changes (simulated)
+        const totalChange = Math.floor(Math.random() * 10) - 2;
+        const goodChange = Math.floor(Math.random() * 15) - 5;
+        const mediumChange = Math.floor(Math.random() * 10) - 8;
+        const lowChange = Math.floor(Math.random() * 10) - 5;
 
-        // Populate adjust product select
-         populateAdjustProductSelect() {
-            const select = document.getElementById('adjustProduct');
-            let optionsHTML = '<option value="">Pilih Produk</option>';
-            
-            this.products.forEach(product => {
-                optionsHTML += `<option value="${product.id}">${product.name} (${product.sku})</option>`;
-            });
-            
-            select.innerHTML = optionsHTML;
-            
-            // Add event listener to update system stock when product is selected
-            select.addEventListener('change', (e) => {
-                const productId = e.target.value;
-                const product = this.products.find(p => p.id == productId);
-                
-                if (product) {
-                    document.getElementById('adjustSystemStock').value = product.currentStock;
-                    document.getElementById('adjustPhysicalStock').value = product.currentStock;
-                    calculateDifference();
-                }
-            });
-        }
+        document.getElementById('totalProducts').textContent = totalProducts;
+        document.getElementById('goodStock').textContent = goodStock;
+        document.getElementById('mediumStock').textContent = mediumStock;
+        document.getElementById('lowStock').textContent = lowStock + outStock;
 
-        // Calculate difference between system and physical stock
-         calculateDifference() {
-            const systemStock = parseInt(document.getElementById('adjustSystemStock').value) || 0;
-            const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value) || 0;
-            const difference = physicalStock - systemStock;
-            
-            document.getElementById('adjustDifference').value = difference;
-        }
+        document.getElementById('totalChange').textContent = `${totalChange >= 0 ? '+' : ''}${totalChange}% dari bulan lalu`;
+        document.getElementById('goodChange').textContent = `${goodChange >= 0 ? '+' : ''}${goodChange}%`;
+        document.getElementById('mediumChange').textContent = `${mediumChange >= 0 ? '+' : ''}${mediumChange}%`;
+        document.getElementById('lowChange').textContent = `${lowChange >= 0 ? '+' : ''}${lowChange}%`;
 
-        // Handle adjust stock form submission
-         handleAdjustStock(e) {
-            e.preventDefault();
-            
-            const productId = document.getElementById('adjustProduct').value;
-            const location = document.getElementById('adjustLocation').value;
-            const systemStock = parseInt(document.getElementById('adjustSystemStock').value);
-            const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value);
-            const reason = document.getElementById('adjustReason').value;
-            const notes = document.getElementById('adjustNotes').value;
-            
-            if (!productId || !location || !reason) {
-                alert('Harap isi semua field yang wajib diisi!');
-                return;
-            }
-            
-            // Find product
+        // Update change colors
+        document.getElementById('totalChange').className = `stat-change ${totalChange >= 0 ? 'positive' : 'negative'}`;
+        document.getElementById('goodChange').className = `stat-change ${goodChange >= 0 ? 'positive' : 'negative'}`;
+        document.getElementById('mediumChange').className = `stat-change ${mediumChange >= 0 ? 'positive' : 'negative'}`;
+        document.getElementById('lowChange').className = `stat-change ${lowChange >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+
+    // Filter products
+    async filterProducts() {
+        this.currentSearch = document.getElementById('searchProduct').value.toLowerCase();
+        this.currentGudang = document.getElementById('gudangFilter').value;
+        this.currentLocation = document.getElementById('locationFilter').value;
+
+        const params = {
+            search: this.currentSearch,
+            gudang: this.currentGudang,
+            location: this.currentLocation,
+            limit: this.currentLimit,
+            offset: this.currentOffset
+        };
+
+        this.products = await this.processDataToProducts(params);
+        this.filteredProducts = [...this.products];
+        this.renderStockTable();
+        this.updateStats();
+        if (this.pagination) {
+            this.pagination.updateTotal(this.paginationProduct.total);
+        }
+    }
+
+    // Populate adjust product select
+    populateAdjustProductSelect() {
+        const select = document.getElementById('adjustProduct');
+        let optionsHTML = '<option value="">Pilih Produk</option>';
+
+        this.products.forEach(product => {
+            optionsHTML += `<option value="${product.id}">${product.nama_barang} (${product.sku})</option>`;
+        });
+
+        select.innerHTML = optionsHTML;
+
+        // Add event listener to update system stock when product is selected
+        select.addEventListener('change', (e) => {
+            const productId = e.target.value;
             const product = this.products.find(p => p.id == productId);
-            if (!product) {
-                alert('Produk tidak ditemukan!');
-                return;
+
+            if (product) {
+                document.getElementById('adjustSystemStock').value = product.stok_available;
+                document.getElementById('adjustPhysicalStock').value = product.stok_available;
+                calculateDifference();
             }
-            
-            // Update product stock
-            const difference = physicalStock - systemStock;
-            product.currentStock = physicalStock;
-            
-            // Update product status based on new stock level
-            const stockPercentage = (product.currentStock / product.maxStock) * 100;
-            if (product.currentStock === 0) {
-                product.status = 'out';
-            } else if (stockPercentage < 30) {
-                product.status = 'low';
-            } else if (stockPercentage < 70) {
-                product.status = 'medium';
-            } else {
-                product.status = 'good';
+        });
+    }
+
+    // Calculate difference between system and physical stock
+    calculateDifference() {
+        const systemStock = parseInt(document.getElementById('adjustSystemStock').value) || 0;
+        const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value) || 0;
+        const difference = physicalStock - systemStock;
+
+        document.getElementById('adjustDifference').value = difference;
+    }
+
+    // Handle adjust stock form submission
+    handleAdjustStock(e) {
+        e.preventDefault();
+
+        const productId = document.getElementById('adjustProduct').value;
+        const location = document.getElementById('adjustLocation').value;
+        const systemStock = parseInt(document.getElementById('adjustSystemStock').value);
+        const physicalStock = parseInt(document.getElementById('adjustPhysicalStock').value);
+        const reason = document.getElementById('adjustReason').value;
+        const notes = document.getElementById('adjustNotes').value;
+
+        if (!productId || !location || !reason) {
+            alert('Harap isi semua field yang wajib diisi!');
+            return;
+        }
+
+        // Find product
+        const product = this.products.find(p => p.id == productId);
+        if (!product) {
+            alert('Produk tidak ditemukan!');
+            return;
+        }
+
+        // Update product stock
+        const difference = physicalStock - systemStock;
+        product.stok_available = physicalStock;
+
+        // Update product status based on new stock level
+        const stockPercentage = (product.stok_available / product.maxStock) * 100;
+        if (product.stok_available === 0) {
+            product.status = 'out';
+        } else if (stockPercentage < 30) {
+            product.status = 'low';
+        } else if (stockPercentage < 70) {
+            product.status = 'medium';
+        } else {
+            product.status = 'good';
+        }
+
+        // Update UI
+        renderStockTable();
+        updateStats();
+        adjustStockModal.style.display = 'none';
+        adjustStockForm.reset();
+
+        alert(`Stok ${product.nama_barang} berhasil dikoreksi!`);
+    }
+
+    // View product detail
+    viewProductDetail(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (product) {
+            // Update modal content
+            document.getElementById('detailProductName').textContent = product.nama_barang;
+            document.getElementById('detailProductStatus').textContent = getStatusText(product.status);
+            document.getElementById('detailProductStatus').className = `status-badge ${this.getStatusClass(product.status)}`;
+            document.getElementById('detailSKU').textContent = product.sku;
+            document.getElementById('detailCurrentStock').textContent = product.stok_available;
+            document.getElementById('detailMinStock').textContent = product.minStock;
+            document.getElementById('detailMaxStock').textContent = product.maxStock;
+            document.getElementById('detailLocation').textContent = product.nama_ruang_simpan;
+            document.getElementById('detailCategory').textContent = product.category;
+            document.getElementById('detailProductId').textContent = product.id_produk || '-';
+            document.getElementById('detailVariantId').textContent = product.id_varian || '-';
+
+            // Show modal
+            detailModal.style.display = 'block';
+        }
+    }
+
+    // View products by nama barang
+    viewProductsByNamaBarang(namaBarang) {
+        const filteredProducts = this.products.filter(p => p.name === namaBarang);
+        // This would open a modal or navigate to a detail view
+        alert(`Menampilkan ${filteredProducts.length} produk dengan nama "${namaBarang}"`);
+    }
+
+    // View products by ID produk
+    viewProductsByIdProduk(idProduk) {
+        const filteredProducts = this.products.filter(p => p.id_produk == idProduk);
+        // This would open a modal or navigate to a detail view
+        alert(`Menampilkan ${filteredProducts.length} produk dengan ID Produk "${idProduk}"`);
+    }
+
+    // View products by location
+    viewProductsByLocation(location) {
+        const filteredProducts = this.products.filter(p => p.location === location);
+        // This would open a modal or navigate to a detail view
+        alert(`Menampilkan ${filteredProducts.length} produk di lokasi "${location}"`);
+    }
+
+    // Adjust product stock (from action button)
+    adjustProductStock(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (product) {
+            document.getElementById('adjustProduct').value = product.id;
+            document.getElementById('adjustSystemStock').value = product.stok_available;
+            document.getElementById('adjustPhysicalStock').value = product.stok_available;
+            document.getElementById('adjustLocation').value = product.nama_ruang_simpan;
+            calculateDifference();
+
+            adjustStockModal.style.display = 'block';
+        }
+    }
+
+    // Transfer product stock (from action button)
+    transferProductStock(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (product) {
+            alert(`Transfer stok untuk ${product.nama_barang} akan dilakukan`);
+            // In a real app, this would open a transfer modal
+        }
+    }
+
+    // Order product stock (from action button)
+    orderProductStock(productId) {
+        const product = this.products.find(p => p.id === productId);
+        if (product) {
+            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.stok_available);
+            if (quantity && quantity > 0) {
+                alert(`PO untuk ${quantity} ${product.nama_barang} akan dibuat`);
+                // In a real app, this would create a purchase order
             }
-            
-            // Update UI
+        }
+    }
+
+    // Generate report
+    generateReport() {
+        alert('Laporan rekapitulasi stok akan di-generate dalam format PDF');
+        // In a real app, this would generate a PDF report
+    }
+
+    // Export to Excel
+   
+
+    // Refresh data
+    refreshData() {
+        // Simulate data refresh
+        alert('Data stok diperbarui');
+        loadDataFromAPI().then(() => {
             renderStockTable();
             updateStats();
-            adjustStockModal.style.display = 'none';
-            adjustStockForm.reset();
-            
-            alert(`Stok ${product.name} berhasil dikoreksi!`);
-        }
+        });
+    }
 
-        // View product detail
-         viewProductDetail(productId) {
-            const product = this.products.find(p => p.id === productId);
-            if (product) {
-                // Update modal content
-                document.getElementById('detailProductName').textContent = product.name;
-                document.getElementById('detailProductStatus').textContent = getStatusText(product.status);
-                document.getElementById('detailProductStatus').className = `status-badge ${this.getStatusClass(product.status)}`;
-                document.getElementById('detailSKU').textContent = product.sku;
-                document.getElementById('detailCurrentStock').textContent = product.currentStock;
-                document.getElementById('detailMinStock').textContent = product.minStock;
-                document.getElementById('detailMaxStock').textContent = product.maxStock;
-                document.getElementById('detailLocation').textContent = product.location;
-                document.getElementById('detailCategory').textContent = product.category;
-                document.getElementById('detailProductId').textContent = product.id_produk || '-';
-                document.getElementById('detailVariantId').textContent = product.id_varian || '-';
-                
-                // Show modal
-                detailModal.style.display = 'block';
-            }
-        }
+    // Get status class
+    getStatusClass(status) {
+        const statusClasses = {
+            'good': 'status-good',
+            'medium': 'status-medium',
+            'low': 'status-low',
+            'out': 'status-out'
+        };
 
-        // View products by nama barang
-         viewProductsByNamaBarang(namaBarang) {
-            const filteredProducts = this.products.filter(p => p.name === namaBarang);
-            // This would open a modal or navigate to a detail view
-            alert(`Menampilkan ${filteredProducts.length} produk dengan nama "${namaBarang}"`);
-        }
+        return statusClasses[status] || 'status-medium';
+    }
 
-        // View products by ID produk
-         viewProductsByIdProduk(idProduk) {
-            const filteredProducts = this.products.filter(p => p.id_produk == idProduk);
-            // This would open a modal or navigate to a detail view
-            alert(`Menampilkan ${filteredProducts.length} produk dengan ID Produk "${idProduk}"`);
-        }
+    // Get status text
+    getStatusText(status) {
+        const statusTexts = {
+            'good': 'Baik',
+            'medium': 'Sedang',
+            'low': 'Rendah',
+            'out': 'Habis'
+        };
 
-        // View products by location
-         viewProductsByLocation(location) {
-            const filteredProducts = this.products.filter(p => p.location === location);
-            // This would open a modal or navigate to a detail view
-            alert(`Menampilkan ${filteredProducts.length} produk di lokasi "${location}"`);
-        }
+        return statusTexts[status] || 'Sedang';
+    }
 
-        // Adjust product stock (from action button)
-         adjustProductStock(productId) {
-            const product = this.products.find(p => p.id === productId);
-            if (product) {
-                document.getElementById('adjustProduct').value = product.id;
-                document.getElementById('adjustSystemStock').value = product.currentStock;
-                document.getElementById('adjustPhysicalStock').value = product.currentStock;
-                document.getElementById('adjustLocation').value = product.location;
-                calculateDifference();
-                
-                adjustStockModal.style.display = 'block';
-            }
-        }
+    // Get trend class
+    getTrendClass(trend) {
+        const trendClasses = {
+            'up': 'trend-up',
+            'down': 'trend-down',
+            'neutral': 'trend-neutral'
+        };
 
-        // Transfer product stock (from action button)
-         transferProductStock(productId) {
-            const product = this.products.find(p => p.id === productId);
-            if (product) {
-                alert(`Transfer stok untuk ${product.name} akan dilakukan`);
-                // In a real app, this would open a transfer modal
-            }
-        }
+        return trendClasses[trend] || 'trend-neutral';
+    }
 
-        // Order product stock (from action button)
-         orderProductStock(productId) {
-            const product = this.products.find(p => p.id === productId);
-            if (product) {
-                const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.name}:`, product.minStock - product.currentStock);
-                if (quantity && quantity > 0) {
-                    alert(`PO untuk ${quantity} ${product.name} akan dibuat`);
-                    // In a real app, this would create a purchase order
-                }
-            }
-        }
+    // Get trend icon
+    getTrendIcon(trend) {
+        const trendIcons = {
+            'up': 'fa-arrow-up',
+            'down': 'fa-arrow-down',
+            'neutral': 'fa-minus'
+        };
 
-        // Generate report
-         generateReport() {
-            alert('Laporan rekapitulasi stok akan di-generate dalam format PDF');
-            // In a real app, this would generate a PDF report
-        }
+        return trendIcons[trend] || 'fa-minus';
+    }
 
-        // Export to Excel
-         exportExcel() {
-            alert('Data stok akan diexport ke format Excel');
-            // In a real app, this would export to Excel
-        }
-
-        // Refresh data
-         refreshData() {
-            // Simulate data refresh
-            alert('Data stok diperbarui');
-            loadDataFromAPI().then(() => {
-                renderStockTable();
-                updateStats();
-            });
-        }
-
-        // Get status class
-         getStatusClass(status) {
-            const statusClasses = {
-                'good': 'status-good',
-                'medium': 'status-medium',
-                'low': 'status-low',
-                'out': 'status-out'
-            };
-            
-            return statusClasses[status] || 'status-medium';
-        }
-
-        // Get status text
-         getStatusText(status) {
-            const statusTexts = {
-                'good': 'Baik',
-                'medium': 'Sedang',
-                'low': 'Rendah',
-                'out': 'Habis'
-            };
-            
-            return statusTexts[status] || 'Sedang';
-        }
-
-        // Get trend class
-         getTrendClass(trend) {
-            const trendClasses = {
-                'up': 'trend-up',
-                'down': 'trend-down',
-                'neutral': 'trend-neutral'
-            };
-            
-            return trendClasses[trend] || 'trend-neutral';
-        }
-
-        // Get trend icon
-         getTrendIcon(trend) {
-            const trendIcons = {
-                'up': 'fa-arrow-up',
-                'down': 'fa-arrow-down',
-                'neutral': 'fa-minus'
-            };
-            
-            return trendIcons[trend] || 'fa-minus';
-        }
-
-        // Get bar class based on percentage
-         getBarClass(percentage) {
-            if (percentage >= 70) return 'full';
-            if (percentage >= 40) return 'good';
-            if (percentage >= 20) return 'medium';
-            return 'low';
-        }
+    // Get bar class based on percentage
+    getBarClass(percentage) {
+        if (percentage >= 70) return 'full';
+        if (percentage >= 40) return 'good';
+        if (percentage >= 20) return 'medium';
+        return 'low';
+    }
 }

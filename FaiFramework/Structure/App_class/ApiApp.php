@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Date;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class ApiApp
@@ -107,6 +109,37 @@ class ApiApp
         }
         echo json_encode($data);
         die;
+    }
+    public static function transfer_db_stok($page)
+    {
+        $db['utama'] = "view_all_produk_stok_per_gudang";
+        $db['limit'] = 50;
+        $db['where'][] = [
+            "concat(view_all_produk_stok_per_gudang.id_barang_varian,
+            '-',view_all_produk_stok_per_gudang.id_gudang,
+            '-',view_all_produk_stok_per_gudang.id_ruang_simpan,
+            '-',view_all_produk_stok_per_gudang.id_produk_varian,
+            '-',view_all_produk_stok_per_gudang.id_asset_utama,
+            '-',view_all_produk_stok_per_gudang.id)",
+            " not in ",
+            "(select concat(id_asset_varian,'-',id_gudang,'-',id_ruang_simpan,'-',id_produk_varian,'-',id_asset,'-',id_produk) from inventaris__storage__data)"
+        ];
+        // $db['join'][] = ["inventaris__storage__data", 
+        // "view_all_produk_stok_per_gudang.id_barang_varian", "inventaris__storage__data.id_asset_varian", 'left'];
+        // $db['where'][] = ["inventaris__storage__data.stok_available", " != ", "view_all_produk_stok_per_gudang.stok_available"];
+        $get_data = Database::database_coverter($page, $db, [], 'all');
+        foreach ($get_data['row'] as $row) {
+            $sqli = [];
+            $sqli['id_asset'] = $row->id_asset_utama;
+            $sqli['id_asset_varian'] = $row->id_barang_varian;
+            $sqli['id_produk'] = $row->id;
+            $sqli['id_produk_varian'] = $row->id_produk_varian;
+            $sqli['id_gudang'] = $row->id_gudang;
+            $sqli['id_ruang_simpan'] = $row->id_ruang_simpan;
+            $sqli['stok_available'] = $row->stok_available;
+            DB::insert('inventaris__storage__data', $sqli);
+        }
+        print_r($get_data);
     }
     public static function sync_cart_outgoing($page, $bodyRaw = [])
     {
@@ -330,6 +363,7 @@ class ApiApp
     }
     public static function json($page)
     {
+        ini_set('memory_limit', '-1');
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
@@ -346,8 +380,10 @@ class ApiApp
             $where = [];
         }
         $limit = $input['limit'] ?? 10;
-        $limit = $input['limit_function'] ?? $input['limit'];
+        $limit = $input['limit_function'] ?? $limit;
         $offset = $input['offset'] ?? 0;
+        $join = $input['join'] ?? [];
+        $order = $input['order'] ?? [];
         $orderBy = $input['orderBy'] ?? [];
         $group = $input['group'] ?? [];
         $select = $input['select'] ?? [];
@@ -369,7 +405,7 @@ class ApiApp
             DB::selectRaw('*');
         }
         if (!empty($group)) {
-                DB::groupByRaw($page,$group);
+            DB::groupByRaw($page, $group);
         }
         // Reapply where
         if (!empty($where)) {
@@ -389,6 +425,24 @@ class ApiApp
                             $whereOr[] = "$field LIKE '$value'";
                     }
                     DB::whereRaw('(' . implode(' OR ', $whereOr) . ')');
+                } else
+                if (isset($condition['fields']) && $condition['operator'] === 'in_or_fields') {
+                    $fields = $condition['fields'];
+                    if (!is_array($fields)) {
+                        $fields = [$fields];
+                    }
+                    $value = $condition['value'] ?? [];
+                    if (!is_array($value)) {
+                        $value = [$value];
+                    }
+                    $whereOr = [];
+                    foreach ($fields as $field) {
+                        if ($field)
+                            $whereOr[] = "$field IN ('" . implode("','", $value) . "')";
+                    }
+                    DB::whereRaw('(' . implode(' OR ', $whereOr) . ')');
+                } else {
+                    DB::whereRaw($condition['fields'] . " " . $condition['operator'] . " '" . $condition['value'] . "'");
                 }
             }
         }
@@ -396,28 +450,74 @@ class ApiApp
         if (!empty($orderBy)) {
 
             DB::orderRaw($page, ($orderBy['field'] . " " . $orderBy['direction'] ?? 'ASC'));
-             DB::selectRaw($orderBy['field']);
-              DB::groupByRaw($page,[$orderBy['field']]);
+            if (count($group) != 0) {
+                DB::selectRaw($orderBy['field']);
+                DB::groupByRaw($page, [$orderBy['field']]);
+            }
+        }
+        if (!empty($join)) {
+            foreach ($join as $join) {
+                DB::joinRaw(($join[0]." ON ".$join[1]."=".$join[2]), $join[3] ?? 'inner');
+               
+            }
         }
 
         // Apply limit and offset
-        DB::limitRaw($page, $offset, $limit);
+        if (!isset($input['isExcel']) || !$input['isExcel']) {
+            if (isset($input['limit']))
+                DB::limitRaw($page, $offset, $limit);
+        }
 
         $result = DB::get('all');
-        if ($input['function']) {
+        if (isset($input['function'])) {
             ob_start();
             $result = DatabaseFunc::all_produk($result, $page);
             ob_end_clean();
         }
-        $response = [
-            'success' => true,
-            'data' => $result['row'],
-            'total' => $result['num_rows_non_limit'],
-            'limit' => $limit,
-            'offset' => $offset
-        ];
-
-        echo json_encode($response);
+        if (isset($input['isExcel']) && $input['isExcel']) {
+            ob_clean();
+            // Generate Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            if (!empty($result['row'])) {
+                $firstRow = $result['row'][0];
+                $headers = array_keys((array)$firstRow);
+                $y = 0;
+                foreach ($headers as $header) {
+                    $headerText = strtoupper(str_replace('_', ' ', $header));
+                    $sheet->setCellValue(Partial::toAlpha($y) . '1', $headerText);
+                    $sheet->getColumnDimension(Partial::toAlpha($y))->setAutoSize(true);
+                    $y++;
+                }
+                $rowNum = 2;
+                foreach ($result['row'] as $data) {
+                    $y = 0;
+                    foreach ($headers as $header) {
+                        $sheet->setCellValue(Partial::toAlpha($y) . $rowNum, $data->$header ?? '');
+                        $y++;
+                    }
+                    $rowNum++;
+                }
+            }
+            $writer = new Xlsx($spreadsheet);
+            $fileName = 'export_' . date('YmdHis') . '.xlsx';
+            $writer->save($fileName);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            header('Cache-Control: max-age=0');
+            readfile($fileName);
+            unlink($fileName);
+            exit;
+        } else {
+            $response = [
+                'success' => true,
+                'data' => $result['row'],
+                'total' => $result['num_rows_non_limit'],
+                'limit' => $limit,
+                'offset' => $offset
+            ];
+            echo json_encode($response);
+        }
     }
     public static function integrasi_db($page)
     {
@@ -1634,8 +1734,164 @@ class ApiApp
                     $dbPayment['join'][] = ["erp__pos__utama", 'erp__pos__utama.id', 'erp__pos__inventory.id_order', 'left'];
 
                     $row = Database::database_coverter($page, $dbPayment, [], 'all');
+                    if (isset($row['row']) && is_array($row['row'])) {
 
-                    echo json_encode($row["row"]);
+                        foreach ($row['row'] as $value) {
+
+                            if (
+                                isset($value->items) &&
+                                is_string($value->items)
+                            ) {
+                                $decoded = json_decode($value->items, true);
+
+                                if (json_last_error() === JSON_ERROR_NONE) {
+                                    $value->items = $decoded;
+                                }
+                            }
+                        }
+                    }
+
+                    header('Content-Type: application/json');
+                    echo json_encode($row['row']);
+                    break;
+
+                case 'POST':
+                    //$save = Packages::crud($page, "save", $id);
+                    $save                         = EcommerceApp::inisiate_store_pesanan_group($page, 1, "Pembelian Barang");
+                    $id_group_pemesanan           = $save['id'];
+                    $pemesanan                    = EcommerceApp::inisiate_store_pesanan($page, $id_group_pemesanan, 4, "Proses");
+                    $pesanan_id                   = $pemesanan['id'];
+                    $detail['id_erp__pos__group'] = $save['id'];
+                    $detail['id_erp__pos__utama'] = $pesanan_id;
+                    foreach ($body['items'] as $items) {
+                        $detail['id_inventaris__asset__list'] = $items['produk_detail']['id_asset'];
+                        $detail['id_barang_varian']           = $items['variant_detail']['id_barang_varian'];
+                        $detail['harga_penjualan']            = $items['variant_detail']['harga_pokok_varian'];
+                        $detail['qty']                        = $items['quantity'];
+                        $detail['qty_pesanan']                = $items['quantity'];
+                        $detail['total_diskon']               = $items['discounted_price'];
+                        $detail['grand_total']                = $items['selling_price'];
+                        $detail['diskon_utama']               = $items['purchase_discount'];
+                        $detail['berat_satuan']               = $items['variant_detail']['berat_varian'];
+                        $detail['berat_total']                = $detail['qty'] * $items['variant_detail']['berat_varian'];
+                        $detail['total_harga']                = $detail['qty'] * $detail['harga_penjualan'];
+                        $detail['tipe_diskon']                = 'Presentase';
+
+                        CRUDFunc::crud_insert($fai, $page, $detail, [], 'erp__pos__utama__detail');
+                    }
+
+                    echo json_encode(["success" => 1, "data" => ["po_id" => $pesanan_id, "id" => $pesanan_id, "created_at" => date('Y-m-d H:i:s'), "status" => "proses"]]);
+                    break;
+
+                case 'PUT':
+                    $save = Packages::crud($page, "update", $id);
+
+                    echo json_encode($save);
+                    break;
+                case 'DELETE':
+                    $save = Packages::crud($page, "hapus", $id);
+
+                    echo json_encode($save);
+                    break;
+                case 'PATCH':
+                    // Untuk PUT/DELETE/PATCH, data tidak otomatis masuk ke $_POST
+                    parse_str(file_get_contents("php://input"), $data);
+                    echo json_encode(['method' => $method, 'data' => $data]);
+                    break;
+
+                default:
+                    echo json_encode(['error' => 'Unsupported method']);
+                    break;
+            }
+        } catch (Exception $e) {
+            echo "Error MySQL: " . $e->getMessage();
+        }
+    }
+    public static function customers($page)
+    {
+        $fai = new MainFaiFramework();
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            header('Content-Type: application/json');
+            $body = json_decode(file_get_contents("php://input"), true);
+
+            $headers = getallheaders();
+            $id   = $headers['id'] ?? "";
+            switch ($method) {
+                case 'GET':
+                      $page['config']['database']['BANGUNAN']['as']             = "t";
+                     $page['config']['database']['BANGUNAN']['np']             = "t";
+                     $page['config']['database']['BANGUNAN']['non_add_select'] = "t";
+                    $page['config']['database']['BANGUNAN']['utama'] = 'inventaris__asset__tanah__bangunan__pengisi';
+                    $page['config']['database']['BANGUNAN']['primary_key'] = null;
+                    $page['config']['database']['BANGUNAN']['np'] = true;
+                    
+                    $page['config']['database']['BANGUNAN']['select'][] = "inventaris__asset__tanah__bangunan__pengisi.id_apps_user,webmaster__wilayah__provinsi.provinsi as provinsi,concat(webmaster__wilayah__kabupaten.type,' ',webmaster__wilayah__kabupaten.kota_name) as kota,
+        webmaster__wilayah__postal_code.urban as kelurahan,webmaster__wilayah__kecamatan.subdistrict_name as kecamatan ,webmaster__wilayah__postal_code.postal_code,
+        default_pembelian_barang,inventaris__asset__tanah__bangunan.id as primary_key,nama_unit_bangunan
+        ";
+                    $page['config']['database']['BANGUNAN']['select'][] = 'inventaris__asset__tanah__bangunan.id as primary_key2';
+                    // $page['config']['database']['BANGUNAN']['select'][] = '(select id_kirim_ke from erp__pos__group where erp__pos__group.id={LOAD_ID}) as id_kirim_ke';
+
+                    $page['config']['database']['BANGUNAN']['join'][] = array("inventaris__asset__tanah__bangunan", "inventaris__asset__tanah__bangunan.id", "inventaris__asset__tanah__bangunan__pengisi.id_inventaris__asset__tanah__bangunan");
+                    $page['config']['database']['BANGUNAN']['join'][] = array("webmaster__wilayah__provinsi", "webmaster__wilayah__provinsi.provinsi_id", "id_provinsi");
+                    $page['config']['database']['BANGUNAN']['join'][] = array("webmaster__wilayah__kabupaten", "webmaster__wilayah__kabupaten.kota_id", "id_kota");
+                    $page['config']['database']['BANGUNAN']['join'][] = array("webmaster__wilayah__kecamatan", "webmaster__wilayah__kecamatan.subdistrict_id", "id_kecamatan");
+                    $page['config']['database']['BANGUNAN']['join'][] = array("webmaster__wilayah__postal_code", "webmaster__wilayah__postal_code.id", "id_kelurahan");
+                    $page['config']['database']['BANGUNAN']['where'][] = array("inventaris__asset__tanah__bangunan.id_kota", " is ", " not null");
+                    $page['config']['database']['BANGUNAN']['where'][] = array("inventaris__asset__tanah__bangunan.active", " = ", 1);
+                    $page['config']['database']['BANGUNAN']['where'][] = array("inventaris__asset__tanah__bangunan__pengisi.active", " = ", 1);
+
+                    if ($page['database_provider'] == 'mysql') {
+
+                        $dbp      =  $page['config']['database']['BANGUNAN'];
+                        $getquery = Database::database_coverter($page, $dbp, [], 'source');
+                        $query    = "$getquery  LIMIT 1";
+                        $conn     = DB::getConn($page);
+                        $result2  = mysqli_query($conn, $query);
+
+                        // Ambil nama kolom dari hasil query
+                        $columns = [];
+                        $pairs   = [];
+                        $alias   = "t";
+                        while ($field2 = mysqli_fetch_field($result2)) {
+                            $columns[] = $col = $field2->name;
+                            $pairs[]   = "'$col', $alias.$col";
+                        }
+                    }
+
+                    $db['join_subquery'][] = [
+                        [
+
+                            "as"               => "bangunan",
+                            "np"               => "",
+                            "not_where_active" => "",
+                            "select"           => [
+                                $page['database_provider'] == 'postgres' ? "id_apps_user,json_agg(row_to_json(t)) as addresses" :
+                                    "id_apps_user,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as addresses",
+                            ],
+                            "utama_query"      => $page['config']['database']['BANGUNAN'],
+                            "group"            => [
+                                "t.id_apps_user",
+                            ],
+
+                        ],
+                        "bangunan.id_apps_user",
+                        "apps_user.id_apps_user",
+                    ];
+
+                    $db['select'][] = "*";
+                    $db['as']             = "t";
+                    $db['np']             = "t";
+                    $db['non_add_select'] = "t";
+                    $db['utama']          = "apps_user";
+
+
+                    $row = Database::database_coverter($page, $db, [], 'all');
+
+
+                    header('Content-Type: application/json');
+                    echo json_encode($row['row']);
                     break;
 
                 case 'POST':
@@ -4108,5 +4364,16 @@ class ApiApp
         } else {
             return $data;
         }
+    }
+
+    private function toAlpha($num)
+    {
+        $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $result = '';
+        while ($num >= 0) {
+            $result = $alphabet[$num % 26] . $result;
+            $num = floor($num / 26) - 1;
+        }
+        return $result;
     }
 }
