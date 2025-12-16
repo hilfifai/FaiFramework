@@ -2101,6 +2101,7 @@ class ApiApp
                     echo json_encode($save);
                     break;
                 case 'PATCH':
+                    ob_start();
                     // Untuk PUT/DELETE/PATCH, data tidak otomatis masuk ke $_POST
                     if (isset($headers['endpoint'])) {
                         if ($headers['endpoint'] == 'delete') {
@@ -2156,6 +2157,7 @@ class ApiApp
 
                             //     }
                             // }
+                            ob_clean();
                             echo json_encode([
                                 'success' => true,
                                 'message' => 'Data berhasil diperbarui',
@@ -2167,8 +2169,15 @@ class ApiApp
                         }
                     } else {
 
-                        $row = DatabaseFunc::receivings($page, "row", $body['currentPoId']);
-                        echo json_encode($row["row"]);
+                        $row = DatabaseFunc::receivings($page, "row", $body['currentPoId']??"");
+                        
+                        ob_clean();
+                        if($row["num_rows"]==0){
+                              echo json_encode([]);
+                        }else{
+
+                            echo json_encode($row["row"]);
+                        }
                     }
                     break;
 

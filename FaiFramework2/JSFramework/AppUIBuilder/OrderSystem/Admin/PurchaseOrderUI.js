@@ -1828,9 +1828,9 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             }
 
             const result = await response.json();
-
+            console.log("findProductByBarcodeAPI result", result);
             // Filter hasil untuk mendapatkan produk dengan barcode yang tepat
-            if (result.success && result.data && result.data.length > 0) {
+            if (result.data) {
                 return this.filterProductByExactBarcode(result.data, barcode);
             }
 
@@ -1845,7 +1845,9 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
     // Method helper untuk filter produk dengan barcode exact
     filterProductByExactBarcode(products, barcode) {
-        for (const product of products) {
+        console.log('Filtering products for barcode:', products);
+        console.log('Filtering products for barcode:', barcode);
+        for (const product of Object.values(products)) {
             // Cek barcode utama produk
             if (product.barcode === barcode) {
                 return {
@@ -2776,6 +2778,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             }, 2000);
 
         }
+        await this.completeReceiving();
         // Reset dan kembali ke list
         // setTimeout(() => {
         this.currentPoId = null;
@@ -5370,6 +5373,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         this.renderPoList();
     }
     async completeReceiving(getType = 'proccess') {
+        console.log('Memulai proses penyelesaian penerimaan...');
         const po = this.PurchaseOrders.find(p => p.id === this.currentPoId);
         if (getType == 'proccess') {
             if (!po) {
@@ -5377,6 +5381,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
                 return;
             }
         }
+        console.log('PO ditemukan:', po);
         let stylecode;
         if (document.getElementById("modeConfirmView").dataset.mode == 'add') {
             stylecode = ".save";

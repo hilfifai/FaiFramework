@@ -573,7 +573,7 @@ class EthicaApi
         //    echo $link;
         // print_R($array_header);
         $curl = curl_init();
-        $link;
+       echo  $link;
         curl_setopt_array($curl, [
             CURLOPT_URL            => $link,
             CURLOPT_RETURNTRANSFER => true,

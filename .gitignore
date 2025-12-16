@@ -23,3 +23,4 @@ LAST/web/dump (17).sql
 Fai-Version-Template-App.json
 FaiFramework/versions/generated_versions/1.0.0-alpha.json
 *.json
+uploads/*
