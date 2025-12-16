@@ -38,7 +38,6 @@ export default class ListDataHub extends FaiModule {
     //     wrapper.scrollTop = 0;
     //     jobBg.style.background = bg;
     // });
-    // alert(type);
   }
   async closeproduk() {
 
@@ -114,7 +113,6 @@ export default class ListDataHub extends FaiModule {
     if (!this.getModule('data_produk_itemsPerPage')[index]) {
       this.getModule('data_produk_itemsPerPage')[index] = 1;
     }
-    // alert(page);
     const startIndex = (page - 1) * this.getModule('data_produk_itemsPerPage')[index];
     const endIndex = page * this.getModule('data_produk_itemsPerPage')[index];
 

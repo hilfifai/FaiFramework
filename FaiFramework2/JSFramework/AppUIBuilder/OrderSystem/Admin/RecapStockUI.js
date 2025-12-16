@@ -107,7 +107,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         } catch (error) {
             console.error('Error loading data from API:', error);
-            alert('Terjadi kesalahan saat memuat data dari API');
+            setShowAlert("Terjadi kesalahan saat memuat data dari API", "danger");
         }
     }
 
@@ -812,15 +812,15 @@ export default class RecapStockUI extends OrderSystemBuilder {
         });
 
         this.quickTransferBtn.addEventListener('click', () => {
-            alert('Fitur Transfer Stok akan dibuka');
+            setShowAlert("Fitur Transfer Stok akan dibuka", "primary");
         });
 
         this.quickOrderBtn.addEventListener('click', () => {
-            alert('Fitur Pesan Stok akan dibuka');
+            setShowAlert("Fitur Pesan Stok akan dibuka", "primary");
         });
 
         this.quickReportBtn.addEventListener('click', () => {
-            alert('Fitur Laporan Cepat akan dibuka');
+            setShowAlert("Fitur Laporan Cepat akan dibuka", "primary");
         });
 
         // Modal events
@@ -1067,14 +1067,14 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const notes = document.getElementById('adjustNotes').value;
 
         if (!productId || !location || !reason) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
 
         // Find product
         const product = this.products.find(p => p.id == productId);
         if (!product) {
-            alert('Produk tidak ditemukan!');
+            setShowAlert("Produk tidak ditemukan!", "danger");
             return;
         }
 
@@ -1162,7 +1162,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
     // Generate report
     generateReport() {
-        alert('Laporan rekapitulasi stok akan di-generate dalam format PDF');
+        setShowAlert("Laporan rekapitulasi stok akan di-generate dalam format PDF", "primary");
         // In a real app, this would generate a PDF report
     }
 
@@ -1217,11 +1217,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
             } else {
-                alert('Failed to export Excel');
+                setShowAlert("Failed to export Excel", "danger");
             }
         } catch (error) {
             console.error('Error exporting Excel:', error);
-            alert('Error exporting Excel');
+            setShowAlert("Error exporting Excel", "danger");
         }
     }
 
@@ -1255,7 +1255,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     // Refresh data
     refreshData() {
         // Simulate data refresh
-        alert('Data stok diperbarui');
+        setShowAlert("Data stok diperbarui", "success");
         this.loadDataFromAPI().then(() => {
             this.renderStockTable();
             this.updateStats();
@@ -1495,7 +1495,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         </td>
                     </tr> 
 
-                    
+
                 `;
         });
         this.idProdukTableBody.innerHTML = tableHTML;
@@ -1726,14 +1726,14 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const notes = document.getElementById('adjustNotes').value;
 
         if (!productId || !location || !reason) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
 
         // Find product
         const product = this.products.find(p => p.id == productId);
         if (!product) {
-            alert('Produk tidak ditemukan!');
+            setShowAlert("Produk tidak ditemukan!", "danger");
             return;
         }
 
@@ -1842,7 +1842,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
     // Generate report
     generateReport() {
-        alert('Laporan rekapitulasi stok akan di-generate dalam format PDF');
+        setShowAlert("Laporan rekapitulasi stok akan di-generate dalam format PDF", "primary");
         // In a real app, this would generate a PDF report
     }
 
@@ -1852,7 +1852,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     // Refresh data
     refreshData() {
         // Simulate data refresh
-        alert('Data stok diperbarui');
+        setShowAlert("Data stok diperbarui", "success");
         loadDataFromAPI().then(() => {
             renderStockTable();
             updateStats();

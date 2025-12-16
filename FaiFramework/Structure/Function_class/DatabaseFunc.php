@@ -925,7 +925,8 @@ class DatabaseFunc
                 $db['utama'] = 'view_produk_detail';
                 $db['where'][] = [$db['utama'] . ".primary_key", "=", $baris->primary_key];
                 $get_produk = Database::database_coverter($page, $db, [], 'all');
-                $row = $get_produk['row'][0];
+                $data = $get_produk['row'];
+                foreach($data as $row){
                 $stok                                          = $row->stok_available ?? 0;
                 $return[$row->primary_key]['id']               = $row->primary_key;
                 $return[$row->primary_key]['nama_barang']      = $row->nama_barang;
@@ -1131,6 +1132,7 @@ class DatabaseFunc
                     "level"            => 3,
                     "foto_aset_varian" => $row->foto_aset_varian,
                 ];
+            }
             }
         } else {
             $return = $data['row'];

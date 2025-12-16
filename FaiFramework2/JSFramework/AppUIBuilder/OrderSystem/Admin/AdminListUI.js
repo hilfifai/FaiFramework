@@ -638,7 +638,7 @@ export default class AdminOrderListUI  {
                 
                 this.deliveryOrders.push(newDelivery);
                 this.populateOrderDetail();
-                alert("Delivery order berhasil ditambahkan!");
+                setShowAlert("Delivery order berhasil ditambahkan!", "success");
             }
             
             addOutgoing() {
@@ -661,14 +661,14 @@ export default class AdminOrderListUI  {
                 
                 const productIndex = parseInt(productChoice) - 1;
                 if (isNaN(productIndex) || productIndex < 0 || productIndex >= this.currentOrder.produk_list.length) {
-                    alert("Pilihan produk tidak valid!");
+                    setShowAlert("Pilihan produk tidak valid!", "danger");
                     return;
                 }
                 
                 const selectedProduct = this.currentOrder.produk_list[productIndex];
                 const quantity = prompt(`Masukkan jumlah ${selectedProduct.nama} untuk outgoing (max ${selectedProduct.jumlah}):`);
                 if (!quantity || parseInt(quantity) > selectedProduct.jumlah) {
-                    alert("Jumlah outgoing tidak valid!");
+                    setShowAlert("Jumlah outgoing tidak valid!", "danger");
                     return;
                 }
                 
@@ -678,7 +678,7 @@ export default class AdminOrderListUI  {
                 );
                 
                 if (!inventory) {
-                    alert("Stok tidak mencukupi untuk outgoing!");
+                    setShowAlert("Stok tidak mencukupi untuk outgoing!", "danger");
                     return;
                 }
                 
@@ -708,7 +708,7 @@ export default class AdminOrderListUI  {
                 inventory.batch[0].jumlah -= parseInt(quantity);
                 
                 this.populateOrderDetail();
-                alert("Outgoing berhasil ditambahkan!");
+                setShowAlert("Outgoing berhasil ditambahkan!", "success");
             }
             
             addRefund() {
@@ -739,7 +739,7 @@ export default class AdminOrderListUI  {
                 
                 this.refunds.push(newRefund);
                 this.populateOrderDetail();
-                alert("Refund berhasil ditambahkan!");
+                setShowAlert("Refund berhasil ditambahkan!", "success");
             }
             
             addRetur() {
@@ -759,14 +759,14 @@ export default class AdminOrderListUI  {
                 
                 const productIndex = parseInt(productChoice) - 1;
                 if (isNaN(productIndex) || productIndex < 0 || productIndex >= this.currentOrder.produk_list.length) {
-                    alert("Pilihan produk tidak valid!");
+                    setShowAlert("Pilihan produk tidak valid!", "danger");
                     return;
                 }
                 
                 const selectedProduct = this.currentOrder.produk_list[productIndex];
                 const quantity = prompt(`Masukkan jumlah ${selectedProduct.nama} yang diretur (max ${selectedProduct.jumlah}):`);
                 if (!quantity || parseInt(quantity) > selectedProduct.jumlah) {
-                    alert("Jumlah retur tidak valid!");
+                    setShowAlert("Jumlah retur tidak valid!", "danger");
                     return;
                 }
                 
@@ -795,7 +795,7 @@ export default class AdminOrderListUI  {
                 
                 this.returOutgoings.push(newRetur);
                 this.populateOrderDetail();
-                alert("Retur berhasil ditambahkan!");
+                setShowAlert("Retur berhasil ditambahkan!", "success");
             }
             
             viewRefundDetail(refundId) {
@@ -990,7 +990,7 @@ export default class AdminOrderListUI  {
                 
                 // Add new order button
                 document.getElementById('addOrderBtn').addEventListener('click', () => {
-                    alert('Fitur tambah pesanan akan dibuka. Dalam implementasi nyata, ini akan membuka form untuk membuat pesanan baru.');
+                    setShowAlert("Fitur tambah pesanan akan dibuka. Dalam implementasi nyata, ini akan membuka form untuk membuat pesanan baru.", "primary");
                     // In a real application, you would open a form to create a new order
                 });
             }

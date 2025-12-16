@@ -385,14 +385,17 @@ class ApiContent
         $link_endpoint = $user_api_endpoint['row'][0]->link_endpoint;
         $nama_class    = $user_api_endpoint['row'][0]->nama_class;
         // echo $link . '/' . $link_endpoint;
-        //$response_cart = $nama_class::send_cart($page, $user_api, $link . '/' . $link_endpoint, $id_from_api, $qty, $id_user);
-        $response_cart = [
-            "status" => true,
-            "id_cart" => "123456",
-            "nomor_cart" => "OUT-2024-0001",
-            "response" => []
+        if ($_SERVER['HTTP_HOST'] == 'localhost' or $_SERVER['HTTP_HOST'] == 'localhost:8000') {
+            $response_cart = [
+                "status" => true,
+                "id_cart" => "123456",
+                "nomor_cart" => "OUT-2024-0001",
+                "response" => []
 
-        ];
+            ];
+        } else {
+            $response_cart = $nama_class::send_cart($page, $user_api, $link . '/' . $link_endpoint, $id_from_api, $qty, $id_user);
+        }
         if ($response_cart['status']) {
 
             // $sqli['id_sync_cart']        = $response_cart['id_cart'];
@@ -555,13 +558,16 @@ class ApiContent
 
         $link_endpoint = $user_api_endpoint['row'][0]->link_endpoint;
         $nama_class    = $user_api_endpoint['row'][0]->nama_class;
+        if ($_SERVER['HTTP_HOST'] == 'localhost' or $_SERVER['HTTP_HOST'] == 'localhost:8000') {
+            $response_cart = [
+                "status" => true,
+                "response" => []
 
-        //$response_cart = $nama_class::hapus_cart($page, $user_api, $link . '/' . $link_endpoint, $user_id, $seq);
-        $response_cart = [
-            "status" => true,
-            "response" => []
+            ];
+        } else {
 
-        ];
+            $response_cart = $nama_class::hapus_cart($page, $user_api, $link . '/' . $link_endpoint, $user_id, $seq);
+        }
         if ($response_cart['status']) {
             $sqli['database_refer'] = "erp__pos__inventory__outgoing_breakdown";
             $sqli['id_refer'] =  $id_detail;
@@ -886,7 +892,7 @@ class ApiContent
                     ,(erp__pos__utama__detail.berat_satuan * temp_qty_sync) as berat_total";
 
                     $db['utama'] = ('erp__pos__inventory__outgoing_breakdown');
-                    
+
                     $db['join'][] = ["api_sync", "id_sync_api_cart", "api_sync.id", "left"];
                     $db['join'][]  = ["erp__pos__inventory__outgoing", " erp__pos__inventory__outgoing.id ", "erp__pos__inventory__outgoing_breakdown.id_erp__pos__inventory__outgoing", 'left'];
                     $db['join'][]  = ["inventaris__asset__list", "inventaris__asset__list.id", "erp__pos__inventory__outgoing.id_barang_keluar"];
@@ -2827,7 +2833,7 @@ class ApiContent
         }
 
         // $stok_api = ApiContent::$function($page, $row->id_sync_master_varian_asset, $id_api, $row, ($stok_api['detail'] ?? []));
-
+        $function;
         $start            = Partial::input('offset') ? Partial::input('offset') : 0;
         $row              = (object) [];
         $row->nama_barang = $search;
@@ -3037,7 +3043,7 @@ class ApiContent
                 DB::whereRaw('is_master=0');
                 DB::whereRawPage($page, 'store__produk.id_toko=WORKSPACE_SINGLE_TOKO|');
                 $get = DB::get('all');
-              
+
                 $dataReturn[] = [
                     "nama_artikel" => $get_data[$key]['artikel'],
                     "stok"         => $stok,
@@ -3332,7 +3338,7 @@ class ApiContent
             DB::whereRaw('is_master=0');
             DB::whereRawPage($page, 'store__produk.id_toko=WORKSPACE_SINGLE_TOKO|');
             $get = DB::get('all');
-           
+
             $dataReturn[] = [
                 "nama_artikel" => $get_data[$key]['artikel'],
                 "stok"         => $stok,

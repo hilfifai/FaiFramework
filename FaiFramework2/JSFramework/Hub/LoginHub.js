@@ -115,21 +115,18 @@ export default class LoginHub extends FaiModule {
                         } else {
                             $('.is_login').hide();
                             $('.not_login').show();
-                            console.log("User belum login");
-                            // Arahkan ke halaman login
                         }
                     });
                     if(document.getElementById('template').value!=document.getElementById('base_template').value){
                         window.location.href=this.base_url_BASED;
-                        // alert(this.base_url_BASED);
                         document.getElementById('template').value = document.getElementById('base_template').value
                     }
                 } else {
-                    alert(msg.keterangan);
+                    setShowAlert(msg.keterangan,"danger");
                 }
             },
             error: function (data) {
-                alert("Logout Gagal");
+                setShowAlert("Logout Gagal","danger");
                 console.log('error:', data)
             },
         })
@@ -152,7 +149,7 @@ export default class LoginHub extends FaiModule {
                     $('#asgouest-verifikasi-container').hide();
                     success_login();
                 } else {
-                    alert('Kode Verifikasi Salah');
+                    setShowAlert('Kode Verifikasi Salah',"danger");
                 }
             },
             error: function (data) {
@@ -185,11 +182,11 @@ export default class LoginHub extends FaiModule {
                     success_login();
                     $('#asgouest-verifikasi-container').show();
                 } else {
-                    alert(msg.keterangan);
+                    setShowAlert(msg.keterangan,"danger");
                 }
             },
             error: function (data) {
-                alert("Login Gagal");
+                setShowAlert("Login Gagal","danger");
                 console.log('error:', data)
             },
         })
@@ -234,11 +231,11 @@ export default class LoginHub extends FaiModule {
                         }
                     }
                 } else {
-                    alert(msg.keterangan);
+                    setShowAlert(msg.keterangan,"danger");
                 }
             },
             error: function (data) {
-                alert("Login Gagal");
+                setShowAlert("Login Gagal","danger");
                 console.log('error:', data)
             },
         })

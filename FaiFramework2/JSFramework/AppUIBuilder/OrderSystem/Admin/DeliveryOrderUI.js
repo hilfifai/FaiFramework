@@ -1026,7 +1026,7 @@ saveItemEdit(index, itemRow) {
     const product = this.products.find(p => p.id == productId);
     
     if (!product) {
-        alert('Produk tidak ditemukan');
+        setShowAlert("Produk tidak ditemukan", "danger");
         return;
     }
     
@@ -1072,12 +1072,12 @@ saveNewItem() {
     const product = this.products.find(p => p.id == productId);
     
     if (!productId || !product) {
-        alert('Pilih produk terlebih dahulu');
+        setShowAlert("Pilih produk terlebih dahulu", "danger");
         return;
     }
     
     if (quantity < 1) {
-        alert('Jumlah harus lebih dari 0');
+        setShowAlert("Jumlah harus lebih dari 0", "danger");
         return;
     }
     
@@ -1123,7 +1123,7 @@ async saveItemUpdate() {
             
     } catch (error) {
         console.error('Error updating delivery items:', error);
-        alert('Gagal menyimpan perubahan item');
+        setShowAlert("Gagal menyimpan perubahan item", "danger");
     }
 }
             populateDeliveryDetail() {
@@ -1209,7 +1209,7 @@ async saveItemUpdate() {
                     document.getElementById('cameraContainer').style.display = 'block';
                 } catch (error) {
                     console.error('Error accessing camera:', error);
-                    alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                    setShowAlert("Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.", "danger");
                 }
             }
             
@@ -1277,7 +1277,7 @@ async saveItemUpdate() {
             
             confirmResi() {
                 if (!this.scannedResi) {
-                    alert('Silakan scan atau masukkan nomor resi terlebih dahulu.');
+                    setShowAlert("Silakan scan atau masukkan nomor resi terlebih dahulu.", "danger");
                     return;
                 }
                 
@@ -1565,7 +1565,7 @@ async saveItemUpdate() {
                 const service = document.getElementById('deliveryService').value;
                 
                 if (!orderId || !courier || this.selectedItems.length === 0) {
-                    alert('Harap lengkapi semua field dan pilih minimal 1 item');
+                    setShowAlert("Harap lengkapi semua field dan pilih minimal 1 item", "danger");
                     return;
                 }
                 
@@ -1612,13 +1612,13 @@ async saveItemUpdate() {
                         this.renderDeliveryList();
                         this.updateStats();
                         this.closeAddDeliveryModal();
-                        alert('Delivery order berhasil ditambahkan!');
+                        setShowAlert("Delivery order berhasil ditambahkan!", "success");
                     } else {
                         throw new Error('Failed to create delivery order');
                     }
                 } catch (error) {
                     console.error('Error creating delivery order:', error);
-                    alert('Gagal menambahkan delivery order');
+                    setShowAlert("Gagal menambahkan delivery order", "danger");
                 }
             }
             
@@ -1733,8 +1733,8 @@ async saveItemUpdate() {
                 document.getElementById('processDeliveryBtn').addEventListener('click', () => this.processDelivery());
                 document.getElementById('markAsShippedBtn').addEventListener('click', () => this.markAsShipped());
                 document.getElementById('cancelDeliveryBtn').addEventListener('click', () => {
-                    if (confirm('Apakah Anda yakin ingin membatalkan pengiriman ini?')) {
-                        alert('Pengiriman dibatalkan');
+                    if (swalConfirm('Apakah Anda yakin ingin membatalkan pengiriman ini?')) {
+                        setShowAlert("Pengiriman dibatalkan", "danger");
                     }
                 });
                 

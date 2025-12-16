@@ -761,7 +761,7 @@ export default class PaymentTabUI extends OrderSystemBuilder {
     }
 
     async handleDeletePayment(paymentId) {
-        if (confirm('Apakah Anda yakin ingin menghapus pembayaran ini?')) {
+        if (swalConfirm('Apakah Anda yakin ingin menghapus pembayaran ini?')) {
             this.removePayment(paymentId);
             // this.render(this.currentPayments, this.purchaseOrder);
             this.showAlert('Pembayaran berhasil dihapus', 'success');
