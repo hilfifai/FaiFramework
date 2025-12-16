@@ -10,7 +10,8 @@ soft-ui-dashboard/
 *.iso
 *.mp4
 *.psd
-
+.DS_Store
+Thumbs.db
 session_data/
 application/session_data/
 LAST/

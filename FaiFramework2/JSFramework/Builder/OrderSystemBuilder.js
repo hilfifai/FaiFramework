@@ -36,7 +36,7 @@ export default class OrderSystemBuilder extends FaiModule {
 		//this.showView('home');
 		//this.setupEventListeners();
 	}
-	
+
 	async loadData(keys = [], options = {}) {
 		console.log(keys);
 		const need = new Set(keys); // agar lebih cepat saat cek key
@@ -46,7 +46,120 @@ export default class OrderSystemBuilder extends FaiModule {
 		if (need.has("warehouse_racks")) {
 			loaders.push(
 				this.apiRequest("api/warehouse_racks").then(async racksResponse => {
-					configJson.warehouseRacks = racksResponse || await this.getSampleRacks();
+					configJson.warehouseRacks = racksResponse;
+				})
+			);
+		}
+		if (need.has("ekspedisi")) {
+			let whereClause = [];
+			whereClause.push({
+				fields: "store__toko__ekspedisi.active",
+				operator: '=',
+				value: `1`
+			});
+			const queryBody = {
+				method: 'POST',
+				body: {
+					db: 'store__toko__ekspedisi',
+					select: ["store__toko__ekspedisi.id,id_service,webmaster__ekspedisi.id as id_ekspedisi,nama_service,kode_service,kode_ekspedisi,nama_ekspedisi"],
+					join: [
+						["webmaster__ekspedisi__service", "webmaster__ekspedisi__service.id", "id_service", "left"],
+						["webmaster__ekspedisi", "webmaster__ekspedisi.id", "webmaster__ekspedisi__service.id_webmaster__ekspedisi", "left"]
+					],
+					where: whereClause
+				}
+
+			};
+			loaders.push(
+				this.apiRequest("api/json", queryBody).then(async ekspedisi => {
+					configJson.ekspedisi = ekspedisi.data;
+				})
+			);
+
+
+		}
+		if (need.has("metodePembayaran")) {
+			const BASE_URL = window.fai.getModule('base_url');
+			const ID_WEB_APPS = 3;
+			const ID_BOARD = 42;
+			const queryBody = {
+				method: 'POST',
+				body: {
+					db: 'webmaster__payment_method_brand', // Diambil dari 'utama'
+
+					select: [
+						// Semua field digabung dalam satu string array, dipisahkan koma
+						[
+							"*",
+							// Logika Concat ID Primary Key
+							"concat(coalesce(webmaster__payment_method_brand.id,''),'-',coalesce(webmaster__payment_webapps.id,''),'-',coalesce(webmaster__payment_webapps.penanggung_biaya,''),'-',coalesce(biaya_payment,'')) as id_primary_key",
+
+							// Subquery (LOAD_ID disisipkan via template literal)
+
+							// Concat Logo Brand (BASE_URL disisipkan)
+							`concat('${BASE_URL}/FaiFramework/Pages/_template/assets/images_brands/', webmaster__payment_method_brand.logo_brand) as logo_brand`
+						].join(",")
+					],
+
+					join: [
+						[
+							"webmaster__payment_webapps", // Table join
+							"webmaster__payment_method_brand.id", // On Left
+							// On Right (disesuaikan dengan logika AND tambahan dari PHP)
+							`webmaster__payment_webapps.id_payment_brand AND id_webapps = ${ID_WEB_APPS} AND id_workspace = ${ID_BOARD}`,
+							"left" // Default type (sesuaikan jika perlu 'inner')
+						]
+					],
+
+				}
+			};
+			loaders.push(
+				this.apiRequest("api/json", queryBody).then(async metodePembayaran => {
+					configJson.metodePembayaran = metodePembayaran.data;
+				})
+			);
+
+
+		}
+		if (need.has("customers")) {
+			// const queryBody = {
+			// 	db: 'apps_user', // atau nama db dinamis Anda
+			// 	method: 'POST',
+			// 	body:{
+			// 		db: 'apps_user',
+			// 	}
+
+			// };
+			// loaders.push(
+			// 	this.apiRequest("api/json", queryBody).then(async customers => {
+			// 		configJson.customers = customers.data;
+			// 	})
+			// );
+			loaders.push(
+				this.apiRequest("api/customers").then(async customers => {
+					configJson.customers = customers.map(customer => {
+						let addresses = [];
+
+						try {
+							if (customer.addresses) {
+								addresses = typeof customer.addresses === 'string'
+									? JSON.parse(customer.addresses)
+									: customer.addresses;
+							}
+						} catch (error) {
+							console.error(
+								'Error parsing addresses for customer:',
+								customer.id || customer.customer_id,
+								error
+							);
+							addresses = [];
+						}
+
+						return {
+							...customer,
+							addresses
+						};
+					});
 				})
 			);
 		}
@@ -321,13 +434,24 @@ export default class OrderSystemBuilder extends FaiModule {
 		try {
 
 			this.apiBaseUrl = window.fai.getModule('base_url');
+			let requestBody = {};
+			if (options.body && options.method !== 'GET') {
+				// Konversi objek body menjadi string JSON
+				requestBody.body = JSON.stringify(options.body);
+
+				// Hapus properti body dari options agar tidak terduplikasi 
+				// saat spread operator {...options} digunakan.
+				delete options.body;
+			}
 			const response = await fetch(`${this.apiBaseUrl}${endpoint}`, {
 				headers: {
 					'Content-Type': 'application/json',
-					...options.headers
+					...options.headers,
+
 				},
 				method: options.method || 'GET',
-				...options
+				...options,
+				...requestBody
 			});
 			if (!response.ok) {
 				throw new Error(`API error: ${response.status}`);

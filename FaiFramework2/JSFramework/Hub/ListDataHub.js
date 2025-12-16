@@ -137,7 +137,7 @@ export default class ListDataHub extends FaiModule {
           value: `%${query}%`
         });
       }
-        const queryBody = {
+      const queryBody = {
         db: 'view_produk_detail', // atau nama db dinamis Anda
         where: whereClause,
         select:["primary_key"],

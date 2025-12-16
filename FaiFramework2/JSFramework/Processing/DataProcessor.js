@@ -160,7 +160,7 @@ export default class DataProcessing extends FaiModule {
 			throw err;
 		}
 	}
-	async loadJSON(db = 'inventaris__asset__master__kategori_toko', queryBody = {}) {
+	async loadxJSON(db = 'inventaris__asset__master__kategori_toko', queryBody = {}) {
 		try {
 			const now = new Date();
 			const year = now.getUTCFullYear();

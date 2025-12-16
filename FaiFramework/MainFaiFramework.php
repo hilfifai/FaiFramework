@@ -21,6 +21,7 @@ define('BASEPATH_FAI', __DIR__ . '/' . ($_ENV['BASEPATH_FAI'] ?? '../'));
 require_once(__DIR__ . '/Structure/Controller/Configuration.php');
 require_once(__DIR__ . '/Structure/Controller/Partial.php');
 
+require_once(__DIR__ . '/Structure/Api_class/SpreadsheetApi.php');
 require_once(__DIR__ . '/Structure/App/Workspace.php');
 
 require_once(__DIR__ . '/Structure/App_class/WaApp.php');
