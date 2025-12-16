@@ -698,7 +698,7 @@ export default class ReceiveUI {
         const itemNotes = document.getElementById('itemNotes').value;
         
         if (!productName || !receivedQuantity || !warehouse || !rack || !purchasePrice) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
         
@@ -743,13 +743,13 @@ export default class ReceiveUI {
         const notes = document.getElementById('notesTextarea').value;
         
         if (!orderId || !receiver) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
         
         const order = this.orders.find(o => o.id === orderId);
         if (!order) {
-            alert('Pesanan tidak ditemukan!');
+            setShowAlert("Pesanan tidak ditemukan!", "danger");
             return;
         }
         
@@ -758,7 +758,7 @@ export default class ReceiveUI {
         const productItems = document.querySelectorAll('#receiveItemsContainer .product-item');
         
         if (productItems.length === 0) {
-            alert('Harap konfirmasi setidaknya satu item!');
+            setShowAlert("Harap konfirmasi setidaknya satu item!", "danger");
             return;
         }
         
@@ -823,7 +823,7 @@ export default class ReceiveUI {
         this.updateStats();
         this.populateOrderSelect();
         
-        alert('Penerimaan berhasil dicatat!');
+        setShowAlert("Penerimaan berhasil dicatat!", "success");
     }
     
     initiateReturn(receiveId) {
@@ -856,19 +856,19 @@ export default class ReceiveUI {
         const returnDescription = document.getElementById('returnDescription').value;
         
         if (!itemProduct || !returnQuantity || !returnReason) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
         
         // Find the item in the receive
         const itemIndex = this.currentReceive.items.findIndex(i => i.product === itemProduct);
         if (itemIndex === -1) {
-            alert('Item tidak ditemukan!');
+            setShowAlert("Item tidak ditemukan!", "danger");
             return;
         }
         
         if (returnQuantity > this.currentReceive.items[itemIndex].received) {
-            alert('Jumlah retur tidak boleh lebih dari jumlah yang diterima!');
+            setShowAlert("Jumlah retur tidak boleh lebih dari jumlah yang diterima!", "danger");
             return;
         }
         
@@ -891,7 +891,7 @@ export default class ReceiveUI {
         this.renderReceiveList();
         this.updateStats();
         
-        alert('Retur berhasil diajukan!');
+        setShowAlert("Retur berhasil diajukan!", "success");
     }
     
     initiateRefund(receiveId) {
@@ -924,14 +924,14 @@ export default class ReceiveUI {
         const refundReason = document.getElementById('refundReason').value;
         
         if (!itemProduct || !refundAmount || !refundMethod) {
-            alert('Harap isi semua field yang wajib diisi!');
+            setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
             return;
         }
         
         // Find the item in the receive
         const itemIndex = this.currentReceive.items.findIndex(i => i.product === itemProduct);
         if (itemIndex === -1) {
-            alert('Item tidak ditemukan!');
+            setShowAlert("Item tidak ditemukan!", "danger");
             return;
         }
         
@@ -943,7 +943,7 @@ export default class ReceiveUI {
         this.renderReceiveList();
         this.updateStats();
         
-        alert('Refund berhasil diajukan!');
+        setShowAlert("Refund berhasil diajukan!", "success");
     }
     
     returnItem(receiveId, productName) {
@@ -1011,7 +1011,7 @@ export default class ReceiveUI {
             // Auto-fill the product in the receive form
             this.confirmItem(foundProduct.product, foundProduct.quantity);
         } else {
-            alert('Barcode tidak dikenali!');
+            setShowAlert("Barcode tidak dikenali!", "danger");
         }
     }
     

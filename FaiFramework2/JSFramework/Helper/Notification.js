@@ -24,3 +24,18 @@ export function setShowAlert(message, type='primary') {
         }
     }, 5000);
 }
+export async function swalConfirm(title = 'Konfirmasi Tindakan', text = 'Apakah Anda yakin melanjutkan?', confirmText = 'Ya, Lanjutkan', cancelText = 'Batal') {
+    const result = await Swal.fire({
+        title: title,
+        text: text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText
+    });
+
+    // Mengembalikan true jika tombol konfirmasi diklik
+    return result.isConfirmed;
+}

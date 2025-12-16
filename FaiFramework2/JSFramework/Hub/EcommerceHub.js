@@ -1,3 +1,4 @@
+
 export async function link_acc_pesanan(button, id_web__apps, id_api, primary_key, id_sync_pesanan, id_apps_user) {
   const parent = button.parentNode;
   const span = document.createElement('span');
@@ -225,32 +226,32 @@ export async function proses_daftar_mitra(confirm = 0) {
     
     // Cek Nama Lengkap
     if (!nama_lengkap) {
-        alert("Nama Lengkap wajib diisi!");
+        setShowAlert("Nama Lengkap wajib diisi!", "danger");
         $('input[name="nama_lengkap"]').focus();
         return; // Stop proses
     }
 
     // Cek No Whatsapp
     if (!no_wa) {
-        alert("Nomor Whatsapp wajib diisi!");
+        setShowAlert("Nomor Whatsapp wajib diisi!", "danger");
         $('input[name="no_wa"]').focus();
         return; 
     }
 
     // Cek Nama Toko
     if (!nama_toko) {
-        alert("Nama Toko wajib diisi!");
+        setShowAlert("Nama Toko wajib diisi!", "danger");
         $('input[name="nama_toko"]').focus();
         return; 
     }
 
     // Cek Pilihan Kemitraan (Radio Button)
     if (!metode_dipilih) {
-        alert("Silakan pilih jenis Kemitraan (Reseller atau Agen)!");
+        setShowAlert("Silakan pilih jenis Kemitraan (Reseller atau Agen)!", "danger");
         return; 
     }
     if (!$('#id-mitra').val()) {
-      alert('Anda belum memilih jenis mitra');
+      setShowAlert("Anda belum memilih jenis mitra", "danger");
     } else {
       /*const form = document.querySelector("#FormMitra");
 const formData = new FormData(form);
@@ -1374,7 +1375,7 @@ export function validateOngkir() {
   const selected = Array.from(radios).some(r => r.checked);
   console.log(selected);
   if (!selected) {
-    alert("Silakan pilih salah satu ongkir!");
+    setShowAlert("Silakan pilih salah satu ongkir!", "danger");
     return false;
   }
 
@@ -1391,7 +1392,7 @@ export async function proses_bayar(confirm = 0) {
   let load_page_id = page.view.load.load_page_id
   let checkout_id = load_page_id;
   if (!brand_pembayaran) {
-    alert("Pilih Pembayaran telebih dahulu");
+    setShowAlert("Pilih Pembayaran telebih dahulu", "danger");
   } else if (isLoggedIn) {
     $.ajax({
 
@@ -1697,9 +1698,9 @@ export async function proses_payment(confirm = 0) {
   if (!validateOngkir()) {
 
   } else if (tipe_pemesanan === undefined) {
-    alert("Pilih tipe pemesanan dulu!");
+    setShowAlert("Pilih tipe pemesanan dulu!", "danger");
   } else if (tipe_pemesanan == 'reguler' && (!$("#id_kirim_ke").val())) {
-    alert("Pilih alamat penerima!");
+    setShowAlert("Pilih alamat penerima!", "error");
   } else if (isLoggedIn) {
     let send_cart_proses = [];
 
@@ -2518,17 +2519,17 @@ export async function send_cart_checked(id_cart) {
       if (max_varian == 1 && varian_1) {
         visible = true;
       } else if (max_varian == 1 && !varian_1) {
-        alert("Silahkan untuk memilih varian terlebih dahulu");
+        setShowAlert("Silahkan untuk memilih varian terlebih dahulu", "danger");
         $('#bismillah_beli-' + id_cart).prop('checked', false);
       } else if (max_varian == 2 && varian_2) {
         visible = true;
       } else if (max_varian == 2 && !varian_2) {
-        alert("Silahkan untuk memilih varian terlebih dahulu");
+        setShowAlert("Silahkan untuk memilih varian terlebih dahulu", "danger");
         $('#bismillah_beli-' + id_cart).prop('checked', false);
       } else if (max_varian == 3 && varian_3) {
         visible = true;
       } else if (max_varian == 3 && !varian_3) {
-        alert("Silahkan untuk memilih varian terlebih dahulu");
+        setShowAlert("Silahkan untuk memilih varian terlebih dahulu", "danger");
         $('#bismillah_beli-' + id_cart).prop('checked', false);
       }
     } else {

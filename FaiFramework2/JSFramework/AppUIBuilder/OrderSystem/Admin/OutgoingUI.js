@@ -394,13 +394,13 @@ export default class OutgoingUI {
                 const notes = document.getElementById('notesTextarea').value;
                 
                 if (!orderId || !warehouseId || !picker) {
-                    alert('Harap isi semua field yang wajib diisi!');
+                    setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
                     return;
                 }
                 
                 const order = this.orders.find(o => o.id === orderId);
                 if (!order) {
-                    alert('Pesanan tidak ditemukan!');
+                    setShowAlert("Pesanan tidak ditemukan!", "danger");
                     return;
                 }
                 
@@ -447,7 +447,7 @@ export default class OutgoingUI {
                 });
                 
                 if (newOutgoing.items.length === 0) {
-                    alert('Tidak ada produk yang dapat ditambahkan ke outgoing. Stok tidak mencukupi.');
+                    setShowAlert("Tidak ada produk yang dapat ditambahkan ke outgoing. Stok tidak mencukupi.", "danger");
                     return;
                 }
                 
@@ -459,7 +459,7 @@ export default class OutgoingUI {
                 this.updateStats();
                 this.populateOrderSelect();
                 
-                alert('Outgoing berhasil ditambahkan!');
+                setShowAlert("Outgoing berhasil ditambahkan!", "success");
             }
             
             editOutgoing(outgoingId) {

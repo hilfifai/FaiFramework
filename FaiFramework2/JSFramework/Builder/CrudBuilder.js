@@ -3257,7 +3257,7 @@ export default class CrudBuilder extends FaiModule {
 
     _handleBulkDelete() {
         // Implementation for bulk delete
-        if (confirm(`Anda yakin ingin menghapus ${this.selectedRows.length} data?`)) {
+        if (swalConfirm(`Anda yakin ingin menghapus ${this.selectedRows.length} data?`)) {
             console.log('Bulk delete selected items:', this.selectedRows);
         }
     }

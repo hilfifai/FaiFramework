@@ -1362,7 +1362,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         if (!po) {
             console.error('PO tidak ditemukan:', this.currentPoId);
             console.log('Available POs:', this.filteredPurchaseOrders.map(p => p.id));
-            alert('Data PO tidak ditemukan!');
+            setShowAlert("Data PO tidak ditemukan!", "danger");
             this.showView('poListView');
             return;
         }
@@ -1487,7 +1487,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         const po = this.filteredPurchaseOrders.find(p => p.id === this.currentPoId);
         if (!po || !po.items[index]) return;
 
-        if (confirm('Hapus item ini?')) {
+        if (swalConfirm('Hapus item ini?')) {
             po.items.splice(index, 1);
             this.populateEditForm();
         }
@@ -2778,7 +2778,6 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             }, 2000);
 
         }
-        await this.completeReceiving();
         // Reset dan kembali ke list
         // setTimeout(() => {
         this.currentPoId = null;
@@ -3474,7 +3473,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     }
 
     async deleteReceiving(barcode, receivingId, detailId) {
-        if (confirm('Apakah Anda yakin ingin menghapus data penerimaan ini?')) {
+        if (swalConfirm('Apakah Anda yakin ingin menghapus data penerimaan ini?')) {
             try {
                 const result = await this.deleteReceivingData(receivingId, detailId);
                 if (result.success) {
@@ -3535,7 +3534,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
     // Method untuk delete receiving
     deleteReceiving2(barcode) {
-        if (confirm('Apakah Anda yakin ingin menghapus data penerimaan ini?')) {
+        if (swalConfirm('Apakah Anda yakin ingin menghapus data penerimaan ini?')) {
             const item = this.po.items.find(item => item.barcode === barcode);
 
             // Hapus dari data receivings
@@ -4032,7 +4031,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         // Refresh tampilan
         this.refreshReceivingView(barcode);
 
-        alert('Penerimaan berhasil disimpan!');
+        setShowAlert("Penerimaan berhasil disimpan!", "success");
     }
 
     // Method untuk refresh view
@@ -4910,7 +4909,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
         this.delegateEvent('click', '#proceedToDetail', () => {
             if (!this.scannedProducts.length) {
-                alert('Barang minimal satu produk terlebih dahulu!');
+                setShowAlert("Barang minimal satu produk terlebih dahulu!", "danger");
                 return;
             }
             console.log(document.getElementById("modeConfirmView").dataset.mode);
@@ -5377,7 +5376,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         const po = this.PurchaseOrders.find(p => p.id === this.currentPoId);
         if (getType == 'proccess') {
             if (!po) {
-                alert('PO tidak ditemukan!');
+                setShowAlert("PO tidak ditemukan!", "danger");
                 return;
             }
         }
@@ -5403,14 +5402,14 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         });
         if (getType == 'proccess') {
             if (!hasReceiving) {
-                alert('Tidak ada barang yang diterima!');
+                setShowAlert("Tidak ada barang yang diterima!", "danger");
                 return;
             }
 
             // Konfirmasi sebelum complete
 
 
-            if (confirm(`Apakah Anda yakin menyelesaikan penerimaan?\nTotal barang diterima: ${totalReceived} item`)) {
+            if (swalConfirm(`Apakah Anda yakin menyelesaikan penerimaan?\nTotal barang diterima: ${totalReceived} item`)) {
                 await this.processReceiving(po, receivingItems);
 
             }
@@ -6224,14 +6223,14 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     createReturn() {
         const po = this.PurchaseOrders.find(p => p.id === this.currentPoId);
         if (!po) {
-            alert('PO tidak ditemukan!');
+            setShowAlert("PO tidak ditemukan!", "danger");
             return;
         }
 
         // Cek apakah ada barang yang sudah diterima
         const receivedItems = po.items.filter(item => (item.received || 0) > 0);
         if (receivedItems.length === 0) {
-            alert('Tidak ada barang yang sudah diterima untuk di-retur!');
+            setShowAlert("Tidak ada barang yang sudah diterima untuk di-retur!", "danger");
             return;
         }
 
@@ -6397,7 +6396,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         const returnDate = document.getElementById('returnDate').value;
 
         if (!reason) {
-            alert('Pilih alasan retur terlebih dahulu!');
+            setShowAlert("Pilih alasan retur terlebih dahulu!", "danger");
             return;
         }
 
@@ -6413,7 +6412,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
             if (quantity > 0) {
                 if (!rackId) {
-                    alert('Pilih rak untuk semua item yang akan di-retur!');
+                    setShowAlert("Pilih rak untuk semua item yang akan di-retur!", "danger");
                     isValid = false;
                     return;
                 }
@@ -6436,7 +6435,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         if (!isValid) return;
 
         if (returnItems.length === 0) {
-            alert('Pilih minimal satu barang untuk di-retur!');
+            setShowAlert("Pilih minimal satu barang untuk di-retur!", "danger");
             return;
         }
 
@@ -6699,7 +6698,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
         if (!returnData) return;
 
-        if (confirm(`Proses retur ${returnId}? Status akan berubah menjadi diproses.`)) {
+        if (swalConfirm(`Proses retur ${returnId}? Status akan berubah menjadi diproses.`)) {
             returnData.status = 'processed';
             returnData.history.push({
                 date: new Date().toISOString().split('T')[0],
@@ -6708,14 +6707,14 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             });
 
             this.renderReturnsList();
-            alert('Retur berhasil diproses!');
+            setShowAlert("Retur berhasil diproses!", "success");
         }
     }
 
     // Edit return (hanya untuk status pending)
     editReturn(returnId) {
         // Implementation untuk edit return
-        alert('Fitur edit retur akan segera tersedia!');
+        setShowAlert("Fitur edit retur akan segera tersedia!", "primary");
     }
 
     // Helper method untuk find item by barcode
@@ -6727,14 +6726,14 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
     createReturn() {
         const po = this.PurchaseOrders.find(p => p.id === this.currentPoId);
         if (!po) {
-            alert('PO tidak ditemukan!');
+            setShowAlert("PO tidak ditemukan!", "danger");
             return;
         }
 
         // Cek apakah ada barang yang sudah diterima
         const receivedItems = po.items.filter(item => (item.received || 0) > 0);
         if (receivedItems.length === 0) {
-            alert('Tidak ada barang yang sudah diterima untuk di-retur!');
+            setShowAlert("Tidak ada barang yang sudah diterima untuk di-retur!", "danger");
             return;
         }
 
@@ -6901,7 +6900,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         const returnDate = document.getElementById('returnDate').value;
 
         if (!reason) {
-            alert('Pilih alasan retur terlebih dahulu!');
+            setShowAlert("Pilih alasan retur terlebih dahulu!", "danger");
             return;
         }
 
@@ -6917,7 +6916,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
 
             if (quantity > 0) {
                 if (!rackId) {
-                    alert('Pilih rak untuk semua item yang akan di-retur!');
+                    setShowAlert("Pilih rak untuk semua item yang akan di-retur!", "danger");
                     isValid = false;
                     return;
                 }
@@ -6940,7 +6939,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
         if (!isValid) return;
 
         if (returnItems.length === 0) {
-            alert('Pilih minimal satu barang untuk di-retur!');
+            setShowAlert("Pilih minimal satu barang untuk di-retur!", "danger");
             return;
         }
 

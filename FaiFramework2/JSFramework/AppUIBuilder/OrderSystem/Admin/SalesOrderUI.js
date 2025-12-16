@@ -948,7 +948,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
 
         // Cancel form
         document.getElementById('cancelForm').addEventListener('click', () => {
-            if (confirm('Batalkan pembuatan Sales Order?')) {
+            if (swalConfirm('Batalkan pembuatan Sales Order?')) {
                 this.resetForm();
                 this.showListView();
             }
@@ -3208,7 +3208,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
         const outgoing = this.currentSo.outgoing.find(o => o.id === outgoingId);
         if (!outgoing) return;
 
-        if (confirm(`Selesaikan outgoing ${outgoing.id}?`)) {
+        if (swalConfirm(`Selesaikan outgoing ${outgoing.id}?`)) {
             outgoing.status = 'completed';
             outgoing.checkedBy = 'Admin'; // In real app, this would be the current user
 
@@ -3366,7 +3366,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
         // Add selected items to delivery
         const selectedItems = this.getSelectedItemsForDelivery();
         if (selectedItems.length === 0) {
-            setShowAlert('Pilih minimal 1 item untuk dikirim');
+            setShowAlert('Pilih minimal 1 item untuk dikirim',"danger");
             return;
         }
 
@@ -3981,7 +3981,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
             // Implement edit functionality
             this.openEditDeliveryModal(delivery);
         } else {
-            setShowAlert('Hanya delivery order dengan status pending yang bisa diedit');
+            setShowAlert('Hanya delivery order dengan status pending yang bisa diedit',"primary");
         }
     }
 
@@ -3991,7 +3991,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
 
         const paymentMethod = document.getElementById('selectedPaymentMethod').value;
         if (!paymentMethod) {
-            setShowAlert('Pilih metode pembayaran terlebih dahulu');
+            setShowAlert('Pilih metode pembayaran terlebih dahulu',"danger");
             return;
         }
 
@@ -4385,7 +4385,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
             }
         } catch (error) {
             console.error('Error:', error);
-            setShowAlert('Gagal mengirim konfirmasi pembayaran');
+            setShowAlert('Gagal mengirim konfirmasi pembayaran',"danger");
         }
     }
 
@@ -4414,7 +4414,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
             }
         } catch (error) {
             console.error('Error:', error);
-            setShowAlert('Gagal memproses konfirmasi');
+            setShowAlert('Gagal memproses konfirmasi',"danger");
         }
     }
     // Render payment list
@@ -4612,7 +4612,7 @@ export default class SalesOrderUI extends OrderSystemBuilder {
                 return;
         }
 
-        if (confirm(`Ubah status SO menjadi ${this.getStatusText(newStatus)}?`)) {
+        if (swalConfirm(`Ubah status SO menjadi ${this.getStatusText(newStatus)}?`)) {
             this.currentSo.status = newStatus;
             this.currentSo.history.push({
                 date: new Date().toISOString().split('T')[0],

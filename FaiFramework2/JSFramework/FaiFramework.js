@@ -4,7 +4,7 @@ import LoginHub from './Hub/LoginHub.js';
 import * as EcommerceHub from './Hub/EcommerceHub.js';
 import ListDataHub from './Hub/ListDataHub.js';
 import * as GeneralHub from './Hub/GeneralHub.js';
-import { setShowAlert } from './Helper/Notification.js';
+import { setShowAlert,swalConfirm } from './Helper/Notification.js';
 import SelectSearch from './Helper/SelectSearch.js';
 export class FaiFramework extends FaiModule {
 	constructor() {
@@ -392,4 +392,5 @@ Object.getOwnPropertyNames(Object.getPrototypeOf(loginHub))
 window.loginHub = loginHub;
 window.fai = this;
 window.setShowAlert = setShowAlert;
+window.swalConfirm = swalConfirm;
 window.SelectSearch = SelectSearch;

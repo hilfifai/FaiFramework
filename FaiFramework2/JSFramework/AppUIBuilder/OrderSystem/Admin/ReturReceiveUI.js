@@ -697,13 +697,13 @@ export default class ReturReceiveUI {
                 const type = document.getElementById('returType').value;
                 
                 if (!receiveId || !reason || !description || !type) {
-                    alert('Harap isi semua field yang wajib diisi!');
+                    setShowAlert("Harap isi semua field yang wajib diisi!", "danger");
                     return;
                 }
                 
                 const receive = this.receives.find(r => r.id === receiveId);
                 if (!receive) {
-                    alert('Receive tidak ditemukan!');
+                    setShowAlert("Receive tidak ditemukan!", "danger");
                     return;
                 }
                 
@@ -755,7 +755,7 @@ export default class ReturReceiveUI {
                 });
                 
                 if (!hasValidItems) {
-                    alert('Tidak ada item yang dikembalikan!');
+                    setShowAlert("Tidak ada item yang dikembalikan!", "danger");
                     return;
                 }
                 
@@ -788,13 +788,13 @@ export default class ReturReceiveUI {
                 this.updateStats();
                 this.populateReceiveSelect();
                 
-                alert('Retur berhasil diajukan!');
+                setShowAlert("Retur berhasil diajukan!", "success");
             }
             
             approveRetur() {
                 if (!this.currentRetur) return;
                 
-                if (confirm(`Setujui retur ${this.currentRetur.id}?`)) {
+                if (swalConfirm(`Setujui retur ${this.currentRetur.id}?`)) {
                     this.currentRetur.status = 'approved';
                     this.currentRetur.history.push({
                         date: new Date().toISOString().split('T')[0],
@@ -811,7 +811,7 @@ export default class ReturReceiveUI {
                     this.updateStats();
                     this.populateReturDetail();
                     
-                    alert('Retur berhasil disetujui!');
+                    setShowAlert("Retur berhasil disetujui!", "success");
                 }
             }
             
@@ -831,14 +831,14 @@ export default class ReturReceiveUI {
                     this.updateStats();
                     this.populateReturDetail();
                     
-                    alert('Retur berhasil ditolak!');
+                    setShowAlert("Retur berhasil ditolak!", "success");
                 }
             }
             
             processRetur() {
                 if (!this.currentRetur) return;
                 
-                if (confirm(`Proses retur ${this.currentRetur.id}?`)) {
+                if (swalConfirm(`Proses retur ${this.currentRetur.id}?`)) {
                     this.currentRetur.status = 'processing';
                     this.currentRetur.history.push({
                         date: new Date().toISOString().split('T')[0],
@@ -850,7 +850,7 @@ export default class ReturReceiveUI {
                     this.updateStats();
                     this.populateReturDetail();
                     
-                    alert('Retur sedang diproses!');
+                    setShowAlert("Retur sedang diproses!", "primary");
                 }
             }
             
@@ -900,7 +900,7 @@ export default class ReturReceiveUI {
                             this.populateReturDetail();
                         }
                         
-                        alert('Item retur berhasil disetujui!');
+                        setShowAlert("Item retur berhasil disetujui!", "success");
                     }
                 }
             }
@@ -1058,7 +1058,7 @@ export default class ReturReceiveUI {
                 const confirmScanBtn = document.getElementById('confirmScan');
                 
                 startScannerBtn.addEventListener('click', () => {
-                    alert('Scanner diaktifkan. Arahkan kamera ke barcode produk.');
+                    setShowAlert("Scanner diaktifkan. Arahkan kamera ke barcode produk.", "primary");
                     startScannerBtn.disabled = true;
                     stopScannerBtn.disabled = false;
                     
@@ -1077,7 +1077,7 @@ export default class ReturReceiveUI {
                     startScannerBtn.disabled = false;
                     stopScannerBtn.disabled = true;
                     document.getElementById('scanResult').style.display = 'none';
-                    alert('Scanner dinonaktifkan.');
+                    setShowAlert("Scanner dinonaktifkan.", "primary");
                 });
                 
                 addManualBarcodeBtn.addEventListener('click', () => {
@@ -1093,11 +1093,11 @@ export default class ReturReceiveUI {
                                 document.getElementById('scannedProductBarcode').textContent = `Barcode: ${barcode}`;
                                 document.getElementById('scanResult').style.display = 'block';
                             } else {
-                                alert('Produk tidak ditemukan dalam retur ini.');
+                                setShowAlert("Produk tidak ditemukan dalam retur ini.", "danger");
                             }
                         }
                     } else {
-                        alert('Masukkan kode barcode terlebih dahulu.');
+                        setShowAlert("Masukkan kode barcode terlebih dahulu.", "danger");
                     }
                 });
                 
@@ -1105,7 +1105,7 @@ export default class ReturReceiveUI {
                     const condition = document.getElementById('itemCondition').value;
                     const action = document.getElementById('itemAction').value;
                     
-                    alert(`Produk telah dikonfirmasi. Kondisi: ${condition}, Tindakan: ${action}`);
+                    setShowAlert(`Produk telah dikonfirmasi. Kondisi: ${condition}, Tindakan: ${action}`,"success");
                     document.getElementById('scanResult').style.display = 'none';
                     document.getElementById('manualBarcode').value = '';
                 });

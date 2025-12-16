@@ -417,7 +417,7 @@ export default class DeliveryOrderUI {
                     document.getElementById('cameraContainer').style.display = 'block';
                 } catch (error) {
                     console.error('Error accessing camera:', error);
-                    alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                    setShowAlert("Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.", "danger");
                 }
             }
             
@@ -477,7 +477,7 @@ export default class DeliveryOrderUI {
             
             confirmResi() {
                 if (!this.scannedResi) {
-                    alert('Silakan scan atau masukkan nomor resi terlebih dahulu.');
+                    setShowAlert("Silakan scan atau masukkan nomor resi terlebih dahulu.", "danger");
                     return;
                 }
                 
@@ -684,8 +684,8 @@ export default class DeliveryOrderUI {
                 document.getElementById('processDeliveryBtn').addEventListener('click', () => this.processDelivery());
                 document.getElementById('markAsShippedBtn').addEventListener('click', () => this.markAsShipped());
                 document.getElementById('cancelDeliveryBtn').addEventListener('click', () => {
-                    if (confirm('Apakah Anda yakin ingin membatalkan pengiriman ini?')) {
-                        alert('Pengiriman dibatalkan');
+                    if (swalConfirm('Apakah Anda yakin ingin membatalkan pengiriman ini?')) {
+                        setShowAlert("Pengiriman dibatalkan", "danger");
                     }
                 });
                 
