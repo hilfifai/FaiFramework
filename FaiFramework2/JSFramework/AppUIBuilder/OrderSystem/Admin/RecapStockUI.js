@@ -1493,7 +1493,9 @@ export default class RecapStockUI extends OrderSystemBuilder {
                                 <i class="fas fa-eye"></i> Lihat Detail
                             </button>
                         </td>
-                    </tr>
+                    </tr> 
+
+                    
                 `;
         });
         this.idProdukTableBody.innerHTML = tableHTML;
