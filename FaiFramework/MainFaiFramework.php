@@ -282,6 +282,8 @@ class MainFaiFramework extends Configuration
 			MainFaiFramework::version($all);
 		} elseif ($type_load == 'get_generate') {
 			MainFaiFramework::generate($page);
+		} elseif ($type_load == 'docs') {
+			MainFaiFramework::docs($page);
 		} else {
 			MainFaiFramework::app2();
 		}
@@ -752,6 +754,203 @@ class MainFaiFramework extends Configuration
 		}
 		ChatApp::initialize_chat($page, $data);
 	}
+	public static function docs()
+    {
+
+        $file = scandir('./FaiFramework/Structure/App');
+        print_r($file);
+        echo '<pre>';
+        $data          = [];
+        echo $fileName = 'Fai-Version-Template-App.json';
+        if (! file_exists($fileName)) {
+
+            file_put_contents($fileName, json_encode($data, JSON_PRETTY_PRINT));
+        }
+        $page            = [];
+        $count           = 0;
+        $version         = 1;
+        $gen             = 0;
+        $outputFormat    = "json";
+        $page['section'] = "generate";
+
+        $crud_param   = [];
+        $crud_array_3 = [];
+        // $page['load']['database']['id']['text'] = 'id';
+        // $page['load']['database']['id']['type'] = 'prefix'; //prefix//sufix
+        // $page['load']['database']['id']['on_table'] = false; //true->id_(nama table)//false->just id
+        $data = json_decode(file_get_contents($fileName), true);
+        for ($i = 2; $i < count($file); $i++) {
+            $nama      = $file[$i];
+            $name_func = str_replace(".php", "", $nama);
+            if (substr($nama, -strlen('.php')) == '.php' and ! in_array($nama, [
+                "ChatApp.php",
+
+                "Form.php",
+                "Amal.php",
+                "Auth.php",
+                "Cronjob.php",
+                "Data.php",
+                "Esios.php",
+                "WaWebhook.php",
+                "ViewLayout.php",
+                "temp.php",
+                "BForm.php",
+            ])) {
+                '<br>' . $nama;
+
+                require_once  "./FaiFramework/Structure/App/$nama";
+                $class     = str_replace('.php', "", $nama);
+                $template  = new $class();
+                $reflector = new ReflectionClass($class);
+                $methods   = $reflector->getMethods();
+                // print_r($methods);
+
+                $true = false;
+                foreach ($methods as $method) {
+                    $name_method = $method->name;
+                    '<br>' . $nama . '-' . $name_method;
+                    $get_now_array         = [];
+                    $get_last_version      = $data["versions"][$name_func][$name_method]['last_version'] ?? ($version - 1) . '.' . $gen . '.0';
+                    $get_temp_version_last = $data["versions"][$name_func][$name_method]['versions'][$get_last_version] ?? [];
+                    if (! in_array($nama . '-' . $name_method, [
+                        "BForm.php-form_content",
+                        "BForm.php-approval_content",
+                        "BForm.php-update_utama",
+                        "BForm.php-add_approval",
+                        "BForm.php-add_from_extend",
+                        "BForm.php-add_form_approval",
+                        "BForm.php-save_nama_approval",
+                        "CRM.php-list_workspace",
+                        "ERP.php-list_workspace",
+                        "ERP.php-pajak",
+                        "Ecommerce.php-update_stok",
+                        "Ecommerce.php-clearance_produk",
+                        "Ecommerce.php-detail2",
+                        "Ecommerce.php-list_barang_detail",
+                        "Ecommerce.php-buat_invoice",
+                        "Ecommerce.php-sync_cart",
+                        "Ecommerce.php-acc_sync_order",
+                        "Ecommerce.php-get_order",
+                        "Ecommerce.php-get_order_detail",
+                        "Ecommerce.php-sync_order",
+                        "Ecommerce.php-cancel_order",
+                        "Ecommerce.php-get_pesanan",
+                        "Ecommerce.php-update_detail",
+                        "Ecommerce.php-hapus_cart",
+                        "Ecommerce.php-hapus_cart_web",
+                        "Ecommerce.php-konfirmasi_pembayaran",
+                        "GA.php-list_workspace",
+                        "HCMS.php-list_workspace",
+                        "HCMS.php-list_board",
+                        "Inventaris_aset.php-list_workspace",
+                        "Keuangan.php-list_workspace",
+                        "Outsourcing.php-list_workspace",
+                        "POS.php-list_workspace",
+                        "POS.php-closed_po",
+                        "POS.php-open_po",
+                        "POS.php-js_payment",
+                        "Share.php-jam2",
+                        "Inventaris_aset.php-data_varian",
+                        "Share.php-send_wa_insert",
+                        "Store.php-list_workspace",
+                        "Web.php-get_menu",
+                        "Web.php-save_menu",
+                        "Website.php-gettag",
+                        "Workspace.php-workspace_apps",
+                        "Workspace.php-bisnis_dashboard",
+                        "CRM.php-pembayaran_mitra",
+                        "Workspace.php-food_dashboard",
+                        "Workspace.php-ethica_api",
+
+                    ])) {
+
+                        $content_page = $template->$name_method($page);
+
+                        if (isset($content_page["crud"])) {
+                            if (count($content_page["crud"] ?? [])) {
+
+                                foreach ($content_page["crud"] as $key => $value) {
+
+                                    $crud_param[$key] = 1;
+                                    if (isset($content_page["crud"]['array'])) {
+                                        foreach ($content_page["crud"]['array'] as $array) {
+
+                                            $crud_array_3[$array[2]][$nama . '-' . $name_method] = $array;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (count($content_page['crud']["array_sub_kategori"] ?? [])) {
+                            foreach ($content_page['crud']["array_sub_kategori"] as $key => $a1) {
+                                foreach ($content_page['crud']["array_sub_kategori"][$key] as $array) {
+
+                                    $crud_array_3[$array[2]][$nama . '-' . $name_method . '-' . 'sub_kategori' . $key] = $array;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        // $class="";
+        echo '<pre>';
+        echo '<Br>';
+        $i = 0;
+        foreach ($crud_param as $param => $g) {
+            $i++;
+            echo '<br>' . $i . '. ';
+            echo $param;
+        }
+        echo '<Br>';
+        echo '<Br>';
+        echo '<Br>';
+        echo '<Br>
+	   CRUD ARRAY';
+        $i = 0;
+        ksort($crud_array_3);
+        foreach ($crud_array_3 as $param => $g) {
+            $i++;
+            echo '<br>' . $i . '. ';
+            echo $param;
+
+        }
+        echo '<Br>';
+        echo '<Br>';
+        echo '<Br>';
+        echo 'CONTOH PENGGUNAAN<Br>
+	   CRUD ARRAY';
+        foreach ($crud_array_3 as $param => $g) {
+            $seenPatterns = [];
+            echo '<br>';
+            echo '<br>';
+            echo '<br>';
+            echo '<h1>' . $param . '</h1>';
+            foreach ($g as $method => $isi) {
+                // buat pola: misalnya "0:isi,1:kosong,2:isi,3:gaada"
+                $pattern = [];
+                foreach (range(0, 10) as $i) { // asumsikan max index 10
+                    if (array_key_exists($i, $isi)) {
+                        $pattern[] = ($isi[$i] === "" ? "kosong" : "isi");
+                    } else {
+                        $pattern[] = "gaada";
+                    }
+                }
+                $patternKey = implode("-", $pattern);
+
+                // cek apakah sudah pernah ditampilkan
+                if (! in_array($patternKey, $seenPatterns)) {
+                    $seenPatterns[] = $patternKey;
+
+                    echo '<br><br>' . $method;
+                    echo '<br>';
+                    print_r($isi);
+                }
+            }
+        }
+    }
 
 	public function logout()
 	{
