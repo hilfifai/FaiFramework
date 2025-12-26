@@ -459,7 +459,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1773,7 +1773,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1814,7 +1814,7 @@ export default class PurchaseOrderUI extends OrderSystemBuilder {
             const hour = String(now.getUTCHours()).padStart(2, '0');
 
             const token = `SECRET_TOKEN_${year}${month}${day}${hour}`;
-            const response = await fetch(`${this.apiBaseUrl}/api/json/all_produk`, {
+            const response = await fetch(`${this.apiBaseUrl}/api/json`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
