@@ -118,7 +118,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
         if (params.search) {
 
             whereClause.push({
-                fields: ['nama_varian',"nama_barang"],
+                fields: ["nama_barang"],
                 operator: 'like_or_fields',
                 value: `%${params.search}%`
             });
@@ -139,7 +139,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             });
         }
         const queryBody = {
-            db: 'view_all_produk_stok_per_gudang',
+            db: 'view_total_all_stok_per_gudang',
             limit: params.limit || 10,
             where: whereClause,
             offset: params.offset || 0,
@@ -147,7 +147,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             gudang: params.gudang || '',
             location: params.location || ''
         };
-        let data_produk = await window.fai.getModule('Data').loadJSON('view_all_produk_stok_per_gudang', queryBody, true);
+        let data_produk = await window.fai.getModule('Data').loadJSON('view_total_all_stok_per_gudang', queryBody, true);
         this.paginationProduct = data_produk;
         this.initPagination();
         return data_produk.data;
@@ -275,13 +275,13 @@ export default class RecapStockUI extends OrderSystemBuilder {
                 <div class="tabs">
                     <div class="tab active" data-tab="all">Semua Stok</div>
                     
-                    <div class="tab " data-tab="nama-barang">Berdasarkan Nama Barang</div>
+                    <div class="tab d-none " data-tab="nama-barang">Berdasarkan Nama Barang</div>
                     <div class="tab d-none" data-tab="nama-varian" >Berdasarkan Nama Varian</div>
-                    <div class="tab" data-tab="id-produk">Berdasarkan ID Produk</div>
-                    <div class="tab" data-tab="id-produk-varian">Berdasarkan ID Produk Varian</div>
+                    <div class="tab d-none" data-tab="id-produk">Berdasarkan ID Produk</div>
+                    <div class="tab d-none" data-tab="id-produk-varian">Berdasarkan ID Produk Varian</div>
                     <div class="tab d-none" data-tab="id-api">Berdasarkan ID API</div>
-                    <div class="tab" data-tab="gudang">Berdasarkan Gudang</div>
-                    <div class="tab" data-tab="rak">Berdasarkan Rak</div>
+                    <div class="tab d-none" data-tab="gudang">Berdasarkan Gudang</div>
+                    <div class="tab d-none" data-tab="rak">Berdasarkan Rak</div>
                     <div class="tab d-none" data-tab="history">History</div>
                 </div>
                 
@@ -291,11 +291,10 @@ export default class RecapStockUI extends OrderSystemBuilder {
                             <thead>
                                 <tr>
                                     <th>Produk</th>
-                                    <th>SKU</th>
+                                    <th>Gudang</th>
                                     <th>Lokasi</th>
                                     <th>Stok Saat Ini</th>
                                     <th>Status</th>
-                                    <th>Trend</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -866,7 +865,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             const trendIcon = this.getTrendIcon(trend);
 
             // Calculate stock percentage for bar
-            const stockPercentage = (product.stok_available / product.maxStock) * 100;
+            const stockPercentage = (product.jumlah_stok / product.maxStock) * 100;
             const barClass = this.getBarClass(stockPercentage);
 
             tableHTML += `
@@ -878,24 +877,24 @@ export default class RecapStockUI extends OrderSystemBuilder {
                             </div>
                             <div class="product-info">
                                 <div class="product-name">${product.nama_barang}</div>
-                                <div class="product-sku">${product.nama_varian}</div>
+                                <div class="product-sku d-none">${product.nama_varian}</div>
                             </div>
                         </div>
                     </td>
-                    <td>${product.barcode_varian}</td>
+                    <td>${product.nama_gudang}</td>
                     <td>${product.nama_ruang_simpan}</td>
                     <td>
                         <div class="stock-level">
                             <div class="stock-bar">
                                 <div class="stock-fill ${barClass}"></div>
                             </div>
-                            <div class="stock-value">${product.stok_available}</div>
+                            <div class="stock-value">${product.jumlah_stok}</div>
                         </div>
                     </td>
                     <td>
                         <span class="status-badge ${statusClass}">${statusText}</span>
                     </td>
-                    <td>
+                    <td class="d-none">
                         <span class="${trendClass}">
                             <i class="fas ${trendIcon}"></i> ${product.total_terjual_varian}
                         </span>
@@ -926,7 +925,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
         let tableHTML = '';
 
         lowStockProducts.forEach(product => {
-            const shortage = product.minStock - product.stok_available;
+            const shortage = product.minStock - product.jumlah_stok;
 
             tableHTML += `
                 <tr>
@@ -937,12 +936,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
                             </div>
                             <div class="product-info">
                                 <div class="product-name">${product.nama_barang}</div>
-                                <div class="product-sku">${product.sku}</div>
                             </div>
                         </div>
                     </td>
                     <td>${product.sku}</td>
-                    <td>${product.stok_available}</td>
+                    <td>${product.jumlah_stok}</td>
                     <td>${product.minStock}</td>
                     <td>${shortage > 0 ? shortage : 0}</td>
                     <td>
@@ -1039,8 +1037,8 @@ export default class RecapStockUI extends OrderSystemBuilder {
             const product = this.products.find(p => p.id == productId);
 
             if (product) {
-                document.getElementById('adjustSystemStock').value = product.stok_available;
-                document.getElementById('adjustPhysicalStock').value = product.stok_available;
+                document.getElementById('adjustSystemStock').value = product.jumlah_stok;
+                document.getElementById('adjustPhysicalStock').value = product.jumlah_stok;
                 this.calculateDifference();
             }
         });
@@ -1080,11 +1078,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         // Update product stock
         const difference = physicalStock - systemStock;
-        product.stok_available = physicalStock;
+        product.jumlah_stok = physicalStock;
 
         // Update product status based on new stock level
-        const stockPercentage = (product.stok_available / product.maxStock) * 100;
-        if (product.stok_available === 0) {
+        const stockPercentage = (product.jumlah_stok / product.maxStock) * 100;
+        if (product.jumlah_stok === 0) {
             product.status = 'out';
         } else if (stockPercentage < 30) {
             product.status = 'low';
@@ -1112,7 +1110,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             document.getElementById('detailProductStatus').textContent = this.getStatusText(product.status);
             document.getElementById('detailProductStatus').className = `status-badge ${this.getStatusClass(product.status)}`;
             document.getElementById('detailSKU').textContent = product.sku;
-            document.getElementById('detailCurrentStock').textContent = product.stok_available;
+            document.getElementById('detailCurrentStock').textContent = product.jumlah_stok;
             document.getElementById('detailMinStock').textContent = product.minStock;
             document.getElementById('detailMaxStock').textContent = product.maxStock;
             document.getElementById('detailLocation').textContent = product.nama_ruang_simpan;
@@ -1130,8 +1128,8 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const product = this.products.find(p => p.id === productId);
         if (product) {
             document.getElementById('adjustProduct').value = product.id;
-            document.getElementById('adjustSystemStock').value = product.stok_available;
-            document.getElementById('adjustPhysicalStock').value = product.stok_available;
+            document.getElementById('adjustSystemStock').value = product.jumlah_stok;
+            document.getElementById('adjustPhysicalStock').value = product.jumlah_stok;
             document.getElementById('adjustLocation').value = product.nama_ruang_simpan;
             this.calculateDifference();
 
@@ -1152,7 +1150,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     orderProductStock(productId) {
         const product = this.products.find(p => p.id === productId);
         if (product) {
-            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.stok_available);
+            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.jumlah_stok);
             if (quantity && quantity > 0) {
                 alert(`PO untuk ${quantity} ${product.nama_barang} akan dibuat`);
                 // In a real app, this would create a purchase order
@@ -1169,7 +1167,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     // Export to Excel
     async exportExcel() {
         const queryBody = {
-            db: 'view_all_produk_stok_per_gudang',
+            db: 'view_total_all_stok_per_gudang',
             isExcel: true,
             where: this.buildWhereClause(),
             select:["nama_gudang",
@@ -1195,7 +1193,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 "harga_pokok_penjualan_varian",
 "harga_pokok",
 "total_terjual_varian",
-"stok_available"]
+"jumlah_stok"]
         };
         try {
             const response = await fetch('/api/json', {
@@ -1394,10 +1392,10 @@ export default class RecapStockUI extends OrderSystemBuilder {
         if (!groupedProducts[product.nama_barang][varianKey]) {
             groupedProducts[product.nama_barang][varianKey] = {
                 ...product,
-                stok_available: parseFloat(product.stok_available)
+                jumlah_stok: parseFloat(product.jumlah_stok)
             };
         } else {
-            groupedProducts[product.nama_barang][varianKey].stok_available += parseFloat(product.stok_available);
+            groupedProducts[product.nama_barang][varianKey].jumlah_stok += parseFloat(product.jumlah_stok);
         }
     });
 
@@ -1407,7 +1405,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const uniqueVariants = Object.values(groupedProducts[namaBarang]);
 
         const totalStock = uniqueVariants.reduce(
-            (sum, product) => sum + product.stok_available,
+            (sum, product) => sum + product.jumlah_stok,
             0
         );
 
@@ -1448,7 +1446,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                     <tr>
                         <td>${product.nama_varian}</td>
                         <td>${product.nama_barang}</td>
-                        <td>${product.stok_available}</td>
+                        <td>${product.jumlah_stok}</td>
                         <td>
                             <span class="status-badge ${this.getStatusClass(product.status)}">${this.getStatusText(product.status)}</span>
                         </td>
@@ -1480,7 +1478,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         Object.keys(groupedProducts).forEach(idProduk => {
             const productsInGroup = groupedProducts[idProduk];
-            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.jumlah_stok), 0);
 
             tableHTML += `
                     <tr>
@@ -1512,7 +1510,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         <td>${product.id_produk_varian}</td>
                         <td>${product.nama_barang}</td>
                         <td>${product.nama_varian || '-'}</td>
-                        <td>${product.stok_available}</td>
+                        <td>${product.jumlah_stok}</td>
                         <td>
                             <button class="action-btn btn-detail" onclick="viewProductDetail(${product.id})">
                                 <i class="fas fa-eye"></i> Detail
@@ -1538,7 +1536,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
                         <td>${idApi}</td>
                         <td>${product.nama_barang}</td>
                         <td>${product.nama_varian || '-'}</td>
-                        <td>${product.stok_available}</td>
+                        <td>${product.jumlah_stok}</td>
                         <td>
                             <button class="action-btn btn-detail" onclick="viewProductDetail(${product.id})">
                                 <i class="fas fa-eye"></i> Detail
@@ -1565,7 +1563,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         Object.keys(groupedProducts).forEach(location => {
             const productsInGroup = groupedProducts[location];
-            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.jumlah_stok), 0);
             const status = this.getStockStatus(totalStock, 5, 50); // Using default min/max
 
             tableHTML += `
@@ -1600,7 +1598,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         Object.keys(groupedProducts).forEach(location => {
             const productsInGroup = groupedProducts[location];
-            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.stok_available), 0);
+            const totalStock = productsInGroup.reduce((sum, product) => sum + parseFloat(product.jumlah_stok), 0);
             const status = this.getStockStatus(totalStock, 5, 50); // Using default min/max
 
             tableHTML += `
@@ -1629,10 +1627,10 @@ export default class RecapStockUI extends OrderSystemBuilder {
      updateStats() {
         const totalProducts = this.paginationProduct.total;
        
-        const goodStock = this.products.filter(p => p.stok_available >= 50).length;
-        const mediumStock = this.products.filter(p => p.stok_available >= 11 && p.stok_available <= 49).length;
-        const lowStock = this.products.filter(p => p.stok_available >= 1 && p.stok_available <= 10 ).length;
-        const outStock = this.products.filter(p => p.stok_available <= 0).length;
+        const goodStock = this.products.filter(p => p.jumlah_stok >= 50).length;
+        const mediumStock = this.products.filter(p => p.jumlah_stok >= 11 && p.jumlah_stok <= 49).length;
+        const lowStock = this.products.filter(p => p.jumlah_stok >= 1 && p.jumlah_stok <= 10 ).length;
+        const outStock = this.products.filter(p => p.jumlah_stok <= 0).length;
 
         // Calculate changes (simulated)
         const totalChange = Math.floor(Math.random() * 10) - 2;
@@ -1698,8 +1696,8 @@ export default class RecapStockUI extends OrderSystemBuilder {
             const product = this.products.find(p => p.id == productId);
 
             if (product) {
-                document.getElementById('adjustSystemStock').value = product.stok_available;
-                document.getElementById('adjustPhysicalStock').value = product.stok_available;
+                document.getElementById('adjustSystemStock').value = product.jumlah_stok;
+                document.getElementById('adjustPhysicalStock').value = product.jumlah_stok;
                 calculateDifference();
             }
         });
@@ -1739,11 +1737,11 @@ export default class RecapStockUI extends OrderSystemBuilder {
 
         // Update product stock
         const difference = physicalStock - systemStock;
-        product.stok_available = physicalStock;
+        product.jumlah_stok = physicalStock;
 
         // Update product status based on new stock level
-        const stockPercentage = (product.stok_available / product.maxStock) * 100;
-        if (product.stok_available === 0) {
+        const stockPercentage = (product.jumlah_stok / product.maxStock) * 100;
+        if (product.jumlah_stok === 0) {
             product.status = 'out';
         } else if (stockPercentage < 30) {
             product.status = 'low';
@@ -1771,7 +1769,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
             document.getElementById('detailProductStatus').textContent = getStatusText(product.status);
             document.getElementById('detailProductStatus').className = `status-badge ${this.getStatusClass(product.status)}`;
             document.getElementById('detailSKU').textContent = product.sku;
-            document.getElementById('detailCurrentStock').textContent = product.stok_available;
+            document.getElementById('detailCurrentStock').textContent = product.jumlah_stok;
             document.getElementById('detailMinStock').textContent = product.minStock;
             document.getElementById('detailMaxStock').textContent = product.maxStock;
             document.getElementById('detailLocation').textContent = product.nama_ruang_simpan;
@@ -1810,8 +1808,8 @@ export default class RecapStockUI extends OrderSystemBuilder {
         const product = this.products.find(p => p.id === productId);
         if (product) {
             document.getElementById('adjustProduct').value = product.id;
-            document.getElementById('adjustSystemStock').value = product.stok_available;
-            document.getElementById('adjustPhysicalStock').value = product.stok_available;
+            document.getElementById('adjustSystemStock').value = product.jumlah_stok;
+            document.getElementById('adjustPhysicalStock').value = product.jumlah_stok;
             document.getElementById('adjustLocation').value = product.nama_ruang_simpan;
             calculateDifference();
 
@@ -1832,7 +1830,7 @@ export default class RecapStockUI extends OrderSystemBuilder {
     orderProductStock(productId) {
         const product = this.products.find(p => p.id === productId);
         if (product) {
-            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.stok_available);
+            const quantity = prompt(`Jumlah yang ingin dipesan untuk ${product.nama_barang}:`, product.minStock - product.jumlah_stok);
             if (quantity && quantity > 0) {
                 alert(`PO untuk ${quantity} ${product.nama_barang} akan dibuat`);
                 // In a real app, this would create a purchase order
