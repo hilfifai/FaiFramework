@@ -1,17 +1,19 @@
 <?php
 
 require_once 'Partial.php';
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+
 class Packages extends Partial
 {
     public function __construct()
     {
         parent::__construct();
-       if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
     public static function initialize($page)
     {
@@ -166,7 +168,8 @@ class Packages extends Partial
                             $page['crud'] = array_merge_recursive($page['crud'], $card['cardNav'][$page['load']['nav']]['crud']);
                         }
 
-                        $array = ($card['cardNav'][$page['load']['nav']]['array']);} else {
+                        $array = ($card['cardNav'][$page['load']['nav']]['array']);
+                    } else {
                         $nama_array = $page['view_layout'][$fai->input('view_layout_number')][2]['menu'][$page['load']['page_section_menu']][2];
                         $array      = $page['view_layout'][$fai->input('view_layout_number')][2][$nama_array]['array'];
 
@@ -218,7 +221,6 @@ class Packages extends Partial
                     if (count($page_temp)) {
                         $page = array_merge($page, $page_temp);
                     }
-
                 }
             }
 
@@ -504,7 +506,6 @@ class Packages extends Partial
                     if (! stripos($page['crud']['costum_class'][$field], $page['database']['utama'] . "__" . $field . "_0")) {
                         $page['crud']['costum_class'][$field] .= $page['database']['utama'] . "__$field" . "_0";
                     }
-
                 } else {
                     $page['crud']['costum_class'][$field] = $page['database']['utama'] . "__$field" . "_0";
                 }
@@ -553,7 +554,16 @@ class Packages extends Partial
 
                         if (! in_array($id_primary_key, $columns)) {
                             "ALTER TABLE $database_utama_sub_kategori ADD COLUMN $id_primary_key  numeric ;";
-                            DB::select("ALTER TABLE " . (! empty($page['conection_scheme']) ? $page['conection_scheme'] . '.' : '') . "$database_utama_sub_kategori ADD COLUMN $id_primary_key  numeric ;");
+                            DB::select(
+                                "ALTER TABLE " .
+                                    (
+                                        (!empty($page['conection_scheme']) && $page['database_provider'] === 'postgres')
+                                        ? $page['conection_scheme'] . '.'
+                                        : ''
+                                    ) .
+                                    $database_utama_sub_kategori .
+                                    " ADD COLUMN $id_primary_key NUMERIC;"
+                            );
                         }
                         Database::create_database_check(
                             $page,
@@ -732,11 +742,10 @@ class Packages extends Partial
                         if ($searchactive != 2) {
                             $page['database']['where'][] = [$database_utama . ".active", "=", $searchactive];
                         }
-
                     }
                 } else if ($key == -2) {
                     if (Partial::input('status-appr', '_GET')) {
-                        $page['database']['where'][] = [$database_utama . "." . ($field_appr??"") . "_status", "=", Partial::input('status-appr', '_GET')];
+                        $page['database']['where'][] = [$database_utama . "." . ($field_appr ?? "") . "_status", "=", Partial::input('status-appr', '_GET')];
                     }
                 } else {
                     $i = $key;
@@ -978,7 +987,8 @@ class Packages extends Partial
 
                         $key_index = $page['crud']['field_view_sub_kategori'][$key]['field'][$v][1];
                         if (array_key_exists($key_index, $perubahan)) {;
-                            $page['crud']['field_view_sub_kategori'][$key]['field'][$v][1] = $perubahan[$key_index];}
+                            $page['crud']['field_view_sub_kategori'][$key]['field'][$v][1] = $perubahan[$key_index];
+                        }
                     }
                 }
             }
@@ -1035,15 +1045,13 @@ class Packages extends Partial
                 foreach ($select_temp as $value_select) {
                     $page['database']['select'][] = $value_select;
                 }
-
             }
         }
         return $page;
     }
-    public static function initialize_array($fai, $page, $array, $i, $field, $type, $extype)
+    public static function initialize_array($fai, $page, $array, $i, $field = "", $type = "", $extype = "")
     {
 
-        $array['array'][$i][1] = strtolower(trim(str_replace('.', '', $array['array'][$i][1]))) . '';
 
         $field          = $array['array'][$i][1];
         $type           = $array['array'][$i][2];
@@ -1065,6 +1073,7 @@ class Packages extends Partial
             $array['array'][$i][1] = strtolower(str_replace(' ', '_', strtolower($text)));
             $field                 = $array['array'][$i][1];
         }
+        $array['array'][$i][1] = strtolower(trim(str_replace('.', '', $array['array'][$i][1]))) . '';
         if (isset($page['load']['database']['query']['select']) and ($type == 'select' or $type == 'select-relation')) {
             $get_select = true;
         } else if (isset($page['load']['database']['query']['select'])) {
@@ -1097,7 +1106,6 @@ class Packages extends Partial
                 } else {
                     $visible = true;
                 }
-
             } else if (in_array('table', $extypearray)) {
 
                 if (in_array($page['crud']['view'], ['list']) or in_array($fai->input('_view'), ['list'])) {
@@ -1114,7 +1122,6 @@ class Packages extends Partial
                 } else {
                     $visible = false;
                 }
-
             } else if (in_array('editview', $extypearray)) {
                 $type = str_replace('-editview', '', $array['array'][$i][2]);
                 if (in_array($page['crud']['view'], ['edit', 'view']) or in_array($fai->input('_view'), ['edit', 'view'])) {
@@ -1157,7 +1164,6 @@ class Packages extends Partial
                 } else {
                     $visible = false;
                 }
-
             } else if (in_array('edit', $extypearray)) {
                 $type = str_replace('-edit', '', $array['array'][$i][2]);
 
@@ -1184,7 +1190,6 @@ class Packages extends Partial
                 } else {
                     $visible = false;
                 }
-
             } else if (in_array('tambah', $extypearray)) {
                 $type = str_replace('-tambah', '', $array['array'][$i][2]);
 
@@ -1193,7 +1198,6 @@ class Packages extends Partial
                 } else {
                     $visible = false;
                 }
-
             } else if (in_array('hidden', $extypearray)) {
 
                 if (in_array($page['crud']['view'], ['tambah']) or in_array($fai->input('_view'), ['tambah'])) {
@@ -1201,11 +1205,9 @@ class Packages extends Partial
                 } else {
                     $visible = false;
                 }
-
             } else {
                 $visible = true;
             }
-
         } else {
         }
         if ((in_array($page['crud']['view'], ['list']) or in_array($fai->input('_view'), ['list'])) and isset($page['non_view']['list'][$field])) {
@@ -1397,130 +1399,22 @@ class Packages extends Partial
         } else
         if (($type == 'select' or $type == 'checkbox' or $type == 'radio' or $type == 'select-relation') and $array['array'][$i][2] != 'number') {
             //
-            $option   = $array['array'][$i][3];
-            $database = $option[0];
-            $key      = Database::converting_primary_key($page, $option[1], 'ontable');
-            $value    = $option[2];
-            if (! isset($array['array'][$i][3])) {
+            $result = Packages::buildSelectRelationFull(
+                $page,
+                $array,
+                $i,
+                $field,
+                $database_utama,
+                $join,
+                $select
+            );
 
-                echo $array['array'][$i][0] . "(" . $array['array'][$i][1] . ")" . ' Belum Lengkap';
-                die;
-            }
-            // if (!($option[1])) {
-            // 	$option[1] = Database::converting_primary_key($page, $database, 'ontable');
-            // }
-            // $database_utama = $page['database']['utama'];
-            if (! isset($page['crud']['no_dm'][$field]) and ($page['crud']['database_utama'] ?? '')) {
-
-                $database_manipulation = Packages::database_manipulation($page, $database, ["utama_primary" => $page['crud']['database_utama']], $array['array'], $i, 'page-array');
-
-                $database = $array['array'][$i][3][0] = ($database_manipulation['utama']);
-                if ((isset($database_manipulation['database_costum']['alias'])) and ! isset($array['array'][$i][3][3])) {
-
-                    $option[3] = $array['array'][$i][3][3] = $database_manipulation['database_costum']['alias'];
-                }
-                if (isset($database_manipulation['database_costum']['field_select_value'])) {
-                    $option[2] = $array['array'][$i][3][2] = $database_manipulation['database_costum']['field_select_value'];
-                }
-
-                // if (isset($database_manipulation['crud']['insert_value'])) {
-
-                // 	foreach ($database_manipulation['crud']['insert_value'] as $to_key => $to_value) {
-                // 		$page['crud']['insert_value'][$to_key] = $to_value;
-                // 		$page['crud']['insert_default_value'][$to_key] = $to_value;
-                // 	}
-                // }
-                if (isset($database_manipulation['crud']['crud_inline'])) {
-
-                    foreach ($database_manipulation['crud']['crud_inline'] as $to_key => $to_value) {
-                        $page['crud']['crud_inline'][$to_key] = $to_value;
-                    }
-                }
-                if (isset($database_manipulation['database_all']['select'])) {
-
-                    foreach ($database_manipulation['database_all']['select'] as $to_key => $to_value) {
-                        $page['database']['select'][] = $to_value;
-                    }
-                }
-
-                if (isset($database_manipulation['database_all']['where'])) {
-
-                    foreach ($database_manipulation['database_all']['where'] as $to_key => $to_value) {
-                        $page['database']['where'][] = $to_value;
-                    }
-                }
-                if (isset($database_manipulation['database_all']['join'])) {
-
-                    foreach ($database_manipulation['database_all']['join'] as $to_key => $to_value) {
-                        $page['database']['join'][] = $to_value;
-                    }
-                }
-            }
-
-            $field;
-            if (! isset($array['array'][$i][4])) {
-                $array['array'][$i][4] = null;
-            }
-            if ($array['array'][$i][4]) {
-                $field = $array['array'][$i][4];
-            }
-
-            $is_alias = false;
-            $alias    = "";
-            if (isset($option[3])) {
-                if ($option[3]) {
-
-                    $is_alias = true;
-                    if ($option[1]) {
-                        $key = $option[1];
-                    }
-
-                    $alias = $option[3];
-                }
-            }
-
-            $field_select_on_internal_database_utama = (isset($array['array'][$i][5]) ? $array['array'][$i][5] : $field);
-            if ($is_alias) {
-                if (isset($option[4])) {
-                    $join[] = ["$database as $alias", "" . $option[4] . "." . $field_select_on_internal_database_utama . "", "$alias.$key", "left"];
-                } else {
-                    $join[] = ["$database as $alias", "" . $database_utama . "." . $field_select_on_internal_database_utama . "", "$alias.$key", "left"];
-                    //ini
-                }
-            } else {
-                if (isset($option[4])) {
-                    $join[] = ["$database", "" . $option[4] . "." . $field_select_on_internal_database_utama . "", "$database." . $option[1], 'left'];
-                } else {
-                    $join[] = ["$database", "" . $database_utama . "." . $field_select_on_internal_database_utama . "", "$database." . $option[1], 'left'];
-                }
-            }
-
-            if (isset($page['crud']['select_database_costum'][$field]) and $page['section'] != 'field_view_sub_kategori') {
-
-                if (isset($page['crud']['select_database_costum'][$field]['select'])) {
-                    foreach ($page['crud']['select_database_costum'][$field]['select'] as $sdcs => $v) {
-
-                        $select[] = $page['crud']['select_database_costum'][$field]['select'][$sdcs];
-                    }
-                }
-
-                if (isset($page['crud']['select_database_costum'][$field]['join'])) {
-
-                    for ($x = 0; $x < count($page['crud']['select_database_costum'][$field]['join']); $x++) {
-                        $var                                                           = 'join';
-                        $page['crud']['select_database_costum'][$field]['join'][$x][0] = Database::string_database($page, $fai, $page['crud']['select_database_costum'][$field]['join'][$x][0]);
-                        $page['crud']['select_database_costum'][$field]['join'][$x][1] = Database::string_database($page, $fai, $page['crud']['select_database_costum'][$field]['join'][$x][1]);
-                        $page['crud']['select_database_costum'][$field]['join'][$x][2] = Database::string_database($page, $fai, $page['crud']['select_database_costum'][$field]['join'][$x][2]);
-                        $join[]                                                        = [$page['crud']['select_database_costum'][$field]['join'][$x][0], $page['crud']['select_database_costum'][$field]['join'][$x][1], $page['crud']['select_database_costum'][$field]['join'][$x][2], 'left'];
-                    }
-                }
-            }
-            //ID UNTUK SELECT
-            $select[]                                                      = $id_select                                                      = Database::get_colomn_select($page, $array['array'][$i], $database_utama, 'id_select', 'select');
-            $page['crud']['field_database'][$field][$database_utama]['id'] = Database::get_colomn_select($page, $array['array'][$i], $database_utama, 'id_select', 'row');
-            //VALUE TABLE
-            $select[]                                                         = $nama_select                                                         = Database::get_colomn_select($page, $array['array'][$i], $database_utama, 'value_table', 'select');
-            $page['crud']['field_database'][$field][$database_utama]['value'] = Database::get_colomn_select($page, $array['array'][$i], $database_utama, 'value_table', 'row');
+            // ambil kembali semua state
+            $page   = $result['page'];
+            $array  = $result['array'];
+            $join   = $result['join'];
+            $select = $result['select'];
+            $field  = $result['field'];
         } else if ($type == 'select-appr') {
             $select[]                                                         = $database_utama . "." . $field . " as " . $field . '_system_status_appr';
             $page['crud']['field_database'][$field][$database_utama]['value'] = $field . '_system_status_appr';
@@ -1605,7 +1499,6 @@ class Packages extends Partial
                 } else if ($page['section_initialize'] == 'crud_sub_kategori') {
                     $page['crud']['database_sub_kategori'][$page['crud']['database_utama']]['select'][] = $select[$s];
                 }
-
             }
         }
         foreach ($join as $j => $vj) {
@@ -1614,12 +1507,224 @@ class Packages extends Partial
             } else if ($page['section_initialize'] == 'crud_sub_kategori') {
                 $page['crud']['database_sub_kategori'][$page['crud']['database_utama']]['join'][] = $join[$j];
             }
-
         }
         return [
             'page'  => $page,
             'array' => $array,
 
+        ];
+    }
+    public static function buildSelectRelationFull(
+        array $page,
+        array $array,
+        int $i,
+        string $field,
+        string $database_utama,
+        array $join = [],
+        array $select = []
+    ) {
+        /* =========================
+       VALIDASI AWAL
+    ========================= */
+        if (!isset($array['array'][$i][3])) {
+            throw new Exception(
+                $array['array'][$i][0] . "(" . $array['array'][$i][1] . ") Belum Lengkap"
+            );
+        }
+
+        /* =========================
+       INIT OPTION
+    ========================= */
+    // print_R($array);//
+        $option   = $array['array'][$i][3];
+        $database = $option[0];
+        $key      = Database::converting_primary_key($page, $option[1], 'ontable');
+        $value    = $option[2];
+
+        /* =========================
+       DATABASE MANIPULATION
+    ========================= */
+        if (!isset($page['crud']['no_dm'][$field]) && ($page['crud']['database_utama'] ?? '')) {
+
+            $database_manipulation = Packages::database_manipulation(
+                $page,
+                $database,
+                ["utama_primary" => $page['crud']['database_utama']],
+                $array['array'],
+                $i,
+                'page-array'
+            );
+
+            // ganti database utama
+            $database = $array['array'][$i][3][0] = $database_manipulation['utama'];
+
+            // alias
+            if (
+                isset($database_manipulation['database_costum']['alias']) &&
+                !isset($array['array'][$i][3][3])
+            ) {
+                $option[3] = $array['array'][$i][3][3] =
+                    $database_manipulation['database_costum']['alias'];
+            }
+
+            // field select value
+            if (isset($database_manipulation['database_costum']['field_select_value'])) {
+                $option[2] = $array['array'][$i][3][2] =
+                    $database_manipulation['database_costum']['field_select_value'];
+            }
+
+            // crud inline
+            if (isset($database_manipulation['crud']['crud_inline'])) {
+                foreach ($database_manipulation['crud']['crud_inline'] as $k => $v) {
+                    $page['crud']['crud_inline'][$k] = $v;
+                }
+            }
+
+            // select / where / join tambahan
+            foreach (['select', 'where', 'join'] as $k) {
+                if (isset($database_manipulation['database_all'][$k])) {
+                    foreach ($database_manipulation['database_all'][$k] as $v) {
+                        $page['database'][$k][] = $v;
+                    }
+                }
+            }
+        }
+
+        /* =========================
+       FIELD OVERRIDE
+    ========================= */
+        if (!isset($array['array'][$i][4])) {
+            $array['array'][$i][4] = null;
+        }
+        if ($array['array'][$i][4]) {
+            $field = $array['array'][$i][4];
+        }
+
+        /* =========================
+       ALIAS CHECK
+    ========================= */
+        $is_alias = false;
+        $alias    = '';
+
+        if (isset($option[3]) && $option[3]) {
+            $is_alias = true;
+            if ($option[1]) {
+                $key = $option[1];
+            }
+            $alias = $option[3];
+        }
+
+        $field_select_internal =
+            $array['array'][$i][5] ?? $field;
+
+        /* =========================
+       JOIN BUILDER
+    ========================= */
+        if ($is_alias) {
+            if (isset($option[4])) {
+                $join[] = [
+                    "$database as $alias",
+                    $option[4] . "." . $field_select_internal,
+                    "$alias.$key",
+                    'left'
+                ];
+            } else {
+                $join[] = [
+                    "$database as $alias",
+                    $database_utama . "." . $field_select_internal,
+                    "$alias.$key",
+                    'left'
+                ];
+            }
+        } else {
+            if (isset($option[4])) {
+                $join[] = [
+                    "$database",
+                    $option[4] . "." . $field_select_internal,
+                    "$database." . $option[1],
+                    'left'
+                ];
+            } else {
+                $join[] = [
+                    "$database",
+                    $database_utama . "." . $field_select_internal,
+                    "$database." . $option[1],
+                    'left'
+                ];
+            }
+        }
+
+        /* =========================
+       CUSTOM SELECT DATABASE
+    ========================= */
+        if (
+            isset($page['crud']['select_database_costum'][$field]) &&
+            $page['section'] != 'field_view_sub_kategori'
+        ) {
+            if (isset($page['crud']['select_database_costum'][$field]['select'])) {
+                foreach ($page['crud']['select_database_costum'][$field]['select'] as $v) {
+                    $select[] = $v;
+                }
+            }
+
+            if (isset($page['crud']['select_database_costum'][$field]['join'])) {
+                foreach ($page['crud']['select_database_costum'][$field]['join'] as $j) {
+                    $join[] = [
+                        Database::string_database($page, $field, $j[0]),
+                        Database::string_database($page, $field, $j[1]),
+                        Database::string_database($page, $field, $j[2]),
+                        'left'
+                    ];
+                }
+            }
+        }
+
+        /* =========================
+       SELECT ID & VALUE
+    ========================= */
+        $select[] = Database::get_colomn_select(
+            $page,
+            $array['array'][$i],
+            $database_utama,
+            'id_select',
+            'select'
+        );
+
+        $page['crud']['field_database'][$field][$database_utama]['id'] =
+            Database::get_colomn_select(
+                $page,
+                $array['array'][$i],
+                $database_utama,
+                'id_select',
+                'row'
+            );
+
+        $select[] = Database::get_colomn_select(
+            $page,
+            $array['array'][$i],
+            $database_utama,
+            'value_table',
+            'select'
+        );
+
+        $page['crud']['field_database'][$field][$database_utama]['value'] =
+            Database::get_colomn_select(
+                $page,
+                $array['array'][$i],
+                $database_utama,
+                'value_table',
+                'row'
+            );
+
+        /* =========================
+       RETURN SEMUA STATE
+    ========================= */
+        return [
+            'page'   => $page,
+            'array'  => $array,
+            'join'   => $join,
+            'select' => $select,
+            'field'  => $field
         ];
     }
     public static function database_manipulation($page, $database_utama, $database, $array, $i, $return = '', $join = [])
@@ -1880,7 +1985,7 @@ class Packages extends Partial
             $database_utama           = $database_costum['utama']           = "view_varian";
             $database_costum['alias'] = "$database_utama_temp";
 
-                                                                                                                                   //  $database_costum['procedure'][] = ["$database_utama_with","varian",str_replace('.','_',$join[1]),$join[1]]; //query//name//parameter
+            //  $database_costum['procedure'][] = ["$database_utama_with","varian",str_replace('.','_',$join[1]),$join[1]]; //query//name//parameter
             $database_costum['view'][]       = ["$database_utama_with", "view_varian", str_replace('.', '_', $join[1]), $join[1]]; //query//name//parameter
             $database_costum['not_schema']   = true;
             $database_costum['no_checking']  = true;
@@ -2363,7 +2468,6 @@ class Packages extends Partial
                 } else {
                     $content_template .= $content;
                 }
-
             }
         }
 
@@ -2713,7 +2817,7 @@ class Packages extends Partial
 
         $search                    = isset($page['crud']['search']) ? $page['crud']['search'] : [];
         $page['database']['where'] = isset($page['crud']['where']) ?
-        (isset($page['database']['where']) ? $page['database']['where'] + $page['crud']['where'] : $page['crud']['where'])
+            (isset($page['database']['where']) ? $page['database']['where'] + $page['crud']['where'] : $page['crud']['where'])
             : (isset($page['database']['where']) ? $page['database']['where'] : []);
         if (empty($primary_key)) {
             // $database_costum['primary_key'] = Database::converting_primary_key($page,$database_utama,'primary_key'); 
@@ -2816,7 +2920,6 @@ class Packages extends Partial
             } else {
                 $page['limit_raw'] = $rowperpage . " offset " . $start;
             }
-
         }
         if (Partial::input('contentfaiframework') != 'get_pages' or $type == 'list_datatable') {
 
@@ -2855,7 +2958,6 @@ class Packages extends Partial
                 } else {
                     $page['crud']['row_database_utama'] = (object) ['object' => 'foreach_1_row'];
                 }
-
             }
         }
 
@@ -2927,7 +3029,6 @@ class Packages extends Partial
                     } else {
                         $page['crud']['select_database_costum'][$field] = (json_decode($select_database_costum_konversi, true));
                     }
-
                 }
                 $page['crud']['select_database_costum'][$field]['utama']       = $database;
                 $page['crud']['select_database_costum'][$field]['primary_key'] = $key;
@@ -3366,7 +3467,7 @@ class Packages extends Partial
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
             header('Cache-Control: private', false); // required for certain browsers 
-                                                     //header('Content-Type: application/pdf');
+            //header('Content-Type: application/pdf');
 
             header('Content-Disposition: attachment; filename="' . basename($fileName) . '";');
             header('Content-Transfer-Encoding: binary');
@@ -3439,7 +3540,6 @@ class Packages extends Partial
                 if (! empty($sqli[$page['import_export']['config']['row_check']])) {
                     DB::insert($database_utama, $sqli);
                 }
-
             }
 
             //return redirect()->route($page['route'], [$redirect, $id_redirect])->with('success', $page['title'] . ' Berhasil di input!');
@@ -3904,7 +4004,6 @@ class Packages extends Partial
                         } else {
                             $step_id = $page['wizard']['step'][$id_done]['next'];
                         }
-
                     } else {
                         $step_id = 1;
                     }
@@ -3947,7 +4046,6 @@ class Packages extends Partial
             } else {
                 $array = null;
             }
-
         } else {
             $array = null;
         }
@@ -3964,7 +4062,6 @@ class Packages extends Partial
             } else {
                 $array = $card[$nama_array];
             }
-
         } else if ($card['menu'][$page['load']['page_section_menu']][1] == 'card-nav') {
 
             if ($page['load']['nav'] == -1 or ! $page['load']['nav']) {
@@ -3996,7 +4093,6 @@ class Packages extends Partial
             } else {
                 $array = $card[$nama_array];
             }
-
         }
         if ($mode == 'card-listing') {
             $visible = true;
@@ -4145,7 +4241,6 @@ class Packages extends Partial
                             if ($page['row_section'][$db_refer]['num_rows']) {
                                 $content = Partial::array_website($page, $content, $array, $array['tag'], $j, $page['row_section'][$db_refer]['row'][0]);
                             }
-
                         } else {
                             $row     = (object) ['object' => 'foreach_1_row'];
                             $content = Partial::array_website($page, $content, $array, $array['tag'], $j, $row);
@@ -4294,7 +4389,6 @@ class Packages extends Partial
             $produk = ApiContent::produk_sync($page, $id, $id_utama);
             print_R($produk);
             return (["status" => 1, "id_produk" => $produk['id_produk'], 'empty' => $empty ?? []]);
-
         } else {
 
             $return = "";

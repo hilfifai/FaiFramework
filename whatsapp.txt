@@ -1,0 +1,82 @@
+[2026-01-07 03:23:14]
+Array
+(
+    [data] => Array
+        (
+            [wid] => +6281234567890
+            [phone] => +6281234567890
+            [attachment] => https://example.com/image.jpg
+            [message] => Halo, ini pesan dari Postman
+        )
+
+)
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>64</b><br />
+<br />
+<b>Warning</b>:  Trying to access array offset on null in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>64</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>99</b><br />
+<br />
+<b>Warning</b>:  Trying to access array offset on null in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>99</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>130</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>130</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "name" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>67</b><br />
+<br />
+<b>Deprecated</b>:  pathinfo(): Passing null to parameter #1 ($path) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>68</b><br />
+<br />
+<b>Warning</b>:  mkdir(): File exists in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/Helper.php</b> on line <b>1600</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "tmp_name" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>72</b><br />
+<br />
+<b>Deprecated</b>:  move_uploaded_file(): Passing null to parameter #1 ($from) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>72</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "type" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>76</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "size" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>77</b><br />
+<br />
+<b>Deprecated</b>:  strtolower(): Passing null to parameter #1 ($string) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/App_class/ChatbotApp.php</b> on line <b>38</b><br />
+
+
+[2026-01-07 16:35:05]
+Array
+(
+    [data] => Array
+        (
+            [wid] => +6281234567890
+            [phone] => +6281234567890
+            [attachment] => https://example.com/image.jpg
+            [message] => Halo, ini pesan dari Postman
+        )
+
+)
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>64</b><br />
+<br />
+<b>Warning</b>:  Trying to access array offset on null in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>64</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>99</b><br />
+<br />
+<b>Warning</b>:  Trying to access array offset on null in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>99</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>130</b><br />
+<br />
+<b>Warning</b>:  foreach() argument must be of type array|object, null given in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>130</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "name" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>67</b><br />
+<br />
+<b>Deprecated</b>:  pathinfo(): Passing null to parameter #1 ($path) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>68</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "tmp_name" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>72</b><br />
+<br />
+<b>Deprecated</b>:  move_uploaded_file(): Passing null to parameter #1 ($from) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>72</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "type" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>76</b><br />
+<br />
+<b>Warning</b>:  Undefined array key "size" in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/Function_class/FileFunc.php</b> on line <b>77</b><br />
+<br />
+<b>Deprecated</b>:  strtolower(): Passing null to parameter #1 ($string) of type string is deprecated in <b>/Users/hilfima/Documents/Server/FaiFramework/moesneeds.id/FaiFramework/FaiFramework/Structure/App_class/ChatbotApp.php</b> on line <b>38</b><br />
+
+

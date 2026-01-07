@@ -502,10 +502,10 @@ class DatabaseFunc
                     $g->list_produk,
                     true
                 );
-                $return[$g->primary_key]['list_bangunan'] = json_decode(
+                $return[$g->primary_key]['list_bangunan'] = $g->list_bangunan?json_decode(
                     $g->list_bangunan,
                     true
-                );
+                ):[];
                 // $return[$g->primary_key]['list_payment'] = $g->list_payment;
                 // $return[$g->primary_key]['list_voucher'] = $g->list_voucher;
             }
@@ -1048,10 +1048,10 @@ class DatabaseFunc
                     $return[$row->primary_key]['stok'] += $stok;
                 }
 
-                if (! isset($return[$row->primary_key]['stok_detail'][$row->id_varian_1])) {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1] = $stok;
+                if (! isset($return[$row->primary_key]['stok_detail'][$row->id_varian_1??"-1"])) {
+                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1??"-1"] = $stok;
                 } else {
-                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1] += $stok;
+                    $return[$row->primary_key]['stok_detail'][$row->id_varian_1??"-1"] += $stok;
                 }
 
                 if (! isset($return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2])) {
@@ -1060,23 +1060,23 @@ class DatabaseFunc
                     $return[$row->primary_key]['stok_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] += $stok;
                 }
 
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] = $row->harga_pokok_penjualan_varian;
+                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal'])) {
+                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal'] = $row->harga_pokok_penjualan_varian;
                 } else {
                     $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga < $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] = $harga;
+                    if ($harga < $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal']) {
+                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal'] = $harga;
                     }
                 }
-                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'])) {
-                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] = $row->harga_pokok_penjualan_varian;
+                if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir'])) {
+                    $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir'] = $row->harga_pokok_penjualan_varian;
                 } else {
                     $harga = $row->harga_pokok_penjualan_varian;
-                    if ($harga > $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir']) {
-                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] = $harga;
+                    if ($harga > $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir']) {
+                        $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir'] = $harga;
                     }
                 }
-                $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_full'] = $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal'] == $return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir'] ? Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) : Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_awal']) . ' s/d ' . Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1]['harga_akhir']);
+                $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_full'] = $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal'] == $return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir'] ? Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal']) : Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_awal']) . ' s/d ' . Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1??"-1"]['harga_akhir']);
 
                 if (! isset($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'])) {
                     $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'] = $row->harga_pokok_penjualan_varian;
@@ -1096,38 +1096,38 @@ class DatabaseFunc
                 }
                 $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_full'] = $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal'] == $return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir'] ? Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal']) : Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_awal']) . ' s/d ' . Partial::rupiah($return[$row->primary_key]['harga_detail'][$row->id_varian_1 . '-' . $row->id_varian_2]['harga_akhir']);
 
-                $return[$row->primary_key]['foto_detail'][$row->id_varian_1]                           = $row->foto_aset_varian;
+                $return[$row->primary_key]['foto_detail'][$row->id_varian_1??"-1"]                           = $row->foto_aset_varian;
                 $return[$row->primary_key]['foto_detail'][$row->id_varian_1 . '-' . $row->id_varian_2] = $row->foto_aset_varian;
 
                 $return[$row->primary_key]['list_varian']['tipe_1']['detail'][] = [
-                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_1'],
+                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_1'],
                     "id_varian"   => $row->id_varian_1,
                     "level"       => 1,
                 ];
 
                 $return[$row->primary_key]['list_varian']['tipe_2']['detail'][] = [
-                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_2'],
+                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_2'],
                     "id_varian"   => $row->id_varian_2,
                     "level"       => 2,
                 ];
-                $return[$row->primary_key]['list_varian']['tipe_2']['breakdown'][2][$row->id_varian_1][] = [
-                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_2'],
+                $return[$row->primary_key]['list_varian']['tipe_2']['breakdown'][2][$row->id_varian_1??"-1"][] = [
+                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_2'],
                     "id_varian"   => $row->id_varian_1 . '-' . $row->id_varian_2,
                     "id_varian2"  => $row->id_varian_2,
                     "level"       => 2,
                 ];
 
-                $return[$row->primary_key]['list_varian']['tipe_2']['breakdown'][3][$row->id_varian_1][] = [
-                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_3'],
+                $return[$row->primary_key]['list_varian']['tipe_2']['breakdown'][3][$row->id_varian_1??"-1"][] = [
+                    "nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_3'],
                     "id_varian"   => $row->id_varian_1 . '-' . $row->id_varian_2 . '-' . $row->id_varian_3,
                     "id_varian2"  => $row->id_varian_2,
                     "id_varian3"  => $row->id_varian_3,
                     "level"       => 3,
                 ];
 
-                $return[$row->primary_key]['list_varian']['tipe_3']['detail'][]                                                    = ["nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_3'], "id_varian" => $row->id_varian_1 . '-' . $row->id_varian_2 . '-' . $row->id_varian_3, "level" => 3];
-                $return[$row->primary_key]['list_varian']['tipe_3']['breakdown'][3][$row->id_varian_1 . '-' . $row->id_varian_2][] = [
-                    "nama_varian"      => $return[$row->primary_key]['varian'][$row->id_produk_varian]['nama_list_tipe_varian_3'],
+                $return[$row->primary_key]['list_varian']['tipe_3']['detail'][]                                                    = ["nama_varian" => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_3'], "id_varian" => $row->id_varian_1 . '-' . $row->id_varian_2 . '-' . $row->id_varian_3, "level" => 3];
+                $return[$row->primary_key]['list_varian']['tipe_3']['breakdown'][3][$row->id_varian_1??"-1" . '-' . $row->id_varian_2][] = [
+                    "nama_varian"      => $return[$row->primary_key]['varian'][$row->id_produk_varian??"-1"]['nama_list_tipe_varian_3'],
                     "id_varian"        => $row->id_varian_1 . '-' . $row->id_varian_2 . '-' . $row->id_varian_3,
                     "level"            => 3,
                     "foto_aset_varian" => $row->foto_aset_varian,
@@ -1138,7 +1138,7 @@ class DatabaseFunc
             $return = $data['row'];
         }
 
-        return ["row" => $return, "num_rows_non_limit" => $data['num_rows_non_limit']];
+        return ["row" => $return, "num_rows_non_limit" => $data['num_rows_non_limit']??0];
     }
     public static function new_produk_last($page, $limit)
     {
@@ -1269,7 +1269,7 @@ class DatabaseFunc
                                             sum( erp__pos__inventory__outgoing_breakdown.qty_keluar_out ) AS qty_out
                                         FROM
                                             erp__pos__inventory_detail
-                                            LEFT JOIN erp__pos__utama__detail ON erp__pos__utama__detail.id = CAST(erp__pos__inventory_detail.id_erp__pos__utama__detail_get as SIGNED)
+                                            LEFT JOIN erp__pos__utama__detail ON erp__pos__utama__detail.id = CAST(NULLIF(erp__pos__inventory_detail.id_erp__pos__utama__detail_get, '') as SIGNED)
                                             LEFT JOIN erp__pos__inventory__outgoing ON erp__pos__inventory_detail.id = erp__pos__inventory__outgoing.id_erp__pos__inventory_detail
                                             LEFT JOIN erp__pos__inventory__outgoing_breakdown ON erp__pos__inventory__outgoing.id = id_erp__pos__inventory__outgoing
                                         GROUP BY

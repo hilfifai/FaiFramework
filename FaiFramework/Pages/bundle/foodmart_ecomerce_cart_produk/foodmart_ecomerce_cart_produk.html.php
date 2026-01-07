@@ -28,6 +28,10 @@
 
             <input type="hidden" id="is_varian-<ID-CART></ID-CART>" value="<IS_VARIAN></IS_VARIAN>">
             <input type="hidden" id="max_varian-<ID-CART></ID-CART>" value="<MAX_VARIAN></MAX_VARIAN>">
+          <textarea type="hidden" id="list_diskon-<ID-CART></ID-CART>" value="<LIST-DISKON></LIST-DISKON>" style="display:none">
+            <LIST-DISKON></LIST-DISKON>
+          </textarea>
+            
 
 
             <div class="cart__product__item__title">

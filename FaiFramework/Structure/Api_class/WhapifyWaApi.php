@@ -8,13 +8,7 @@ class WhapifyWaApi
         $curl = curl_init();
         $token = "";
         $nomor_receive = str_replace("@c.us","",$nomor_receive);
-        print_r(array(
-            'secret' => 'e80649a5d55e79ac73e92ccc4fdc96e70a816786',
-            'account' => '1735732426cf004fdc76fa1a4f25f62e0eb5261ca367752cca9dc99',
-            'recipient' => $nomor_receive,
-            'type' => 'text',
-            'message' => $pesan,
-        ));
+        
 
         $curl = curl_init();
 
@@ -28,8 +22,8 @@ class WhapifyWaApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array(
-                'secret' => 'e80649a5d55e79ac73e92ccc4fdc96e70a816786',
-                'account' => '1735732426cf004fdc76fa1a4f25f62e0eb5261ca367752cca9dc99',
+                'secret' => 'e91bab171206e34f451a7f0e499f6d97209128c1',
+                'account' => '1767688490979d472a84804b9f647bc185a877a8b5695cc92a389ee',
                 'recipient' => $nomor_receive,
                 'type' => 'text',
                 'message' => $pesan,
@@ -54,7 +48,7 @@ class WhapifyWaApi
         $nomor_receive = str_replace("@c.us","",$nomor_receive);
         $curl = curl_init();
         print_r(array(
-            'secret' => 'e80649a5d55e79ac73e92ccc4fdc96e70a816786',
+            'secret' => 'e91bab171206e34f451a7f0e499f6d97209128c1',
             'account' => '1734232174cf004fdc76fa1a4f25f62e0eb5261ca3675e486e4f8e5',
             'recipient' => $nomor_receive,
             'message' => $pesan,
@@ -72,7 +66,7 @@ class WhapifyWaApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => array(
-                'secret' => 'e80649a5d55e79ac73e92ccc4fdc96e70a816786',
+                'secret' => 'e91bab171206e34f451a7f0e499f6d97209128c1',
                 'account' => '1734232174cf004fdc76fa1a4f25f62e0eb5261ca3675e486e4f8e5',
                 'recipient' => $nomor_receive,
                 'message' => $pesan,

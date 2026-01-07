@@ -1208,8 +1208,43 @@ class Ecommerce
 		$join2 = $sql['sql_join'];
 		$where2 = $sql['sql_where'];
 		$query_idlist = $sql['query_idlist'];
+		$BANGUNAN['utama']       = 'inventaris__asset__tanah__bangunan__pengisi';
+		$BANGUNAN['primary_key'] = null;
+		$BANGUNAN['as']          = 't';
+		$BANGUNAN['np']          = true;
+		$BANGUNAN['select'][]    = 'inventaris__asset__tanah__bangunan.*,
+		webmaster__wilayah__provinsi.provinsi ,webmaster__wilayah__kabupaten.type,webmaster__wilayah__kabupaten.kota_name,webmaster__wilayah__kecamatan.subdistrict_name,webmaster__wilayah__postal_code.urban';
+		$BANGUNAN['select'][] = 'erp__pos__group.id as id_erp__pos__group';
+		$BANGUNAN['select'][] = 'inventaris__asset__tanah__bangunan.id as primary_key2';
 
+		$BANGUNAN['join'][]  = ["erp__pos__group", "erp__pos__group.id_apps_user", "inventaris__asset__tanah__bangunan__pengisi.id_apps_user", 'left'];
+		$BANGUNAN['join'][]  = ["inventaris__asset__tanah__bangunan", "inventaris__asset__tanah__bangunan.id", "inventaris__asset__tanah__bangunan__pengisi.id_inventaris__asset__tanah__bangunan", 'left'];
+		$BANGUNAN['join'][]  = ["webmaster__wilayah__provinsi", "webmaster__wilayah__provinsi.provinsi_id", "id_provinsi", 'left'];
+		$BANGUNAN['join'][]  = ["webmaster__wilayah__kabupaten", "webmaster__wilayah__kabupaten.kota_id", "id_kota", 'left'];
+		$BANGUNAN['join'][]  = ["webmaster__wilayah__kecamatan", "webmaster__wilayah__kecamatan.subdistrict_id", "id_kecamatan", 'left'];
+		$BANGUNAN['join'][]  = ["webmaster__wilayah__postal_code", "webmaster__wilayah__postal_code.id", "id_kelurahan", 'left'];
+		$BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan__pengisi.id_apps_user", "=", "erp__pos__group.id_apps_user", 'left'];
+		$BANGUNAN['where'][] = ["inventaris__asset__tanah__bangunan.id_kota", " is ", " not null"];
 
+		$select[] = "crm__mitra_penjualan.id_apps_user";
+		$select[] = "smp.id";
+		$select[] = "smp.id_store__mitra";
+		$select[] = "minimal_pembelian";
+		$select[] = "maksimal_pembelian";
+		$select[] = "margin_mitra";
+		$select[] = "tipe_margin_mitra";
+		$pairs[] = "'id_apps_user',id_apps_user";
+		$pairs[] = "'id',id";
+		$pairs[] = "'id_store__mitra',id_store__mitra";
+		$pairs[] = "'minimal_pembelian',minimal_pembelian";
+		$pairs[] = "'maksimal_pembelian',maksimal_pembelian";
+		$pairs[] = "'margin_mitra',margin_mitra";
+		$pairs[] = "'tipe_margin_mitra',tipe_margin_mitra";
+		$diskon['select'] = $select; 
+		$diskon['as'] = "t";
+		$diskon['utama'] = "crm__mitra_penjualan";
+		$diskon['join'][] = ["store__mitra ","store__mitra.id","crm__mitra_penjualan.id_store__mitra ","LEFT"];
+		$diskon['join'][] = ["store__mitra__presetase smp","smp.id_store__mitra","store__mitra.id"];
 		$i = 0;
 		$website['content'][$i]['tag'] = "BANNER";
 		$website['content'][$i]['content_source'] = "file_bundles_database";
@@ -1248,10 +1283,14 @@ class Ecommerce
 
 
 							"join" => array(
-								["view_produk_detail"
-								,"erp__pos__pra_order.id_produk","view_produk_detail.id
-                  				 and erp__pos__pra_order.id_produk_varian  = view_produk_detail.id_produk_varian ","left"]
-				   				//, "view_produk_detail.id and erp__pos__pra_order.id_asset_varian =inventaris__asset__list__varian.id",""],
+								[
+									"view_produk_detail",
+									"erp__pos__pra_order.id_produk",
+									"view_produk_detail.id
+                  				 and erp__pos__pra_order.id_produk_varian  = view_produk_detail.id_produk_varian ",
+									"left"
+								]
+								//, "view_produk_detail.id and erp__pos__pra_order.id_asset_varian =inventaris__asset__list__varian.id",""],
 								// array("store__produk as  store__produk__relation", "erp__pos__pra_order.id_produk", "store__produk__relation.id"),
 								// array("store__toko", "store__produk__relation.id_toko", "store__toko.id"),
 								// array("inventaris__asset__list_query", "store__produk__relation.id_asset", "inventaris__asset__list.id"),
@@ -1278,7 +1317,9 @@ class Ecommerce
                      checked,
                      id_produk,
                      view_produk_detail.id_toko,
-                     case when varian_barang='1' then harga_pokok_penjualan_varian else harga_pokok_penjualan end as harga_satuan"),
+                     case when varian_barang='1' then harga_pokok_penjualan_varian else harga_pokok_penjualan end as harga_satuan,
+					 list_diskon
+					 "),
 							),
 							"non_add_select" => true,
 							"where" => array(
@@ -1286,6 +1327,28 @@ class Ecommerce
 								array("erp__pos__pra_order.active", "=", "1"),
 								array("erp__pos__pra_order.status_pra_order", " in ", "('Aktif')"),
 							),
+							'join_subquery' => [[
+								[
+
+									"as"               => "diskon",
+									"np"               => "",
+									"not_where_active" => "",
+									"non_checking" => "",
+									"not_checking" => "",
+									"select"           => [
+										 "id_apps_user,JSON_ARRAYAGG(JSON_OBJECT(" . implode(', ', $pairs) . ")) as list_diskon",
+									],
+									"utama_query"      => $diskon,
+									"group"            => [
+										"t.id_apps_user",
+									],
+
+								],
+								"diskon.id_apps_user",
+								"erp__pos__pra_order.id_apps_user",
+
+								'left',
+							]],
 							"where_get_array" => array(
 								array(
 									"row" => "view_produk_detail.id_toko",
@@ -1312,6 +1375,7 @@ class Ecommerce
 							"QTY" => array("refer" => "database", "row" => "jumlah"),
 							"IMAGE-CART" => array("refer" => "database", "row" => "image"),
 							"HARGA-SATUAN" => array("refer" => "database", "row" => "harga_satuan"),
+							"LIST-DISKON" => array("refer" => "database_json", "row" => "list_diskon"),
 							// "IMAGE-CART" => array(
 							// 	"refer" => "function",
 							// 	"struktur" => "App",
@@ -2024,105 +2088,99 @@ class Ecommerce
 	}
 	public static function checkout($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "codepen";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "checkout-page";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "codepen";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "checkout-page";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function payment($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "hibe3";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "payment-page";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "hibe3";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "payment-page";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function bayar($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "hibe3";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "bayar-page";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "hibe3";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "bayar-page";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function sukses_bayar($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "hibe3";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "sukses_bayar-page";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "hibe3";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "sukses_bayar-page";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function pesanan_saya($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "hibe3";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "pesanan_saya";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "hibe3";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "pesanan_saya";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function pesanan_saya_detail($page)
 	{
-		
-        $i=0;
-       
-        $website['content'][$i]['tag'] = "BANNER";
-        $website['content'][$i]['content_source'] = "template_content";
-        $website['content'][$i]['template_class'] = "hibe3";
-        // $website['content'][$i]['db_list'] = "home_banner";
-        $website['content'][$i]['template_function'] = "pesanan_saya_detail";
-        
+
+		$i = 0;
+
+		$website['content'][$i]['tag'] = "BANNER";
+		$website['content'][$i]['content_source'] = "template_content";
+		$website['content'][$i]['template_class'] = "hibe3";
+		// $website['content'][$i]['db_list'] = "home_banner";
+		$website['content'][$i]['template_function'] = "pesanan_saya_detail";
 
 
-        $page['view_layout'][] = array("website", "col-md-12", $website);
-        return $page;
-    
+
+		$page['view_layout'][] = array("website", "col-md-12", $website);
+		return $page;
 	}
 	public static function checkout2($page)
 	{
@@ -2140,6 +2198,13 @@ class Ecommerce
 		// // $pemesanan_detail = DB::get();
 		//         $page_temp = $fai->apps("Inventaris_aset","bangunan"); 
 		$page['crud']['wizard_form'] = Inventaris_aset::bangunan()['crud']['wizard_form'];
+
+		/*
+		select smp.* from crm__mitra_penjualan cmp  
+LEFT JOIN store__mitra on store__mitra.id = cmp.id_store__mitra 
+LEFT JOIN store__mitra__presetase smp  on smp.id_store__mitra  = store__mitra.id
+where id_apps_user = '20260106175246651956'
+		*/
 		$website['content'][$i]['tag'] = "BANNER";
 		$website['content'][$i]['content_source'] = "file_bundles_database";
 		$website['content'][$i]['template_code'] = "BE3-ECOMMERCE-CHECKOUT";

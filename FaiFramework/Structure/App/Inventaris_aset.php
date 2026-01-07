@@ -197,12 +197,12 @@ class Inventaris_aset extends Inventaris_Barang
 
         $page['crud']['search'] = array(-1 => array(4, 1));
 
-        $page['database']['utama'] = $database_utama;
-        $page['database']['primary_key'] = $primary_key;
-        $page['database']['select'] = array("*");;
-        $page['database']['join'] = array();
-        $page['database']['where'] = array();
-        $page['crud']['array'] = $array;
+        // $page['database']['utama'] = $database_utama;
+        // $page['database']['primary_key'] = $primary_key;
+        // $page['database']['select'] = array("*");;
+        // $page['database']['join'] = array();
+        // $page['database']['where'] = array();
+        // $page['crud']['array'] = $array;
         $page['get']['sidebarIn'] = true;;
         $page['route'] = __FUNCTION__;
         return $page;
@@ -302,7 +302,7 @@ class Inventaris_aset extends Inventaris_Barang
         //block_ruang
         $sub_kategori[] = ["Ruang Bangunan", $database_utama . "__ruang", null, "table"];
         $array_sub_kategori[] = array(
-            array("Nama Ruang", "nama_ruang", "text"),
+            array("Nama Ruang", "nama_ruang_simpan", "text"),
             array("Lantai", "lantai_ruang", "number"),
             array("Lebar Tanah(meter)", "lebar_ruang", "number"),
             array("Panjang (Meter)", "panjang_ruang", "number"),
@@ -421,7 +421,7 @@ class Inventaris_aset extends Inventaris_Barang
         //block_ruang
         $sub_kategori[] = ["Ruang Bangunan", $database_utama . "__ruang", null, "table"];
         $array_sub_kategori[] = array(
-            array("Nama Ruang", "nama_ruang", "text"),
+            array("Nama Ruang", "nama_ruang_simpan", "text"),
             array("Lantai", "lantai_ruang", "number"),
             array("Lebar Tanah(meter)", "lebar_ruang", "number"),
             array("Panjang (Meter)", "panjang_ruang", "number"),
@@ -722,6 +722,32 @@ class Inventaris_Barang
 
 
         );
+        $sub_kategori[] = ["Berdasarkan Produk", $database_utama . "__produk", null, "table"];
+		$array_sub_kategori[] = array(
+			array("Produk", null, "select", array("store__produk", null, "nama_produk")),
+		);
+		$sub_kategori[] = ["Berdasarkan Kategori", $database_utama . "__kategori", null, "table"];
+		$array_sub_kategori[] = array(
+			array("Kategori", null, "select", array("webmaster__inventaris__master__kategori", null, "nama_kategori")),
+		);
+		$sub_kategori[] = ["Berdasarkan Brand", $database_utama . "__brand", null, "table"];
+		$array_sub_kategori[] = array(
+			array("Brand", null, "select", array("inventaris__asset__master__brand", null, "nama_brand")),
+		);
+		$search = array();
+		$page['crud']['sub_kategori'] = $sub_kategori;
+		$page['crud']['array_sub_kategori'] = $array_sub_kategori;
+
+		$page['crud']['array'] = $array;
+		$page['crud']['search'] = $search;
+
+		$select_costum['join'][] = ["inventaris__asset__list ial", "store__produk.id_asset", "ial.id", "left"];
+		$select_costum['join'][] = ["inventaris__asset__list master", "ial.id_master", "master.id", "left"];
+		$select_costum['select'][] = "store__produk.id,ial.asal_barang_dari ,
+case when ial.asal_barang_dari  ='Master' then master.nama_barang else ial.nama_barang end as nama_produk";
+		$select_costum['where'][] = ["ial.active", "=", "1"];
+		$page['crud']['select_database_costum']['produk'] = $select_costum;
+		$page['crud']['select_database_costum']['id_produk'] = $select_costum;
 
         $search = array();
 

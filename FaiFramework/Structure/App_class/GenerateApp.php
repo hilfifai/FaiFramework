@@ -16,15 +16,15 @@ class GenerateApp
         $data['search']                  = self::generateVersionedTemplate($page,$set_type, $version, $gen, 'json', 'SearchContent');
         $data['page']                    = self::generateVersionedTemplate($page,$set_type, $version, $gen, 'json', 'TemplateContent');
         $data['app']                     = self::app_generate();
-        $page['database_provider']       = DATABASE_PROVIDER;
-        $page['database_name']           = DATABASE_NAME . '_json';
-        $page['conection_name_database'] = CONECTION_NAME_DATABASE . '_json';
-        $page['conection_server']        = CONECTION_SERVER;
-        $page['conection_user']          = CONECTION_USER;
-        $page['conection_user']          = $page['database_provider'] == 'mysql' ? CONECTION_USER . '_json' : CONECTION_USER;
-        $page['conection_password']      = CONECTION_PASSWORD;
-        $page['conection_scheme']        = CONECTION_SCHEME;
-        DB::connection($page);
+        // $page['database_provider']       = DATABASE_PROVIDER;
+        // $page['database_name']           = DATABASE_NAME . '_json';
+        // $page['conection_name_database'] = CONECTION_NAME_DATABASE . '_json';
+        // $page['conection_server']        = CONECTION_SERVER;
+        // $page['conection_user']          = CONECTION_USER;
+        // $page['conection_user']          = $page['database_provider'] == 'mysql' ? CONECTION_USER . '_json' : CONECTION_USER;
+        // $page['conection_password']      = CONECTION_PASSWORD;
+        // $page['conection_scheme']        = CONECTION_SCHEME;
+        // DB::connection($page);
 
         $raw = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $raw = preg_replace("/[\n\r\t]+/", '', $raw);
@@ -145,7 +145,6 @@ class GenerateApp
                         "Web.php-save_menu",
                         "Website.php-gettag",
                         "Workspace.php-workspace_apps",
-                        "Workspace.php-bisnis_dashboard",
                         "CRM.php-pembayaran_mitra",
                         "Workspace.php-food_dashboard",
 
@@ -350,7 +349,7 @@ class GenerateApp
         foreach ($methods as $key => $value) {
 
             $name_func = $value->name;
-            if (! in_array($name_func, ['__construct', 'get_generate', 'parse_template', 'system'])) {
+            if (! in_array($name_func, ['__construct', 'get_generate', 'parse_template'])) {
                 //  echo '<br>'.$name_func;
                 $get_last_version      = $data["versions"][$name_func]['last_version'] ?? ($version - 1) . '.' . $gen . '.0';
                 $get_temp_version_last = $data["versions"][$name_func]['versions'][$get_last_version] ?? [];

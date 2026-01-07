@@ -266,7 +266,8 @@ export default class LoginBuilder extends FaiModule{
                     </div>
                     <div class="login-form">
                         ${verificationText}
-                        <div id="number_verifikasi">+628987423444</div>
+                        <div id="number_verifikasi"></div>
+                        <input type="hidden" id="veritikasi_id">
                         <button style="background: none; border: none; color: #007bff; cursor: pointer; margin: 10px 0;">Resend</button>
                         <div class="otp-container">
                             <input type="text" class="otp-input" pattern="\\d" maxlength="1">
@@ -409,8 +410,11 @@ export default class LoginBuilder extends FaiModule{
                 }
             }
             
-            showVerification() {
+            showVerification(phone,id) {
                 this.hideAll();
+                
+                document.getElementById('number_verifikasi').innerHTML=phone;
+                document.getElementById('veritikasi_id').value=id;
                 document.getElementById('asgouest-verifikasi-container').style.display = 'block';
                 this.currentView = 'verification';
                 
@@ -467,47 +471,52 @@ export default class LoginBuilder extends FaiModule{
 				}
             }
             
-            handleRegister() {
+            async handleRegister() {
                 const form = document.querySelector('#register-modal form');
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 
-                // Here you would typically make an API call to register
                 console.log('Registration attempt with:', data);
+                await this.getModule('loginHub').save_register(data);
+				await window.fai.checkTemplateLogin();
+                let toTemplate = await this.getModule('template');
                 
-                // Simulate successful registration
                 this.hide();
             }
             
-            handleGuestSubmit() {
+            async handleGuestSubmit() {
                 const phone = document.getElementById('nowa').value;
-                
+                    
+                     
                 // Here you would typically send verification code
                 console.log('Guest checkout with phone:', phone);
-                
+                let msg =  await this.getModule('loginHub').get_guest(phone);
                 // Show verification screen
-                this.showVerification();
+                if(msg.success){
+
+                    this.showVerification(phone,msg.id_apps_user);
+                }
             }
             
-            handleVerification() {
+            async handleVerification() {
                 const code = document.getElementById('verificationCode').value;
+                const id = document.getElementById('veritikasi_id').value;
                 
                 // Here you would typically verify the code
                 console.log('Verification attempt with code:', code);
-                
+                await this.getModule('loginHub').verifikasi_code(code,id);
                 // Show thank you screen
-                this.showThankYou();
+               // this.showThankYou();
                 
                 // Auto-close after 2 seconds
-                setTimeout(() => {
-                    this.hide();
-                }, 2000);
+               
             }
             
-            handleResendCode() {
+            async handleResendCode() {
                 // Here you would typically resend the verification code
                 console.log('Resending verification code');
-                
+                const id = document.getElementById('veritikasi_id').value;
+                await this.getModule('loginHub').resend_wa(id);
                 // Reset OTP inputs
                 const inputs = document.querySelectorAll('.otp-input');
                 inputs.forEach((input, index) => {

@@ -119,7 +119,7 @@ export default class ListDataHub extends FaiModule {
     console.log("this.getModule('data_produk_itemsPerPage')", this.getModule('data_produk_itemsPerPage'));
     let storage_produk = this.getModule('data_produk');
     if (startIndex !== 0) {
-      
+
       let wrapper = document.querySelector("#wrapper-job-" + index);
       const searchInput = document.querySelector('#search-' + index);
       const query = searchInput.value.trim();
@@ -127,7 +127,7 @@ export default class ListDataHub extends FaiModule {
       const objSearch = JSON.parse(atob(dataSearc));
       const fieldsToSearch = objSearch;
       let whereClause = [];
-      if(query){
+      if (query) {
 
         whereClause.push({
           fields: fieldsToSearch,
@@ -138,8 +138,8 @@ export default class ListDataHub extends FaiModule {
       const queryBody = {
         db: 'view_produk_detail', // atau nama db dinamis Anda
         where: whereClause,
-        select:["primary_key"],
-        group:["primary_key"],
+        select: ["primary_key"],
+        group: ["primary_key"],
         limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
         offset: startIndex,
         function: 'all_produk'
@@ -245,11 +245,29 @@ export default class ListDataHub extends FaiModule {
       operator: 'like_or_fields',
       value: `%${query}%`
     });
+    let data_search_field_header = this.getModule('data_search_field_header');
+    if (data_search_field_header[index]?.data.length) {
+      data_search_field_header[index]?.data.forEach(searchHeader => {
+        const searchInput = document.querySelector('#searchdata-' + searchHeader.key_search);
+        const value = searchInput.value.trim();
+        if (value) {
+
+          whereClause.push({
+            fields: searchHeader.key_search,
+            operator: searchHeader.operator_search,
+            value: `${value}`
+          });
+        }
+
+
+      });
+    }
+
     const queryBody = {
       db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
-       select:["primary_key"],
-        group:["primary_key"],
+      select: ["primary_key"],
+      group: ["primary_key"],
       limit: wrapper.dataset.itemsPerPage, // atau batas yang Anda inginkan
       offset: 0,
       function: 'all_produk'
@@ -329,6 +347,7 @@ export default class ListDataHub extends FaiModule {
   }
 
   initSearchListenersProduk(index) {
+
     const wrapper = document.querySelector("#wrapper-job-" + index);
 
     wrapper.addEventListener("input", (e) => {
@@ -347,6 +366,24 @@ export default class ListDataHub extends FaiModule {
         this.searchdata(index);
       }
     });
+
+    let data_search_field_header = this.getModule('data_search_field_header');
+    console.log("data_search_field_header", data_search_field_header[index]);
+    if (data_search_field_header[index]?.data.length) {
+      data_search_field_header[index]?.data.forEach(searchHeader => {
+        if (searchHeader.type == 'select') {
+
+          wrapper.addEventListener("change", (e) => {
+            if (e.target.id === "searchdata-" + searchHeader.key_search) {
+              console.log("change data_search_field_header", searchHeader.key_search);
+              this.searchdata(index);
+            }
+          });
+        }
+        console.log("data_search_field_header", searchHeader);
+      });
+    }
+
   }
   async proses_search_produk(tipe, variable, json) {
     const raw = decodeURIComponent(escape(atob(json)));
@@ -415,7 +452,7 @@ export default class ListDataHub extends FaiModule {
             console.log("row.html_id", html_id);
             html_content += `
                     <div class="search-job">
-                    <select class="form-control searchdata-${variable} select2" data-key="${row.key_search}"  data-type="${row.type}"  onchange="searchdata('` + variable + `')" >
+                    <select class="form-control searchdata-${variable} select2" id="searchdata-${row.key_search}" data-key="${row.key_search}"  data-type="${row.type}"  >
                     <option value="">- Pilih ${row.name} -</option>`;
             let storeName = row.db;
             console.log("Available modules:", Object.keys(this.deps || {}));

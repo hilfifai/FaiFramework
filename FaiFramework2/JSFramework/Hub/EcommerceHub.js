@@ -197,6 +197,17 @@ export async function tambah_produk_preorder(button, last_id_utama) {
   });
 
 }
+export async function klik_isi_form(id = 0) {
+  let type = {
+    0: "Ecommerce",
+    1: "payment",
+    2: "view_layout",
+    3: id,
+  };
+
+  const encoded = btoa(JSON.stringify(type));
+  link_direct(encoded);
+}
 export async function proses_daftar_mitra(confirm = 0) {
 
   const isLoggedIn = await window.fai.getModule('loginHelper').checkLoginStatus();
@@ -207,7 +218,7 @@ export async function proses_daftar_mitra(confirm = 0) {
       if ($(this).is(':checked')) {
         let harga = parseFloat($('#satuan-harga-val' + this.value).val());
         let qty = parseFloat($('#set_qty-' + this.value).val());
-       let  stok = parseFloat($('#stok-val' + this.value).val());
+        let stok = parseFloat($('#stok-val' + this.value).val());
         send_cart_proses.push({
           id_cart: this.value,
           qty: qty
@@ -220,35 +231,35 @@ export async function proses_daftar_mitra(confirm = 0) {
     var no_wa = $('input[name="no_wa"]').val().trim();
     var nama_toko = $('input[name="nama_toko"]').val().trim();
     // Cek apakah ada radio button 'metode' yang dipilih
-    var metode_dipilih = $('input[name="metode"]:checked').val(); 
+    var metode_dipilih = $('input[name="metode"]:checked').val();
 
     // --- 2. LOGIKA VALIDASI (Kecuali Link Marketplace) ---
-    
+
     // Cek Nama Lengkap
     if (!nama_lengkap) {
-        setShowAlert("Nama Lengkap wajib diisi!", "danger");
-        $('input[name="nama_lengkap"]').focus();
-        return; // Stop proses
+      setShowAlert("Nama Lengkap wajib diisi!", "danger");
+      $('input[name="nama_lengkap"]').focus();
+      return; // Stop proses
     }
 
     // Cek No Whatsapp
     if (!no_wa) {
-        setShowAlert("Nomor Whatsapp wajib diisi!", "danger");
-        $('input[name="no_wa"]').focus();
-        return; 
+      setShowAlert("Nomor Whatsapp wajib diisi!", "danger");
+      $('input[name="no_wa"]').focus();
+      return;
     }
 
     // Cek Nama Toko
     if (!nama_toko) {
-        setShowAlert("Nama Toko wajib diisi!", "danger");
-        $('input[name="nama_toko"]').focus();
-        return; 
+      setShowAlert("Nama Toko wajib diisi!", "danger");
+      $('input[name="nama_toko"]').focus();
+      return;
     }
 
     // Cek Pilihan Kemitraan (Radio Button)
     if (!metode_dipilih) {
-        setShowAlert("Silakan pilih jenis Kemitraan (Reseller atau Agen)!", "danger");
-        return; 
+      setShowAlert("Silakan pilih jenis Kemitraan (Reseller atau Agen)!", "danger");
+      return;
     }
     if (!$('#id-mitra').val()) {
       setShowAlert("Anda belum memilih jenis mitra", "danger");
@@ -333,9 +344,8 @@ formData.append("id_mitra", $('#id-mitra').val());
             }
 
             const encoded = btoa(JSON.stringify(type));
-            const enPage = encodeDataForHref(data);;;
             // content.content.html = "javascript:void(link_direct('" + enPage + "','" + encoded + "'))";
-            link_direct(enPage, encoded);
+            link_direct(encoded);
 
           } else if (responseData.status == 0) {
             swal("Gagal!", responseData.keterangan, "error");
@@ -2350,6 +2360,7 @@ export async function proses_checkout_cek_stok(confirm = 0) {
         const harga = parseFloat($('#satuan-harga-val' + this.value).val());
         const qty = parseFloat($('#set_qty-' + this.value).val());
         const stok = parseFloat($('#stok-val' + this.value).val());
+        
         send_cart_proses.push({
           id_cart: this.value,
           qty: qty
@@ -2418,6 +2429,119 @@ export async function proses_checkout_cek_stok(confirm = 0) {
   }
 
 }
+export async function hitungHargaMitra({
+  list_diskon,
+  nama_mitra,
+  harga_akhir_tanpa_mitra,
+  jumlah,
+  limit_diskon,
+  limit_diskon_dari, // contoh: 'harga_pokok' | 'harga_jual'
+  harga_pokok,
+  harga_jual
+}) {
+  const result = {
+    harga_mitra: {}
+  };
+  // parsing data API
+  const diskonList = typeof list_diskon === 'string'
+    ? JSON.parse(list_diskon)
+    : (list_diskon ?? []);
+
+  result.harga_mitra[nama_mitra] = [];
+
+  diskonList.forEach((mitra, x) => {
+    let harga_diskon_mitra = 0;
+
+    const minimal_pembelian = Number(mitra.minimal_pembelian ?? 0);
+    const maksimal_pembelian = mitra.maksimal_pembelian !== null
+      ? Number(mitra.maksimal_pembelian)
+      : Infinity;
+
+    // skip kalau jumlah tidak masuk range
+    if (jumlah < minimal_pembelian || jumlah > maksimal_pembelian) {
+      return;
+    }
+
+    const diskon_mitra = Number(mitra.margin_mitra ?? 0);
+    const type_mitra = mitra.tipe_margin_mitra;
+
+    if (diskon_mitra) {
+      if (type_mitra === '%') {
+        harga_diskon_mitra = (diskon_mitra / 100) * harga_akhir_tanpa_mitra;
+      } else {
+        harga_diskon_mitra = diskon_mitra * jumlah;
+      }
+    }
+
+    // harga limit
+    let harga_limit = 0;
+    if (limit_diskon_dari === 'harga_pokok') {
+      harga_limit = harga_pokok;
+    } else if (limit_diskon_dari === 'harga_jual') {
+      harga_limit = harga_jual;
+    }
+
+    harga_limit += Number(limit_diskon ?? 0);
+
+    // validasi batas minimum harga
+    if ((harga_akhir_tanpa_mitra - harga_diskon_mitra) < harga_limit) {
+      const pengurang =
+        harga_akhir_tanpa_mitra - harga_diskon_mitra - harga_limit;
+      harga_diskon_mitra += pengurang;
+    }
+
+    if (harga_diskon_mitra < 0) {
+      harga_diskon_mitra = 0;
+    }
+
+    result.harga_mitra[nama_mitra][x] = {
+      minimal_pembelian,
+      maksimal_pembelian:
+        mitra.maksimal_pembelian !== null
+          ? Number(mitra.maksimal_pembelian)
+          : null,
+      margin_mitra: diskon_mitra,
+      tipe_margin_mitra: type_mitra,
+      harga_limit,
+      diskon_mitra: harga_diskon_mitra,
+      persentase_margin_mitra:
+        (harga_diskon_mitra / harga_akhir_tanpa_mitra) * 100,
+      harga_jual_mitra:
+        harga_akhir_tanpa_mitra - harga_diskon_mitra
+    };
+  });
+
+  return result;
+}
+export async function ambilDiskonTerbesar(hargaMitraResult, nama_mitra) {
+    const list = hargaMitraResult?.harga_mitra?.[nama_mitra] ?? [];
+
+    if (!list.length) return 0;
+
+    return Math.max(
+        ...list.map(v => Number(v.diskon_mitra ?? 0))
+    );
+}
+function parseListDiskon(raw) {
+    if (!raw) return [];
+
+    try {
+        // kalau masih string → parse
+        if (typeof raw === 'string') {
+            raw = JSON.parse(raw);
+        }
+
+        // kalau hasilnya masih string → parse lagi
+        if (typeof raw === 'string') {
+            raw = JSON.parse(raw);
+        }
+
+        return Array.isArray(raw) ? raw : [];
+    } catch (e) {
+        console.error('Gagal parse list_diskon:', e);
+        return [];
+    }
+}
 
 export async function js_cek_harga(id_cart) {
   // 
@@ -2430,27 +2554,40 @@ export async function js_cek_harga(id_cart) {
     if ($(item).is(':checked')) {
       let harga = parseFloat($('#satuan-harga-val' + item.value).val());
       let qty = parseFloat($('#set_qty-' + item.value).val());
+      let list_diskon = ($('#list_diskon-' + item.value).val());
       let stok = parseFloat($('#stok-val' + item.value).val());
-      console.log(item.value);
-      console.log(harga);
-      console.log(qty);
-      // if (qty > stok) {
-      //   qty = stok;
-      //   $('#set_qty-' + this.value).val(qty);
-      //   Swal.fire({
-      //     icon: 'success',
-      //     title: 'Gagal!',
-      //     text: 'Qty tidak boleh melebihi stok!',
-      //     showConfirmButton: false,
-      //     timer: 700
-      //   });
-      // }
+      console.log(list_diskon);
       let cartTotal = qty * harga;
-      let RPcartTotal = await formatRupiah(cartTotal, 'Rp. ')
-      $('#view-harga-' + item.value).html(RPcartTotal)
+      let nama_mitra= "MITRA";
+      const hargaMitraResult = await hitungHargaMitra({
+        list_diskon: parseListDiskon(list_diskon.trim()), // dari API
+        nama_mitra: nama_mitra,   // contoh: "MITRA A"
+        harga_akhir_tanpa_mitra: cartTotal,
+        jumlah: qty,
+        limit_diskon:cartTotal,
+        limit_diskon_dari:"harga_pokok",
+        harga,
+        harga_jual: cartTotal
+      });
+      const diskonMitra = await ambilDiskonTerbesar(hargaMitraResult, nama_mitra);
+      
+      // ===============================
+      // FINAL TOTAL
+      // ===============================
+      let cartTotalAfterDiskon = cartTotal - diskonMitra;
+
+      // safety guard
+      if (cartTotalAfterDiskon < 0) {
+        cartTotalAfterDiskon = 0;
+      }
+
+      let RPcartTotal = await formatRupiah(cartTotalAfterDiskon, 'Rp. ');
+      $('#view-harga-' + item.value).html(RPcartTotal);
+      // let RPcartTotal = await formatRupiah(cartTotal, 'Rp. ')
+      // $('#view-harga-' + item.value).html(RPcartTotal)
       qty_cart += qty;
       console.log();
-      subtotal_cart += cartTotal;
+      subtotal_cart += cartTotalAfterDiskon;
     }
 
   };
@@ -2732,8 +2869,8 @@ export async function prosessearchdata(index) {
     const queryBody = {
       db: 'view_produk_detail', // atau nama db dinamis Anda
       where: whereClause,
-      select:["primary_key"],
-        group:["primary_key"],
+      select: ["primary_key"],
+      group: ["primary_key"],
       limit: getalldata.data.itemsPerPage[index], // atau batas yang Anda inginkan
       offset: 0,
       function: 'all_produk'

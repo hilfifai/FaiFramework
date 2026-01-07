@@ -23,10 +23,12 @@ export default class CrudBuilder extends FaiModule {
         this.serverSideMode = false;
         this.activeSubKategori = null; // Tambahkan state untuk sub kategori aktif
         this.subKategoriData = {};
+
     }
     async CrudConfig(config) {
         this.config = config;
         this.config.serverSide = true;
+
         this.container = document.getElementById(config.containerId);
         this.data = [];
         this.table = null;
@@ -39,15 +41,18 @@ export default class CrudBuilder extends FaiModule {
         }
         await this._refactorConfigArray();
         console.log(this.config);
-        this._renderBaseLayout();
+
         this.showLoading(true);
 
         try {
+            this._refactorSubKategoriConfig();
+            this._renderBaseLayout();
             await this._fetchData();
             await this._initDataTable();
-            this._bindGlobalEvents();
+
             this._initViewModes();
-            this._refactorSubKategoriConfig();
+
+            this._bindGlobalEvents();
             this._initSubKategori();
         } catch (error) {
             console.error("Initialization failed:", error);
@@ -58,15 +63,18 @@ export default class CrudBuilder extends FaiModule {
     }
 
     _renderBaseLayout() {
-        this.container.innerHTML = `
+        let baseLayout = `
+         <div class="tab-content" id="subKategoriTabContent">
+            <div class="tab-pane fade show active" id="main-content" role="tabpanel" aria-labelledby="main-tab">
             <div class="container-fluid mt-4" id="containterCrud">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                       
                             <div class="d-block m-3">
                                 <h4 class="mb-3">
                                     <i class="fas fa-table me-2"></i>
-                                    ${this.config.page?.title || 'Advanced Data Table'}
+                                    ${this.config.page?.title || ''}
                                 </h4>
                                 
                                 <!-- View Mode Toggle -->
@@ -271,7 +279,62 @@ export default class CrudBuilder extends FaiModule {
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+            </div>
+            <input type="hidden" id="id_subkategori_single">
         `;
+        if (this.config.page.crud.sub_kategori) {
+            this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
+                const tableName = subKategori[1];
+                const displayType = subKategori[3] || 'table';
+                const noAdd = this.config.page?.crud?.no_add_sub_kategori?.[tableName];
+
+                //                <button type="button" class="btn btn-sm btn-primary me-2" id="addSubKategori-${tableName}"></button>
+                baseLayout += `
+            <div class="tab-pane fade" id="${tableName}-tab" role="tabpanel" aria-labelledby="${tableName}-tab">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                           <i class="fas fa-table me-2"></i>
+                               ${this.config.page?.title || ''}
+                                    > 
+                            <i class="fas fa-folder me-2"></i>
+                            ${subKategori[0]}
+                        </h5>
+                        <div class="sub-kategori-actions">
+                            ${!noAdd ? `
+                                 <button type="button" class="btn btn-sm btn-success add-sub-kategori-single" 
+                                data-table="${tableName}" data-index=${index} >
+                                <i class="fas fa-plus me-1"></i>
+                                Tambah
+                            </button>
+                            ` : ''}
+                            <button type="button" class="btn btn-sm btn-outline-secondary backToUtama" id="backSubKategori-${tableName}">
+                                <i class="fas fa-back me-1"></i>
+                                Kembali
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" id="subKategori-view-${tableName}">
+                        ${displayType === 'table' ?
+                        this._renderSubKategoriTable(tableName, index) :
+                        this._renderSubKategoriForm(tableName, index)}
+                    </div>
+                    <div class="card-body" id="subKategori-container-${tableName}">
+                    </div>
+
+                </div>
+            </div>
+        `;
+                //   <button type="button" class="btn btn-sm btn-outline-secondary" id="refreshSubKategori-${tableName}">
+                //                         <i class="fas fa-sync-alt me-1"></i>
+                //                         Refresh
+                //                     </button>
+                baseLayout += this._renderTemplateSubkategori(tableName, this.config.page.crud.array_sub_kategori[index])
+            });
+        }
+
+        this.container.innerHTML = baseLayout;
+
     }
     _refactorSubKategoriConfig() {
         if (!this.config.page?.crud?.sub_kategori) return;
@@ -345,14 +408,11 @@ export default class CrudBuilder extends FaiModule {
     }
 
     _renderSubKategoriContent() {
-        if (!this.config.page?.crud?.sub_kategori || !this.config.page.crud.sub_kategori.length) {
-            return '';
-        }
+
 
         let contentHtml = `
-        <div class="tab-content" id="subKategoriTabContent">
-            <div class="tab-pane fade show active" id="main-content" role="tabpanel" aria-labelledby="main-tab">
-                <!-- Data utama akan ditampilkan di sini -->
+        
+             UTAMA
             </div>
     `;
 
@@ -384,8 +444,8 @@ export default class CrudBuilder extends FaiModule {
                     </div>
                     <div class="card-body">
                         ${displayType === 'table' ?
-                    this._renderSubKategoriTable(tableName) :
-                    this._renderSubKategoriForm(tableName)}
+                    this._renderSubKategoriTable(tableName, index) :
+                    this._renderSubKategoriForm(tableName, index)}
                     </div>
                 </div>
             </div>
@@ -403,11 +463,14 @@ export default class CrudBuilder extends FaiModule {
         console.log("------------------------------------");
         console.log(this.config.page.crud.array_sub_kategori);
         console.log(index);
+        console.log("arrayConfig", arrayConfig);
         let tableHtml = `
             <div class="table-responsive">
-                <table class="table table-striped table-hover" id="subKategoriTable-${tableName}">
+                <table class="table table-striped table-hover" >
                     <thead class="table-light">
                         <tr>
+                                <th width="50">No xx</th>
+
         `;
 
         arrayConfig.forEach(field => {
@@ -418,7 +481,7 @@ export default class CrudBuilder extends FaiModule {
                             <th width="120" class="text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="subKategoriTable-${tableName}">
                         <!-- Data akan diisi oleh DataTables -->
                     </tbody>
                 </table>
@@ -587,41 +650,41 @@ export default class CrudBuilder extends FaiModule {
         return navHtml;
     }
 
-    _renderSubKategoriContent() {
-        if (!this.config.page?.crud?.sub_kategori || !this.config.page.crud.sub_kategori.length) {
-            return '';
-        }
+    // _renderSubKategori2Content() {
+    //     if (!this.config.page?.crud?.sub_kategori || !this.config.page.crud.sub_kategori.length) {
+    //         return '';
+    //     }
 
-        let contentHtml = '';
+    //     let contentHtml = '';
 
-        this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
-            const subKategoriConfig = subKategori[3] || 'table';
-            const tableName = subKategori[1];
-            const noAdd = this.config.page?.crud?.no_add_sub_kategori?.[tableName];
-            const noRow = this.config.page?.crud?.no_row_sub_kategori?.[tableName];
+    //     this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
+    //         const subKategoriConfig = subKategori[3] || 'table';
+    //         const tableName = subKategori[1];
+    //         const noAdd = this.config.page?.crud?.no_add_sub_kategori?.[tableName];
+    //         const noRow = this.config.page?.crud?.no_row_sub_kategori?.[tableName];
 
-            contentHtml += `
-                    <div class="sub-kategori-content" id="subKategoriContent-${tableName}" style="display: none;">
-                        <div class="card mt-3">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">${subKategori[0]}</h5>
-                                ${!noAdd ? `
-                                <button type="button" class="btn btn-sm btn-primary add-sub-kategori-btn" data-table="${tableName}" data-index="${index}">
-                                    <i class="fas fa-plus me-1"></i>
-                                    Tambah
-                                </button>
-                                ` : ''}
-                            </div>
-                            <div class="card-body">
-                                ${subKategoriConfig === 'table' ? this._renderSubKategoriTable(tableName, index) : this._renderSubKategoriForm(tableName, index)}
-                            </div>
-                        </div>
-                    </div>
-                `;
-        });
+    //         contentHtml += `
+    //                 <div class="sub-kategori-content" id="subKategoriContent-${tableName}" style="display: none;">
+    //                     <div class="card mt-3">
+    //                         <div class="card-header d-flex justify-content-between align-items-center">
+    //                             <h5 class="mb-0">${subKategori[0]}</h5>
+    //                             ${!noAdd ? `
+    //                             <button type="button" class="btn btn-sm btn-primary add-sub-kategori-btn" data-table="${tableName}" data-index="${index}">
+    //                                 <i class="fas fa-plus me-1"></i>
+    //                                 Tambah
+    //                             </button>
+    //                             ` : ''}
+    //                         </div>
+    //                         <div class="card-body">
+    //                             ${subKategoriConfig === 'table' ? this._renderSubKategoriTable(tableName, index) : this._renderSubKategoriForm(tableName, index)}
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             `;
+    //     });
 
-        return contentHtml;
-    }
+    //     return contentHtml;
+    // }
 
 
 
@@ -650,7 +713,8 @@ export default class CrudBuilder extends FaiModule {
     }
 
     _switchToSubKategoriTab(tableName, index) {
-        $(`#${tableName}-tab`).tab('show');
+        $('#subKategoriTabContent .tab-pane').removeClass('show active');
+        $(`#${tableName}-tab`).addClass('show active');
 
         const tabContent = $('#subKategoriTabContent');
         if (tabContent.length) {
@@ -677,7 +741,7 @@ export default class CrudBuilder extends FaiModule {
             myHeaders.append("Cookie", "ci_session=7ub6b26t9omk8mckrvh02qol7cb2jakt");
             myHeaders.append("apps", btoa(JSON.stringify(this.config.page.load)));
 
-            const response = await fetch(url, { method: "FECTH", headers: myHeaders });
+            const response = await fetch(url, { method: "PATCH", headers: myHeaders });
             const data = await response.json();
 
             this.subKategoriData[tableName] = data.data?.row || data.rows || data.data || [];
@@ -686,7 +750,7 @@ export default class CrudBuilder extends FaiModule {
 
             this._showParentRowInfo(tableName);
 
-            this._renderSubKategoriData(tableName);
+            this._renderSubKategoriData(tableName, index);
 
         } catch (error) {
             console.error(`Failed to load sub kategori data for ${tableName}:`, error);
@@ -818,9 +882,10 @@ export default class CrudBuilder extends FaiModule {
 
     _renderSubKategoriData(subKategori, index) {
         if (subKategori === 'main') return;
-
         const data = this.subKategoriData[subKategori] || [];
         const subKategoriConfig = this.config.page.crud.sub_kategori[index];
+
+        console.log(this.config.page.crud.sub_kategori);
         console.log(index);
         console.log(subKategoriConfig);
         console.log(this.subKategoriData[subKategori]);
@@ -828,18 +893,17 @@ export default class CrudBuilder extends FaiModule {
         const displayType = subKategoriConfig[3] || 'table';
 
         if (displayType === 'table') {
-            this._renderSubKategoriTableData(tableName, index, data);
+            this._renderSubKategoriTableData(tableName, data, index, "sub_kategori_folder");
         } else {
             this._renderSubKategoriFormData(tableName, index, data);
         }
     }
 
-    _renderSubKategoriTableData(tableName, data) {
+    _renderSubKategoriTableData(tableName, data, index, mode = "normal") {
         const container = $(`#subKategoriTable-${tableName}:visible`);
         const config = this.config.page.crud.sub_kategori_config[tableName];
         const namaField = config.fields[0];
 
-        if (!namaField) return;
 
         if (data.length === 0) {
             container.html(`
@@ -854,21 +918,70 @@ export default class CrudBuilder extends FaiModule {
         }
 
         let rowsHtml = '';
+
+        let allJS = "";
         data.forEach((item, index) => {
-            const fieldValue = item[namaField[1]] || '';
+            let editBody = "";
+            let btnEdit = "";
+            if (mode != 'sub_kategori_folder') {
+
+                const formBuilderConfigEdit = {
+                    ...this.config,
+                    viewContext: 'edit',
+                    data: item,
+                    isSubkategori: true,
+                    tableName: tableName,
+                    page: {
+                        crud: {
+                            ...this.config.page.crud,
+                            array: config.fields.array,
+                            form_type: 3,
+                            costum_class: ` subkategori-${tableName} subkategori-field-${tableName}-` + '{{numbering}}',
+                            input_inline: `data-numbering=""`,
+                            prefix_name: tableName + "_",
+                            sufix_name: "_edit[" + item.primary_key + "]",
+                        }
+                    },
+                    page_config: this.config,
+                };
+                const fieldValue = item[namaField[1]] || '';
+                const tempFormBuilderEdit = new FormBuilder(formBuilderConfigEdit);
+                config.fields.forEach((fieldConfig, index2) => {
+                    const components = tempFormBuilderEdit.buildField(fieldConfig, index);
+                    if (components.html) {
+                        editBody += "<td>" + components.html + "</td>";
+                        allJS += components.js;
+                    }
+                });
+            } else {
+
+                config.fields.forEach((fieldConfig, index2) => {
+                    let components;
+                    console.log("compnent", fieldConfig);
+                    if (fieldConfig[2] == 'select') {
+                        console.log(fieldConfig[3][2] + '_' + fieldConfig[3][0])
+                        components = item[fieldConfig[3][2] + '_' + fieldConfig[3][0]] || item[fieldConfig[3][2]] || "";
+                    } else {
+
+                        components = item[fieldConfig[1]];
+                    }
+
+                    editBody += "<td>" + components + "</td>";
+
+                });
+                btnEdit = `<button type="button" class="btn btn-sm btn-info edit-row-single" data-table="${tableName}" data-item="${btoa(JSON.stringify(item))}"  data-id-row="${item.primary_key}">
+                        <i class="fas fa-edit"></i>
+                    </button>`;
+            }
+
+
             rowsHtml += `
             <tr class="edit-row" data-id="${item.primary_key}">
                 <td class="row-number">${index + 1}</td>
-                <td>
-                    <input type="text" 
-                           class="form-control form-control-sm" 
-                           name="${tableName}_${namaField[1]}_edit[${item.primary_key}]"
-                           value="${fieldValue}"
-                           placeholder="Masukkan ${namaField[0]}"
-                           required>
-                    <input type="hidden" name="${tableName}_${namaField[1]}_edit_id[]" value="${item.primary_key}">
-                </td>
+                ${editBody} 
+                
                 <td class="text-center">
+                ${btnEdit} 
                     <button type="button" class="btn btn-sm btn-danger remove-row">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -876,7 +989,9 @@ export default class CrudBuilder extends FaiModule {
             </tr>
         `;
         });
-
+        if (allJS) {
+            rowsHtml += `<script>${allJS}</script>`;
+        }
         container.html(rowsHtml);
         this._updateRowNumbers(tableName);
     }
@@ -950,18 +1065,26 @@ export default class CrudBuilder extends FaiModule {
                         <div class="row">
             `;
 
-        arrayConfig.forEach((field, fieldIndex) => {
-            const fieldName = field[1];
-            const value = data[fieldName] || '';
+        let allJS = '';
+        const formBuilderConfig = {
+            viewContext: data.id ? 'edit' : 'tambah',
+            data: data,
+            page: { crud: { ...this.config.page.crud, array: arrayConfig } },
+            page_config: this.config
+        };
+        const tempFormBuilder = new FormBuilder(formBuilderConfig);
 
-            formHtml += `
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">${field[0]}</label>
-                        <input type="text" class="form-control form-control-sm" name="${fieldName}" value="${value}" 
-                               data-field="${fieldName}" data-row="${rowIndex}">
-                    </div>
-                `;
+        arrayConfig.forEach((fieldConfig, fieldIndex) => {
+            const components = tempFormBuilder.buildField(fieldConfig, fieldIndex);
+            if (components.html) {
+                formHtml += `<div class="col-md-6 mb-2">${components.html}</div>`;
+                allJS += components.js;
+            }
         });
+
+        if (allJS) {
+            formHtml += `<script>${allJS}</script>`;
+        }
 
         formHtml += `
                         </div>
@@ -1065,14 +1188,35 @@ export default class CrudBuilder extends FaiModule {
         const rowIndex = tbody.children().length;
 
         let rowHtml = '<tr class="new-row">';
-
-        arrayConfig.forEach(field => {
-            const fieldName = field[1];
+        let allJS = '';
+        const formBuilderConfig = {
+            viewContext: data?.id ? 'edit' : 'tambah',
+            data: data ?? {},
+            page: { crud: { ...this.config.page.crud, array: arrayConfig, costum_class: ` subkategori-${tableName}`, input_inline: `data-numbering=""` } },
+            page_config: this.config
+        };
+        const tempFormBuilder = new FormBuilder(formBuilderConfig);
+        arrayConfig.forEach((fieldConfig, fieldIndex) => {
+            const fieldName = fieldConfig[1];
             const value = data ? data[fieldName] : '';
             rowHtml += `
                     <td>
-                        <input type="text" class="form-control form-control-sm" name="${fieldName}" value="${value}" 
-                               data-field="${fieldName}" data-row="${rowIndex}">
+                        `;
+
+
+
+            const components = tempFormBuilder.buildField(fieldConfig, fieldIndex);
+            if (components.html) {
+                rowHtml += `<div class="col-md-6 mb-2">${components.html}</div>`;
+                allJS += components.js;
+            }
+
+
+            if (allJS) {
+                rowHtml += `<script>${allJS}</script>`;
+            }
+            rowHtml += `<!--              <input type="text" class="form-control form-control-sm" name="${fieldName}" value="${value}" 
+                               data-field="${fieldName}" data-row="${rowIndex}">-->
                     </td>
                 `;
         });
@@ -1245,7 +1389,7 @@ export default class CrudBuilder extends FaiModule {
     }
 
     _showFormModal(mode, data = null) {
-        
+
         if (this.formMode === 'modal') {
             this._showFormModalMode(mode, data);
         } else {
@@ -1280,16 +1424,12 @@ export default class CrudBuilder extends FaiModule {
         title.text(mode === 'add' ? 'Tambah Data Baru' : `Edit Data #${data.id}`);
 
         console.log(this.getModule('domainDetail'));
-        this.config.page.crud.load ||= {};
-        this.config.page.crud.load.database ||= {};
-        this.config.page.crud.load.database.id ||= {};
-        this.config.page.crud.load.database.id.on_table = this.getModule('domainDetail').database_id_on_table;
-        this.config.page.crud.load.database.id.text = this.getModule('domainDetail').database_id_text;
-        this.config.page.crud.load.database.id.type = this.getModule('domainDetail').database_id_type;
+
+
         const formBuilderConfig = {
             viewContext: mode === 'add' ? 'tambah' : 'edit',
             data: data || {},
-            page: { crud: this.config.page.crud },
+            page: { ...this.config.page.crud, crud: this.config.page.crud },
             page_config: this.config
         };
         this.formBuilder = new FormBuilder(formBuilderConfig);
@@ -1323,6 +1463,25 @@ export default class CrudBuilder extends FaiModule {
     _initSubKategoriInFormEvents(parentData = null) {
         const parentId = parentData?.id;
 
+        $(document).off('click', '.add-sub-kategori-single').on('click', '.add-sub-kategori-single', (e) => {
+            e.preventDefault();
+            const button = $(e.currentTarget);
+            const tableName = button.data('table');
+            const index = button.data('index');
+
+            console.log('Tambah row clicked:', tableName, index); // Debug
+            this._addNewSubKategoriSingleFolder(tableName, index, "add", {});
+        });
+        $(document).off('click', '.edit-row-single').on('click', '.edit-row-single', (e) => {
+            e.preventDefault();
+            const button = $(e.currentTarget);
+            const tableName = button.data('table');
+            const index = button.data('index');
+            const item = button.data('item');
+            const decoded = JSON.parse(atob(item));
+            console.log('Edit row clicked:', tableName, index); // Debug
+            this._addNewSubKategoriSingleFolder(tableName, index, "edit", decoded);
+        });
         $(document).off('click', '.add-sub-kategori-row').on('click', '.add-sub-kategori-row', (e) => {
             e.preventDefault();
             const button = $(e.currentTarget);
@@ -1331,6 +1490,67 @@ export default class CrudBuilder extends FaiModule {
 
             console.log('Tambah row clicked:', tableName, fieldName); // Debug
             this._addNewSubKategoriRow(tableName, fieldName);
+        });
+
+        $(document).off('click', '.backToUtama').on('click', '.backToUtama', (e) => {
+            e.preventDefault();
+            $('#subKategoriTabContent .tab-pane').removeClass('show active');
+            $(`#main-content`).addClass('show active');
+
+            const tabContent = $('#subKategoriTabContent');
+            if (tabContent.length) {
+                $('html, body').animate({
+                    scrollTop: tabContent.offset().top - 100
+                }, 500);
+            }
+        });
+
+        $(document).off('click', '.btn-batal-single-subkategori').on('click', '.btn-batal-single-subkategori', async (e) => {
+            e.preventDefault();
+            const tableName = $(e.currentTarget).data('table');
+            this.backViewTableSubkategoriSingle(tableName);
+        });
+
+        $(document).off('click', '.btn-simpan-single-subkategori').on('click', '.btn-simpan-single-subkategori', async (e) => {
+            e.preventDefault();
+            const tableName = $(e.currentTarget).data('table');
+            const form = document.querySelector(
+                `form#submit-subkategori-single-${tableName}`
+            );
+
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+
+
+            const container = document.querySelector(
+                `#subKategori-container-${tableName}`
+            );
+
+            const inputs = container.querySelectorAll('input, select, textarea');
+
+            const data = {};
+            inputs.forEach(el => {
+                if (!el.name) return;
+
+                if (el.name.endsWith('[]')) {
+                    const key = el.name.replace('[]', '');
+                    if (!data[key]) data[key] = [];
+                    data[key].push(el.value);
+                } else {
+                    data[el.name] = el.value;
+                }
+            });
+            this._handleFormSubmit(newForm, undefined, 'subkategori_single', tableName, data);
+            this.backViewTableSubkategoriSingle(tableName);
+            $('#subKategoriTabContent .tab-pane').removeClass('show active');
+            $(`#main-content`).addClass('show active');
+
+            const tabContent = $('#subKategoriTabContent');
+            if (tabContent.length) {
+                $('html, body').animate({
+                    scrollTop: tabContent.offset().top - 100
+                }, 500);
+            }
         });
 
         $(document).off('click', '.remove-row').on('click', '.remove-row', (e) => {
@@ -1424,7 +1644,64 @@ export default class CrudBuilder extends FaiModule {
             }
         }
     }
+    backViewTableSubkategoriSingle(tableName) {
+        $('#subKategori-container-' + tableName).hide();
+        $('#subKategori-view-' + tableName).show();
+    }
+    _addNewSubKategoriSingleFolder(tableName, index, mode = 'add', data = {}) {
+        console.log('Adding new row for:', tableName, index); // Debug
 
+        const container = $(`#subKategori-container-${tableName}:visible`);
+        const config = this.config.page.crud.sub_kategori_config[tableName];
+        const formBuilderConfig = {
+            viewContext: mode === 'add' ? 'tambah' : 'edit',
+            data: data || {},
+            isSubkategori: true,
+            tableName: tableName,
+            page: {
+                crud: {
+                    ...this.config.page.crud,
+                    array: config.fields.array,
+                    costum_class: ` subkategori-${tableName} subkategori-field-${tableName}-` + '{{numbering}}',
+                    input_inline: `data-numbering="{{numbering}}"`,
+                    prefix_name: tableName + "_",
+                    sufix_name: mode === 'add' ? "[]" : "_edit[" + data.primary_key + "]",
+                }
+            },
+            page_config: this.config
+        };
+        this.formBuilder = new FormBuilder(formBuilderConfig);
+
+        let allJS = '';
+        container.html("");
+        container.append(`<form class="simpan-single-subkategori" id='submit-subkategori-single-${tableName}' data-table="${tableName}">`);
+        config.fields.forEach((fieldConfig, index) => {
+            const components = this.formBuilder.buildField(fieldConfig, index);
+            if (components.html) {
+                container.append(components.html.replaceAll("{{numbering}}", index));
+                allJS += components.js;
+            }
+        });
+        // container.append(this._renderSubKategoriInForm(data));
+        if (allJS) {
+            const scriptTag = document.createElement('script');
+            scriptTag.textContent = allJS;
+            container.append(scriptTag);
+        }
+        container.append(`<button type="button" class="btn btn-primary btn-simpan-single-subkategori" data-table="${tableName}" >Simpan</button>`);
+        container.append(`<button type="button" class="btn btn-primary btn-batal-single-subkategori" data-table="${tableName}" >Batal</button>`);
+        container.append("<input type='hidden' name='id_subkategori_single' value='" + parseInt($('#id_subkategori_single').val()) + "'>");
+        container.append("<input type='hidden' name='primary_key' value='" + (data.primary_key || -1) + "'>");
+        container.append("</form>");
+        $(`#subKategori-view-${tableName}:visible`).hide();;
+        // if (mode === 'edit' && !$('.id_form_crud').length) {
+        //     form.append(`<input type="hidden" class="id_form_crud" name="id" value="${data.id}">`);
+        // }
+
+        // Hapus empty row jika ada
+
+        console.log('New row added successfully'); // Debug
+    }
     _addNewSubKategoriRow(tableName, fieldName) {
         console.log('Adding new row for:', tableName, fieldName); // Debug
 
@@ -1452,7 +1729,7 @@ export default class CrudBuilder extends FaiModule {
 
         // **PERBAIKAN: Update row numbers**
         this._updateRowNumbers(tableName);
-
+        this._initSubKategoriSelect2(tableName);
         console.log('New row added successfully'); // Debug
     }
 
@@ -1473,9 +1750,98 @@ export default class CrudBuilder extends FaiModule {
         }
 
         rows.each(function (index) {
+            const numbering = index + 1;
+
             $(this).find('.row-number').text(index + 1);
+            const el = $(this).find(`.subkategori-${tableName}`);
+
+            // set data-numbering
+            el.attr('data-numbering', numbering);
+
+            el.each(function () {
+
+                /* =========================
+                   REPLACE CLASS {{numbering}}
+                ========================= */
+                if (this.className.includes('{{numbering}}')) {
+                    this.className = this.className.replace(/{{numbering}}/g, numbering);
+                }
+
+                /* ======================
+                   REPLACE ID {{numbering}}
+                   support [] & non-[]
+                ====================== */
+                if (this.id && this.id.includes('{{numbering}}')) {
+                    if (this.id) {
+                        this.id = this.id
+                            .replace(/\[\]/g, '-')          // hapus []
+                            .replace(/{{numbering}}/g, numbering);
+                    }
+                }
+            });
         });
     }
+
+    _initSubKategoriSelect2(tableName) {
+        const container = $(`#subKategoriTable-${tableName}:visible`);
+
+        container.find(`.subkategori-${tableName}.select2`).each(function () {
+            const $el = $(this);
+
+            if (!$el.attr('id')) return;
+
+            let field = $el.data('field');
+
+            // hapus tableName
+            field = field.replace(tableName + "_", '');
+
+            // hapus []
+            field = field.replace(/\[\]/g, '');
+            const text = $el.data('text');
+            const isSubkategori = $el.data('issubkategori');
+            const apps = $el.data('apps');
+            const page_view = $el.data('page_view');
+            const ajaxUrl = $el.data('ajax') + `&table=${tableName}`;
+
+            // destroy kalau sudah pernah di-init
+            if ($el.hasClass('select2-hidden-accessible')) {
+                $el.select2('destroy');
+            }
+
+            $el.select2({
+                dropdownParent: $el.closest('td, body'),
+                placeholder: `Pilih ${text}`,
+                allowClear: true,
+                ajax: {
+                    url: ajaxUrl,
+                    dataType: 'json',
+                    delay: 250,
+                    data: p => ({
+                        q: p.term,
+                        apps: apps,
+                        page_view: page_view,
+                        originalField: field,
+                        isSubkategori: isSubkategori
+                    }),
+                    processResults: d => ({
+                        results: d.items || d
+                    })
+                }
+            });
+
+            // optional: initial value dari data-*
+            const value = $el.data('value');
+            const label = $el.data('label');
+
+            if (value && label) {
+                $el.append(new Option(label, value, true, true))
+                    .trigger('change');
+            }
+        });
+    }
+
+
+
     _renderSubKategoriInForm(parentData = null) {
         if (!this.config.page?.crud?.sub_kategori || !this.config.page.crud.sub_kategori.length) {
             return '';
@@ -1542,9 +1908,10 @@ export default class CrudBuilder extends FaiModule {
                                 Tambah
                             </button>
                             ` : ''}
-                            <button type="button" class="btn btn-sm btn-outline-secondary" id="formRefreshSubKategori-${tableName}">
+                            
+                            <button type="button" class="btn btn-sm btn-outline-secondary btn" id="formBackSubKategori-${tableName}">
                                 <i class="fas fa-sync-alt me-1"></i>
-                                Refresh
+                                Kembali
                             </button>
                         </div>
                     </div>
@@ -1556,7 +1923,10 @@ export default class CrudBuilder extends FaiModule {
             `;
             });
         }
-
+        {/* <button type="button" class="btn btn-sm btn-outline-secondary" id="formRefreshSubKategori-${tableName}">
+                                <i class="fas fa-sync-alt me-1"></i>
+                                Refresh
+                            </button> */}
         html += `
                 </div>
             </div>
@@ -1581,7 +1951,7 @@ export default class CrudBuilder extends FaiModule {
         const parentId = parentData.id;
 
         // Load data untuk semua sub kategori
-        if(this.config.page.crud.sub_kategori){
+        if (this.config.page.crud.sub_kategori) {
 
             for (const subKategori of this.config.page.crud.sub_kategori) {
                 const tableName = subKategori[1];
@@ -1602,18 +1972,16 @@ export default class CrudBuilder extends FaiModule {
            
                 <div class="card-body">
     `;
-        if( this.config.page.crud.sub_kategori){
-        this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
-            const tableName = subKategori[1];
-            const displayName = subKategori[0];
-            const config = this.config.page.crud.sub_kategori_config?.[tableName];
-            const fields = config?.fields || [];
+        if (this.config.page.crud.sub_kategori) {
+            this.config.page.crud.sub_kategori.forEach((subKategori, index) => {
+                const tableName = subKategori[1];
+                const displayName = subKategori[0];
+                const config = this.config.page.crud.sub_kategori_config?.[tableName];
+                const fields = config?.fields || [];
 
-            // Hanya render field pertama (nama) seperti contoh Anda
-            const namaField = fields[0];
-            if (!namaField) return;
+                // Hanya render field pertama (nama) seperti contoh Anda
 
-            html += `
+                html += `
             <div class="sub-kategori-group mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h6 class="mb-0">
@@ -1622,7 +1990,7 @@ export default class CrudBuilder extends FaiModule {
                     </h6>
                     <div>
                         <button type="button" class="btn btn-sm btn-success add-sub-kategori-row" 
-                                data-table="${tableName}" data-field="${namaField[1]}">
+                                data-table="${tableName}" >
                             <i class="fas fa-plus me-1"></i>
                             Tambah
                         </button>
@@ -1634,16 +2002,17 @@ export default class CrudBuilder extends FaiModule {
                         <thead class="table-light">
                             <tr>
                                 <th width="50">No</th>
-                                <th>${namaField[0]}</th>
+                                ${fields.map(namaField => `<th>${namaField[0]}</th>`).join('')}
+                               
                                 <th width="80" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="subKategoriTable-${tableName}">
         `;
 
-            if (isEditMode) {
-                // Loading state untuk edit mode
-                html += `
+                if (isEditMode) {
+                    // Loading state untuk edit mode
+                    html += `
                 <tr>
                     <td colspan="3" class="text-center py-3">
                         <div class="spinner-border spinner-border-sm text-primary" role="status">
@@ -1653,9 +2022,9 @@ export default class CrudBuilder extends FaiModule {
                     </td>
                 </tr>
             `;
-            } else {
-                // Add mode - kosong
-                html += `
+                } else {
+                    // Add mode - kosong
+                    html += `
                 <tr class="empty-row">
                     <td colspan="3" class="text-center py-3 text-muted">
                         <i class="fas fa-inbox me-2"></i>
@@ -1663,24 +2032,71 @@ export default class CrudBuilder extends FaiModule {
                     </td>
                 </tr>
             `;
-            }
+                }
 
-            html += `
+                html += `
                         </tbody>
                     </table>
+                </div>`;
+                console.log(fields.array);
+                html += this._renderTemplateSubkategori(tableName, fields);
+            });
+        }
+        //  <input type="hidden" name="${tableName}_${namaField[1]}_edit[id][]" value=""></input>
+        html += `
                 </div>
-                
-                <!-- Template untuk row baru -->
+            </div>
+        </div>
+    `;
+
+        return html;
+    }
+    _renderTemplateSubkategori(tableName, fields) {
+        let html = "";
+        const formBuilderConfig = {
+            viewContext: 'tambah',
+            data: {},
+            isSubkategori: true,
+            typeSubkategori: "table",
+            tableName: tableName,
+            page: { crud: { array: fields.array, form_type: 3, costum_class: ` subkategori-${tableName} subkategori-field-${tableName}-` + '{{numbering}}', input_inline: `data-numbering=""` } },
+            page_config: this.config
+        };
+        const tempFormBuilder = new FormBuilder(formBuilderConfig);
+        // const components = tempFormBuilder.buildField(modifiedField, '{{numbering}}');
+        let tambahBody = "";
+        let editBody = "";
+        let allJS = "";
+        fields.forEach((fieldConfig, index) => {
+            const components = tempFormBuilder.buildField(fieldConfig, index);
+            if (components.html) {
+                tambahBody += "<td>" + components.html + "</td>";
+                allJS += components.js;
+            }
+        });
+        // const modifiedFieldEdit = [...namaField];
+        // modifiedFieldEdit[1] = `${tableName}_${namaField[1]}_edit[id][]`;
+        const formBuilderConfigEdit = {
+            viewContext: 'edit',
+            data: {},
+            page: { crud: { ...this.config.page.crud, array: fields.array, form_type: 3, costum_class: ` subkategori-${tableName} subkategori-field-${tableName}-` + '{{numbering}}', input_inline: `data-numbering=""` } },
+            page_config: this.config
+        };
+        const tempFormBuilderEdit = new FormBuilder(formBuilderConfigEdit);
+        fields.forEach((fieldConfig, index) => {
+            const components = tempFormBuilderEdit.buildField(fieldConfig, index);
+            if (components.html) {
+                editBody += components.html;
+                allJS += components.js;
+            }
+        });
+        // const componentsEdit = tempFormBuilderEdit.buildField(modifiedFieldEdit, '{{numbering}}');
+        html += `
                 <template id="template-${tableName}">
                     <tr class="new-row">
                         <td class="row-number"></td>
-                        <td>
-                            <input type="text" 
-                                   class="form-control form-control-sm" 
-                                   name="${tableName}_${namaField[1]}[]"
-                                   placeholder="Masukkan ${namaField[0]}"
-                                   required>
-                        </td>
+                        
+                            ${tambahBody}
                         <td class="text-center">
                             <button type="button" class="btn btn-sm btn-danger remove-row">
                                 <i class="fas fa-trash"></i>
@@ -1688,18 +2104,14 @@ export default class CrudBuilder extends FaiModule {
                         </td>
                     </tr>
                 </template>
-                
+
                 <!-- Template untuk row edit -->
                 <template id="template-edit-${tableName}">
                     <tr class="edit-row" data-id="">
                         <td class="row-number"></td>
                         <td>
-                            <input type="text" 
-                                   class="form-control form-control-sm" 
-                                   name="${tableName}_${namaField[1]}_edit[id][]"
-                                   placeholder="Masukkan ${namaField[0]}"
-                                   required>
-                            <input type="hidden" name="${tableName}_${namaField[1]}_edit[id][]" value="">
+                            ${editBody}
+                           
                         </td>
                         <td class="text-center">
                             <button type="button" class="btn btn-sm btn-danger remove-row">
@@ -1710,14 +2122,6 @@ export default class CrudBuilder extends FaiModule {
                 </template>
             </div>
         `;
-        });
-    }
-        html += `
-                </div>
-            </div>
-        </div>
-    `;
-
         return html;
     }
     async _loadSubKategoriIn2Form(tableName, index, parentId, forceRefresh = false) {
@@ -2448,7 +2852,7 @@ export default class CrudBuilder extends FaiModule {
         });
         if (!this.config.page?.crud?.no_add) {
             document.getElementById('addNewBtn').addEventListener('click', () => {
-                 $('.id_form_crud').val("");
+                $('.id_form_crud').val("");
                 this._showFormModal('add');
             });
         }
@@ -2490,8 +2894,9 @@ export default class CrudBuilder extends FaiModule {
             const id = $(e.currentTarget).data('id');
             const tableName = $(e.currentTarget).data('table');
             const rowData = $(e.currentTarget).data('row');
-
+            $('#id_subkategori_single').val(id);
             this._handleSubKategoriFromList(id, tableName, rowData);
+            this._initSubKategoriInFormEvents()
         });
         // Select all checkbox
         $('#selectAll').on('change', (e) => {
@@ -3134,10 +3539,10 @@ export default class CrudBuilder extends FaiModule {
 
     }
 
-    async _handleFormSubmit(formElement, modalInstance) {
+    async _handleFormSubmit(formElement, modalInstance, mode = "normal", tableName = "", dataOri = {}) {
         const formData = new FormData(formElement);
         // const data = Object.fromEntries(formData.entries());
-        const data = {};
+        let data = {};
 
         for (const [key, value] of formData.entries()) {
             if (key.endsWith('[]')) {
@@ -3148,9 +3553,12 @@ export default class CrudBuilder extends FaiModule {
                 data[key] = value;
             }
         }
-
+        if (Object.keys(dataOri).length) {
+            data = dataOri;
+        }
         console.log(data);
-        const isEdit = !!data.id;
+
+        const isEdit = !!data.id || !!data.primary_key;
 
         this.showLoading(true);
 
@@ -3160,6 +3568,9 @@ export default class CrudBuilder extends FaiModule {
             myHeaders.append("Authorization", `Bearer ${this.config.api_token}`);
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("apps", btoa(JSON.stringify(this.config.page.load)));
+            myHeaders.append("mode", mode);
+            myHeaders.append("tableName", tableName);
+            myHeaders.append("last_value", $('#id_subkategori_single').val());
 
             // Convert amount to number if exists
             if (data.amount) {
@@ -3323,7 +3734,12 @@ export default class CrudBuilder extends FaiModule {
             console.warn('No CRUD array configuration found');
             return;
         }
-
+        this.config.page.crud.load ||= {};
+        this.config.page.crud.load.database ||= {};
+        this.config.page.crud.load.database.id ||= {};
+        this.config.page.crud.load.database.id.on_table = this.getModule('domainDetail').database_id_on_table;
+        this.config.page.crud.load.database.id.text = this.getModule('domainDetail').database_id_text;
+        this.config.page.crud.load.database.id.type = this.getModule('domainDetail').database_id_type;
         // Process each field in the array
         for (let i = 0; i < this.config.page.crud.array.length; i++) {
             const fieldConfig = this.config.page.crud.array[i];
@@ -3493,6 +3909,53 @@ export default class CrudBuilder extends FaiModule {
                 visible = false;
             }
         }
+        console.log("type", type);
+        if (type === 'select' || type === 'select-relation') {
+            const field_temp = field;
+            console.log(field_temp);
+            // remove _seq
+            if (field.endsWith('_seq')) {
+                field = field.slice(0, -4);
+            }
+
+            // remove _id
+            if (field.endsWith('_id')) {
+                field = field.slice(0, -3);
+            }
+
+            // remove id_ prefix
+            if (field.startsWith('id_')) {
+                field = field.slice(3);
+            }
+
+            // append / prepend database id
+            if (
+                this.config.page.crud.load.database.id?.type === 'suffix'
+            ) {
+                field = field + '_' + this.config.page.crud.load.database.id.text;
+            } else if (this.config.page.crud.load.database.id?.text) {
+                field = this.config.page.crud.load.database.id.text + '_' + field;
+            }
+
+            // override dari config array index 4
+            if (arrayConfig.array[i]?.[4]) {
+                field = arrayConfig.array[i][4];
+            }
+
+            // simpan perubahan field
+            if (!arrayConfig.perubahan) {
+                arrayConfig.perubahan = {};
+            }
+            arrayConfig.perubahan[field_temp] = field;
+            // console.log("perubahan", arrayConfig, this.config.page.crud.load.database);
+            // set kembali ke array config
+            arrayConfig.array[i][1] = field;
+
+            // pastikan options index [3] ada
+            if (typeof arrayConfig.array[i][3] === 'undefined') {
+                arrayConfig.array[i][3] = null;
+            }
+        }
         if (type === 'select-manual-value') {
             const arrray_manual = arrayConfig.array[i][3];
             const array_set = {};
@@ -3644,7 +4107,7 @@ export default class CrudBuilder extends FaiModule {
             type: type
         };
     }
-    refactorCrudArrayConfig2(fai, page, arrayConfig, i, field, type, extype) {
+    refactor2CrudArrayConfig2(fai, page, arrayConfig, i, field, type, extype) {
         // Inisialisasi nilai default
         arrayConfig.array[i][1] = strtolower(trim(str_replace('.', '', arrayConfig.array[i][1]))) + '';
 

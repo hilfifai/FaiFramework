@@ -26,7 +26,7 @@ export default class CoreDatabase extends FaiModule {
 
         const storeName = content.database?.utama ?? '-1';
         const allData = await this.getAllFromStore(content.database, storeName, search, data);
-
+        console.log("allData", allData);
         Object.entries(allData).forEach(([key, obj]) => {
             obj.primary_key = key;
         });
@@ -48,8 +48,9 @@ export default class CoreDatabase extends FaiModule {
             if (!search.database) {
                 search.database = database;
             }
-            if (storeName) {
-
+            console.log(database);
+            if (storeName || database?.query || search?.database?.query) {
+                console.log("masuk");
                 let getAPi = await this.getApiData(storeName, search, data);
                 console.log("getAPi", getAPi);
 
@@ -73,9 +74,9 @@ export default class CoreDatabase extends FaiModule {
 
                 }
 
-
+                console.log("getAPi non live", getAPi);
                 row = await this.ParseAllData(allData, search);
-
+                console.log("row:", row);
             }
             // console.log("row:", row);
             return row;
@@ -93,9 +94,11 @@ export default class CoreDatabase extends FaiModule {
         //     // // Ubah object jadi array
         //     allData = Object.values(allData);
         // }
-        // console.log("ParseAllData", allData);
+        console.log("ParseAllData", allData,typeof allData);
         if (Array.isArray(allData)) {
+            console.log("alldata is Array");
             allData.forEach(data => {
+
                 if (typeof data.json_data) {
 
                     console.log("data.json_data" + (typeof data.json_data) + " ", data.json_data);
@@ -150,6 +153,36 @@ export default class CoreDatabase extends FaiModule {
                 }
 
             });
+        } else if (typeof allData === 'object' && allData.json_data) {
+            console.log("onject allData");
+            parsed = allData.json_data;
+            // console.log("data", data);
+            // console.log("parsed", parsed);
+            // console.log("typeof data.json_data.current", typeof data.json_data.current);
+            if (typeof allData.json_data.current === 'object') {
+                // console.log("parsed.current", parsed.current);
+                row = parsed.current;
+            } else {
+                if (search.id_search && parsed[key].current) {
+                    key = search.id_search;
+                    row[key] = parsed[key].current;
+                } else {
+
+                    for (const key in parsed) {
+
+                        // console.log("parsed", parsed[key].current);
+                        if (parsed[key]?.current) {
+                            item = row[key] = parsed[key].current;
+                            // if (database.join) {
+                            //     //prosesJoin(item, database, db);
+
+                            // }
+                        }else{
+                            row[key] = parsed[key];
+                        }
+                    }
+                }
+            }
         }
         return row;
     }

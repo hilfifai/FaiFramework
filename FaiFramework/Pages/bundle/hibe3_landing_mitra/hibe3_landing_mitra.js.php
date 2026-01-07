@@ -1,14 +1,14 @@
 <input type="hidden" id="id-mitra" value="">
 <script>
-    function PaymentCollapse(elem) {
+   
 
-    }
-    function click_pembayaran(elem,id,total) {
+    async function click_pembayaran(elem, id, total) {
         $('.radio-pembayarandiv').removeClass('selected-pembayarandiv');
         $(elem).addClass('selected-pembayarandiv');
-        $('#val_total_pembayaran').val((total)); 
-        $('#total_pembayaran').html(formatRupiah(total));
-         $('#id-mitra').val(id);
+        $('#val_total_pembayaran').val((total));
+        let total_rupiah = await formatRupiah(total);
+        console.log(total_rupiah);
+        $('#total_pembayaran').html(total_rupiah);
+        $('#id-mitra').val(id);
     }
 </script>
- 

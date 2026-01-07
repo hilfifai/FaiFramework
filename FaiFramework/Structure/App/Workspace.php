@@ -855,56 +855,15 @@ trait Workspace_bisnis
 
     public static function bisnis_dashboard($page)
     {
+        $i = 0;
+        $website['content'][$i]['tag']            = "BANNER";
+        $website['content'][$i]['content_source'] = "template_content";
+        $website['content'][$i]['template_class'] = "system";
+        // $website['content'][$i]['db_list'] = "home_banner";
+        //$website['content'][$i]['template_function'] = "job-search-platform-ui";
+        $website['content'][$i]['template_function'] = "ecommerce-admin-page";
 
-        $sql                               = DatabaseFunc::dashboard_pesanan_erp_pos($page);
-        $db['query']                       = $sql;
-        $get                               = Database::database_coverter($page, $db, [], 'all');
-        $data1                             = new stdClass();
-        $data1->count_belum_bayar          = $get['row'][0]->count_belum_bayar;
-        $data1->count_perlu_proses         = $get['row'][0]->count_perlu_proses;
-        $data1->count_perlu_kirim          = $get['row'][0]->count_perlu_kirim;
-        $data1->count_menunggu_pickup      = $get['row'][0]->count_menunggu_pickup;
-        $data2                             = new stdClass();
-        $data2->omzet                      = $get['row'][0]->omzet;
-        $data2->omzet_ditahan              = $get['row'][0]->omzet_ditahan;
-        $data2->saldo                      = 0;
-        $data2->rata_rata                  = 0;
-        $i                                 = 0;
-        $website['content'][$i]['tag']     = "BE3-EC-D1";
-        $website['content'][$i]['col_row'] = "col-md-12";
-        $website['content'][$i]['data']    = $data1;
-
-        $i++;
-        $website['content'][$i]['tag']     = "BE3-EC-D3";
-        $website['content'][$i]['col_row'] = "col-lg-6 col-md-12 col-sm-12";
-        $website['content'][$i]['data']    = $data2;
-        $i++;
-        $website['content'][$i]['tag']                 = "BE3-E-BOX";
-        $website['content'][$i]['col_row']             = "col-lg-6 col-md-12 ";
-        $website['content'][$i]['array'][0]['text']    = "Pesanan Selesai";
-        $website['content'][$i]['array'][0]['col_row'] = "col-lg-6 col-md-6 col-sm-12 mb-4";
-        $website['content'][$i]['array'][0]['value']   = $get['row'][0]->pesanan_selesai;
-        $website['content'][$i]['array'][1]['col_row'] = "col-lg-6 col-md-6 col-sm-12 mb-4";
-        $website['content'][$i]['array'][1]['text']    = "Pesanan Proses";
-        $website['content'][$i]['array'][1]['value']   = $get['row'][0]->pesanan_proses;
-
-        $website['content'][$i]['array'][2]['col_row'] = "col-lg-6 col-md-6 col-sm-12 mb-4";
-        $website['content'][$i]['array'][2]['text']    = "Barang Terjual";
-        $website['content'][$i]['array'][2]['value']   = $get['row'][0]->qty_terjual;
-        $website['content'][$i]['array'][3]['col_row'] = "col-lg-6 col-md-6 col-sm-12 mb-4";
-        $website['content'][$i]['array'][3]['text']    = "Barang Terkirim";
-        $website['content'][$i]['array'][3]['value']   = $get['row'][0]->qty_terkirim;
-
-        $i++;
-        // $website['content'][$i]['tag'] = "BE3-EC-D2";
-        // $website['content'][$i]['col_row'] = "col-md-6";
-        // $i++;
-
-        // $website['content'][$i]['tag'] = "BE3-W-VB1";
-        // $website['content'][$i]['col_row'] = "col-md-6";
-        // $i++;
-        // $website['content'][$i]['tag'] = "BE3-W-VB2";
-        // $website['content'][$i]['col_row'] = "col-md-6";
+        
 
         $page['view_layout'][] = ["website", "col-md-12", $website];
         return $page;
@@ -984,6 +943,17 @@ trait Workspace_bisnis
         $website['content'][$i]['content_source']    = "template_content";
         $website['content'][$i]['template_class']    = "hibe3";
         $website['content'][$i]['template_function'] = "kontak_kami";
+
+        $page['view_layout'][] = ["website", "col-md-12", $website];
+        return $page;
+    }
+    public static function desty($page)
+    {
+        $i                                           = 0;
+        $website['content'][$i]['tag']               = "BANNER";
+        $website['content'][$i]['content_source']    = "template_content";
+        $website['content'][$i]['template_class']    = "desty";
+        $website['content'][$i]['template_function'] = "index";
 
         $page['view_layout'][] = ["website", "col-md-12", $website];
         return $page;

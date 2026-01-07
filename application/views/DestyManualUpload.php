@@ -32,9 +32,9 @@
     <div id="inisiasi_inventaris"></div>
     Step 4.1 : Sync utama
     <div id="sync_utama"></div>
-	Step 4.2 : Sync Varian
+    Step 4.2 : Sync Varian
     <div id="sync_varian"></div>
-	Step 5 : Menginisasi Data
+    Step 5 : Menginisasi Data
     <div id="inisiasi"></div>
     Step 6 : Generate Stok
     <div></div>
@@ -48,13 +48,13 @@
     <div id="stok_barang"></div>
     Step 7 : Download Excel
     <div id="Download Excel"></div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-  
-</script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+
+    </script>
     <!-- //step 1
         //tambahkan semua ke database temp excel
         //manambahkan jika belum ada tambahkan ke database
@@ -82,32 +82,36 @@
         function klik_stok(tipe) {
             generate("", document.getElementById('nama_file').value, tipe);
         }
-		 function klik_sync_utama() {
-		 $.ajax({
-                    url: '<?= base_url('DestyStokManual/manual_produk_sync_utama'); ?>',
-                    type: 'GET',
-                    success: function(data) {
-                        $('#sync_utama').html(data);
-						$(document).ready(function() {
-							$(".js-example-basic-single").select2();
-						  });
-                    },
-                    error: function() {
-                        $('#sync_utama').html('Error memuat data');
-                    }
-                });
-		 } function klik_sync_varian() {
-		 $.ajax({
-                    url: '<?= base_url('DestyStokManual/manual_produk_sync_varian'); ?>',
-                    type: 'GET',
-                    success: function(data) {
-                        $('#sync_varian').html(data);
-                    },
-                    error: function() {
-                        $('#sync_varian').html('Error memuat data');
-                    }
-                });
-		 }
+
+        function klik_sync_utama() {
+            $.ajax({
+                url: '<?= base_url('DestyStokManual/manual_produk_sync_utama'); ?>',
+                type: 'GET',
+                success: function(data) {
+                    $('#sync_utama').html(data);
+                    $(document).ready(function() {
+                        $(".js-example-basic-single").select2();
+                    });
+                },
+                error: function() {
+                    $('#sync_utama').html('Error memuat data');
+                }
+            });
+        }
+
+        function klik_sync_varian() {
+            $.ajax({
+                url: '<?= base_url('DestyStokManual/manual_produk_sync_varian'); ?>',
+                type: 'GET',
+                success: function(data) {
+                    $('#sync_varian').html(data);
+                },
+                error: function() {
+                    $('#sync_varian').html('Error memuat data');
+                }
+            });
+        }
+
         function proses_excel(file_path, file_name) {
             var formData = new FormData();
             formData.append("path", file_path);
@@ -142,7 +146,7 @@
 
         function klik_inventory() {
             var formData = new FormData();
-            
+
             fetch("<?= base_url('DestyStokManual/desty_data_to_inventaris'); ?>?", {
                     method: 'get'
                 })
@@ -153,7 +157,7 @@
                             <p style="color:green;">${result.message}</p>
                            
                         `;
-                        
+
                     } else {
                         document.getElementById('inisiasi_inventaris').innerHTML = `
                             <p style="color:red;">${result.message}</p>
@@ -166,6 +170,7 @@
                 });
 
         }
+
         function inisiasi_data(file_path, file_name) {
             var formData = new FormData();
             formData.append("path", file_path);
@@ -217,15 +222,15 @@
                             <p style="color:green;">${result.message} ${result.nama_barang}</p>
                            
                         `;
-                       if (!result.sisa) {
-							setTimeout(() => {
-								generate(file_path, file_name, tipe_generate);
-							}, 1234); // 120000 ms = 2 menit
-						} else {
-							setTimeout(() => {
-								generate(file_path, file_name, tipe_generate);
-							}, 1234);
-						}
+                        if (!result.sisa) {
+                            setTimeout(() => {
+                                generate(file_path, file_name, tipe_generate);
+                            }, 1234); // 120000 ms = 2 menit
+                        } else {
+                            setTimeout(() => {
+                                generate(file_path, file_name, tipe_generate);
+                            }, 1234);
+                        }
                     } else {
                         document.getElementById("stok_" + tipe_generate).innerHTML = `
                             <p style="color:red;">${result.message} ${result.nama_barang}</p>
@@ -236,7 +241,7 @@
                     console.error('Error:', error);
                     document.getElementById('result').innerHTML = 'Terjadi kesalahan.';
                 });
- 
+
         }
         document.getElementById('uploadForm').addEventListener('submit', function(e) {
             e.preventDefault();

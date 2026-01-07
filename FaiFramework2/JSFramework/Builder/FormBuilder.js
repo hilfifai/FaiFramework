@@ -17,6 +17,7 @@ export default class FormBuilder {
             },
             ...config
         };
+        console.log("this.config ",this.config );
     }
 
     /**
@@ -46,7 +47,7 @@ export default class FormBuilder {
         // Handle text and field
         pConfig.text = rawConfig[0] || '';
         pConfig.field = (rawConfig[1] || '').toLowerCase().trim().replace('.', '');
-         pConfig.originalField = rawConfig[5] || pConfig.field;
+        pConfig.originalField = rawConfig[5] || pConfig.field;
         // Generate field from text if missing
         if (!pConfig.field && pConfig.text) {
             pConfig.field = pConfig.text.toLowerCase().replace(/ /g, '_');
@@ -93,10 +94,12 @@ export default class FormBuilder {
         const typeString = rawConfig[2] || 'text';
         const typeParts = typeString.split('-');
 
-        const baseTypes = ['text', 'select_manual', 'select', 'textarea', 'photos', 'file', 'picture', 'editor', 'radio', 'checkbox', 'hidden', 'password', 'number', 'div'];
-        pConfig.type = baseTypes.includes(typeParts[0]) ? typeParts[0] : 'text';
+        const baseTypes = ['text', 'select_manual', 'select', 'textarea', 'photos', 'file', 'picture', 'editor', 'radio', 'checkbox', 'hidden', 'password', 'number', 'div',"select-manual"];
+        pConfig.type = typeString!="select-manual"? (baseTypes.includes(typeParts[0]) ? typeParts[0] : 'text') :typeString;
 
         // Handle select/select-relation field modification
+        console.log("pConfig.type",pConfig.type);
+        console.log("pConfig.field",pConfig.field);
         if (['select', 'select-relation'].includes(pConfig.type)) {
             let fieldTemp = pConfig.field;
             // Remove suffixes
@@ -111,7 +114,7 @@ export default class FormBuilder {
             }
 
             // Apply database ID configuration
-            console.log(this.config.page.crud.load);
+            console.log("this.config.page.crud.load",this.config.page.crud.load);
             const dbId = this.config.page.crud.load?.database?.id;
             if (dbId) {
 
@@ -132,6 +135,7 @@ export default class FormBuilder {
         this._processFlags(pConfig, typeParts);
 
         const pageCrud = this.config.page.crud || {};
+        console.log("pageCrud",pageCrud);
         pConfig.prefixName = pageCrud.prefix_name || '';
         pConfig.suffixName = pageCrud.sufix_name || '';
         if (['file', 'photos', 'file-upload', 'video'].includes(typeString)) {
@@ -140,14 +144,14 @@ export default class FormBuilder {
 
         pConfig.options = rawConfig[3] || [];
         pConfig.extraConfig = rawConfig[4] || {};
-       
+
         pConfig.originalTypeString = typeString;
 
         // Handle select options validation
         if (pConfig.originalTypeString === 'select') {
             if (!pConfig.options || !Array.isArray(pConfig.options)) {
-                
-                console.error(`${pConfig.text} options not complete`,pConfig);
+
+                console.error(`${pConfig.text} options not complete`, pConfig);
                 throw new Error(`${pConfig.text} options not complete`);
             }
             if (!pConfig.options[1]) {
@@ -210,7 +214,7 @@ export default class FormBuilder {
             inputInline: this._buildInputAttributes(pConfig),
             customClass: this._buildCustomClass(pConfig)
         };
-
+        console.log("context", context);
         const handlerName = `_handle_${pConfig.originalTypeString.replace(/-/g, '_')}`;
 
         if (typeof this[handlerName] === 'function') {
@@ -231,13 +235,13 @@ export default class FormBuilder {
         const pageCrud = this.config.page.crud || {};
         const view = this.config.viewContext;
         const data = this.config.data || {};
-
+        console.log("data",data);
         if (view === 'search') {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(pConfig.field) || '';
         }
-
-        let value = data[pConfig.field] || '';
+        let value = data[pConfig.field] || data[pConfig.originalField] || '';
+        console.log(pConfig.field,value);
 
         if (view === 'tambah' && pageCrud.insert_value && pageCrud.insert_value[pConfig.field]) {
             value = this._processSpecialValues(pageCrud.insert_value[pConfig.field]);
@@ -273,10 +277,14 @@ export default class FormBuilder {
             if (formType === 1) { // Horizontal
                 startDiv = `<div class="form-group row mb-1"><label class="control-label col-3" style="font-weight:600">${text}</label><div class="col-9">`;
                 endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
-            } else { // Vertical
-                startDiv = `<div class="form-group mb-1"><label class="control-label" style="font-weight:600">${text}</label><div>`;
-                endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
-            }
+            } else
+                if (formType === 3) { // Table
+                    startDiv = `<div class="form-group row mb-1">`;
+                    endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div>`;
+                } else { // Vertical
+                    startDiv = `<div class="form-group mb-1"><label class="control-label" style="font-weight:600">${text}</label><div>`;
+                    endDiv = `<span class="help-block text-danger" id="help_${field}${numbering}"></span></div></div>`;
+                }
 
         if (inputGroup.prefix || inputGroup.suffix) {
             startDiv += `<div class="input-group">`;
@@ -286,6 +294,7 @@ export default class FormBuilder {
 
         return { startDiv, endDiv };
     }
+
 
     _buildCustomClass(pConfig) {
         // ... (Implementasi dari jawaban sebelumnya sudah bagus)
@@ -299,6 +308,12 @@ export default class FormBuilder {
         }
         if (pageCrud.allCostumClass) {
             classes += " " + pageCrud.allCostumClass;
+        }
+        if (this.config.crud?.costum_class) {
+            classes += ' ' + this.config.crud.costum_class;
+        }
+        if (this.config.page?.crud?.costum_class) {
+            classes += ' ' + this.config.page.crud.costum_class;
         }
         return classes.trim();
     }
@@ -316,6 +331,13 @@ export default class FormBuilder {
 
         if (pageCrud.field_value_automatic && pageCrud.field_value_automatic[pConfig.field]) {
             attributes += ` onchange="field_value_automatic_${pConfig.field}(this)"`;
+        }
+        console.log(this.config.page.crud)
+        if (this.config.crud?.input_inline) {
+            attributes += ' ' + this.config.crud.input_inline;
+        }
+        if (this.config.page?.crud?.input_inline) {
+            attributes += ' ' + this.config.page.crud.input_inline;
         }
 
         return attributes.trim();
@@ -387,23 +409,52 @@ export default class FormBuilder {
         const name = `${pConfig.prefixName}${pConfig.field}${pConfig.suffixName}`;
         const pageCrud = this.config.page.crud || {};
         const ajaxUrl = this.config.fai.route_v(this.config.page, pageCrud.route, [`${pConfig.originalField}`, -1]);
-        const html = `${wrapper.startDiv}<select name="${name}" id="${pConfig.field}${pConfig.numbering}" class="${customClass.includes('no-form-control') ? customClass : 'form-control ' + customClass} select2" ${inputInline}></select>${wrapper.endDiv}`;
-        console.log(this.config.data);
+        //const html = `${wrapper.startDiv}<select name="${name}" id="${pConfig.field}${pConfig.numbering}" class="${customClass.includes('no-form-control') ? customClass : 'form-control ' + customClass} select2" ${inputInline}></select>${wrapper.endDiv}`;
+        const html = `
+                ${wrapper.startDiv}
+                <select
+                name="${name}"
+                id="${pConfig.field}${pConfig.numbering}"
+                class="${customClass.includes('no-form-control') ? customClass : 'form-control ' + customClass} select2"
+                data-field="${pConfig.originalField}"
+                data-text="${pConfig.text}"
+                data-ajax="${ajaxUrl}"
+                data-apps="${apps}"
+                data-page_view="${page_view}"
+                data-isSubkategori="${this.config.isSubkategori??false}"
+                ${inputInline}>
+                </select>
+                ${wrapper.endDiv}
+                `;
 
-        
         const js = `
             $(document).ready(function() {
                 const selectEl = $('#${pConfig.field}${pConfig.numbering}');
                 const apps = '${apps}';
                 const page_view = '${page_view}';
-                selectEl.select2({
-                    placeholder: 'Pilih ${pConfig.text}',
+               selectEl.select2({
+                    placeholder: "Pilih ${pConfig.text}",
                     allowClear: true,
-                    ajax: { url: '${ajaxUrl}', dataType: 'json', delay: 250, data: p => ({ q: p.term,apps: apps,page_view: page_view,field:'${pConfig.originalField}'  }), processResults: d => ({ results: d.items || d }) }
+                    ajax: {
+                        url: '${ajaxUrl}',
+                        dataType: 'json',
+                        delay: 250,
+                        data: p => ({
+                            q: p.term,
+                            apps: apps,
+                            page_view: page_view,
+                            field: '${pConfig.originalField}',
+                            isSubkategori: ${this.config.isSubkategori ?? false},
+                            table: '${this.config.tableName ?? ""}'
+                        }),
+                        processResults: d => ({
+                            results: d.items || d
+                        })
+                    }
                 });
 
                 const initialValue = '${value}';
-                const initialText = '${this.config.data[pConfig.options[2] + '_'+pConfig.options[0]] || ''}';
+                const initialText = '${this.config.data[pConfig.options[2] + '_' + pConfig.options[0]] || this.config.data[pConfig.options[2] ] || ''}';
                 if (initialValue && initialText) {
                     selectEl.append(new Option(initialText, initialValue, true, true)).trigger('change');
                 }

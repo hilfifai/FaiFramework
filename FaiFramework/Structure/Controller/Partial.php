@@ -13,25 +13,26 @@ class Partial extends Database
     {
         parent::__construct();
     }
-    public static function uri_segment(){
+    public static function uri_segment()
+    {
         $requestUri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-		$scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
-		$basePath = dirname($scriptName);
+        $scriptName = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
+        $basePath = dirname($scriptName);
 
-		if ($basePath && $basePath !== '/' && strpos($requestUri, $basePath) === 0) {
-			$requestUri = substr($requestUri, strlen($basePath));
-		}
-		$requestUri = preg_replace('#/+#', '/', $requestUri);
-		// hilangkan query string
-		$requestUri = explode('?', $requestUri)[0];
+        if ($basePath && $basePath !== '/' && strpos($requestUri, $basePath) === 0) {
+            $requestUri = substr($requestUri, strlen($basePath));
+        }
+        $requestUri = preg_replace('#/+#', '/', $requestUri);
+        // hilangkan query string
+        $requestUri = explode('?', $requestUri)[0];
 
-		// bersihkan
-		$requestUri = trim($requestUri, '/');
+        // bersihkan
+        $requestUri = trim($requestUri, '/');
 
-		// ambil segment
-		$segments = array_values(array_filter(explode('/', $requestUri))); // reset index
-		$segments = explode('/', $requestUri);
-		$segments = array_filter($segments); 
+        // ambil segment
+        $segments = array_values(array_filter(explode('/', $requestUri))); // reset index
+        $segments = explode('/', $requestUri);
+        $segments = array_filter($segments);
         return array_values($segments);
     }
     public static function email_send($email, $judul, $pesan)
@@ -326,6 +327,38 @@ class Partial extends Database
             return null;
         }
     }
+    public static function normalizeWhatsAppNumber($input)
+    {
+        if (!$input) return null;
+
+        $number = trim((string)$input);
+
+        // Hapus semua selain angka
+        $number = preg_replace('/[^0-9]/', '', $number);
+
+        // Awalan 00 → internasional
+        if (strpos($number, '00') === 0) {
+            $number = substr($number, 2);
+        }
+
+        // Awalan 0 → 62
+        if (strpos($number, '0') === 0) {
+            $number = '62' . substr($number, 1);
+        }
+
+        // Jika belum 62 tapi kemungkinan nomor lokal
+        if (strpos($number, '62') !== 0 && strlen($number) >= 9) {
+            $number = '62' . $number;
+        }
+
+        // Validasi panjang
+        if (strlen($number) < 10 || strlen($number) > 15) {
+            return null;
+        }
+
+        return $number;
+    }
+
 
     public static function toAlpha($number)
     {
@@ -2132,7 +2165,6 @@ margin: 30px;border-radius: 10px 20px;">
                     $menu = Partial::get_menu($page, $query, 'id_apps_menu', 'get_array');
                 }
             }
-
             if (! count($menu) and $page['load']['apps']) {
 
                 $Apps     = $page['load']['apps'];
@@ -3053,7 +3085,6 @@ margin: 30px;border-radius: 10px 20px;">
     }
     public static function get_menu($page, $query, $nama_row_id_apps_menu, $content)
     {
-
         DB::queryRaw($page, $query);
 
         $get  = DB::get();
@@ -3065,7 +3096,6 @@ margin: 30px;border-radius: 10px 20px;">
                 }
             }
         }
-
         /*
         hasil
             1430 = 2;
@@ -3076,15 +3106,16 @@ margin: 30px;border-radius: 10px 20px;">
         $hasil     = [];
         $udah      = [];
         for ($i = 0; $i < count($show); $i++) {
-
+            
             $loop   = true;
             $menu   = $show[$i];
+           
             $udah[] = $menu;
             DB::queryRaw($page, "select * from web__list_apps_menu  where  id=($menu)");
             $get = DB::get();
             if ($get) {
-
-                $parent = $get[0]->parent;
+                
+               $parent = $get[0]->parent;
                 if (! in_array($parent, $id_parent)) {
                     $id_parent[] = $parent;
                     while ($loop) {
@@ -3187,14 +3218,13 @@ margin: 30px;border-radius: 10px 20px;">
                 }
             }
         }
-
         $key_hasil = [];
         foreach ($hasil as $key => $value) {
             if ($value and ! in_array($key, $key_hasil)) {
                 $key_hasil[] = $key;
             }
         }
-
+       
         $content_return = "";
         if ($content == 'get_array') {
 
@@ -3258,6 +3288,7 @@ margin: 30px;border-radius: 10px 20px;">
 						urutan,
 						nama_menu
             ";
+            
             DB::queryRaw($page, $query);
             $get  = DB::get();
             $udah = [];

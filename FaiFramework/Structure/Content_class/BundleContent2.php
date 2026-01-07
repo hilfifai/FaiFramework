@@ -48,8 +48,7 @@ class Bundlecontent2
       } else
             if ($code == 'BE3-E-BOX') {
         return Bundlecontent::ecommerce_dasboard_box($page, $array_website);
-      } else
-            if ($code == 'BE3-EC-D1') {
+      } else if ($code == 'BE3-EC-D1') {
         return Bundlecontent::ecommerce_dasboard_bundles_1($page, $array_website);
       } else
             if ($code == 'BE3-EC-D2') {
@@ -7661,6 +7660,7 @@ document.addEventListener("click", closeOpenDropdowns);
                                          <input type="hidden" id="is_varian-<ID-CART></ID-CART>" value="<IS_VARIAN></IS_VARIAN>">
                                          <input type="hidden" id="max_varian-<ID-CART></ID-CART>" value="<MAX_VARIAN></MAX_VARIAN>">
                                         
+                     <input type="hidden" id="list_diskon-<ID-CART></ID-CART>" value="<LIST-DISKON></LIST-DISKON>">
                                       
                                         <div class="cart__product__item__title">
                                             <h6><NAMA-PRODUK></NAMA-PRODUK></h6>
@@ -11943,6 +11943,7 @@ width: 100%;
                              <input type="hidden" id="is_varian-<ID-CART></ID-CART>" value="<IS_VARIAN></IS_VARIAN>">
                              <input type="hidden" id="max_varian-<ID-CART></ID-CART>" value="<MAX_VARIAN></MAX_VARIAN>">
                             
+                            <input type="hidden" id="list_diskon-<ID-CART></ID-CART>" value="<LIST-DISKON></LIST-DISKON>">
                             <img src="img/shop-cart/cp-1.jpg" alt="">
                             <div class="cart__product__item__title">
                                 <h6><NAMA-PRODUK></NAMA-PRODUK></h6>
@@ -24401,6 +24402,7 @@ margin-top: 25px;">
 <div class="form-selectgroup-label-content d-flex" style=" width: 100%;">
 <input type="hidden" id="is_varian-<ID-CART></ID-CART>" value="<IS_VARIAN></IS_VARIAN>">
 <input type="hidden" id="max_varian-<ID-CART></ID-CART>" value="<MAX_VARIAN></MAX_VARIAN>">
+                     <input type="hidden" id="list_diskon-<ID-CART></ID-CART>" value="<LIST-DISKON></LIST-DISKON>">
 <div style="width:30%;margin: 10px;border-radius: 100%;" id="image_cart-<ID-CART></ID-CART>">
 <IMAGE-CART></IMAGE-CART>
 </div>

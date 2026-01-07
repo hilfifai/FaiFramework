@@ -1,4 +1,5 @@
-<div class="order-container">
+<div class="content-login">
+    <div class="order-container">
         <h1><i class="fas fa-box"></i> Daftar Pesanan Saya</h1>
 
         <!-- Tab Filter Status Pesanan -->
@@ -14,9 +15,9 @@
         <!-- Daftar Pesanan -->
         <div class="order-list">
             <!-- Contoh Kartu Pesanan 1: Selesai (Banyak Produk) -->
-           <LIST-PESANAN></LIST-PESANAN>
+            <LIST-PESANAN></LIST-PESANAN>
             <!-- Contoh Kartu Pesanan 2: Dikirim (Satu Produk) -->
-            <div class="order-card" data-status="dikirim"  onclick="pesanan_saya_detail()">
+            <div class="order-card" data-status="dikirim" onclick="pesanan_saya_detail()">
                 <div class="card-header">
                     <div class="shop-info">
                         <i class="fas fa-store"></i>
@@ -38,8 +39,8 @@
                 </div>
 
                 <div class="card-summary">
-                     <p class="product-count">1 Produk</p>
-                     <div>
+                    <p class="product-count">1 Produk</p>
+                    <div>
                         <span>Total Pesanan:</span>
                         <span class="total-price">Rp 185.000</span>
                     </div>
@@ -51,3 +52,9 @@
             </div>
         </div>
     </div>
+</div>
+<div class="content-notlogin">
+    <div class="order-container text-center">
+        Login Terlebih dahulu
+    </div>
+</div>

@@ -396,6 +396,7 @@ class ApiContent
         } else {
             $response_cart = $nama_class::send_cart($page, $user_api, $link . '/' . $link_endpoint, $id_from_api, $qty, $id_user);
         }
+        $fai = new MainFaiFramework();
         if ($response_cart['status']) {
 
             // $sqli['id_sync_cart']        = $response_cart['id_cart'];
@@ -413,9 +414,9 @@ class ApiContent
             $sqli['acc_status_sync'] =  "Pending";
             $sqli['response_acc_sync'] =  "";
             $sqli['temp_qty_sync'] =  $qty;
-            $id = CRUDFunc::crud_insert($page['fai'], $page, $sqli, [], 'api_sync');
+            $id = CRUDFunc::crud_insert($fai, $page, $sqli, [], 'api_sync');
             $sqli_update['id_sync_api_cart']        = $id;
-            CRUDFunc::crud_update($page['fai'], $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail_pos);
+            CRUDFunc::crud_update($fai, $page, $sqli_update, [], [], [], "erp__pos__inventory__outgoing_breakdown", "id", $id_detail_pos);
         } else {
             $sqli['status_sync_cart']    = "Gagal";
             $sqli['ressponse_sync_cart'] = json_encode($response_cart['response']);
@@ -450,17 +451,19 @@ class ApiContent
         $nama_class    = $user_api_endpoint['row'][0]->nama_class;
 
         $response_cart = $nama_class::send_order($page, $user_api, $link . '/' . $link_endpoint, $id_order);
+        
+        $fai = new MainFaiFramework();
         if ($response_cart['status']) {
 
             $sqli['nomor_sync_pesanan']    = $response_cart['nomor'];
             $sqli['id_sync_pesanan']       = $response_cart['seq'];
             $sqli['status_sync_pesanan']   = "Berhasil";
             $sqli['response_sync_pesanan'] = json_encode($response_cart['response']);
-            CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama", "id", $id_order);
+            CRUDFunc::crud_update($fai, $page, $sqli, [], [], [], "erp__pos__utama", "id", $id_order);
         } else {
             $sqli['status_sync_pesanan']   = "Gagal";
             $sqli['response_sync_pesanan'] = json_encode($response_cart['response']);
-            CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama", "id", $id_order);
+            CRUDFunc::crud_update($fai, $page, $sqli, [], [], [], "erp__pos__utama", "id", $id_order);
         }
 
         return $response_cart;
@@ -525,6 +528,8 @@ class ApiContent
 
         $response_cart = $nama_class::hapus_cart($page, $user_api, $link . '/' . $link_endpoint, $user_id, $seq);
         if ($response_cart['status']) {
+            
+        $fai = new MainFaiFramework();
             $sqli['status_sync_cart'] = "Dihapus";
             CRUDFunc::crud_update($page['fai'], $page, $sqli, [], [], [], "erp__pos__utama__detail", "id_sync_cart", $seq);
         } else {
