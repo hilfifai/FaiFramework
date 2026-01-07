@@ -4,6 +4,7 @@ import LoginHub from './Hub/LoginHub.js';
 import * as EcommerceHub from './Hub/EcommerceHub.js';
 import ListDataHub from './Hub/ListDataHub.js';
 import * as GeneralHub from './Hub/GeneralHub.js';
+import * as DestyHub from './Hub/DestyHub.js';
 import { setShowAlert,swalConfirm } from './Helper/Notification.js';
 import SelectSearch from './Helper/SelectSearch.js';
 export class FaiFramework extends FaiModule {
@@ -110,6 +111,7 @@ export class FaiFramework extends FaiModule {
 		await this.setModule("data_produk_itemsPerPage", []);
 		await this.setModule("data_produk_content", []);
 		await this.setModule("data_produk_search_field", []);
+		await this.setModule("data_search_field_header", []);
 		await this.setModule("data_produk_after_init", []);
 
 	}
@@ -135,7 +137,7 @@ export class FaiFramework extends FaiModule {
 				displayMode: 'modal', // Change to 'full-page' for full page view
 				elements: ['login', 'register'],
 				isCanAsGuest: true,
-				isCanAsSSO: true,
+				isCanAsSSO: false,
 				isDefaultLogin: false,
 				verificationMethod: 'sms' // or 'email'
 			});
@@ -178,7 +180,7 @@ export class FaiFramework extends FaiModule {
 
 			document.body.appendChild(newScript);
 		});
-
+		await this.getModule('loginHub').is_login();
 		await this.getModule("loginHelper").checkLoginStatus().then((isLoggedIn) => {
 			if (isLoggedIn) {
 				document.querySelectorAll('.is_login').forEach(el => {
@@ -358,6 +360,11 @@ initSelectSearch(elementId, options = {}) {
 window.GeneralHub = GeneralHub;
 
 Object.entries(GeneralHub).forEach(([key, value]) => {
+	window[key] = value;
+});
+window.DestyHub = DestyHub;
+
+Object.entries(DestyHub).forEach(([key, value]) => {
 	window[key] = value;
 });
 window.loginHub = LoginHub;

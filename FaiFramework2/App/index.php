@@ -745,7 +745,7 @@ be3-panel {
             background-color: #0056b3;
         }
 
-        body.blurred>*:not(.login-container) {
+        body.blurred>*:not(.login-container):not(#alertContainer) {
             pointer-events: none;
         }
 
@@ -1416,7 +1416,7 @@ be3-panel {
         var option = {
             pending_order: true
         }
-        await window.fai.init("fai_init", option, "moesneeds.id", 'v1.0.4-alpha46',
+        await window.fai.init("fai_init", option, "moesneeds.id", 'v1.0.4.2-alpha19',
 
             base_url, base_url_non_index, base_url_object);
         await window.fai.setupFullWebContent();

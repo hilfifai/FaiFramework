@@ -98,7 +98,7 @@ export async function formatRupiah(angka, prefix = 'Rp ') {
   // Combine integer and decimal parts
 
   var formattedAmount = prefix + integerPart + decimalPart;
-
+  
   return formattedAmount;
 
 }

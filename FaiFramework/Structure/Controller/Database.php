@@ -639,7 +639,7 @@ class Database extends DB
 	public static function create_database_check($page, $array, $database_utama, $primary_key, $database_provider, $app_framework = null, $database_sub = '', $db_sub = array())
 	{
 		$fai = new MainFaiFramework();
-		$schema = $page['conection_scheme'].'.';
+		$schema =  ($database_provider == 'postgres') ? $page['conection_scheme'].'.':"";
 		if($database_provider=='mysql'){
 		    $schema = '';
 		    

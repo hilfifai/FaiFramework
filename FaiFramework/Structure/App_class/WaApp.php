@@ -13,7 +13,6 @@ class WaApp{
     }
     public static function send($page,$number,$message,$tipe='message',$link_media="")
     {
-      echo $number;
          $func = "send_$tipe";
        $message = str_replace( 
                     array("<b> ","<b>"," </b>","</b>"),
@@ -25,7 +24,6 @@ class WaApp{
                     array("_","_","_","_"),
                     $message
                     );
-                    echo $number;
         return WhapifyWaApi::$func($page,$number,$message,$link_media);
     }
     

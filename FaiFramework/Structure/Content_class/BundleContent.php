@@ -39,18 +39,18 @@ class BundleContent
                 return Bundlecontent::list_panel_workspace($page, $array_website);
             } else if ($code == 'BE3-LIST-ROLE-WORKSPACE') {
                 return Bundlecontent::list_role_workspace($page, $array_website);
-            // } else if ($code == 'BE3-E-BOX') {
-            //     return Bundlecontent::ecommerce_dasboard_box($page, $array_website);
-            // } else if ($code == 'BE3-EC-D1') {
-            //     return Bundlecontent::ecommerce_dasboard_bundles_1($page, $array_website);
-            // } else if ($code == 'BE3-EC-D2') {
-            //     return Bundlecontent::ecommerce_dasboard_bundles_2($page, $array_website);
-            // } else if ($code == 'BE3-EC-D3') {
-            //     return Bundlecontent::ecommerce_dasboard_bundles_3($page, $array_website);
-            // } else if ($code == 'BE3-W-VB2') {
-            //     return Bundlecontent::visitor_bundles_2($page, $array_website);
-            // } else if ($code == 'BE3-W-VB1') {
-            //     return Bundlecontent::visitor_bundles_1($page, $array_website);
+            } else if ($code == 'BE3-E-BOX') {
+                return Bundlecontent::ecommerce_dasboard_box($page, $array_website);
+            } else if ($code == 'BE3-EC-D1') {
+                return Bundlecontent::ecommerce_dasboard_bundles_1($page, $array_website);
+            } else if ($code == 'BE3-EC-D2') {
+                return Bundlecontent::ecommerce_dasboard_bundles_2($page, $array_website);
+            } else if ($code == 'BE3-EC-D3') {
+                return Bundlecontent::ecommerce_dasboard_bundles_3($page, $array_website);
+            } else if ($code == 'BE3-W-VB2') {
+                return Bundlecontent::visitor_bundles_2($page, $array_website);
+            } else if ($code == 'BE3-W-VB1') {
+                return Bundlecontent::visitor_bundles_1($page, $array_website);
             } else if ($code == 'BE3-ASHION-HOME-PRODUK_GROUP_KLASIFIKASI') {
                 return Bundlecontent::ashion_home_produk_group_klasifikasi($page, $array_website);
             } else if ($code == 'BE3-ASHION-HOME-DISKON') {
@@ -65,6 +65,318 @@ class BundleContent
         if ($type == 'array') {
             return $array;
         }
+    }
+    public static function content_admin_ecommerce($page)
+    {
+        $base = __DIR__ . "/../../Pages/bundle/content_admin_ecommerce/";
+        $return["html"] =  file_get_contents($base . "content_admin_ecommerce.html.php");
+        return $return;
+    }
+    public static function ecommerce_dasboard_bundles_1($page)
+    {
+         $base = __DIR__ . "/../../Pages/bundle/";
+        //code BE3-EC-D1
+        $return["css"] = file_get_contents( $base . "/ecommerce_dasboard_bundles_1/ecommerce_dasboard_bundles_1.css.php");
+        $return["js"] = file_get_contents( $base . "/ecommerce_dasboard_bundles_1/ecommerce_dasboard_bundles_1.js.php");
+        $return["html"] = file_get_contents( $base . "/ecommerce_dasboard_bundles_1/ecommerce_dasboard_bundles_1.html.php");
+        return $return;
+
+        return '';
+    }
+    public static function ecommerce_dasboard_box($page)
+    {
+         $base = __DIR__ . "/../../Pages/bundle/";
+
+        $return["html"] = file_get_contents( $base . "/ecommerce_dasboard_box/ecommerce_dasboard_box.html.php");
+        return $return;
+        
+    }
+    // public static function ecommerce_dasboard_bundles_2()
+    // {
+
+    //     //code BE3-EC-D2
+    //     return '<div class="row">
+    //             <div class="col-lg-6 col-md-3 col-6 mb-4">
+    //     <div class="card">
+    //       <div class="card-body">
+    //         <div class="card-title d-flex align-items-start justify-content-between">
+    //           <div class="avatar flex-shrink-0">
+    //             <img src="../../assets/img/icons/unicons/wallet-info.png" alt="Credit Card" class="rounded">
+    //           </div>
+    //           <div class="dropdown">
+    //             <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    //               <i class="bx bx-dots-vertical-rounded"></i>
+    //             </button>
+    //             <div class="dropdown-menu" aria-labelledby="cardOpt6">
+    //               <a class="dropdown-item" href="javascript:void(0);">View More</a>
+    //               <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <span class="d-block">Sales</span>
+    //         <h4 class="card-title mb-1">$4,679</h4>
+    //         <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div class="col-lg-6 col-md-3 col-6 mb-4">
+    //     <div class="card">
+    //       <div class="card-body pb-2">
+    //         <span class="d-block fw-medium">Profit</span>
+    //         <h3 class="card-title mb-0">624k</h3>
+    //         <div id="profitChart"></div>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div class="col-lg-6 col-md-3 col-6 mb-4">
+    //     <div class="card">
+    //       <div class="card-body pb-0">
+    //         <span class="d-block fw-medium">Expenses</span>
+    //       </div>
+    //       <div id="expensesChart" class="mb-2"></div>
+    //       <div class="p-3 pt-2">
+    //         <small class="text-muted d-block text-center">$21k Expenses more than last month</small>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div class="col-lg-6 col-md-3 col-6 mb-4">
+    //     <div class="card">
+    //       <div class="card-body">
+    //         <div class="card-title d-flex align-items-start justify-content-between">
+    //           <div class="avatar flex-shrink-0">
+    //             <img src="../../assets/img/icons/unicons/briefcase.png" alt="Credit Card" class="rounded">
+    //           </div>
+    //           <div class="dropdown">
+    //             <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    //               <i class="bx bx-dots-vertical-rounded"></i>
+    //             </button>
+    //             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt1">
+    //               <a class="dropdown-item" href="javascript:void(0);">View More</a>
+    //               <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <span class="d-block">Transactions</span>
+    //         <h4 class="card-title mb-1">$14,857</h4>
+    //         <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>';
+    // }
+    public static function ecommerce_dasboard_bundles_2_2()
+    {
+
+        //code BE3-EC-D2
+        // return '
+        // <div class="col-lg-6 col-md-12 col-6 mb-4">
+        //               <div class="card">
+        //                 <div class="card-body">
+        //                   <div class="card-title d-flex align-items-start justify-content-between">
+        //                     <div class="avatar flex-shrink-0">
+        //                       <img
+        //                         src="../assets/img/icons/unicons/chart-success.png"
+        //                         alt="chart success"
+        //                         class="rounded"
+        //                       />
+        //                     </div>
+        //                     <div class="dropdown">
+        //                       <button
+        //                         class="btn p-0"
+        //                         type="button"
+        //                         id="cardOpt3"
+        //                         data-bs-toggle="dropdown"
+        //                         aria-haspopup="true"
+        //                         aria-expanded="false"
+        //                       >
+        //                         <i class="bx bx-dots-vertical-rounded"></i>
+        //                       </button>
+        //                       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+        //                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
+        //                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+        //                       </div>
+        //                     </div>
+        //                   </div>
+        //                   <span class="fw-semibold d-block mb-1">Profit</span>
+        //                   <h3 class="card-title mb-2">$12,628</h3>
+        //                   <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+        //                 </div>
+        //               </div>
+        //             </div>
+        //             <div class="col-lg-6 col-md-12 col-6 mb-4">
+        //               <div class="card">
+        //                 <div class="card-body">
+        //                   <div class="card-title d-flex align-items-start justify-content-between">
+        //                     <div class="avatar flex-shrink-0">
+        //                       <img
+        //                         src="../assets/img/icons/unicons/wallet-info.png"
+        //                         alt="Credit Card"
+        //                         class="rounded"
+        //                       />
+        //                     </div>
+        //                     <div class="dropdown">
+        //                       <button
+        //                         class="btn p-0"
+        //                         type="button"
+        //                         id="cardOpt6"
+        //                         data-bs-toggle="dropdown"
+        //                         aria-haspopup="true"
+        //                         aria-expanded="false"
+        //                       >
+        //                         <i class="bx bx-dots-vertical-rounded"></i>
+        //                       </button>
+        //                       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+        //                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
+        //                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+        //                       </div>
+        //                     </div>
+        //                   </div>
+        //                   <span>Sales</span>
+        //                   <h3 class="card-title text-nowrap mb-1">$4,679</h3>
+        //                   <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+        //                 </div>
+        //               </div>
+        //             </div>
+        //             <div class="col-6 mb-4">
+        //               <div class="card">
+        //                 <div class="card-body">
+        //                   <div class="card-title d-flex align-items-start justify-content-between">
+        //                     <div class="avatar flex-shrink-0">
+        //                       <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+        //                     </div>
+        //                     <div class="dropdown">
+        //                       <button
+        //                         class="btn p-0"
+        //                         type="button"
+        //                         id="cardOpt4"
+        //                         data-bs-toggle="dropdown"
+        //                         aria-haspopup="true"
+        //                         aria-expanded="false"
+        //                       >
+        //                         <i class="bx bx-dots-vertical-rounded"></i>
+        //                       </button>
+        //                       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+        //                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
+        //                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+        //                       </div>
+        //                     </div>
+        //                   </div>
+        //                   <span class="d-block mb-1">Payments</span>
+        //                   <h3 class="card-title text-nowrap mb-2">$2,456</h3>
+        //                   <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+        //                 </div>
+        //               </div>
+        //             </div>
+        //             <div class="col-6 mb-4">
+        //               <div class="card">
+        //                 <div class="card-body">
+        //                   <div class="card-title d-flex align-items-start justify-content-between">
+        //                     <div class="avatar flex-shrink-0">
+        //                       <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
+        //                     </div>
+        //                     <div class="dropdown">
+        //                       <button
+        //                         class="btn p-0"
+        //                         type="button"
+        //                         id="cardOpt1"
+        //                         data-bs-toggle="dropdown"
+        //                         aria-haspopup="true"
+        //                         aria-expanded="false"
+        //                       >
+        //                         <i class="bx bx-dots-vertical-rounded"></i>
+        //                       </button>
+        //                       <div class="dropdown-menu" aria-labelledby="cardOpt1">
+        //                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
+        //                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+        //                       </div>
+        //                     </div>
+        //                   </div>
+        //                   <span class="fw-semibold d-block mb-1">Transactions</span>
+        //                   <h3 class="card-title mb-2">$14,857</h3>
+        //                   <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+        //                 </div>
+        //               </div>
+        //             </div>
+        //             </div>
+                   
+                
+        //         ';
+    }
+    public static function ecommerce_dasboard_bundles_3($page)
+    {
+         $base = __DIR__ . "/../../Pages/bundle/";
+        $return["html"] = file_get_contents($base."/ecommerce_dasboard_bundles_3/ecommerce_dasboard_bundles_3.html.php");
+        return $return;
+    }
+    public static function visitor_bundles_2()
+    {
+        // return '
+        //             <div class="col-12 mb-4">
+        //               <div class="card">
+        //                 <div class="card-body">
+        //                   <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+        //                     <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+        //                       <div class="card-title">
+        //                         <h5 class="text-nowrap mb-2">Profile Report</h5>
+        //                         <span class="badge bg-label-warning rounded-pill">Year 2021</span>
+        //                       </div>
+        //                       <div class="mt-sm-auto">
+        //                         <small class="text-success text-nowrap fw-semibold"
+        //                           ><i class="bx bx-chevron-up"></i> 68.2%</small
+        //                         >
+        //                         <h3 class="mb-0">$84,686k</h3>
+        //                       </div>
+        //                     </div>
+        //                     <div id="profileReportChart"></div>
+        //                   </div>
+        //                 </div>
+        //               </div>
+        //             </div>
+        //           </div>';
+    }
+    public static function visitor_bundles_1()
+    {
+
+        //code BE3-W-VB1
+//         return '
+//     <div class="card">
+//       <div class="card-body row g-4">
+//         <div class="col-md-6 pe-md-4 card-separator">
+//           <div class="card-title d-flex align-items-start justify-content-between">
+//             <h5 class="mb-0">New Visitors</h5>
+//             <small>Last Week</small>
+//           </div>
+//           <div class="d-flex justify-content-between">
+//             <div class="mt-auto">
+//               <h2 class="mb-2">23%</h2>
+//               <small class="text-danger text-nowrap fw-medium"><i class="bx bx-down-arrow-alt"></i> -13.24%</small>
+//             </div>
+//             <div id="visitorsChart"></div>
+//           </div>
+//         </div>
+//         <div class="col-md-6 ps-md-4">
+//           <div class="card-title d-flex align-items-start justify-content-between">
+//             <h5 class="mb-0">Activity</h5>
+//             <small>Last Week</small>
+//           </div>
+//           <div class="d-flex justify-content-between">
+//             <div class="mt-auto">
+//               <h2 class="mb-2">82%</h2>
+//               <small class="text-success text-nowrap fw-medium"><i class="bx bx-up-arrow-alt"></i> 24.8%</small>
+//             </div>
+//             <div id="activityChart"></div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   ';
+    }
+    public static function ecommerce_dasboard_bundles_2()
+    {
+        $return["css"] = file_get_contents(__DIR__ . "/ecommerce_dasboard_bundles_2/ecommerce_dasboard_bundles_2.css.php");
+        $return["js"] = file_get_contents(__DIR__ . "/ecommerce_dasboard_bundles_2/ecommerce_dasboard_bundles_2.js.php");
+        $return["html"] = file_get_contents(__DIR__ . "/ecommerce_dasboard_bundles_2/ecommerce_dasboard_bundles_2.html.php");
+        return $return;
     }
     public static function  name_webapps($page)
     {
@@ -188,7 +500,8 @@ class BundleContent
         $return["js"] =  file_get_contents($base . "fai_first_template.js.php");
         $return["html"] =  file_get_contents($base . "fai_first_template.html.php");
         return $return;
-    } public static function main_all($page)
+    }
+    public static function main_all($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/main_all/";
         $return["css"] = file_get_contents($base . "main_all.css.php");
@@ -282,12 +595,13 @@ class BundleContent
         $return["js"] =  file_get_contents($base . "hibe3_profil.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_profil.html.php");
         return $return;
-    }public static function hibe3_profil_bangunan($page)
+    }
+    public static function hibe3_profil_bangunan($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/hibe3_profil_bangunan/";
         //$return["js"] =  file_get_contents($base . "hibe3_profil_bangunan.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_profil_bangunan.html.php");
-        return $return; 
+        return $return;
     }
     public static function hibe3_pesanan_saya($page)
     {
@@ -296,25 +610,28 @@ class BundleContent
         $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_pesanan_saya.html.php");
         return $return;
-    }public static function hibe3_pesanan_saya_list($page)
+    }
+    public static function hibe3_pesanan_saya_list($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/hibe3_pesanan_saya_list/";
         $return["css"] =  file_get_contents($base . "hibe3_pesanan_saya_list.css.php");
         $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya_list.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_pesanan_saya_list.html.php");
         return $return;
-    }public static function hibe3_pesanan_saya_list_produk($page)
+    }
+    public static function hibe3_pesanan_saya_list_produk($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/hibe3_pesanan_saya_list_produk/";
-       // $return["css"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.css.php");
-       // $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.js.php");
+        // $return["css"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.css.php");
+        // $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.html.php");
         return $return;
-    }public static function hibe3_pesanan_saya_detail_produk($page)
+    }
+    public static function hibe3_pesanan_saya_detail_produk($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/hibe3_pesanan_saya_detail_produk/";
-       // $return["css"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.css.php");
-       // $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.js.php");
+        // $return["css"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.css.php");
+        // $return["js"] =  file_get_contents($base . "hibe3_pesanan_saya_list_produk.js.php");
         $return["html"] =  file_get_contents($base . "hibe3_pesanan_saya_detail_produk.html.php");
         return $return;
     }
@@ -563,7 +880,7 @@ class BundleContent
     public static function load_json($page, $function, $type, $row_json, $template)
     {
         $base = __DIR__ . "/../../Pages/bundle/load_json/";
-         $return["html"] =  file_get_contents($base . "load_json.html.php");
+        $return["html"] =  file_get_contents($base . "load_json.html.php");
         $return["css"] =  file_get_contents($base . "load_json.css.php");
         $return["js"] =  file_get_contents($base . "load_json.js.php");
         return $return;
@@ -600,7 +917,7 @@ class BundleContent
     public static function malefashion_home_diskon($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/malefashion_home_diskon/";
-         $return["html"] =  file_get_contents($base . "malefashion_home_diskon.html.php");
+        $return["html"] =  file_get_contents($base . "malefashion_home_diskon.html.php");
         $return["css"] =  file_get_contents($base . "malefashion_home_diskon.css.php");
         $return["js"] =  file_get_contents($base . "malefashion_home_diskon.js.php");
 
@@ -761,14 +1078,14 @@ class BundleContent
     public static function job_search_plaform_ui_produk($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/job-search-platform-ui/";
-        
+
         $return["html"] =  file_get_contents($base . "job-search-platform-ui.produk.php");
         return $return;
     }
     public static function codepen_checkout_page($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/codepen_checkout_page/";
-        
+
         $return["html"] =  file_get_contents($base . "codepen_checkout_page.html.php");
         return $return;
     }
@@ -844,6 +1161,14 @@ class BundleContent
         $return["html"] =  file_get_contents($base . "ashion_card_main_listing.html.php");
         return $return;
     }
+    public static function desty_index($page)
+    {
+        $base = __DIR__ . "/../../Pages/bundle/desty_index/";
+        $return["css"] = file_get_contents($base . "desty_index.css.php");
+        $return["js"] =  file_get_contents($base . "desty_index.js.php");
+        $return["html"] =  file_get_contents($base . "desty_index.html.php");
+        return $return;
+    }
     public static function _header()
     {
         //primary_key = 16;
@@ -896,7 +1221,7 @@ class BundleContent
     public static function ashion_home_profil($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_home_profil/";
-         $return["html"] =  file_get_contents($base . "ashion_home_profil.html.php");
+        $return["html"] =  file_get_contents($base . "ashion_home_profil.html.php");
         $return["css"] =  file_get_contents($base . "ashion_home_profil.css.php");
         $return["js"] =  file_get_contents($base . "ashion_home_profil.js.php");
         return $return;
@@ -905,7 +1230,7 @@ class BundleContent
     public static function ashion_contact_us($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_contact_us/";
-         $return["html"] =  file_get_contents($base . "ashion_contact_us.html.php");
+        $return["html"] =  file_get_contents($base . "ashion_contact_us.html.php");
         $return["css"] =  file_get_contents($base . "ashion_contact_us.css.php");
         $return["js"] =  file_get_contents($base . "ashion_contact_us.js.php");
 
@@ -926,7 +1251,7 @@ class BundleContent
     public static function ashion_home_produk_group_klasifikasi($page)
     {
         $base = __DIR__ . "/../../Pages/bundle/ashion_home_produk_group_klasifikasi/";
-         $return["html"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.html.php");
+        $return["html"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.html.php");
         $return["css"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.css.php");
         $return["js"] =  file_get_contents($base . "ashion_home_produk_group_klasifikasi.js.php");
 
@@ -2474,7 +2799,7 @@ class BundleContent
             $return .= $template_card['row_start'];
             foreach ($get_new['row'] as $bs) {
                 $get_data_harga = EcommerceApp::get_data_harga($page, '', '', 'min_max', $bs->id_produk);
-                
+
                 $temp_template = $template_card['html'];
                 $temp_template = str_replace('<CARD-LINK></CARD-LINK>', Partial::link_direct($page, $page['load']['link_route'], ["Ecommerce", "detail", 'view_layout', $bs->id_produk, '-1', '-1', $page['load']['board']], 'menu', 'just_link'), $temp_template);
                 $temp_template = str_replace('<IMG-SRC></IMG-SRC>', Partial::url_file($bs), $temp_template);
@@ -2492,7 +2817,7 @@ class BundleContent
             // echo $get_best_seller['query'];
             foreach ($get_best_seller['row'] as $bs) {
                 $get_data_harga = EcommerceApp::get_data_harga($page, '', '', 'min_max', $bs->id_produk);
-               
+
                 $temp_template = $template_card['html'];
                 $temp_template = str_replace('<CARD-LINK></CARD-LINK>', Partial::link_direct($page, $page['load']['link_route'], ["Ecommerce", "detail", 'view_layout', $bs->id_produk, '-1', '-1', $page['load']['board']], 'menu', 'just_link'), $temp_template);
                 $temp_template = str_replace('<IMG-SRC></IMG-SRC>', Partial::url_file($bs), $temp_template);
@@ -2540,35 +2865,36 @@ class BundleContent
 </section>
     ';
         return $return;
-    }public static function foodmart_menu_configuration($page)
+    }
+    public static function foodmart_menu_configuration($page)
     {
-      $configuration['prefix']['grup'] = '<li class="menu-header small text-uppercase">
+        $configuration['prefix']['grup'] = '<li class="menu-header small text-uppercase">
                             <span class="menu-header-text">';
-      $configuration['sufix']['grup'] = '</span>
+        $configuration['sufix']['grup'] = '</span>
           <content-grup></content-grup>
                           </li>';
-  
-      $configuration['prefix']['menu'] = '
+
+        $configuration['prefix']['menu'] = '
       <li class="nav-item">
                             <a href="|LINK|" class="nav-link">
                    <div class="">
                           <ICON></ICON>
                          </div>';
-      $configuration['sufix']['menu'] = '
+        $configuration['sufix']['menu'] = '
                   </a>
                 </li>';
-      return $configuration;
+        return $configuration;
     }
     public static function foodmart_menu_single($page)
     {
-      $return["html"] = '<li class="nav-item">
+        $return["html"] = '<li class="nav-item">
                             <a href="<LINK></LINK>" class="<CLASS></CLASS>"><TEXT></TEXT></a>
                         </li>';
-      return $return;
+        return $return;
     }
     public static function ashion_ecomerce_detail_produk($page)
-  {
-    $return['css'] = '
+    {
+        $return['css'] = '
     
       <link rel="stylesheet" href="' . Partial::urlframework("ashion", "css/owl.carousel.min.css") . '" type="text/css">
           
@@ -2964,7 +3290,7 @@ class BundleContent
         margin-bottom: 65px;
       }
       </style>';
-    $return["js"] = '
+        $return["js"] = '
     <LOAD-JS></LOAD-JS>
     <script>
     
@@ -3054,7 +3380,7 @@ class BundleContent
         
         });
     </script>    ';
-    $return["html"] = '<section class="product-details spad">
+        $return["html"] = '<section class="product-details spad">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -3158,6 +3484,6 @@ class BundleContent
         </div>
     </section>
     ';
-    return $return;
-  }
+        return $return;
+    }
 }

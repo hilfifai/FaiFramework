@@ -1058,107 +1058,121 @@ class CRUDFunc
                         $array = Database::converting_array_field($page, $array);
 
                         if ($tipe == 'update') {
-                            $first           = (Partial::input("deleteRow" . $h));
-                            $no_sub_kategori = isset($first[0]) ? count($first) : 0;
-                            if ($first) {
-                                foreach ($first as $x => $value_x) {
+                            CRUDFunc::handleSubKategoriUpdate(
+                                $page,
+                                $array,
+                                $database_utama,
+                                $sub_kategori,
+                                $array_non_return,
+                                $id,
+                                $idUser,
+                                $h,
+                                $array_save,
+                                $fai
+                            );
+                            // $first           = (Partial::input("deleteRow" . $h));
+                            // $no_sub_kategori = isset($first[0]) ? count($first) : 0;
+                            // if ($first) {
+                            //     foreach ($first as $x => $value_x) {
 
-                                    $update = ["active" => 0, "delete_date" => date('Y-m-d H:i:s'), "delete_by" => $idUser];
-                                    $where  = ["$database_utama.id" . "=" . $first[$x]];
-                                    DB::update($database_utama, $update, $where);
-                                }
-                            }
-                            $first = (Partial::input("deleteRow" . $database_utama));
-                            $no_sub_kategori = isset($first[0]) ? count($first) : 0;
-                            if ($first) {
-                                foreach ($first as $x => $value_x) {
+                            //         $update = ["active" => 0, "delete_date" => date('Y-m-d H:i:s'), "delete_by" => $idUser];
+                            //         $where  = ["$database_utama.id" . "=" . $first[$x]];
+                            //         DB::update($database_utama, $update, $where);
+                            //     }
+                            // }
+                            // $first = (Partial::input("deleteRow" . $database_utama));
+                            // $no_sub_kategori = isset($first[0]) ? count($first) : 0;
+                            // if ($first) {
+                            //     foreach ($first as $x => $value_x) {
 
-                                    $update = ["active" => 0, "delete_date" => date('Y-m-d H:i:s'), "delete_by" => $idUser];
-                                    $where  = ["$database_utama.id" . "=" . $first[$x]];
-                                    DB::update($database_utama, $update, $where);
-                                }
-                            }
+                            //         $update = ["active" => 0, "delete_date" => date('Y-m-d H:i:s'), "delete_by" => $idUser];
+                            //         $where  = ["$database_utama.id" . "=" . $first[$x]];
+                            //         DB::update($database_utama, $update, $where);
+                            //     }
+                            // }
 
-                            $first                  = (Partial::input($database_utama . '_' . $array[0][1] . '_edit'));
-                            $no_sub_kategori        = isset($first[0]) ? count($first) : 0;
-                            $get_nomor_sub_kategori = $fai->input('no_sub_kategori-' . $database_utama);
-                            // for ($x = 0; $x < ($no_sub_kategori); $x++) {
-                            //inventaris__asset__tanah__gudang__ruang_bangun_nama_ruang_simpan_edit
-                            //inventaris__asset__tanah__gudang__ruang_bangun_nama_ruang_simpan_edit
-                            foreach ($first as $x => $value) {
-                                $nomor                                                                                                 = $get_nomor_sub_kategori[$x] ?? $x;
-                                $sqli_sub_kategori                                                                                     = [];
-                                $sqli_sub_kategori[Database::converting_primary_key($page, $page['database']['utama'], 'primary_key')] = $id != -1 ? $id : Partial::input("id");
-                                if (isset($page['crud']['update_default_value_sub_kategori'])) {
-                                    foreach ($page['crud']['update_default_value_sub_kategori'] as $field => $value) {
+                            // $first                  = (Partial::input($database_utama . '_' . $array[0][1] . '_edit'));
+                            // $no_sub_kategori        = isset($first[0]) ? count($first) : 0;
+                            // $get_nomor_sub_kategori = $fai->input('no_sub_kategori-' . $database_utama);
+                            // // for ($x = 0; $x < ($no_sub_kategori); $x++) {
+                            // //inventaris__asset__tanah__gudang__ruang_bangun_nama_ruang_simpan_edit
+                            // //inventaris__asset__tanah__gudang__ruang_bangun_nama_ruang_simpan_edit
+                            // if ($first) {
+                            //     foreach ($first as $x => $value) {
+                            //         $nomor                                                                                                 = $get_nomor_sub_kategori[$x] ?? $x;
+                            //         $sqli_sub_kategori                                                                                     = [];
+                            //         $sqli_sub_kategori[Database::converting_primary_key($page, $page['database']['utama'], 'primary_key')] = $id != -1 ? $id : Partial::input("id");
+                            //         if (isset($page['crud']['update_default_value_sub_kategori'])) {
+                            //             foreach ($page['crud']['update_default_value_sub_kategori'] as $field => $value) {
 
-                                        $value                     = CRUDFunc::default_value($value, $page);
-                                        $sqli_sub_kategori[$field] = trim($value);
-                                    }
-                                }
-                                for ($i = 0; $i < count($array); $i++) {
+                            //                 $value                     = CRUDFunc::default_value($value, $page);
+                            //                 $sqli_sub_kategori[$field] = trim($value);
+                            //             }
+                            //         }
+                            //         for ($i = 0; $i < count($array); $i++) {
 
-                                    $text        = $array[$i][0];
-                                    $field_name  = $database_utama . '_' . $array[$i][1] . '_edit';
-                                    $field       = $array[$i][1];
-                                    $typearray   = $array[$i][2];
-                                    $extypearray = explode("-", $typearray);
-                                    if (in_array('number', $extypearray)) {
-                                        if (isset(Partial::input($field_name)[$x])) {
-                                            $$field_name               = Partial::input($field_name)[$x];
-                                            $sqli_sub_kategori[$field] = $fai->hapusRupiah(Partial::input($field_name)[$x]);
-                                        }
-                                    } else if (in_array('file', $extypearray)) {
+                            //             $text        = $array[$i][0];
+                            //             $field_name  = $database_utama . '_' . $array[$i][1] . '_edit';
+                            //             $field       = $array[$i][1];
+                            //             $typearray   = $array[$i][2];
+                            //             $extypearray = explode("-", $typearray);
+                            //             if (in_array('number', $extypearray)) {
+                            //                 if (isset(Partial::input($field_name)[$x])) {
+                            //                     $$field_name               = Partial::input($field_name)[$x];
+                            //                     $sqli_sub_kategori[$field] = $fai->hapusRupiah(Partial::input($field_name)[$x]);
+                            //                 }
+                            //             } else if (in_array('file', $extypearray)) {
 
-                                        $id_file = -1;
-                                        if (isset($_FILES[$database_utama . '_' . $array[$i][1] . $nomor])) {
-                                            $id_file = FileFunc::file_upload($page, $database_utama . '_' . $array[$i][1] . $nomor, $array[$i][3], $array[$i][3], $database_utama, $id, $field, "input_name", 'last_one');
-                                        }
+                            //                 $id_file = -1;
+                            //                 if (isset($_FILES[$database_utama . '_' . $array[$i][1] . $nomor])) {
+                            //                     $id_file = FileFunc::file_upload($page, $database_utama . '_' . $array[$i][1] . $nomor, $array[$i][3], $array[$i][3], $database_utama, $id, $field, "input_name", 'last_one');
+                            //                 }
 
-                                        if ($id_file != -1) {
-                                            $sqli_sub_kategori[$field] = $id_file;
-                                        } else {
-                                            unset($sqli_sub_kategori[$field]);
-                                        }
-                                    } else if (! in_array($typearray, ['text-relation', 'select-relation'])) {
-                                        if (isset(Partial::input($field_name)[$x])) {
-                                            $sqli_sub_kategori[$field] = Partial::input($field_name)[$x];
-                                        }
-                                    }
-                                }
-                                if (isset($page['crud']['update_default_value_sub_kategori_request'])) {
-                                    foreach ($page['crud']['update_default_value_sub_kategori_request'][$database_utama] as $key => $value) {
-                                        $var                     = $database_utama . '_' . $value;
-                                        $sqli_sub_kategori[$key] = $sqli_sub_kategori[$var];
-                                    }
-                                }
-                                $primary_key = $sub_kategori[2];
-                                if (isset(Partial::input($database_utama . '_primary_key_edit')[$x]) or $x) {
-                                    if (isset(Partial::input($database_utama . '_primary_key_edit')[$x])) {
+                            //                 if ($id_file != -1) {
+                            //                     $sqli_sub_kategori[$field] = $id_file;
+                            //                 } else {
+                            //                     unset($sqli_sub_kategori[$field]);
+                            //                 }
+                            //             } else if (! in_array($typearray, ['text-relation', 'select-relation'])) {
+                            //                 if (isset(Partial::input($field_name)[$x])) {
+                            //                     $sqli_sub_kategori[$field] = Partial::input($field_name)[$x];
+                            //                 }
+                            //             }
+                            //         }
+                            //         if (isset($page['crud']['update_default_value_sub_kategori_request'])) {
+                            //             foreach ($page['crud']['update_default_value_sub_kategori_request'][$database_utama] as $key => $value) {
+                            //                 $var                     = $database_utama . '_' . $value;
+                            //                 $sqli_sub_kategori[$key] = $sqli_sub_kategori[$var];
+                            //             }
+                            //         }
+                            //         $primary_key = $sub_kategori[2];
+                            //         if (isset(Partial::input($database_utama . '_primary_key_edit')[$x]) or $x) {
+                            //             if (isset(Partial::input($database_utama . '_primary_key_edit')[$x])) {
 
-                                        $whereRaw = "$database_utama.id" . "=" . Partial::input($database_utama . '_primary_key_edit')[$x];
-                                    } else {
-                                        $whereRaw = "$database_utama.id" . "=" . $x;
-                                    }
+                            //                 $whereRaw = "$database_utama.id" . "=" . Partial::input($database_utama . '_primary_key_edit')[$x];
+                            //             } else {
+                            //                 $whereRaw = "$database_utama.id" . "=" . $x;
+                            //             }
 
-                                    $where = [$whereRaw];
-                                    // DB::update($database_utama, $sqli_sub_kategori, $where);
+                            //             $where = [$whereRaw];
+                            //             // DB::update($database_utama, $sqli_sub_kategori, $where);
 
-                                    DB::table($database_utama);
-                                    DB::whereRaw($whereRaw);
-                                    $get       = DB::get('all');
-                                    $data_awal = $get['row'][0];
-                                    CRUDFunc::crud_execution($fai, $page, $sqli_sub_kategori, $array, $database_utama, $where, 'update');
-                                    $last_insert_id   = $id;
-                                    $data_akhir_utama = $sqli_sub_kategori;
-                                    foreach ($data_awal as $key => $value) {
-                                        if (! in_array($key, $array_non_return));
-                                        $data_awal_utama[$key] = $value;
-                                    }
-                                    $array_save['awal']['sub_kategori']['edit'][Partial::input($database_utama . '_primary_key_edit')[$x]][$database_utama]  = $data_awal_utama;
-                                    $array_save['akhir']['sub_kategori']['edit'][Partial::input($database_utama . '_primary_key_edit')[$x]][$database_utama] = $data_akhir_utama;
-                                }
-                            }
+                            //             DB::table($database_utama);
+                            //             DB::whereRaw($whereRaw);
+                            //             $get       = DB::get('all');
+                            //             $data_awal = $get['row'][0];
+                            //             CRUDFunc::crud_execution($fai, $page, $sqli_sub_kategori, $array, $database_utama, $where, 'update');
+                            //             $last_insert_id   = $id;
+                            //             $data_akhir_utama = $sqli_sub_kategori;
+                            //             foreach ($data_awal as $key => $value) {
+                            //                 if (! in_array($key, $array_non_return));
+                            //                 $data_awal_utama[$key] = $value;
+                            //             }
+                            //             $array_save['awal']['sub_kategori']['edit'][(Partial::input($database_utama . '_primary_key_edit')[$x]) ?? $x][$database_utama]  = $data_awal_utama;
+                            //             $array_save['akhir']['sub_kategori']['edit'][Partial::input($database_utama . '_primary_key_edit')[$x] ?? $x][$database_utama] = $data_akhir_utama;
+                            //         }
+                            //     }
+                            // }
                         }
 
                         $typearray  = $array[0][2];
@@ -1169,6 +1183,7 @@ class CRUDFunc
                             } else {
                                 $get = $database_utama . '_' . $array[0][1];
                             }
+
 
                             $no_sub_kategori_input = Partial::input($get);
                         } else
@@ -1182,6 +1197,7 @@ class CRUDFunc
                             $get;
                             $no_sub_kategori_input = Partial::input($get);
                         }
+
                         // echo $get;
                         // echo 'ABC';
                         if (isset($no_sub_kategori_input[0])) {
@@ -1366,6 +1382,153 @@ class CRUDFunc
 
         return $return;
     }
+    public static function handleSubKategoriUpdate(
+        $page,
+        $array,
+        $database_utama,
+        $sub_kategori,
+        $array_non_return,
+        $id,
+        $idUser,
+        $h,
+        &$array_save,
+        $fai
+    ) {
+
+        /* ===============================
+     * 1. SOFT DELETE (BY INDEX)
+     * =============================== */
+        $deleteSets = [
+            "deleteRow" . $h,
+            "deleteRow" . $database_utama
+        ];
+
+        foreach ($deleteSets as $deleteKey) {
+            $rows = Partial::input($deleteKey);
+            if (!$rows) continue;
+
+            foreach ($rows as $rowId) {
+                DB::update($database_utama, [
+                    "active"       => 0,
+                    "delete_date"  => date('Y-m-d H:i:s'),
+                    "delete_by"    => $idUser
+                ], [
+                    "$database_utama.id=" . $rowId
+                ]);
+            }
+        }
+
+        /* ===============================
+     * 2. UPDATE SUB KATEGORI
+     * =============================== */
+        $editKey   = $database_utama . '_' . $array[0][1] . '_edit';
+        $rowsEdit  = Partial::input($editKey);
+        if (!$rowsEdit) return;
+
+        $nomorList = $fai->input('no_sub_kategori-' . $database_utama);
+
+        foreach ($rowsEdit as $x => $value) {
+
+            $nomor = $nomorList[$x] ?? $x;
+            $dataUpdate = [];
+
+            // primary key parent
+            $dataUpdate[Database::converting_primary_key($page, $page['database']['utama'], 'primary_key')] = $id != -1 ? $id : Partial::input("id");
+
+            // default value
+            if (!empty($page['crud']['update_default_value_sub_kategori'])) {
+                foreach ($page['crud']['update_default_value_sub_kategori'] as $field => $val) {
+                    $dataUpdate[$field] = trim(
+                        CRUDFunc::default_value($val, $page)
+                    );
+                }
+            }
+
+            /* ===============================
+         * FIELD LOOP
+         * =============================== */
+            foreach ($array as $cfg) {
+
+                [$label, $field, $type] = $cfg;
+                $fieldInput = $database_utama . '_' . $field . '_edit';
+                $types      = explode('-', $type);
+
+                // NUMBER
+                if (in_array('number', $types)) {
+                    if (isset(Partial::input($fieldInput)[$x])) {
+                        $dataUpdate[$field] =
+                            $fai->hapusRupiah(Partial::input($fieldInput)[$x]);
+                    }
+                }
+
+                // FILE
+                elseif (in_array('file', $types)) {
+                    if (isset($_FILES[$database_utama . '_' . $field . $nomor])) {
+                        $fileId = FileFunc::file_upload(
+                            $page,
+                            $database_utama . '_' . $field . $nomor,
+                            $cfg[3],
+                            $cfg[3],
+                            $database_utama,
+                            $id,
+                            $field,
+                            "input_name",
+                            'last_one'
+                        );
+
+                        if ($fileId != -1) {
+                            $dataUpdate[$field] = $fileId;
+                        }
+                    }
+                }
+
+                // NORMAL INPUT
+                elseif (!in_array($type, ['text-relation', 'select-relation'])) {
+                    if (isset(Partial::input($fieldInput)[$x])) {
+                        $dataUpdate[$field] = Partial::input($fieldInput)[$x];
+                    }
+                }
+            }
+
+            /* ===============================
+         * REQUEST DEFAULT MAPPING
+         * =============================== */
+            if (!empty($page['crud']['update_default_value_sub_kategori_request'][$database_utama])) {
+                foreach ($page['crud']['update_default_value_sub_kategori_request'][$database_utama] as $k => $v) {
+                    $dataUpdate[$k] = $dataUpdate[$database_utama . '_' . $v] ?? null;
+                }
+            }
+
+            /* ===============================
+         * EXECUTE UPDATE
+         * =============================== */
+            $pkInput = Partial::input($database_utama . '_primary_key_edit')[$x] ?? $x;
+            $whereRaw = "$database_utama.id=" . $pkInput;
+
+            DB::table($database_utama);
+            DB::whereRaw($whereRaw);
+            $oldData = DB::get('all')['row'][0] ?? [];
+
+            CRUDFunc::crud_execution(
+                $fai,
+                $page,
+                $dataUpdate,
+                $array,
+                $database_utama,
+                [$whereRaw],
+                'update'
+            );
+
+            foreach ($oldData as $k => $v) {
+                if (!in_array($k, $array_non_return)) {
+                    $array_save['awal']['sub_kategori']['edit'][$pkInput][$database_utama][$k] = $v;
+                }
+            }
+
+            $array_save['akhir']['sub_kategori']['edit'][$pkInput][$database_utama] = $dataUpdate;
+        }
+    }
+
     public static function default_value($value, $page = [])
     {
         $fai = new MainFaiFramework();
@@ -1415,8 +1578,8 @@ class CRUDFunc
         foreach ($sqli as $field => $string) {
             // echo '<br>' . $field;
             $sqli[$field] = Database::string_database($page, $fai, $string);
-            if($sqli[$field])
-            $sqli[$field] = str_replace("'", "\''", $sqli[$field]);
+            if ($sqli[$field])
+                $sqli[$field] = str_replace("'", "\''", $sqli[$field]);
         }
         if ($database_utama != 'form' and ! isset($page['db']['np'])) {
             if ($tipe == 'insert') {
@@ -1442,7 +1605,7 @@ class CRUDFunc
                 if (isset($page['load']['board'])) {
                     if (! in_array($page['load']['board'], [-1, null])) {
                         $sqli['on_board'] = $page['load']['board'];
-                        $sqli['on_role']  = isset($_SESSION['board_role-' . $page['load']['board']]) ? $_SESSION['board_role-' . $page['load']['board']] ??0: null;
+                        $sqli['on_role']  = isset($_SESSION['board_role-' . $page['load']['board']]) ? $_SESSION['board_role-' . $page['load']['board']] ?? 0 : null;
                     }
                 }
             } else if ($tipe == 'update') {
@@ -1467,8 +1630,8 @@ class CRUDFunc
             if (isset($columns[$database_utama][$to_key])) {
                 // print_R($columns[$database_utama][$to_key]);
                 // echo '<br>';
-                if (in_array($columns[$database_utama][$to_key], ["interger", "numeric", 'float',"int",'double'])) {
-                    if($sqli[$to_key]){
+                if (in_array($columns[$database_utama][$to_key], ["interger", "numeric", 'float', "int", 'double'])) {
+                    if ($sqli[$to_key]) {
 
                         $sqli[$to_key] = str_replace(
                             str_split('abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM'),
@@ -1478,18 +1641,16 @@ class CRUDFunc
                     }
                     if (! $sqli[$to_key]) {
                         $sqli[$to_key] = 0;
-                        
                     }
-                    
                 }
             }
             $sqli[$to_key] = str_replace("'", '&#39;', $sqli[$to_key] ?? '');
         }
         if ($tipe == 'insert') {
-            
+
             DB::insert($database_utama, $sqli);
             //  json_encode(["utama" => $database_utama, "sqli" => $sqli, "last_insert" => DB::lastInsertId($page, $database_utama)]);
-            
+
             return DB::lastInsertId($page, $database_utama);
         } else {
             $where = $update_where;

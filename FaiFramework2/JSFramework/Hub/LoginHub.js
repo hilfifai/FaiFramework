@@ -2,7 +2,7 @@ import FaiModule from '../FaiModule.js';
 export default class LoginHub extends FaiModule {
     constructor() {
         super();
-        this.base_url_BASED = this.getModule('base_url')+'/app2';
+        this.base_url_BASED = this.getModule('base_url') + '/app2';
     }
     open_register() {
         $("#login-container").hide();
@@ -117,28 +117,62 @@ export default class LoginHub extends FaiModule {
                             $('.not_login').show();
                         }
                     });
-                    if(document.getElementById('template').value!=document.getElementById('base_template').value){
-                        window.location.href=this.base_url_BASED;
-                        document.getElementById('template').value = document.getElementById('base_template').value
-                    }
+                    window.location.href = window.fai.getModule('base_url') + '/app2';
+
                 } else {
-                    setShowAlert(msg.keterangan,"danger");
+                    setShowAlert(msg.keterangan, "danger");
                 }
             },
             error: function (data) {
-                setShowAlert("Logout Gagal","danger");
+                setShowAlert("Logout Gagal", "danger");
                 console.log('error:', data)
             },
         })
     }
 
-    verifikasi_code() {
+    is_login() {
         $.ajax({
             type: 'POST',
-            url: this.getmodule('base_url') + "api/verifikasi_wa",
+            url: this.getModule('base_url') + "api/is_login",
+            
+            cache: false,
+
+            dataType: 'json',
+            success: function (msg) {
+                if (msg.is_login) {
+                    // $('#asgouest-form-container').hide();
+                    // $('#asgouest-verifikasi-container').hide();
+                    // const data = {
+                    //     id: "current",
+                    //     isLoggedIn: true,
+                    //     userId: msg.id_apps_user, // misal nama, id, dsb
+                    //     template: msg.template, // misal nama, id, dsb
+                    //     id_first_menu: msg.id_first_menu, // misal nama, id, dsb
+                    //     id_role_user: msg.id_role_user, // misal nama, id, dsb
+                    //     id_role_akses: msg.id_role_akses, // misal nama, id, dsb
+                    //     waktuLogin: Date.now()
+                    // };
+                    // document.body.classList.remove("blurred");
+                    // saveSession(data);
+                    // success_login();
+                } else {
+                    jsLogout();
+                }
+            },
+            error: function (data) {
+                console.log('error:', data)
+            },
+        })
+    }
+
+    verifikasi_code(kode, id) {
+        $.ajax({
+            type: 'POST',
+            url: this.getModule('base_url') + "api/verifikasi_wa",
             data: {
 
-                kode: $('#verificationCode').val()
+                kode: kode,
+                id: id
             },
             cache: false,
 
@@ -147,53 +181,113 @@ export default class LoginHub extends FaiModule {
                 if (msg.status) {
                     $('#asgouest-form-container').hide();
                     $('#asgouest-verifikasi-container').hide();
-                    success_login();
-                } else {
-                    setShowAlert('Kode Verifikasi Salah',"danger");
-                }
-            },
-            error: function (data) {
-                console.log('error:', data)
-            },
-        })
-    }
-
-    get_guest() {
-        $.ajax({
-            type: 'POST',
-            url: this.getmodule('base_url') + "api/register_guest",
-            data: {
-
-
-                phone: $('#nowa').val()
-            },
-            cache: false,
-
-            dataType: 'json',
-            success: function (msg) {
-                if (msg.status) {
                     const data = {
                         id: "current",
                         isLoggedIn: true,
                         userId: msg.id_apps_user, // misal nama, id, dsb
+                        template: msg.template, // misal nama, id, dsb
+                        id_first_menu: msg.id_first_menu, // misal nama, id, dsb
+                        id_role_user: msg.id_role_user, // misal nama, id, dsb
+                        id_role_akses: msg.id_role_akses, // misal nama, id, dsb
                         waktuLogin: Date.now()
                     };
+                    document.body.classList.remove("blurred");
                     saveSession(data);
                     success_login();
-                    $('#asgouest-verifikasi-container').show();
                 } else {
-                    setShowAlert(msg.keterangan,"danger");
+                    setShowAlert('Kode Verifikasi Salah', "danger");
                 }
             },
             error: function (data) {
-                setShowAlert("Login Gagal","danger");
                 console.log('error:', data)
             },
         })
     }
 
+    get_guest(phone) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'POST',
+                url: this.getModule('base_url') + "api/register_guest",
+                data: {
+                    phone: phone
+                },
+                cache: false,
+                dataType: 'json',
+
+                success: (msg) => { // <-- arrow function, this aman
+                    if (msg.status) {
+                        resolve({
+                            success: true,
+                            id_apps_user: msg.id_apps_user,
+                            message: msg.keterangan ?? 'Berhasil'
+                        });
+                        setShowAlert("Berhasil", "success");
+                    } else {
+                        resolve({
+                            success: false,
+                            id_apps_user: null,
+                            message: msg.keterangan ?? 'Gagal'
+                        });
+                        setShowAlert(msg.keterangan, "danger");
+                    }
+                },
+
+                error: (err) => {
+                    reject({
+                        success: false,
+                        id_apps_user: null,
+                        message: 'Login Gagal',
+                        error: err
+                    });
+                }
+            });
+        });
+    }
+    resend_wa(id) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'POST',
+                url: this.getModule('base_url') + "api/resend_wa",
+                data: {
+                    id: id
+                },
+                cache: false,
+                dataType: 'json',
+
+                success: (msg) => { // <-- arrow function, this aman
+                    if (msg.status) {
+                        resolve({
+                            success: true,
+                            id_apps_user: msg.id_apps_user,
+                            message: msg.keterangan ?? 'Berhasil'
+                        });
+                        setShowAlert("Berhasil", "success");
+                    } else {
+                        resolve({
+                            success: false,
+                            id_apps_user: null,
+                            message: msg.keterangan ?? 'Gagal'
+                        });
+                        setShowAlert(msg.keterangan, "danger");
+                    }
+                },
+
+                error: (err) => {
+                    reject({
+                        success: false,
+                        id_apps_user: null,
+                        message: 'Login Gagal',
+                        error: err
+                    });
+                }
+            });
+        });
+    }
+
+
     get_login() {
-        let base_url_BASED = this.getModule('base_url')+'/app2';
+        let base_url_BASED = this.getModule('base_url') + '/app2';
         $.ajax({
             type: 'POST',
             url: this.getModule('base_url') + "api/get_login",
@@ -219,6 +313,46 @@ export default class LoginHub extends FaiModule {
                         id_role_akses: msg.id_role_akses, // misal nama, id, dsb
                         waktuLogin: Date.now()
                     };
+
+                    saveSession(data);
+                    success_login();
+                    if (msg.template) {
+
+                        if (document.getElementById("template").value != msg.template) {
+                            window.location.href = base_url_BASED;
+                            document.getElementById("template").innerHTML = msg.template
+                        }
+                    }
+                } else {
+                    setShowAlert(msg.keterangan, "danger");
+                }
+            },
+            error: function (data) {
+                setShowAlert("Login Gagal", "danger");
+                console.log('error:', data)
+            },
+        })
+    }
+    save_register(dataRegister) {
+        let base_url_BASED = this.getModule('base_url') + '/app2';
+        $.ajax({
+            type: 'POST',
+            url: this.getModule('base_url') + "api/save_register",
+            data: dataRegister,
+            cache: false,
+            dataType: 'json',
+            success: function (msg) {
+                if (msg.status) {
+                    const data = {
+                        id: "current",
+                        isLoggedIn: true,
+                        userId: msg.id_apps_user, // misal nama, id, dsb
+                        template: msg.template, // misal nama, id, dsb
+                        id_first_menu: msg.id_first_menu, // misal nama, id, dsb
+                        id_role_user: msg.id_role_user, // misal nama, id, dsb
+                        id_role_akses: msg.id_role_akses, // misal nama, id, dsb
+                        waktuLogin: Date.now()
+                    };
                     console.log(data);
 
                     saveSession(data);
@@ -231,11 +365,11 @@ export default class LoginHub extends FaiModule {
                         }
                     }
                 } else {
-                    setShowAlert(msg.keterangan,"danger");
+                    setShowAlert(msg.keterangan, "danger");
                 }
             },
             error: function (data) {
-                setShowAlert("Login Gagal","danger");
+                setShowAlert("Login Gagal", "danger");
                 console.log('error:', data)
             },
         })

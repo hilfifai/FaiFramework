@@ -289,6 +289,83 @@ class TemplateContent
     }
     public static function system($page, $type = -1, $array = [])
     {
+        $set_type = "ecommerce-admin-page";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::content_admin_ecommerce($page);
+            $template[$set_type]["array"][]  = ["CONTENT-1", "system", "BE3-EC-D1"];
+            $template[$set_type]["array"][]  = ["CONTENT-2", "system", "BE3-EC-D3"];
+            $template[$set_type]["array"][]  = ["CONTENT-3", "system", "BE3-E-BOX-1"];
+            $template[$set_type]["array"][]  = ["CONTENT-4", "system", "BE3-E-BOX-2"];
+            $template[$set_type]["array"][]  = ["CONTENT-5", "system", "BE3-E-BOX-3"];
+            $template[$set_type]["array"][]  = ["CONTENT-6", "system", "BE3-E-BOX-4"];
+           
+
+        }
+        $set_type = "BE3-EC-D1";
+        $sql                               = DatabaseFunc::dashboard_pesanan_erp_pos($page);
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_bundles_1($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-md-12"];
+            $template[$set_type]["array"][]  = ["COUNT-BELUM-DIBAYAR", "database", "count_belum_bayar"];
+            $template[$set_type]["array"][]  = ["COUNT-PERLU-DIPROSES", "database", "count_perlu_proses"];
+            $template[$set_type]["array"][]  = ["PERLU-DIKIRIM", "database", "count_perlu_kirim"];
+            $template[$set_type]["array"][]  = ["MENUNGGU-PICKUP", "database", "count_menunggu_pickup"];
+            $template[$set_type]['database']['query']                       = $sql;
+
+        }
+        $set_type = "BE3-EC-D3";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_bundles_3($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-lg-12 col-md-12 col-sm-12"];
+            $template[$set_type]["array"][]  = ["OMZET", "database", "omzet"];
+            $template[$set_type]["array"][]  = ["OMZET-DITAHAN", "database", "omzet_ditahan"];
+            $template[$set_type]["array"][]  = ["SALDO", "database", "saldo"];
+            $template[$set_type]["array"][]  = ["PERLU-DIKIRIM", "database", "rata_rata"];
+            $template[$set_type]["array"][]  = ["MENUNGGU-PICKUP", "database", "count_menunggu_pickup"];
+            $template[$set_type]['database']['query']                       = $sql;
+        }
+        $set_type = "BE3-E-BOX-1";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_box($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-lg-6 col-md-6 col-sm-12 mb-4"];
+            $template[$set_type]["array"][]  = ["TEXT", "text", "Pesanan Selesai"];
+            $template[$set_type]["array"][]  = ["VALUE", "database", "pesanan_selesai"];
+            $template[$set_type]['database']['query']                       = $sql;
+        }
+        $set_type = "BE3-E-BOX-2";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_box($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-lg-6 col-md-6 col-sm-12 mb-4"];
+            $template[$set_type]["array"][]  = ["TEXT", "text", "Pesanan Proses"];
+            $template[$set_type]["array"][]  = ["VALUE", "database", "pesanan_proses"];
+            $template[$set_type]['database']['query']                       = $sql;
+        }
+        $set_type = "BE3-E-BOX-3";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_box($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-lg-6 col-md-6 col-sm-12 mb-4"];
+            $template[$set_type]["array"][]  = ["TEXT", "text", "Barang Terjual"];
+            $template[$set_type]["array"][]  = ["VALUE", "database", "qty_terjual"];
+            $template[$set_type]['database']['query']                       = $sql;
+        }
+        $set_type = "BE3-E-BOX-4";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]["content"]  = Bundlecontent::ecommerce_dasboard_box($page);
+            $template[$set_type]["array"][]  = ["COL-ROW", "text", "col-lg-6 col-md-6 col-sm-12 mb-4"];
+            $template[$set_type]["array"][]  = ["TEXT", "text", "Barang Terkirim"];
+            $template[$set_type]["array"][]  = ["VALUE", "database", "qty_terkirim"];
+            $template[$set_type]['database']['query']                       = $sql;
+        }
+       
+        // $website['content'][$i]['tag'] = "BE3-EC-D2";
+        // $website['content'][$i]['col_row'] = "col-md-6";
+        // $i++;
+
+        // $website['content'][$i]['tag'] = "BE3-W-VB1";
+        // $website['content'][$i]['col_row'] = "col-md-6";
+        // $i++;
+        // $website['content'][$i]['tag'] = "BE3-W-VB2";
+        // $website['content'][$i]['col_row'] = "col-md-6";
         $set_type = "pesanan";
         if ($type == -1 or $type == $set_type) {
             $template[$set_type]['content'] = Bundlecontent::system_pesanan($page);
@@ -506,16 +583,16 @@ class TemplateContent
                         "data"   => [
 
                                                                                                                                                                                                                          // ["type" => "select", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
-                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
+                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                         ],
                     ],
                     // "sidebar" => [
                     //     "key" => "PRODUK-SIDEBAR",
                     //     "data" => [
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "checkbox", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "range", "name"=>"Harga", "option_literasi" => "100000", "option_akhir" => "500000", "key_search" => "harga_awal"], // tipe, nama_db
                     //     ]
                     // ]
@@ -528,6 +605,8 @@ class TemplateContent
                     "HARGA-FULL"  => ["data", "harga_full"],
                     "DESC"        => ["data", "deskripsi_barang"],
                     "TUMB"        => ["data", "foto_aset"],
+                    "TOTAL-TERJUAL" => ["data", "total_jual"],
+
                     // "HARGA-AWAL" => ["data", "id_asset"],
                     // "HARGA-AKHIR" => ["data", "harga_jual"],
                     // "HARGA-AWAL" => ["data", "id_asset"],
@@ -673,6 +752,15 @@ class TemplateContent
         // if ($type == -1 or $type == $set_type) {
         //     $template[$set_type]["content"] = Bundlecontent::codepen_swipper_swipper_template($page);
         // }
+        return $template;
+    }
+    public static function desty($page, $type = -1)
+    {
+        $template = [];
+        $set_type = "index";
+        if ($type == -1 or $type == $set_type) {
+            $template[$set_type]['content'] = Bundlecontent::desty_index($page);
+        }
         return $template;
     }
     public static function ashion($page, $type = -1)
@@ -917,29 +1005,71 @@ class TemplateContent
             $template[$set_type]["array"][] = ["ID_GROUP", "database", "id_group"];
             $template[$set_type]["array"][] = ["PERSEN", "database", "persen"];
             $landing_mitra['live']          = 1;
-            $landing_mitra['query']         = "SELECT
-CASE when (select count(*) as count from crm__mitra_penjualan where id_apps_user  = '{SESSION_UTAMA}' and id_store_from=4) = 0 then 'block'
-else 'none' end
-as display_belum,
+            $landing_mitra['query']         = "WITH mitra AS (
+    SELECT
+        COUNT(*)                                         AS total,
+        SUM(CASE WHEN status_mitra = 1 THEN 1 ELSE 0 END) AS count_bayar,
+        SUM(CASE WHEN status_mitra = 2 THEN 1 ELSE 0 END) AS count_pending,
+        SUM(CASE WHEN status_mitra = 3 THEN 1 ELSE 0 END) AS count_resmi,
+        MAX(id_erp__pos__group)                           AS id_group
+    FROM crm__mitra_penjualan
+    WHERE id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO|
+),
+pembayaran AS (
+    SELECT COUNT(*) AS total_bayar
+    FROM erp__pos__group epg
+    JOIN erp__pos__payment epp
+        ON epp.id = epg.id_payment
+    JOIN erp__pos__payment__bayar eppb
+        ON epp.id = eppb.id_erp__pos__payment
+    JOIN erp__pos__payment__bayar__konfirm eppbk
+        ON eppb.id = eppbk.id_erp__pos__payment__bayar
+    JOIN crm__mitra_penjualan cmp
+        ON cmp.id_erp__pos__group = epg.id
+    WHERE cmp.id_apps_user  = '{SESSION_UTAMA}' and cmp.id_store_from=WORKSPACE_SINGLE_TOKO|
+   
+)
 
-CASE
-when (select count(*) as count from crm__mitra_penjualan where id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO| and status_mitra=3)= 0 then 'none'
-else 'block' end
-as display_resmi,
+SELECT
+    -- BELUM DAFTAR
+    CASE
+        WHEN mitra.total = 0 THEN 'block'
+        ELSE 'none'
+    END AS display_belum,
 
-CASE
-when (select count(*) as count from crm__mitra_penjualan where id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO| and status_mitra=2)= 0 then 'none'
-else 'block' end
-as display_pending,
+    -- SUDAH RESMI
+    CASE
+        WHEN mitra.count_resmi > 0 THEN 'block'
+        ELSE 'none'
+    END AS display_resmi,
 
-CASE
-when (select count(*) as count from crm__mitra_penjualan where id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO| and status_mitra=1)= 0 then 'none'
-else 'block' end
-as display_bayar
-,CASE
-when (select count(*) as count from crm__mitra_penjualan where id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO|)= 0 then 0
-else (select crm__mitra_penjualan.id_erp__pos__group from crm__mitra_penjualan left join erp__pos__payment on id_payment = erp__pos__payment.id where crm__mitra_penjualan.id_apps_user  = '{SESSION_UTAMA}' and id_store_from=WORKSPACE_SINGLE_TOKO| limit 1) end
-as id_group";
+    -- PENDING
+    CASE
+        WHEN mitra.count_pending = 1
+          OR pembayaran.total_bayar = 1
+        THEN 'block'
+        ELSE 'none'
+    END AS display_pending,
+
+    -- BAYAR
+    CASE
+        WHEN mitra.count_bayar = 1
+         AND pembayaran.total_bayar = 0
+        THEN 'block'
+        ELSE 'none'
+    END AS display_bayar,
+
+    -- ID GROUP
+    CASE
+        WHEN mitra.total = 0 THEN 0
+        ELSE mitra.id_group
+    END AS id_group,
+	pembayaran.total_bayar,
+	mitra.*
+FROM mitra
+CROSS JOIN pembayaran;
+
+         ";
             $template[$set_type]['database'] = $landing_mitra;
         }
         $set_type = "kontak_kami";
@@ -999,50 +1129,63 @@ as id_group";
 
         }
 
-        $set_type = "pesanan_saya";
-        if ($type == -1 or $type == $set_type) {
-            $template[$set_type]["content"] = Bundlecontent::hibe3_pesanan_saya($page);
-            $template[$set_type]["array"][] = ["LIST-PESANAN", "hibe3", "pesanan_saya_list"];
+        // $set_type = "pesanan_saya";
+        // if ($type == -1 or $type == $set_type) {
+        //     $template[$set_type]["content"] = Bundlecontent::hibe3_pesanan_saya($page);
+        //     $template[$set_type]["array"][] = ["LIST-PESANAN", "hibe3", "pesanan_saya_list"];
 
-        }$set_type = "pesanan_saya_list";
-        if ($type == -1 or $type == $set_type) {
-            $template[$set_type]["content"]  = Bundlecontent::hibe3_pesanan_saya_list($page);
-            $template[$set_type]["array"][]  = ["NAMA_TOKO", "database", "nama_toko"];
-            $template[$set_type]["array"][]  = ["TANGGAL-PO", "database", "tanggal_po"];
-            $template[$set_type]["array"][]  = ["NO-PO", "database", "no_purchose_order"];
-            $template[$set_type]["array"][]  = ["LIST-PRODUK", "hibe3", "pesanan_saya_list_produk"];
-            $template[$set_type]["array"][]  = ["QTY", "database", "total_qty"];
-            $template[$set_type]["array"][]  = ["TOTAL", "database", "total"];
-            $template[$set_type]["array"][]  = ["ID", "database", "id"];
-            $pesanan_saya_list['select'][]   = "erp__pos__utama.*,nama_toko";
-            $pesanan_saya_list['utama']      = "erp__pos__utama";
-            $pesanan_saya_list['join'][]     = ["store__toko", "store__toko.id", "id_toko"];
-            $pesanan_saya_list['where'][]    = ["erp__pos__utama.id_apps_user", '=', "'{SESSION_UTAMA}'"];
-            $pesanan_saya_list['order'][]    = ["tanggal_po", 'desc'];
-            $template[$set_type]['database'] = $pesanan_saya_list;
+        // }
+        // $set_type = "pesanan_saya";
+        // if ($type == -1 or $type == $set_type) {
+        //     $template[$set_type]["content"] = Bundlecontent::hibe3_pesanan_saya($page);
+        //     $template[$set_type]["array"][] = ["LIST-PESANAN", "hibe3", "pesanan_saya_list"];
 
-        }$set_type = "pesanan_saya_list_produk";
-        if ($type == -1 or $type == $set_type) {
-            $template[$set_type]["content"]     = Bundlecontent::hibe3_pesanan_saya_list_produk($page);
-            $template[$set_type]["array"][]     = ["NAMA-PRODUK", "database", "nama_barang"];
-            $template[$set_type]["array"][]     = ["NAMA-VARIAN", "database", "nama_varian"];
-            $template[$set_type]["array"][]     = ["IMG", "database", "foto_aset_varian"];
-            $template[$set_type]["array"][]     = ["QTY", "database", "qty"];
-            $pesanan_saya_list_produk['limit']  = 10;
-            $pesanan_saya_list_produk['utama']  = "erp__pos__utama__detail";
-            $pesanan_saya_list_produk['join'][] = ["store__produk", "store__produk.id", "id_produk"];
-            $pesanan_saya_list_produk['join'][] = ["inventaris__asset__list_query", "inventaris__asset__list.id", "id_asset"];
-            $pesanan_saya_list_produk['join'][] = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian"];
+        // }
+        // $set_type = "pesanan_saya_list";
+        // if ($type == -1 or $type == $set_type) {
+        //     $template[$set_type]["content"]  = Bundlecontent::hibe3_pesanan_saya_list($page);
+        //     $template[$set_type]["array"][]  = ["NAMA_TOKO", "database", "nama_toko"];
+        //     $template[$set_type]["array"][]  = ["TANGGAL-PO", "database", "tanggal_po"];
+        //     $template[$set_type]["array"][]  = ["NO-PO", "database", "no_purchose_order"];
+        //     $template[$set_type]["array"][]  = ["LIST-PRODUK", "hibe3", "pesanan_saya_list_produk"];
+        //     $template[$set_type]["array"][]  = ["QTY", "database", "total_qty"];
+        //     $template[$set_type]["array"][]  = ["TOTAL", "database", "total"];
+        //     $template[$set_type]["array"][]  = ["ID", "database", "id"];
+        //     $pesanan_saya_list['select'][]   = "erp__pos__utama.*,nama_toko";
+        //     $pesanan_saya_list['utama']      = "erp__pos__utama";
+        //     $pesanan_saya_list['join'][]     = ["store__toko", "store__toko.id", "id_toko"];
+        //     $pesanan_saya_list['where'][]    = ["erp__pos__utama.id_apps_user", '=', "'{SESSION_UTAMA}'"];
+        //     $pesanan_saya_list['order'][]    = ["tanggal_po", 'desc'];
+        //     $template[$set_type]['database'] = $pesanan_saya_list;
 
-            $pesanan_saya_list_produk["where_get_array"][] =
-                [
-                "row"       => "id_erp__pos__utama",
-                "array_row" => "database",
-                "get_row"   => "primary_key",
-            ];
-            $template[$set_type]['database'] = $pesanan_saya_list_produk;
+        // }
 
-        }
+        
+
+
+
+        // $set_type = "pesanan_saya_list_produk";
+        // if ($type == -1 or $type == $set_type) {
+        //     $template[$set_type]["content"]     = Bundlecontent::hibe3_pesanan_saya_list_produk($page);
+        //     $template[$set_type]["array"][]     = ["NAMA-PRODUK", "database", "nama_barang"];
+        //     $template[$set_type]["array"][]     = ["NAMA-VARIAN", "database", "nama_varian"];
+        //     $template[$set_type]["array"][]     = ["IMG", "database", "foto_aset_varian"];
+        //     $template[$set_type]["array"][]     = ["QTY", "database", "qty"];
+        //     $pesanan_saya_list_produk['limit']  = 10;
+        //     $pesanan_saya_list_produk['utama']  = "erp__pos__utama__detail";
+        //     $pesanan_saya_list_produk['join'][] = ["store__produk", "store__produk.id", "id_produk"];
+        //     $pesanan_saya_list_produk['join'][] = ["inventaris__asset__list_query", "inventaris__asset__list.id", "id_asset"];
+        //     $pesanan_saya_list_produk['join'][] = ["inventaris__asset__list__varian", "inventaris__asset__list__varian.id", "id_barang_varian"];
+
+        //     $pesanan_saya_list_produk["where_get_array"][] =
+        //         [
+        //         "row"       => "id_erp__pos__utama",
+        //         "array_row" => "database",
+        //         "get_row"   => "primary_key",
+        //     ];
+        //     $template[$set_type]['database'] = $pesanan_saya_list_produk;
+
+        // }
         $set_type = "pesanan_saya_detail";
         if ($type == -1 or $type == $set_type) {
             $template[$set_type]["content"] = Bundlecontent::hibe3_pesanan_saya_detail($page);
@@ -1529,16 +1672,16 @@ as id_group";
                         "data"   => [
 
                                                                                                                                                                                                                          // ["type" => "select", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
-                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
+                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                         ],
                     ],
                     // "sidebar" => [
                     //     "key" => "PRODUK-SIDEBAR",
                     //     "data" => [
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "checkbox", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "range", "name"=>"Harga", "option_literasi" => "100000", "option_akhir" => "500000", "key_search" => "harga_awal"], // tipe, nama_db
                     //     ]
                     // ]
@@ -1651,16 +1794,16 @@ as id_group";
                         "data"   => [
 
                                                                                                                                                                                                                          // ["type" => "select", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
-                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                                                                                                                                                                                                                         // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
+                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                         ],
                     ],
                     // "sidebar" => [
                     //     "key" => "PRODUK-SIDEBAR",
                     //     "data" => [
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "checkbox", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "range", "name"=>"Harga", "option_literasi" => "100000", "option_akhir" => "500000", "key_search" => "harga_awal"], // tipe, nama_db
                     //     ]
                     // ]
@@ -1769,16 +1912,16 @@ as id_group";
                     "header"     => [
                         "key"    => "PRODUK-HEADER",
                         "method" => "append",
-                        "data"   => [                                                                                                                                                                                // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
-                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                        "data"   => [                                                                                                                                                                                // ["type" => "select", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
+                            ["type" => "select", "name" => "Kategori Toko", "db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                         ],
                     ],
                     // "sidebar" => [
                     //     "key" => "PRODUK-SIDEBAR",
                     //     "data" => [
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "inventaris__asset__master__kategori_toko", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "checkbox", "name"=>"Brand","db" => "outsourcing__brand", "option_key" => "id", "option_value" => "nama_brand", "key_search" => "id_brand"], // tipe, nama_db
-                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori"], // tipe, nama_db
+                    //         ["type" => "checkbox", "name"=>"Brand","db" => "webmaster__inventaris__master__kategori", "option_key" => "id", "option_value" => "nama_kategori", "key_search" => "id_kategori_toko", "operator_search"=>"json_contains"], // tipe, nama_db
                     //         ["type" => "range", "name"=>"Harga", "option_literasi" => "100000", "option_akhir" => "500000", "key_search" => "harga_awal"], // tipe, nama_db
                     //     ]
                     // ]

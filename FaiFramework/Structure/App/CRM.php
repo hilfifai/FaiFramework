@@ -46,7 +46,9 @@ class CRM
             //     ),
             // ),
             array(
-                "group", "Client", array(
+                "group",
+                "Client",
+                array(
                     array("menu", "Konsumen", array("CRM", "vendor", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
                     array("menu", "Pelanggan", array("CRM", "vendor", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
                     array("menu", "Client", array("CRM", "vendor", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
@@ -106,14 +108,22 @@ class CRM
         $primary_key = null;
 
         $array = array(
-            array("Apps User", "id_apps_user", "select", array("apps_user", "id_apps_user", "nama_lengkap")),
-            array("Store", "store_from", "select", array("store__toko", null, "nama_toko")),
+            array("Login User", "id_apps_user", "select", array("apps_user", "id_apps_user", "nama_lengkap")),
+            array("Nama Toko", "nama_toko", "text"),
+            array("Nama Lengkap", "nama_lengkap", "text"),
+
+            array("Link Shopee", "link_shopee", "text"),
+            array("Link Tokopedia", "link_tokpedtok", "text"),
+            array("Link Lazada", "link_lazada", "text"),
+            array("No WhatsApp", "no_wa", "text"),
+
+            array("Store", "store_from", "select", array("store__toko", null, "nama_toko","store_from")),
             array("Tipe Mitra", "tipe_mitra", "select-ajax"),
             array("Login Mitra", "log_mitra", "select-manual", array("1" => "User", "2" => "Toko", "3" => "Organisasi")),
-            array("Toko", "toko_reseler", "select", array("store__toko", null, "nama_toko")),
+            array("Toko", "toko_reseler", "select", array("store__toko", null, "nama_toko","store_reseler")),
             array("Organisasi", "organisasi", "select", array("organisasi", null, "nama_organisasi")),
-            array("Tanggal Jatuh Tempo", "tipe_mitra", "select-ajax"),
-            array("Status Mitra", null, "select-manual", array("Menunggu Pembayaran" => "Menunggu Pembayaran", "Aktif" => "Aktif")),
+            array("Tanggal Jatuh Tempo", "tanggal_jatuh_tempo", "date"),
+            array("Status Mitra", "status_mitra", "select-manual", array("1" => "Belum Melakukan Pembayaran", "2" => "Menunggu Pembayaran", "3" => "Aktif")),
 
 
             array("Syarat Pendaftaran", "syarat_pendaftaran", "div"),

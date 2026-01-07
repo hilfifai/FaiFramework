@@ -26,7 +26,8 @@ export default class ContentProcessing extends FaiModule {
         if (temp_dataRow.length) {
             rowData = temp_dataRow;
         }
-
+        console.log("temp_content", temp_content);
+        console.log("rowData", rowData);
         return await this.renderContentWithData(temp_content, rowData, temp_content.content);
 
     }
@@ -47,6 +48,7 @@ export default class ContentProcessing extends FaiModule {
                 js: ""
             }
         };
+        console.log(func, type, data);
         switch (func) {
             case 'bundle':
                 if (item[-1] == 'BE3-LINK-LOGIN') {
@@ -73,6 +75,14 @@ export default class ContentProcessing extends FaiModule {
             case 'text':
                 temp_content.content.html = type;
                 break;
+            case 'database_json':
+                if (type in data) {
+                    temp_content.content.html = JSON.stringify(data[type]);
+                } else {
+                    temp_content.content.html = "";
+                }
+                break;
+
 
             case 'database':
                 if (type in data) {
@@ -89,8 +99,9 @@ export default class ContentProcessing extends FaiModule {
                 temp_content.content.html = "";
                 break
             case 'user_info':
-                // const user = await getDataFromDB('content', 'user_info');
-                temp_content.content.html = '';
+                let user_infoEndpoint = await this.getModule("base_url") + "api/get_user";
+                let datauser_info = await this.getModule("urlHelper").fetchDataFromApi(user_infoEndpoint, 'GET', {});
+                temp_content.content.html = datauser_info?.data?.[type] ?? "";
                 break;
             case 'pages_content':
                 let result_pages_content;
@@ -136,7 +147,6 @@ export default class ContentProcessing extends FaiModule {
                 bodyReq.select = ["primary_key"];
                 bodyReq.group = ["primary_key"];
                 bodyReq.limit = 30;
-                console.log('bodyReq', bodyReq);
                 let allData = await this.getModule('Data').loadJSON('view_produk_detail', bodyReq);
                 //allData = Object.entries(Data);
                 //console.log('allData',allData);
@@ -339,6 +349,8 @@ export default class ContentProcessing extends FaiModule {
         const data_itemsPerPage = await this.initIfNull("data_produk_itemsPerPage", {});
         const data_content = await this.initIfNull("data_produk_content", {});
         const data_search_field = await this.initIfNull("data_produk_search_field", {});
+        const data_search_field_header =
+            await this.initIfNull("data_search_field_header", {}) || {};
         let data_after_init = await this.initIfNull("data_produk_after_init", []);
         let is_search = true;
         // Set datanya
@@ -348,6 +360,7 @@ export default class ContentProcessing extends FaiModule {
         data_itemsPerPage[variable] = item.pagination?.limit || 10;
         data_content[variable] = result_template.html;
         data_search_field[variable] = item.search?.field || "";
+        data_search_field_header[variable] = item.search?.header || "";
         // Tambahkan init_produk
         data_after_init.push(() => this.getModule('ListDataHub')?.init_produk(variable));
         corePages.registerAfterInit("ListDataHub", "init_produk", [variable, data_search_field[variable], data_itemsPerPage[variable]]);
@@ -411,6 +424,7 @@ export default class ContentProcessing extends FaiModule {
         await this.setModule("data_produk_itemsPerPage", data_itemsPerPage);
         await this.setModule("data_produk_content", data_content);
         await this.setModule("data_produk_search_field", data_search_field);
+        await this.setModule("data_search_field_header", data_search_field_header);
         await this.setModule("data_produk_after_init", data_after_init);
 
     }
@@ -510,7 +524,6 @@ export class ContentRenderer extends FaiModule {
             all_result_get.html += returnTemp.html;
             all_result_get.css += returnTemp.css;
         }
-
         return all_result_get;
     }
 

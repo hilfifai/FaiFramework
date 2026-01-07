@@ -22,6 +22,9 @@ class PanelFunc
         $where = array();
         $sqli = array();
         $id_panel = -1;
+        if (!isset($_SESSION['hak_akses'])) {
+            $_SESSION['hak_akses'] = "public";
+        }
         for ($i = 0; $i < count($page['load']['panel']['array']); $i++) {
             $row = $page['load']['panel']['array'][$i]['row'];
             $array[] = array($row, $row, "text");
@@ -44,10 +47,10 @@ class PanelFunc
                     $_SESSION['id_apps_user'] = $_SESSION['id_apps_user_tmp'];
                 $panel_list[$i]['panel'] = "user";
                 $panel_list[$i]['id_apps_user'] = $_SESSION['id_apps_user'];
-                if($page['database_provider'] == 'postgres'){
-                $distinct = "distinct string_agg(CAST(k.id_divisi as char(255)), ',')";
-                }else{
-                    $distinct="GROUP_CONCAT(DISTINCT CAST(k.id_divisi as char(255)) SEPARATOR ',')";
+                if ($page['database_provider'] == 'postgres') {
+                    $distinct = "distinct string_agg(CAST(k.id_divisi as char(255)), ',')";
+                } else {
+                    $distinct = "GROUP_CONCAT(DISTINCT CAST(k.id_divisi as char(255)) SEPARATOR ',')";
                 }
                 $sql = "select *,
                         (SELECT  $distinct
@@ -103,9 +106,7 @@ class PanelFunc
                     }
                 }
             } else {
-                if (!isset($_SESSION['hak_akses'])) {
-                    $_SESSION['hak_akses'] = "public";
-                }
+
                 $panel_list[$i]['panel'] = "public";
                 $panel_list[$i]['nama_panel'] = "Public ";
                 $panel_list[$i]['ip_address'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
@@ -116,7 +117,7 @@ class PanelFunc
             $id_organisasi = array();
             $panel_organisasi = array();
             $id_panel_user = "";
-           
+
             for ($i = 0; $i < count($panel_list); $i++) {
                 $where_panel = "";;
                 unset($sql);
@@ -150,8 +151,8 @@ class PanelFunc
                 where 1=1  " . $where_panel . "");
                 $get = DB::get('all');
                 if (!$get['num_rows']) {
-                    CRUDFunc::crud_insert(false,$page,$sql,[],'panel',[]);
-		
+                    CRUDFunc::crud_insert(false, $page, $sql, [], 'panel', []);
+
                     $last_insert_id = DB::lastInsertId($page, "panel");
                 } else {
                     $last_insert_id = $get['row'][0]->id;
@@ -177,19 +178,19 @@ class PanelFunc
             }
             $sql = "select * from panel__user
                 left join apps_user on cast(apps_user.id_apps_user as char) = cast(panel__user.id_apps_user  as char)
-                where 1=1 and id_panel=$id_panel  " . (isset($_SESSION['id_apps_user']) ? "and cast(panel__user.id_apps_user as char)='" . $_SESSION['id_apps_user']."'" : '') . "
+                where 1=1 and id_panel=$id_panel  " . (isset($_SESSION['id_apps_user']) ? "and cast(panel__user.id_apps_user as char)='" . $_SESSION['id_apps_user'] . "'" : '') . "
             ";
             DB::queryRaw($page, $sql);
             $get_user = DB::get('all');
-             $get_user['query'];
+            $get_user['query'];
             if ($get_user['num_rows']) {
                 $id_user = $get_user['row'][0]->id;
             } else {
                 $sql_user['id_panel'] = $id_panel;
                 if (isset($_SESSION['id_apps_user']))
                     $sql_user['id_apps_user'] = $_SESSION['id_apps_user'];
-                    CRUDFunc::crud_insert(false,$page,$sql_user,[],'panel__user',[]);
-		
+                CRUDFunc::crud_insert(false, $page, $sql_user, [], 'panel__user', []);
+
                 $id_user = DB::lastInsertId($page, "panel__user");
                 DB::queryRaw($page, $sql);
                 $get_user = DB::get('all');

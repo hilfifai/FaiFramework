@@ -50,6 +50,7 @@ export default class PartialProcessing extends FaiModule {
       }
     }
     let result;
+    console.log(template_array.content_source);
     switch (template_array.content_source) {
       case "template_content": {
 
@@ -111,28 +112,7 @@ export default class PartialProcessing extends FaiModule {
 
 
         result = await this.getModule("ContentProcessing").executeContentLogic(array, 0);
-        //   console.log("file_bundles_database result", result);
-
-        // if (template?.[template_array.template_code]?.content) {
-
-        // } else {
-        //     const sql = `
-        //         SELECT * FROM website__template__master__kategori 
-        //         LEFT JOIN website__template__file ON website__template__file.id_kategori = website__template__master__kategori.id
-        //         LEFT JOIN website__template__list ON website__template__file.id_template = website__template__list.id
-        //         WHERE kode_kategori = '${template_array.template_code}' 
-        //         AND website__template__list.nama_template = '${page.template}'
-        //     `;
-
-        //     // await DB.queryRaw(page, sql);
-        //     // const get = DB.get('all');
-
-        //     if (get.num_rows) {
-        //         result = html_decode(page, '', '', get.row[0].kontent_file);
-        //     } else {
-        //         result = '';
-        //     }
-        // }
+       
         break;
       }
 
@@ -367,6 +347,32 @@ export default class PartialProcessing extends FaiModule {
       //console.log("array", array);
       //console.log("keyArray", keyArray);
       const value = toDatabase[rowKey] || '';
+      if (typeof contentReturn == 'object') {
+
+        for (const type of ['css', 'html', 'js']) {
+          const tagPattern = new RegExp(`<${keyArray}>\\s*<\/${keyArray}>`, 'g');
+          contentReturn[type] = await contentReturn[type]?.replace(tagPattern, value)
+
+        }
+      } else {
+
+        const tagPattern = new RegExp(`<${keyArray}>\\s*<\/${keyArray}>`, 'g');
+        contentReturn = await contentReturn.replace(tagPattern, value);
+      }
+    } else if (array.refer === 'database_json') {
+      const rowKey = array.row?.trim?.();
+      let toDatabase = database;
+
+      if (!(rowKey in toDatabase) && Object.keys(databaseListTemplate).length)
+        toDatabase = databaseListTemplate;
+      if (!(rowKey in toDatabase) && Object.keys(databaseListTemplateOnList).length)
+        toDatabase = databaseListTemplateOnList;
+      if (!(rowKey in toDatabase) && Object.keys(databaseListTemplateOnListOnList).length)
+        toDatabase = databaseListTemplateOnListOnList;
+      // console.log("toDatabase", toDatabase);
+      //console.log("array", array);
+      //console.log("keyArray", keyArray);
+      const value = JSON.stringify(toDatabase[rowKey]) || '';
       if (typeof contentReturn == 'object') {
 
         for (const type of ['css', 'html', 'js']) {

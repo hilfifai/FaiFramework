@@ -260,17 +260,21 @@ class DB
                 }
             }
         } catch (Exception $e) {
-            echo '<pre>';
+            // echo '<pre>';
             echo ("Query Execution Failed: " . $e->getMessage() . '<BR> FIle' . $e->getFile() . '<br> Line:' . $e->getLine());
-            echo "Stack trace:<br>";
+            echo "Stack trace:
+            
+            ";
 
             // Menampilkan seluruh stack trace, termasuk file-file yang dipanggil sebelumnya
             $trace = $e->getTrace();
             foreach ($trace as $index => $traceItem) {
                 echo "#$index " . (isset($traceItem['file']) ? $traceItem['file'] : '[internal function]') .
-                    " (Line: " . (isset($traceItem['line']) ? $traceItem['line'] : '?') . ")<br>";
+                    " (Line: " . (isset($traceItem['line']) ? $traceItem['line'] : '?') . ")
+                ";
             }
-            echo '<br> query(' . $dbname . '):' . $queries;
+            echo '<br> query(' . $dbname . '):
+            ' . $queries;
             die;
         }
     }

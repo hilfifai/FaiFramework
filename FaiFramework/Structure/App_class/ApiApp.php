@@ -413,6 +413,10 @@ class ApiApp
                 if (!is_array($condition)) {
                     continue;
                 }
+                if (isset($condition['fields']) && $condition['operator'] === 'json_contains') {
+                    $value = $condition['value'] ?? '';
+                    DB::whereRaw("JSON_CONTAINS(id_kategori_toko, '$value')");
+                }else
                 if (isset($condition['fields']) && $condition['operator'] === 'like_or_fields') {
                     $fields = $condition['fields'];
                     if (!is_array($fields)) {
@@ -457,8 +461,7 @@ class ApiApp
         }
         if (!empty($join)) {
             foreach ($join as $join) {
-                DB::joinRaw(($join[0]." ON ".$join[1]."=".$join[2]), $join[3] ?? 'inner');
-               
+                DB::joinRaw(($join[0] . " ON " . $join[1] . "=" . $join[2]), $join[3] ?? 'inner');
             }
         }
 
@@ -667,7 +670,7 @@ class ApiApp
             $fai      = new MainFaiFramework();
             $apps     = Partial::input('apps');
             $function = Partial::input('page_view');
-            $fields   = Partial::input('field');
+            $fields   = Partial::input('originalField') ?? Partial::input('field');
 
             $page                            = $fai->Apps($apps, $function, $page);
             $array                           = $page['crud'];
@@ -682,7 +685,30 @@ class ApiApp
             $page['conection_password']      = CONECTION_PASSWORD;
             $page['conection_scheme']        = CONECTION_SCHEME;
             $page['app_framework']           = APP_FRAMEWORK;
+            $is_subKategori =  Partial::input('isSubkategori') == "true";
+            if (!$is_subKategori) {
+                // echo 'masuk';
+            } else {
+
+                foreach ($page['crud']['sub_kategori'] as $key => $sub) {
+                    $num_sub_kategori[$sub[1]] = $key;
+                }
+
+                $page['crud']['array'] = $page['crud']['array_sub_kategori'][$num_sub_kategori[Partial::input('table')]];
+            }
+            $page['crud']['array'] = Database::converting_array_field($page, $page['crud']['array']);
+            // print_R($page['crud']['array']);
             for ($i = 0; $i < count($page['crud']['array']); $i++) {
+
+
+
+                $result = Packages::initialize_array($fai, $page, ["array" => $page['crud']['array']], $i);
+                $page  = $result['page'];
+                $array = $result['array'];
+
+
+                $type   = $array['array'][$i][2];
+                $extype = explode('-', $type);
                 $field = $array['array'][$i][1];
                 if (isset($field_array[$field])) {
                     echo 'Field ' . $field . " duplikat, silahkan hubungi admin";
@@ -690,16 +716,9 @@ class ApiApp
                 } else {
                     $field_array[$field] = $i;
                 }
-
-                $type   = $array['array'][$i][2];
-                $extype = explode('-', $type);
-                $result = Packages::initialize_array($fai, $page, $array, $i, $field, $type, $extype);
-
-                $page  = $result['page'];
-                $array = $result['array'];
-
                 if ($fields == $field) {
                     $select                                                   = ($array['array'][$i]);
+                    // print_R($select);
                     $page['crud']['select_database_costum'][$fields]['utama'] = $select[3][0];
                     $page['crud']['select_database_costum'][$fields]['np']    = $select[3][0];
                     $row                                                      = Database::database_coverter($page, $page['crud']['select_database_costum'][$fields], [], 'all');
@@ -712,6 +731,7 @@ class ApiApp
                     die;
                 }
             }
+
             echo json_encode([]);
         } catch (Exception $e) {
             echo json_encode(['error' => 'Unsupported method']);
@@ -801,18 +821,23 @@ class ApiApp
             $method;
             switch ($method) {
                 case 'GET':
+
+
                     $row = Packages::crud($page, "get_list", $id);
 
                     $return["draw"]            = Partial::input('draw');
                     $return["recordsTotal"]    = $row['num_rows_non_limit'] ?? 1000000;
                     $return["recordsFiltered"] = $row['num_rows_non_limit'] ?? 1000000;
                     $return["data"]            = $row['row'];
+                    $return["apps"]            = $apps;
+                    $return["function"]            = $function;
                     //unset($row["query"]);
                     echo json_encode($return);
+
                     break;
 
                 case 'PATCH':
-
+                    $index = Partial::input('index');
                     $DB = $page['crud']['sub_kategori'][Partial::input('index')][1];
                     if (Partial::input('parent_id')) {
                         $page['crud']['database_sub_kategori'][$DB]['where'][] = ["id_" . $page['database']['utama'], " = ", Partial::input('parent_id')];
@@ -821,6 +846,7 @@ class ApiApp
                     $page['crud']['database_sub_kategori'][$DB]['where'][]  = ["" . $DB, ".active = ", 1];
                     $page['crud']['database_sub_kategori'][$DB]['select'][] = "$utama.*";
                     $page['crud']['database_sub_kategori'][$DB]['join'][]   = [$utama, "$utama.id", "$DB.id_$utama", "left"];
+
                     $row                                                    = Database::database_coverter($page, $page['crud']['database_sub_kategori'][$DB], [], 'all');
                     $return["draw"]                                         = Partial::input('draw') ?? 1;
                     $return["recordsTotal"]                                 = $row['num_rows_non_limit'] ?? 1000000;
@@ -834,17 +860,118 @@ class ApiApp
                     break;
 
                 case 'POST':
+                    if ($headers['mode'] == "normal") {
+                        $save = Packages::crud($page, "save", $id);
 
-                    $save = Packages::crud($page, "save", $id);
+                        echo json_encode($save);
+                    } else if ($headers['mode'] == "subkategori_single") {
+                        $database_utama = $headers['tablename'];
+                        $database_utama_temp = $page['database']['utama'];
+                        foreach ($page['crud']['sub_kategori'] as $key => $sub) {
+                            $num_sub_kategori[$sub[1]] = $key;
+                        }
+                        $array = $page['crud']['array_sub_kategori'][$num_sub_kategori[$database_utama]];
+                        $last_value = $headers['last_value'] ?? -1;
+                        $no = -1;
+                        $page['crud']['save_type'] = "insert";
+                        $typearray  = $array[0][2];
+                        $typearray2 = isset($array[1][2]) ? $array[1][2] : '';
+                        if (! ($typearray == 'file' or $typearray == "photos" or $typearray == "file-upload" or $typearray == 'video')) {
+                            if (isset($array[0][5])) {
+                                $get = $database_utama . '_' . $array[0][5];
+                            } else {
+                                $get = $database_utama . '_' . $array[0][1];
+                            }
 
-                    echo json_encode($save);
+
+                            $no_sub_kategori_input = Partial::input($get);
+                        } else
+                        if (! ($typearray2 == 'file' or $typearray2 == "photos" or $typearray2 == "file-upload" or $typearray2 == 'video')) {
+                            if (isset($array[1][5])) {
+                                $get = $database_utama . '_' . $array[1][5];
+                            } else {
+                                $get = $database_utama . '_' . $array[1][1];
+                            }
+
+                            $get;
+                            $no_sub_kategori_input = Partial::input($get);
+                        }
+
+                        if (isset($no_sub_kategori_input[0])) {
+                            foreach ($no_sub_kategori_input as $no => $value) {
+                                $return                                            = CRUDFunc::sub_kategori($page, $database_utama, $database_utama_temp, $array, $last_value, $fai, $no);
+                            }
+                        }
+                        $id1                                               = $return['last_value'];
+                        $sqli                                              = $return['sqli'];
+                        echo json_encode($return);
+                    }
                     break;
 
                 case 'PUT':
-                    $id = Partial::input('id');
-                    $save = Packages::crud($page, "update", $id);
+                    if ($headers['mode'] == "normal") {
+                        $id = Partial::input('id');
+                        $save = Packages::crud($page, "update", $id);
 
-                    echo json_encode($save);
+                        echo json_encode($save);
+                    } else if ($headers['mode'] == "subkategori_single") {
+                        $database_utama = $headers['tablename'];
+                        $database_utama_temp = $page['database']['utama'];
+                        foreach ($page['crud']['sub_kategori'] as $key => $sub) {
+                            $num_sub_kategori[$sub[1]] = $key;
+                        }
+                        $h = $num_sub_kategori[$database_utama];
+                        $array = $page['crud']['array_sub_kategori'][$num_sub_kategori[$database_utama]];
+                        $last_value = $headers['last_value'] ?? -1;
+                        $no = -1;
+                        $page['crud']['save_type'] = "insert";
+                        $typearray  = $array[0][2];
+                        $typearray2 = isset($array[1][2]) ? $array[1][2] : '';
+                        if (! ($typearray == 'file' or $typearray == "photos" or $typearray == "file-upload" or $typearray == 'video')) {
+                            if (isset($array[0][5])) {
+                                $get = $database_utama . '_' . $array[0][5];
+                            } else {
+                                $get = $database_utama . '_' . $array[0][1];
+                            }
+
+
+                            $no_sub_kategori_input = Partial::input($get);
+                        } else
+                        if (! ($typearray2 == 'file' or $typearray2 == "photos" or $typearray2 == "file-upload" or $typearray2 == 'video')) {
+                            if (isset($array[1][5])) {
+                                $get = $database_utama . '_' . $array[1][5];
+                            } else {
+                                $get = $database_utama . '_' . $array[1][1];
+                            }
+
+                            $get;
+                            $no_sub_kategori_input = Partial::input($get);
+                        }
+                        $array_non_return = ['create_by', 'create_date', 'update_by', 'update_date', 'delete_by', 'delete_date', 'on_domain', 'on_panel', 'on_board', 'on_role', 'privilege', 'on_web_apps'];
+                        $idUser           = Partial::id_user();
+                        $sub_kategori = $page['crud']['sub_kategori'][$h];
+                        CRUDFunc::handleSubKategoriUpdate(
+                            $page,
+                            $array,
+                            $database_utama,
+                            $sub_kategori,
+                            $array_non_return,
+                            $last_value,
+                            $idUser,
+                            $h,
+                            $array_save,
+                            $fai
+                        );
+                        $result = [];
+                        if (isset($no_sub_kategori_input[0])) {
+                            foreach ($no_sub_kategori_input as $no => $value) {
+                                $return                                            = CRUDFunc::sub_kategori($page, $database_utama, $database_utama_temp, $array, $last_value, $fai, $no);
+                                $result[] = $return;
+                            }
+                        }
+                        echo json_encode($result);
+                    }
+
                     break;
                 case 'DELETE':
 
@@ -1819,13 +1946,13 @@ class ApiApp
             $id   = $headers['id'] ?? "";
             switch ($method) {
                 case 'GET':
-                      $page['config']['database']['BANGUNAN']['as']             = "t";
-                     $page['config']['database']['BANGUNAN']['np']             = "t";
-                     $page['config']['database']['BANGUNAN']['non_add_select'] = "t";
+                    $page['config']['database']['BANGUNAN']['as']             = "t";
+                    $page['config']['database']['BANGUNAN']['np']             = "t";
+                    $page['config']['database']['BANGUNAN']['non_add_select'] = "t";
                     $page['config']['database']['BANGUNAN']['utama'] = 'inventaris__asset__tanah__bangunan__pengisi';
                     $page['config']['database']['BANGUNAN']['primary_key'] = null;
                     $page['config']['database']['BANGUNAN']['np'] = true;
-                    
+
                     $page['config']['database']['BANGUNAN']['select'][] = "inventaris__asset__tanah__bangunan__pengisi.id_apps_user,webmaster__wilayah__provinsi.provinsi as provinsi,concat(webmaster__wilayah__kabupaten.type,' ',webmaster__wilayah__kabupaten.kota_name) as kota,
         webmaster__wilayah__postal_code.urban as kelurahan,webmaster__wilayah__kecamatan.subdistrict_name as kecamatan ,webmaster__wilayah__postal_code.postal_code,
         default_pembelian_barang,inventaris__asset__tanah__bangunan.id as primary_key,nama_unit_bangunan
@@ -2169,12 +2296,12 @@ class ApiApp
                         }
                     } else {
 
-                        $row = DatabaseFunc::receivings($page, "row", $body['currentPoId']??"");
-                        
+                        $row = DatabaseFunc::receivings($page, "row", $body['currentPoId'] ?? "");
+
                         ob_clean();
-                        if($row["num_rows"]==0){
-                              echo json_encode([]);
-                        }else{
+                        if ($row["num_rows"] == 0) {
+                            echo json_encode([]);
+                        } else {
 
                             echo json_encode($row["row"]);
                         }
@@ -2361,11 +2488,19 @@ class ApiApp
 
 
                 $result = self::get_db_data($page, $body, $db_to_json);
-                $returnResult = [
-                    'num_rows' => count($result[0]),
-                    'row' => array_values($result[0])
-                ];
+                if(count($result)){
 
+                    $returnResult = [
+                        'num_rows' => count($result[0]),
+                        'row' => array_values($result[0])
+                    ];
+                    
+                }else{
+                   $returnResult = [
+                        'num_rows' => count($result),
+                        'row' => array_values($result)
+                    ]; 
+                }
                 echo json_encode($returnResult);
                 exit;
             }
@@ -2384,12 +2519,14 @@ class ApiApp
                 self::get_db_data($page, $body, $db_to_json);
             } else {
                 // Default mode: check if generation needed
-                $needs_generation = self::check_generation_needed($page, $db_to_json);
-                if (!$needs_generation) {
-                    $_POST['db'] = $db_to_json;
 
+                // $needs_generation = $db_to_json != -1 ? self::check_generation_needed($page, $db_to_json) : false;
+                // if (!$needs_generation) {
+                    // echo 'masuk';
+                    $_POST['db'] = $db_to_json;
                     $get_data = self::get_db_data($page, $body, $db_to_json);
-                }
+                // }
+
                 if (empty($get_data)) {
                     echo json_encode(["json_data" => [], "id" => -1]);
                 } else {
@@ -2432,6 +2569,14 @@ class ApiApp
                 $row[$id] = $value['current'];
             } else {
                 foreach ($value as $key => $value2) {
+                    if (is_array($value2['current'])) {
+                        $value2['current'] = (object) $value2['current'];
+                    }
+
+                    if (!isset($value2['current']->id)) {
+                        $value2['current']->id = 1;
+                    }
+
                     $id = $value2['current']->id;
                     $row[$id] = $value2['current'];
                 }
@@ -2939,10 +3084,15 @@ class ApiApp
         // $min = DB::get('all');
         $page['load']['id'] = $body['load']['load_page_id'] ?? '-1';
 
-        // print_R($search);
+       
+        if (isset($search['database']) and $search['tipe'] != 'config_database_db_refer-1' and $search['tipe'] != 'config_database') {
+            $dbAll                   = ($search['database']);
 
+            $dbAll['non_add_select'] = true;
+            $dbAll['np']             = true;
+        } else
         if ($search['tipe'] == 'config_database_db_refer-1') {
-
+           
             $db = $search['dbConf'];
 
             if (isset($db['where_get_array'])) {
@@ -3112,7 +3262,7 @@ class ApiApp
             // $db['where'][] = [$db['utama'] . ".id>=$rowAwal", " and ", $db['utama'] . ".id<=$rowAkhir"];
             //print_R($data); die;
             // echo '<br>' . '<br>' . $data['query'];
-
+            
             if ($data['num_rows']) {
 
                 $namaDb      = $db_to_json;
@@ -3301,18 +3451,41 @@ class ApiApp
             //         $db = DB::get('all');
         ]);
     }
+    public static function is_login($page)
+    {
+        echo json_encode([
+            "is_login" => $_SESSION['is_login']??false,
+            "id_apps_user" => $_SESSION['id_apps_user'],
+            //         $db = DB::get('all');
+        ]);
+    }
     public static function verifikasi_wa($page)
     {
-        $_SESSION['id_apps_user'];
         $db['utama']   = "apps_user";
         $db['np']      = "apps_user";
-        $db['where'][] = ["id_apps_user", "=", $_SESSION['id_apps_user']];
+        $db['where'][] = ["id_apps_user", "=", Partial::input('id')];
         $get           = Database::database_coverter($page, $db, [], 'all');
 
         if ($get['num_rows']) {
-            if ($get['row'][0]->wa_verifikasi == Partial::input('kode')) {
+            if ($get['row'][0]->wa_verifikasi_kode == Partial::input('kode')) {
 
-                echo json_encode(["status" => 1]);
+                $update = ["active" => 1, "wa_verifikasi" => 1];
+                $password="";
+                if($get['row'][0]->akses=="guest"){
+                   $password=  $update["password"]=random_num(8);
+                }
+                DB::update('apps_user', $update, " id_apps_user=" . Partial::input('id'));
+                if($get['row'][0]->akses=="guest"){
+                    $wa = new WaApp();
+
+            $wa->send($page, $get['row'][0]->nomor_handphone, "*Nomor Kamu berhasil daftar sebagai *".$get['row'][0]->akses."*
+            
+Informasi Login:
+Username : ".$get['row'][0]->nomor_handphone."
+Password : $password
+    ");
+}
+                ApiApp::handler_login($page, " id_apps_user=" . Partial::input('id'));
             } else {
 
                 echo json_encode(["status" => 0, "keterangan" => "Kode salah"]);
@@ -3351,6 +3524,11 @@ class ApiApp
         }
         $where .= ')';
         $where_array[] = ["", "", $where];
+        ApiApp::handler_login($page, $where);
+    }
+
+    public static function handler_login($page, $where)
+    {
         $database      = "apps_user";
         $db['utama']     = $database;
         $db['where_raw'] = $where;
@@ -3412,6 +3590,7 @@ class ApiApp
         }
         echo json_encode($return_login);
     }
+
     public static function search($page)
     {
         $fai           = new MainFaiFramework();
@@ -3481,7 +3660,8 @@ class ApiApp
         $page['load']['board'] = Partial::input('id_board');
         $page['template']      = "sneat";
         $page['route_type']    = "link_js_fai";
-        echo json_encode(["role" => ($_SESSION['board_role-' . $page['load']['board']] ?? ''), "html" => Partial::menu_workspace_role_apps_menu($page)]);
+        echo json_encode(["role" => ($_SESSION['board_role-' . $page['load']['board']] ?? ''), 
+        "html" => Partial::menu_workspace_role_apps_menu($page)]);
     }
     public static function proses_daftar_mitra($page)
     {
@@ -3499,12 +3679,11 @@ class ApiApp
             DB::whereRaw("id_store_from = $id_store_tokoWebapps");
             $getCount = DB::get('all');
             if (! $getCount['num_rows']) {
+
                 $id                      = $get_id                      = Partial::input('id_mitra');
                 $insert['id_apps_user']  = Partial::input('id_user');
                 $insert['id_store_from'] = $id_store_tokoWebapps;
-
                 $insert['id_store__mitra'] = $get_id;
-                // return [];
                 $insert['link_shopee']        = Partial::input('link_shopee');
                 $insert['link_tokpedtok']     = Partial::input('link_tokpedtok');
                 $insert['link_lazada']        = Partial::input('link_lazada');
@@ -3512,7 +3691,7 @@ class ApiApp
                 $insert['nama_toko']          = Partial::input('nama_toko');
                 $insert['nama_lengkap']       = Partial::input('nama_lengkap');
                 $insert['total_pembayaran']   = Partial::input('total_pembayaran');
-                $insert['id_erp__pos__group'] = $id_erp_pos_group = EcommerceApp::inisiate_store_pesanan_group($page, $force = 0, $tipe_group = "Pendaftaran Mitra")['id'];
+                $insert['id_erp__pos__group'] = $id_erp_pos_group = EcommerceApp::inisiate_store_pesanan_group($page,  0,  "Pendaftaran Mitra")['id'];
                 if ($insert['total_pembayaran']) {
                     $insert['status_mitra'] = 1;
                     DB::table('erp__pos__group');
@@ -3545,6 +3724,11 @@ class ApiApp
                     $insert['status_mitra'] = 3;
                 }
                 CRUDFunc::crud_insert($fai, $page, $insert, [], 'crm__mitra_penjualan');
+            } else {
+                $id_erp_pos_group = $getCount['row'][0]->id_erp__pos__group;
+                //   if(!$id_erp_pos_group){
+                //     $id_erp_pos_group = EcommerceApp::inisiate_store_pesanan_group($page,  0,  "Pendaftaran Mitra")['id'];
+                //   }
             }
             echo json_encode(["status" => 1, "id" => $id_erp_pos_group]);
             $fai = new MainFaiFramework();
@@ -4251,13 +4435,30 @@ class ApiApp
 
         EcommerceApp::add_cart($page);
     }
+    public static function get_user($page)
+    {
+        $db['utama']             = "apps_user";
+        $db['np']                = "apps_user";
+        $db['where'][]           = ["id_apps_user", "=", $_SESSION['id_apps_user']??"-1"];
+        $get                     = Database::database_coverter($page, $db, [], 'all');
+        if($get['num_rows']){
+
+            $row = $get['row'][0];
+            unset($row->password);
+            unset($row->id);
+            echo json_encode(["status" => 1, "data" => $row]);
+        }else{
+            echo json_encode(["status" => 1, "data" => null]);
+        }
+    }
     public static function register_guest($page)
     {
         $fai                     = new MainFaiFramework();
-        $data['nomor_handphone'] = Partial::input('phone');
+        $data['nomor_handphone'] = Partial::normalizeWhatsAppNumber(Partial::input('phone'));
         $data['connection_wa']   = 1;
-        $data['wa_verifikasi']   = Partial::random_num(6);
-        $data['wa_verifikasi']   = Partial::random_num(6);
+        $data['wa_verifikasi']   = 0;
+        $data['akses']   = "guest";
+        $otp = $data['wa_verifikasi_kode']   = Partial::random_num(6);
         $data['id_apps_user']    = Database::string_database($page, $fai, "NOWDATETIME::YmdHis|" . "RAND::10000-999999|");
         $db['utama']             = "apps_user";
         $db['np']                = "apps_user";
@@ -4266,10 +4467,69 @@ class ApiApp
         if (! $get['num_rows']) {
             $status = 1;
             CRUDFunc::crud_insert($fai, $page, $data, [], 'apps_user', []);
-            $_SESSION['id_apps_user'] = $data['id_apps_user'];
-            $_SESSION['login']        = true;
-            $_SESSION['hak_akses']    = "guest";
+            // $_SESSION['id_apps_user'] = $data['id_apps_user'];
+            // $_SESSION['login']        = true;
+            // $_SESSION['hak_akses']    = "guest";
+            $wa = new WaApp();
+
+            $wa->send($page, $data['nomor_handphone'], "*Kode OTP Anda:* $otp
+
+Untuk keamanan akun, jangan bagikan kode ini kepada siapa pun.");
             echo json_encode(["status" => 1, "id_apps_user" => $data['id_apps_user']]);
+        } else {
+            echo json_encode(["status" => 0, "keterangan" => "Duplikat Nomor Wa"]);
+        }
+        // echo "<pre>Query Failed: " . $e->getMessage() . "</pre>";
+    }
+    public static function resend_wa($page)
+    {
+        $fai                     = new MainFaiFramework();
+
+        $db['utama']             = "apps_user";
+        $db['np']                = "apps_user";
+        $db['where'][]           = ["id_apps_user", "=", Partial::input("id")];
+        $get                     = Database::database_coverter($page, $db, [], 'all');
+        if ($get['num_rows']) {
+            $status = 1;
+            
+            $otp = $get['row'][0]->wa_verifikasi_kode;
+            $wa = new WaApp();
+
+            $wa->send($page, $get['row'][0]->nomor_handphone, "*Resend Kode OTP Anda:* $otp
+
+            Untuk keamanan akun, jangan bagikan kode ini kepada siapa pun.");
+            echo json_encode(["status" => 1]);
+        } else {
+            echo json_encode(["status" => 0, "keterangan" => " Nomor Wa tidak ada"]);
+        }
+        // echo "<pre>Query Failed: " . $e->getMessage() . "</pre>";
+    }
+    public static function save_register($page)
+    {
+
+        $fai                     = new MainFaiFramework();
+        $data['nama_lengkap'] = Partial::input('name');
+        $data['email'] = Partial::input('email');
+        $data['username'] = Partial::input('email');
+        $data['tanggal_lahir'] = Partial::input('date');
+        $data['password'] = Partial::input('password');
+        $data['nomor_handphone'] = Partial::normalizeWhatsAppNumber(Partial::input('phone'));
+
+        $data['jenis_kelamin'] = Partial::input('gender') == 'male' ? 'Pria' : 'Wanita';
+        $data['active']   = 0;
+        $data['connection_wa']   = 1;
+        $data['wa_verifikasi']   = 0;
+        $data['wa_verifikasi_kode']   = Partial::random_num(6);
+        $data['id_apps_user']    = Database::string_database($page, $fai, "NOWDATETIME::YmdHis|" . "RAND::10000-999999|");
+        // print_R($data);
+        $db['utama']             = "apps_user";
+        $db['np']                = "apps_user";
+        $db['where'][]           = ["nomor_handphone", "=", $data['nomor_handphone']];
+        $get                     = Database::database_coverter($page, $db, [], 'all');
+        if (! $get['num_rows']) {
+            $status = 1;
+            CRUDFunc::crud_insert($fai, $page, $data, [], 'apps_user', []);
+            return ApiApp::get_login($page);
         } else {
             echo json_encode(["status" => 0, "keterangan" => "Duplikat Nomor Wa"]);
         }

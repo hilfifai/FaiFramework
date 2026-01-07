@@ -2,24 +2,37 @@
 
 require_once(__DIR__ . '/../Chatbot_class/Ecommerce_produk.php');
 require_once(__DIR__ . '/../Chatbot_class/Bot_Quran.php');
+require_once(__DIR__ . '/../Chatbot_class/WhatsAppWebhookHandler.php');
 class ChatbotApp
 {
-    public static function router($page, $data, $id_chat_room = null, $id_chat_massage = null, $is_wa=false, $data_wa=[])
+    public static function router($page, $data, $id_chat_room = null, $id_chat_massage = null, $is_wa = false, $data_wa = [])
     {
-        $page['no_change_transaction'] = true;
-        date_default_timezone_set('Asia/Jakarta');
-        $message = explode(' ', strtolower($data['content_message']));
-        $data['mode'] = "utama";
-        if (strtolower($message[0]) == 'e') {
+        try {
 
-            ChatbotApp::ecommerce_router($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);;
-        } else if (in_array((strtolower($message[0])), array('>>share')) or in_array((strtolower($message[0])), array('share'))) {
-            ChatbotApp::share_router($page, $data, strtolower($data['content_message']), $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
-        } else if (in_array((strtolower($message[0])), array('qs', 'quran'))) {
+            $page['no_change_transaction'] = true;
+            date_default_timezone_set('Asia/Jakarta');
+            if (empty($data['content_message'])) {
+                return;
+            }
+            $message = explode(' ', strtolower($data['content_message']));
+            $message_line = preg_split("/\r\n|\r|\n/", strtolower($data['content_message']));
+            $data['mode'] = "utama";
+            if (strtolower(trim($message[0])) == 'pesan') {
+                ChatbotApp::wawebhook_router($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);;
+            } else if (strtolower($message[0]) == 'e') {
 
-            ChatbotApp::quran_router($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
-        } else {
-            ChatbotApp::define_chat_bot($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
+                ChatbotApp::ecommerce_router($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);;
+            } else if (in_array((strtolower($message[0])), array('>>share')) or in_array((strtolower($message[0])), array('share'))) {
+                ChatbotApp::share_router($page, $data, strtolower($data['content_message']), $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
+            } else if (in_array((strtolower($message[0])), array('qs', 'quran'))) {
+
+                ChatbotApp::quran_router($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
+            } else {
+                ChatbotApp::define_chat_bot($page, $data, $data['content_message'], $id_chat_massage, $id_chat_room, $is_wa, $data_wa);
+            }
+        } catch (Exception $e) {
+            echo '<pre>';
+            print_R($e->getTraceAsString());
         }
     }
     public static function define_chat_bot($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa)
@@ -35,7 +48,7 @@ class ChatbotApp
         //  print_r($chat_room);
         $prev        = $chat_room->bot_position;
         $uniq        = $chat_room->bot_unique_id;
-        $keyword_cek = '/end ' . strtolower($chat_room->package_bot);
+        $keyword_cek = '/end ' . $chat_room->package_bot ? strtolower($chat_room->package_bot) : "";
         $bot = null;
         if ($prev) {
             $db_bot['select'][] = "*";
@@ -147,7 +160,6 @@ class ChatbotApp
         //                 \n
         //                 Status Jadwal: $status_app
         //                 "
-        print_R($data);
         if (strtolower($ex[0]) == 'list') {
             DB::table('share__post');
             DB::whereRaw("(select count(*) from share__wa_group__post where status_approve='3' and share__post.id = id_share__post )>0 or status_approve_post='3'");
@@ -159,23 +171,23 @@ class ChatbotApp
             $kode = $ex[1];
             CRUDFunc::crud_process(new MainFaiFramework, $page, ["status_approve_post" => "1"], [], "share__post", [], 'update', 'kode_post', $kode);
             $data_wa['send_wa_konfirm'] = true;
-            ChatApp::altenatif_send_massage($page, $id_chat_room, "Share Berhasil $kode sudah di approve", -1, "utama", 1,$data_wa);
+            ChatApp::altenatif_send_massage($page, $id_chat_room, "Share Berhasil $kode sudah di approve", -1, "utama", 1, $data_wa);
         } elseif (strtolower($ex[0]) == 'dec') {
             $kode = $ex[1];
             CRUDFunc::crud_process(new MainFaiFramework, $page, ["status_approve_post" => "2"], [], "share__post", [], 'update', 'kode_post', $kode);
             $data_wa['send_wa_konfirm'] = true;
-            ChatApp::altenatif_send_massage($page, $id_chat_room, "Share Berhasil $kode sudah di tolak", -1, "utama", 1,$data_wa);
+            ChatApp::altenatif_send_massage($page, $id_chat_room, "Share Berhasil $kode sudah di tolak", -1, "utama", 1, $data_wa);
         } elseif (strtolower($ex[0]) == 'jadwal' and strtolower($ex[1]) == 'acc') {
             $kode = $ex[2];
             CRUDFunc::crud_process(new MainFaiFramework, $page, ["status_approve" => "1"], [], "share__wa_group__post", [], 'update', 'kode_post_group', "'$kode'");
             // $data_wa['participant'] = "";
             $data_wa['send_wa_konfirm'] = true;
-            ChatApp::altenatif_send_massage($page, $id_chat_room, "Jadwal Berhasil $kode sudah di approve", -1, "utama", 1,$data_wa);
+            ChatApp::altenatif_send_massage($page, $id_chat_room, "Jadwal Berhasil $kode sudah di approve", -1, "utama", 1, $data_wa);
         } elseif (strtolower($ex[0]) == 'jadwal' and strtolower($ex[1]) == 'desc') {
             $kode = $ex[2];
             CRUDFunc::crud_process(new MainFaiFramework, $page, ["status_approve" => "2"], [], "share__wa_group__post", [], 'update', 'kode_post_group', $kode);
             $data_wa['send_wa_konfirm'] = true;
-            ChatApp::altenatif_send_massage($page, $id_chat_room, "Jadwal Berhasil $kode sudah di tolak", -1, "utama", 1,$data_wa);
+            ChatApp::altenatif_send_massage($page, $id_chat_room, "Jadwal Berhasil $kode sudah di tolak", -1, "utama", 1, $data_wa);
         }
     }
 
@@ -209,5 +221,25 @@ class ChatbotApp
             //  echo 'masuk';
             Ecommerce_produk::random_produk($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa, $total);
         }
+    }
+    public static function wawebhook_router($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa)
+    {
+        //print_r($data);
+        $result = WhatsAppWebhookHandler::handleOrderFromWA($page, $data);
+        if ($result['status'] == 1) {
+            $response = $result['message'];
+        } else {
+            $response = "❌ *GAGAL MEMPROSES PESANAN*\n\n";
+            $response .= "Error: {$result['message']}\n\n";
+            $response .= "Format yang benar:\n";
+        }
+        $wa = new WaApp();
+
+        $wa->send($page, $data['participant'], $response);
+        // Kirim response ke WhatsApp
+        // echo $response;
+        echo json_encode(["status"=>1]);
+        //  echo 'masuk';
+        // Ecommerce_produk::random_produk($page, $data, $content_massage, $id_chat_massage, $id_chat_room, $is_wa, $data_wa, $total);
     }
 }

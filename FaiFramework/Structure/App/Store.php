@@ -66,7 +66,9 @@ class Store
 	{
 		$menu = array(
 			array(
-				"group", "Store Produk & Harga", array(
+				"group",
+				"Store Produk & Harga",
+				array(
 					array("menu", "Bundle Harga", array("Store", "bundle_harga", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 					array("menu", "Toko", array("Store", "Toko", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 					array("menu", "Produk", array("Store", "produk", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
@@ -75,9 +77,11 @@ class Store
 					array("menu", "Ulasan", array("Store", "ulasan", "list", "-1"), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 				),
 			),
- 
+
 			array(
-				"group", "Mitra", array(
+				"group",
+				"Mitra",
+				array(
 					array("menu", "Tipe Mitra Store", array("Store", "mitra", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 				),
 			),
@@ -92,7 +96,9 @@ class Store
 			//             array("menu", "Gudang", array("Store", "gudang_toko", "list", "-1"), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 
 			array(
-				"group", "Promosi", array(
+				"group",
+				"Promosi",
+				array(
 					array("menu", "Promo Toko", array("Store", "promo__toko", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 					array("menu", "Promo Costumer", array("Store", "promo__costumer", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
 					array("menu", "Promo Ongkir", array("Store", "promo__ongkir", "list", "-1", -1, -1, 'ID_BOARD|'), '<i class="menu-icon tf-icons bx bx-collection"></i>'),
@@ -133,14 +139,17 @@ class Store
 			// array("Total Rating", null,"number"),
 		);
 		//select target
-		
+
 
 		$sub_kategori[] = ["Varian", $database_utama . "__varian", null, "table"];
 		$array_sub_kategori[] = array(
 
 			array("Barang & Varian", "barang_varian", "select", array("inventaris__asset__list__varian", null, "nama_varian", 'a'), null),
 			array(
-				"Detail Harga", "detail_harga", "modalform-subkategori-add", array(
+				"Detail Harga",
+				"detail_harga",
+				"modalform-subkategori-add",
+				array(
 					"type" => "many",
 					"database" => $database_utama . "__harga",
 					"array" => array(
@@ -185,14 +194,27 @@ class Store
 			"parameter" => "e,id_row",
 			"parameter_input" => "this,<NUMBERING></NUMBERING>",
 			"row" => array(
-				"harga_jual_distributor", "type_harga_distributor", 'margin_distibutor', 'harga_distributor', "type_harga_jual", "margin_harga_jual",	"donasi_baitul_mal", "harga_pokok_jual"
+				"harga_jual_distributor",
+				"type_harga_distributor",
+				'margin_distibutor',
+				'harga_distributor',
+				"type_harga_jual",
+				"margin_harga_jual",
+				"donasi_baitul_mal",
+				"harga_pokok_jual"
 			),
 			"id_row" => true,
 			"input" => array("onkeyup"),
 			"get" => array(
-				"harga_jual_distributor" => "id_row", "type_harga_distributor" => "id_row", "margin_distibutor" => "id_row", "harga_distributor" => "id_row", "type_harga_jual" => "id_row", "margin_harga_jual" => "id_row",
+				"harga_jual_distributor" => "id_row",
+				"type_harga_distributor" => "id_row",
+				"margin_distibutor" => "id_row",
+				"harga_distributor" => "id_row",
+				"type_harga_jual" => "id_row",
+				"margin_harga_jual" => "id_row",
 
-				"donasi_baitul_mal" => "id_row", "harga_pokok_jual" => "id_row"
+				"donasi_baitul_mal" => "id_row",
+				"harga_pokok_jual" => "id_row"
 			),
 			"execute" => array(
 				array(
@@ -279,8 +301,9 @@ class Store
 			"id_inventaris__asset__list";
 
 		$page['crud']['field_view_sub_kategori']['asset_id']['field'][] = array(
-			-1, "barang_varian",
-			array("Barang & Varian", "nama_varian","text"),
+			-1,
+			"barang_varian",
+			array("Barang & Varian", "nama_varian", "text"),
 			"primary_key"
 		);
 		// $page['crud']['field_view_sub_kategori']['asset_id']['field'][] = array(
@@ -295,11 +318,15 @@ class Store
 		// 	array("Level", "nama_level", "text"),
 		// );
 		$page['crud']['field_view_sub_kategori']['asset_id']['field'][] = array(
-			0, "Detail Harga",
+			0,
+			"Detail Harga",
 			array(
-				"Detail Harga", "detail_harga", "modalform-subkategori-add", array(
+				"Detail Harga",
+				"detail_harga",
+				"modalform-subkategori-add",
+				array(
 					"type" => "many",
-					
+
 					"database" => $database_utama . "__harga",
 					"array" => array(
 						array("Minimal Pembelian", "minpembelian", "number"),
@@ -314,7 +341,7 @@ class Store
 						array("Harga Pokok Jual", "harga_jual", "number"),
 						array("Donasi Baitul Mal", "donasi_baitul_mal", "number"),
 						array("Bundle Harga", null, "select", array('store__bundle_harga', null, 'nama_bundle_harga'), null),
-						
+
 					)
 				)
 			),
@@ -391,12 +418,12 @@ class Store
 			array("Nama Toko", "nama_toko", "text"),
 			array("Kode Toko", "kode_toko", "text"),
 			array("Deskripsi", "deskripsi", "text"),
-			array("Logo Toko", "logo_toko", "file",'store_toko/logo/'),
-			array("Banner Toko", "banner_toko", "file",'store_toko/banner/'),
+			array("Logo Toko", "logo_toko", "file", 'store_toko/logo/'),
+			array("Banner Toko", "banner_toko", "file", 'store_toko/banner/'),
 			array("Inventory Bangunan Toko", "inventory_bangunan_toko", "select", array('inventaris__asset__tanah__bangunan', null, 'nama_unit_bangunan'), null),
 			array("", "nama_pengirim", "text"),
 			array("", "nomor_telepon_pengirim", "text"),
-			array("Default Alamat pengiriman", "default_pengiriman", "select", array('inventaris__asset__tanah__bangunan', null, 'nama_unit_bangunan','pengiriman'), null),
+			array("Default Alamat pengiriman", "default_pengiriman", "select", array('inventaris__asset__tanah__bangunan', null, 'nama_unit_bangunan', 'pengiriman'), null),
 			array("FB", "platform_toko_fb", "text"),
 			array("IG", "platform_toko_ig", "text"),
 			array("WA", "platform_toko_wa", "text"),
@@ -410,25 +437,25 @@ class Store
 			// array("Alamat Toko", "alamat_toko", "text"),
 			// array("Prioritas", "prioritas", "text-disable"),
 		);
-			// $sub_kategori[] = ["Bank", "keuangan__akun", null, "form"];
-			// $array_sub_kategori[] = array(
-			// 	array("Panel", "panel", "select", array("panel", null, "nama_panel")),
-			// 	array("Kategori", "kategori", "select", array("keuangan__kategori", null, "nama_kategori")),
+		// $sub_kategori[] = ["Bank", "keuangan__akun", null, "form"];
+		// $array_sub_kategori[] = array(
+		// 	array("Panel", "panel", "select", array("panel", null, "nama_panel")),
+		// 	array("Kategori", "kategori", "select", array("keuangan__kategori", null, "nama_kategori")),
 
-			// 	array("Nama Akun", "nama_akun", "text-req"),
-			// 	array("Bank", "bank", "text-req"),
-			// 	array("No Rekening", "norek", "text-req"),
-			// 	array("Atas Nama", "atas_nama", "text-req"),
-			// 	array("Ketarangan", "keterangan_akun", "text"),
+		// 	array("Nama Akun", "nama_akun", "text-req"),
+		// 	array("Bank", "bank", "text-req"),
+		// 	array("No Rekening", "norek", "text-req"),
+		// 	array("Atas Nama", "atas_nama", "text-req"),
+		// 	array("Ketarangan", "keterangan_akun", "text"),
 
-			// );
-			// $sub_kategori[] = ["Gudang toko", $database_utama . "__gudang", null, "form"];
-			// $array_sub_kategori[] = array(
-			// 	array("Gudang", "gudang", "select", array("inventaris__asset__tanah__gudang", null, "nama_gudang")),
+		// );
+		// $sub_kategori[] = ["Gudang toko", $database_utama . "__gudang", null, "form"];
+		// $array_sub_kategori[] = array(
+		// 	array("Gudang", "gudang", "select", array("inventaris__asset__tanah__gudang", null, "nama_gudang")),
 
 
-			// );
-		$page['crud']['select_database_costum']['default_pengiriman']['where'][] = array('inventaris__asset__tanah__bangunan.id_toko::numeric','=',"WORKSPACE_SINGLE_TOKO|");
+		// );
+		$page['crud']['select_database_costum']['default_pengiriman']['where'][] = array('inventaris__asset__tanah__bangunan.id_toko::numeric', '=', "WORKSPACE_SINGLE_TOKO|");
 		// $page['crud']['select_database_costum']['id_inventory_bangunan_toko']['where'][] = array('inventaris__asset__tanah__bangunan.id_panel','=','ID_PANEL|');
 		$search = array();
 		// $page['crud']['sub_kategori'] = $sub_kategori;
@@ -456,30 +483,30 @@ class Store
 		$page['route'] = __FUNCTION__;
 		$page['layout_pdf'] = array('a4', 'portait');
 
-		$database_utama = "store__" . __FUNCTION__."";
+		$database_utama = "store__" . __FUNCTION__ . "";
 		$primary_key = null;
 
 		$array = array(
 			array("Gudang", "gudang", "select", array("inventaris__asset__tanah__gudang", null, "nama_gudang")),
 			array("Urutan", "urutan", "text"),
 		);
-			// $sub_kategori[] = ["Bank", "keuangan__akun", null, "form"];
-			// $array_sub_kategori[] = array(
-			// 	array("Panel", "panel", "select", array("panel", null, "nama_panel")),
-			// 	array("Kategori", "kategori", "select", array("keuangan__kategori", null, "nama_kategori")),
+		// $sub_kategori[] = ["Bank", "keuangan__akun", null, "form"];
+		// $array_sub_kategori[] = array(
+		// 	array("Panel", "panel", "select", array("panel", null, "nama_panel")),
+		// 	array("Kategori", "kategori", "select", array("keuangan__kategori", null, "nama_kategori")),
 
-			// 	array("Nama Akun", "nama_akun", "text-req"),
-			// 	array("Bank", "bank", "text-req"),
-			// 	array("No Rekening", "norek", "text-req"),
-			// 	array("Atas Nama", "atas_nama", "text-req"),
-			// 	array("Ketarangan", "keterangan_akun", "text"),
+		// 	array("Nama Akun", "nama_akun", "text-req"),
+		// 	array("Bank", "bank", "text-req"),
+		// 	array("No Rekening", "norek", "text-req"),
+		// 	array("Atas Nama", "atas_nama", "text-req"),
+		// 	array("Ketarangan", "keterangan_akun", "text"),
 
-			// );
-			// $sub_kategori[] = ["Gudang toko", $database_utama . "__gudang", null, "form"];
-			// $array_sub_kategori[] = array(
-			// 	
+		// );
+		// $sub_kategori[] = ["Gudang toko", $database_utama . "__gudang", null, "form"];
+		// $array_sub_kategori[] = array(
+		// 	
 
-			// );
+		// );
 		// $page['crud']['select_database_costum']['id_inventory_bangunan_toko']['where'][] = array('inventaris__asset__tanah__bangunan.id_panel','=','ID_PANEL|');
 		$search = array();
 		// $page['crud']['sub_kategori'] = $sub_kategori;
@@ -489,16 +516,16 @@ class Store
 
 		$page['crud']['array'] = $array;
 		$page['crud']['search'] = $search;
-		
-        $page['crud']['insert_default_value']['id_store__toko']  = "WORKSPACE_SINGLE_TOKO|";
-        $page['crud']['insert_default_value']['id_panel'] = "WORKSPACE_SINGLE_PANEL|";
+
+		$page['crud']['insert_default_value']['id_store__toko']  = "WORKSPACE_SINGLE_TOKO|";
+		$page['crud']['insert_default_value']['id_panel'] = "WORKSPACE_SINGLE_PANEL|";
 
 		$page['database']['utama'] = $database_utama;
 		$page['database']['primary_key'] = $primary_key;
 		$page['database']['select'] = array("*",);;
 		$page['database']['join'] = array();
 		$page['database']['where'] = array();
-        $page['database']['where'][]     = [$database_utama.".id_store__toko", "=", "WORKSPACE_SINGLE_TOKO|"];
+		$page['database']['where'][]     = [$database_utama . ".id_store__toko", "=", "WORKSPACE_SINGLE_TOKO|"];
 		$page['get']['sidebarIn'] = true;;
 		return $page;
 	}
@@ -515,7 +542,7 @@ class Store
 
 		$array = array(
 			array("Toko", "toko", "select", array('store__toko', null, 'nama_toko'), null),
-			array("Kode Mitra", null, "text-kode",["array"=>"one","tipe"=>"count","prefix"=>"Mitra.","suffix"=>"","sprintf_number"=>"3",""]),
+			array("Kode Mitra", null, "text-kode", ["array" => "one", "tipe" => "count", "prefix" => "Mitra.", "suffix" => "", "sprintf_number" => "3", ""]),
 			array("Nama Mitra", null, "text"),
 			array("Deskripsi", "deskripsi", "text"),
 			array("Syarat & Ketentuan", "syarat_ketentutan", "textarea"),
@@ -581,10 +608,10 @@ class Store
 			array("Maksimal Penggunaan Voucher", null, "number"),
 			array("Syarat Minimal Pembelian", null, "number"),
 			array("Syarat Maksimal Pembelian", null, "number"),
-			array("Default Tampil", null, "select-manual",["2"=>"Sembunyikan, voucher hanya bisa digunakan ketika user mengetahui kode","1"=>"Tampilkan, Voucher bisa digunakan siapa saja"]),
+			array("Default Tampil", null, "select-manual", ["2" => "Sembunyikan, voucher hanya bisa digunakan ketika user mengetahui kode", "1" => "Tampilkan, Voucher bisa digunakan siapa saja"]),
 
 		);
-		
+
 		$search = array();
 		// $page['crud']['sub_kategori'] = $sub_kategori;
 		// $page['crud']['array_sub_kategori'] = $array_sub_kategori;
@@ -649,6 +676,12 @@ class Store
 		$page['crud']['array'] = $array;
 		$page['crud']['search'] = $search;
 
+		$select_costum['join'][] = ["inventaris__asset__list ial", "store__produk.id_asset", "ial.id", "left"];
+		$select_costum['join'][] = ["inventaris__asset__list master", "ial.id_master", "master.id", "left"];
+		$select_costum['select'][] = "store__produk.id,ial.asal_barang_dari ,
+case when ial.asal_barang_dari  ='Master' then master.nama_barang else ial.nama_barang end as nama_produk";
+		$select_costum['where'][] = ["ial.active", "=", "1"];
+		$page['crud']['select_database_costum']['produk'] = $select_costum;
 
 		$page['database']['utama'] = $database_utama;
 		$page['database']['primary_key'] = $primary_key;

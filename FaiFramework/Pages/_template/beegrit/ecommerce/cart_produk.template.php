@@ -13,6 +13,7 @@
                 <div class="form-selectgroup-label-content d-flex" style=" width: 100%;">
                      <input type="hidden" id="is_varian-<ID-CART></ID-CART>" value="<IS_VARIAN></IS_VARIAN>">
                      <input type="hidden" id="max_varian-<ID-CART></ID-CART>" value="<MAX_VARIAN></MAX_VARIAN>">
+                     <input type="hidden" id="list_diskon-<ID-CART></ID-CART>" value="<LIST-DISKON></LIST-DISKON>">
                 <div style="width:30%;margin: 10px;border-radius: 100%;" id="image_cart-<ID-CART></ID-CART>">
                         <IMAGE-CART></IMAGE-CART>
                         </div>
@@ -39,7 +40,7 @@
                         </div>
 
                         <div class="add-to-cart ">
-                            <div class="qty-label" style="color: ;font-weight: bold;">
+                            <div class="qty-label" style="font-weight: bold;">
 
                                 <div class="input-number" style="width: 90px;">
 

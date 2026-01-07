@@ -167,7 +167,7 @@ export default class CorePages extends FaiModule {
         const modulesToReset = [
             "data_produk", "data_produk_real", "data_produk_array",
             "data_produk_itemsPerPage", "data_produk_content",
-            "data_produk_search_field", "data_produk_after_init"
+            "data_produk_search_field", "data_produk_after_init","data_produk_search_header"
         ];
 
         for (const moduleName of modulesToReset) {
@@ -258,7 +258,15 @@ export default class CorePages extends FaiModule {
     }
 
     async proses_after_init() {
+         const isLoggedIn = await window.fai.getModule('loginHelper').checkLoginStatus();
+  if (isLoggedIn) {
+    $('.content-login').show();
+    $('.content-notlogin').hide();
+  }else{
+    $('.content-login').hide();
+    $('.content-notlogin').show();
 
+  }
         console.log("afterInitArray", this.afterInitEvents);
         for (const { module, method, args } of this.afterInitEvents) {
             try {
@@ -319,7 +327,7 @@ export default class CorePages extends FaiModule {
             const menu = allData[first_page].menu;
             const nav = allData[first_page].nav;
             const board = allData[first_page].board;
-
+            console.log("first_page",first_page);
             const versions = page.app.versions[apps][page_view];
             const last_version = versions.last_version;
             const view = versions.versions[last_version];

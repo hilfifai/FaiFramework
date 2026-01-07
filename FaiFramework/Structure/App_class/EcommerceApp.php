@@ -1030,24 +1030,25 @@ class EcommerceApp
             $promo['mitra']['all']    = [];
             $string_promo_mitra_aktif = "";
             $string_promo_mitra_all   = "";
-            if ($produk['row'][0]->pengurangan_harga_reseller == 1 and isset($_SESSION['id_apps_user'])) {
+            // $produk['row'][0]->pengurangan_harga_reseller == 1 and
+            if ( isset($_SESSION['id_apps_user'])) {
 
-                DB::selectRaw('*,store__toko.id as primary_key');
-                DB::table('store__toko');
+                DB::selectRaw('*,crm__mitra_penjualan.id as primary_key');
+                DB::table('crm__mitra_penjualan');
                 //     DB::whereRaw("(case 
                 //     when store__toko.log_mitra=1 and id_apps_user = " . $_SESSION['id_apps_user'] . " then 1 
                 //   when store__toko.log_mitra=3 and id_organisasi = " . (isset($_SESSION['id_organisasi']) ? ($_SESSION['id_organisasi'] ? $_SESSION['id_organisasi'] : -1000) : -1000) . " then 1 
 
                 //     end)=1");
 
-                DB::whereRaw("store__toko.id_store_from = $id_toko");
+                DB::whereRaw("crm__mitra_penjualan.id_store_from = $id_toko");
                 DB::whereRaw("id_apps_user = '" . $_SESSION['id_apps_user'] . "'");
-                DB::whereRaw("jenis_toko = 'Mitra'");
-                DB::joinRaw("store__mitra on store__toko.tipe_mitra = store__mitra.id");
+                DB::joinRaw("store__mitra on crm__mitra_penjualan.id_store__mitra = store__mitra.id");
                 DB::joinRaw("store__mitra__presetase on store__mitra__presetase.id_store__mitra = store__mitra.id ");
                 // DB::whereRaw("'" . date('Y-m-d H:i:s') . "' >= berlaku_dari");
                 // DB::whereRaw("'" . date('Y-m-d H:i:s') . "' <= berlaku_sampai");
                 $promo_mitra = DB::get('all');
+                
                 $i           = 0;
                 //and $jumlah >= minimal_pembelian and ($jumlah<=maksimal_pmebelian or maksimal_pmebelian is null)
                 if ($promo_mitra['num_rows']) {
@@ -2175,7 +2176,7 @@ SELECT '6') AS level
                 DB::table('erp__pos__utama__detail__diskon');
                 foreach ($insert_potongan as $where_key => $where_value) {
 
-                    DB::whereRaw("$where_key::text='$where_value'");
+                    DB::whereRaw("$where_key='$where_value'");
                 }
                 $get                                          = DB::get('all');
                 $insert_potongan["harga_jual_diskon"]         = $lp['harga_jual_diskon'];
