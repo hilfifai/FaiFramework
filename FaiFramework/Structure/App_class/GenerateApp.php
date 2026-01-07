@@ -86,7 +86,7 @@ class GenerateApp
             ])) {
                 '<br>' . $nama;
 
-                require_once BASEPATH . "FaiFramework/Structure/App/$nama";
+                require_once BASEPATH_FAI . "FaiFramework/Structure/App/$nama";
                 $class     = str_replace('.php', "", $nama);
                 $template  = new $class();
                 $reflector = new ReflectionClass($class);
