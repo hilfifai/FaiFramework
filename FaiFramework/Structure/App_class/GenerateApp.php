@@ -48,7 +48,7 @@ class GenerateApp
 
     public static function app_generate()
     {
-        $file = scandir(BASEPATH . 'FaiFramework/Structure/App');
+        $file = scandir(BASEPATH_FAI . 'FaiFramework/Structure/App');
         print_r($file);
         echo '<pre>';
         $data          = [];
