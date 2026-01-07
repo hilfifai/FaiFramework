@@ -2014,7 +2014,7 @@ $(document).ready(function() {
             }
         }
     }
-    public static function proses_inisiasi_generate_data($tipe)
+    public static function proses_inisiasi_generate_data($page,$tipe)
     {
         $fai = new MainFaiFramework();
 
@@ -2226,7 +2226,7 @@ $(document).ready(function() {
                 store__produk__varian.harga_pokok_penjualan_varian,
                 case when varian_barang='1' then store__produk__varian.harga_pokok_penjualan_varian else  store__produk.harga_pokok_penjualan end harga_pokok,
                 store__produk.create_date,store__produk.update_date,
-inventaris__asset__list__varian.*				";
+            inventaris__asset__list__varian.*				";
         $db_produk['utama'] = "store__produk";
         $db_produk['join'][] = ["inventaris__asset__list_query", "inventaris__asset__list.id", " store__produk.id_asset", "inner"];
         $db_produk['join'][] = ["drive__file utama_file", " (utama_file.id)", " (inventaris__asset__list.foto_aset)", "left"];
