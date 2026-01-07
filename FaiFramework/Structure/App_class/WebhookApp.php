@@ -19,6 +19,7 @@ class WebhookApp
         // } else {
         //     $data = [];
         // }
+        file_put_contents('pesan.whatsapp.whapify.txt', '[' . date('Y-m-d H:i:s') . "]\n" . $data . "\n\n", FILE_APPEND);
         $data['data']['wid'] = str_replace('+', '', $data['data']['wid']);
         $data['data']['phone'] = str_replace('+', '', $data['data']['phone']);
         $to_chat_app['from'] = $data['data']['phone'];
