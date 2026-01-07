@@ -907,10 +907,11 @@ class BundleContent
 
     public static function system_produk($page)
     {
-        $base = __DIR__ . "/../../Pages/bundle/system_produk/";
-        $return["css"] = file_get_contents($base . "system_produk.css.php");
-        $return["js"] =  file_get_contents($base . "system_produk.js.php");
-        $return["html"] =  file_get_contents($base . "system_produk.html.php");
+        // $base = __DIR__ . "/../../Pages/bundle/system_produk/";
+        // $return["css"] = file_get_contents($base . "system_produk.css.php");
+        // $return["js"] =  file_get_contents($base . "system_produk.js.php");
+        // $return["html"] =  file_get_contents($base . "system_produk.html.php");
+        $return["html"] = "";
         return $return;
     }
 
