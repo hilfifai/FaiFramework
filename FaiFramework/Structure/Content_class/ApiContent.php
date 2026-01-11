@@ -396,6 +396,7 @@ class ApiContent
         } else {
             $response_cart = $nama_class::send_cart($page, $user_api, $link . '/' . $link_endpoint, $id_from_api, $qty, $id_user);
         }
+        // print_R($response_cart);
         $fai = new MainFaiFramework();
         if ($response_cart['status']) {
 
@@ -409,7 +410,7 @@ class ApiContent
             $sqli['type_sync'] = "Cart Outgoing";
             $sqli['status_sync'] = "Berhasil";
             $sqli['id_response_sync'] =  $response_cart['id_cart'];
-            $sqli['nomor_sync'] =  $response_cart['nomor_cart'];
+            $sqli['nomor_sync'] =  $response_cart['nomor_cart']??"";
             $sqli['response_sync'] =  json_encode($response_cart['response']);
             $sqli['acc_status_sync'] =  "Pending";
             $sqli['response_acc_sync'] =  "";
