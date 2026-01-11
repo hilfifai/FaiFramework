@@ -1030,7 +1030,7 @@ class EthicaApi
         //         $db['join'][] = ["webmaster__wilayah__kecamatan", "id_kecamatan_tujuan", "webmaster__wilayah__kecamatan.subdistrict_id", "left"];
         //         $db['join'][] = ["webmaster__wilayah__postal_code", "id_kelurahan_tujuan", "webmaster__wilayah__postal_code.id", "left"];
         $db['select'][] = "
-        erp__pos__utama.no_purchose_order,status_acc_sync_pesanan,status_sync_pesanan,response_acc_sync_pesanan,response_sync_pesanan,
+        erp__pos__utama.tanggal_po,erp__pos__utama.no_purchose_order,status_acc_sync_pesanan,status_sync_pesanan,response_acc_sync_pesanan,response_sync_pesanan,
         erp__pos__utama.id_apps_user,nomor_handphone
         ,webmaster__wilayah__provinsi.provinsi as provinsi,concat(webmaster__wilayah__kabupaten.type,' ',webmaster__wilayah__kabupaten.kota_name) as kota,
         webmaster__wilayah__postal_code.urban as kelurahan,webmaster__wilayah__kecamatan.subdistrict_name as kecamatan ,webmaster__wilayah__postal_code.postal_code,
@@ -1100,7 +1100,7 @@ class EthicaApi
                     
                     ,erp__pos__utama__detail.berat_satuan
                     ";
-                if ($row->tanggal > '2025-12-12 00:00:00') {
+                if ($row->tanggal_po > '2025-12-12 00:00:00') {
                     $db['select'][] = "api_sync.response_sync as ressponse_sync_cart
                     ,api_sync.temp_qty_sync as qty_pesanan
                     ,id_response_sync as id_sync_cart
