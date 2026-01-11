@@ -319,7 +319,7 @@ class Database extends DB
 			if (!$primary_key and isset($database['utama'])) {
 				$primary_key = Database::converting_primary_key($page, $database['utama'], 'ontable');
 			}
-			if (!str_starts_with($database['utama'], 'view_') and !isset($database['not_checking']) and !stripos($database['utama'], ' as ') and !in_array($page['section'], ["card", 'viewsource']))
+			if (!substr($database['utama'], 0, 5) and !isset($database['not_checking']) and !stripos($database['utama'], ' as ') and !in_array($page['section'], ["card", 'viewsource']))
 				Database::create_database_check($page, $array, $database['utama'], $primary_key, $page['database_provider']);
 		
 			$select = isset($database['select']) ? $database['select'] : (!isset($database['non_add_select'])?array('*', $database_utama . '.' . $primary_key . ' as primary_key'):[]);
